@@ -50,10 +50,14 @@ if (_canDespawn) then {
 	_trigger setTriggerStatements ["this","",""]; //temporarily disable trigger from activating or deactivating while cleanup is performed
 	_grpArray = _grpArray - [grpNull];
 	{
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Deleting group %1 with %2 active units.",_x,(_x getVariable ["groupSize",0])];};
-		//(A3EAI_numAIUnits - (_x getVariable ["groupSize",0])) call A3EAI_updateUnitCount;
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Deleting group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
+		//(A3EAI_numAIUnits - (_x getVariable ["GroupSize",0])) call A3EAI_updateUnitCount;
 		//_x call A3EAI_deleteGroup;
-		_x setVariable ["GroupSize",-1,A3EAI_HCIsConnected];
+		_x setVariable ["GroupSize",-1];
+		if (A3EAI_HCIsConnected) then {
+			A3EAI_updateGroupSize_PVC = [_x,-1];
+			A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupSize_PVC";
+		};
 	} forEach _grpArray;
 	
 	//Remove dynamic trigger from global dyn trigger array and clean up trigger
@@ -63,7 +67,6 @@ if (_canDespawn) then {
 	//Begin deletion timer for temporary blacklist area and add it to global dyn location array to allow deletion
 	_triggerLocation = _trigger getVariable "triggerLocation";
 	_triggerLocation setVariable ["deletetime",(diag_tickTime + A3EAI_tempBlacklistTime)];
-	//A3EAI_areaBlacklists set [(count A3EAI_areaBlacklists),_triggerLocation];
 	A3EAI_areaBlacklists pushBack _triggerLocation;
 	if (_trigger in A3EAI_reinforcePlaces) then {A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [_trigger]};
 

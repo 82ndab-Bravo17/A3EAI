@@ -31,6 +31,9 @@ A3EAI_cleanupDelay = 900;
 //Enabled: A3EAI will load custom spawn/blacklist definitions file on startup (A3EAI_custom_defs.sqf) (Default: false)
 A3EAI_loadCustomFile = false;
 
+//Enables A3EAI headless client support. NOTE: NOT YET SUPPORTED! (Default: false)
+A3EAI_enableHC = false;
+
 
 /*	Dynamic Classname Settings
 
@@ -72,34 +75,34 @@ A3EAI_dynamicWeaponBlacklist = [];
 A3EAI_minAI_village = 1; //1
 A3EAI_addAI_village = 1; //1
 A3EAI_unitLevel_village = 0; //0
-A3EAI_spawnChance_village = 0.40; //0.40
+A3EAI_spawnChance_village = 0.30; //0.30
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_city = 1; //1
 A3EAI_addAI_city = 2; //2
 A3EAI_unitLevel_city = 1; //1
-A3EAI_spawnChance_city = 0.60; //0.60
+A3EAI_spawnChance_city = 0.50; //0.50
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_capitalCity = 2; //2
 A3EAI_addAI_capitalCity = 1; //1
 A3EAI_unitLevel_capitalCity = 1; //1
-A3EAI_spawnChance_capitalCity = 0.70; //0.70
+A3EAI_spawnChance_capitalCity = 0.60; //0.60
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_remoteArea = 1; //1
 A3EAI_addAI_remoteArea = 1; //1
 A3EAI_unitLevel_remoteArea = 2; //2
-A3EAI_spawnChance_remoteArea = 0.80; //0.80
+A3EAI_spawnChance_remoteArea = 0.70; //0.70
 
 //(Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_wilderness = 1; //1
-A3EAI_addAI_wilderness = 1; //1
-A3EAI_unitLevel_wilderness = 2; //2
-A3EAI_spawnChance_wilderness = 0.50; //0.50
+A3EAI_addAI_wilderness = 2; //2
+A3EAI_unitLevel_wilderness = 1; //1
+A3EAI_spawnChance_wilderness = 0.40; //0.40
 
-//(For dynamic and random spawns only) Defines amount of time to wait in seconds until cleaning up temporary blacklist area after dynamic/random spawn is deactivated (Default: 600)
-A3EAI_tempBlacklistTime = 600;
+//(For dynamic and random spawns only) Defines amount of time to wait in seconds until cleaning up temporary blacklist area after dynamic/random spawn is deactivated (Default: 1200)
+A3EAI_tempBlacklistTime = 1200;
 
 //If enabled, AI group will attempt to track down player responsible for killing a group member. (Default: true)
 A3EAI_findKiller = true;	
@@ -107,8 +110,8 @@ A3EAI_findKiller = true;
 //If normal probability check for spawning NVGs fails, then give AI temporary NVGs during night hours. Temporary NVGs are unlootable and will be removed at death (Default: false).									
 A3EAI_tempNVGs = false;	
 
-//Minimum AI unit level requirement to use underslung grenade launchers. Set to -1 to disable completely. (Default: 2)
-A3EAI_GLRequirement = 2;	
+//Minimum AI unit level requirement to use underslung grenade launchers. Set to -1 to disable completely. (Default: 1)
+A3EAI_GLRequirement = 1;	
 
 //Minimum AI unit level requirement to use launcher weapons. Set to -1 to disable completely. (Default: -1)
 A3EAI_launcherLevelReq = -1;	
@@ -203,8 +206,8 @@ A3EAI_maxHeliPatrols = 0;
 A3EAI_levelChancesAir = [0.00,0.50,0.35,0.15];	
 
 //Set minimum and maximum wait time in seconds to respawn an AI vehicle patrol after vehicle is destroyed or disabled. (Default: Min 600, Max 900).
-A3EAI_respawnTMinA = 600;
-A3EAI_respawnTMaxA = 900;
+A3EAI_respawnAirMinTime = 600;
+A3EAI_respawnAirMaxTime = 900;
 
 //Classnames of air vehicle types to use, with the maximum amount of each type to spawn.
 A3EAI_heliList = [
@@ -245,11 +248,12 @@ A3EAI_maxLandPatrols = 0;
 A3EAI_levelChancesLand = [0.00,0.50,0.35,0.15];	
 
 //Set minimum and maximum wait time in seconds to respawn an AI vehicle patrol after vehicle is destroyed or disabled. (Default: Min 600, Max 900).
-A3EAI_respawnTMinL = 600;
-A3EAI_respawnTMaxL = 900;
+A3EAI_respawnLandMinTime = 600;
+A3EAI_respawnLandMaxTime = 900;
 
 //Classnames of land vehicle types to use, with the maximum amount of each type to spawn.
 A3EAI_vehList = [
+	["B_MRAP_01_EPOCH",5],
 	["C_Van_01_transport_EPOCH",5],
 	["C_Offroad_01_EPOCH",5],
 	["C_Hatchback_02_EPOCH",5],

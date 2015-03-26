@@ -34,7 +34,6 @@ if (
 	(surfaceIsWater _spawnPos) or 
 	{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPos select 0),(_spawnPos select 1),(_spawnPosASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPos) < 150)}) exitWith {1}} count (_spawnPos nearEntities [["Epoch_Male_F","Epoch_Female_F","Car"],200])) > 0} or 
 	{({if (_spawnPos in _x) exitWith {1}} count ((nearestLocations [_spawnPos,["Strategic"],1500]) - [_triggerLocation])) > 0} or
-	{_spawnPosASL call A3EAI_posInBuilding} or
 	{!((_spawnPos nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}
 ) exitWith {
 	if (A3EAI_debugLevel > 1) then {
@@ -49,17 +48,28 @@ if (
 	false
 
 };
+
+if (((count A3EAI_reinforcePlaces) < A3EAI_curHeliPatrols) && {A3EAI_heliReinforceChance call A3EAI_chance}) then {
+	A3EAI_reinforcePlaces pushBack _trigger;
+	if !(A3EAI_HCObjectOwnerID isEqualTo 0) then {
+		//A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_reinforcePlaces";
+		A3EAI_upateReinforcePlaces_PVC = [_trigger,_targetPlayer];
+		A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_upateReinforcePlaces_PVC";
+	};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Sending AI helicopter patrol to search for %1.",_playername];};
+};
+
 _totalAI = ((_minAI + floor (random (_addAI + 1))) max 1);
 _unitGroup = [_totalAI,grpNull,"dynamic",_spawnPos,_trigger,_unitLevel,true] call A3EAI_spawnGroup;
 
 //Set group variables
 _unitGroup setBehaviour "AWARE";
-_unitGroup setSpeedMode "FULL";
 
 //Begin hunting player or patrolling area
 _behavior = if (A3EAI_huntingChance call A3EAI_chance) then {
 	_unitGroup reveal [_targetPlayer,4];
-	0 = [_unitGroup,_patrolDist,_targetPlayer,getPosATL _trigger] spawn A3EAI_dynamicHunting; //seek mode
+	//0 = [_unitGroup,_patrolDist,_targetPlayer,getPosATL _trigger] spawn A3EAI_dynamicHunting; //seek mode
+	0 = [_unitGroup,_patrolDist,_targetPlayer,getPosATL _trigger] spawn A3EAI_startHunting;
 	"HUNT PLAYER"
 } else {
 	[_unitGroup,_playerPos] call A3EAI_setFirstWPPos;

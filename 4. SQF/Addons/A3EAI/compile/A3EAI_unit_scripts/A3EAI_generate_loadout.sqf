@@ -61,7 +61,7 @@ if ((missionNamespace getVariable [("A3EAI_muzzleChance"+str(_unitLevel)),3]) ca
 };
 
 _unit setVariable ["loadoutDone",true];
-_unit setVariable ["loadout",[[_weaponSelected],[_magazine]],A3EAI_enableHC];
+_unit setVariable ["loadout",[[_weaponSelected],[_magazine]]];
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Created loadout for unit %1 (unitLevel: %2): %3.",_unit,_unitLevel,[_uniform,_weaponSelected,_magazine,_backpack,_vest,_headgear]];};
 
 true

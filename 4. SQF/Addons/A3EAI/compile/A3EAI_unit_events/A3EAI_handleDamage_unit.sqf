@@ -9,8 +9,8 @@ _ammo = 		_this select 4;				//Classname of the projectile that caused inflicted
 
 
 if (isPlayer _source) then {	
-	if (_damage > 0.9) then {	//Check fatal damage only by players
-		if ((_ammo isEqualTo "") && {_part isEqualTo ""}) then {_unit setVariable ["CollisionKilled",true]}; //No damage for collision kills caused by players.
+	if ((_damage > 0.9) && {_ammo isEqualTo _part}) then {	//Check fatal damage only by players
+		_unit setVariable ["CollisionKilled",true]; //No damage for collision kills caused by players.
 	};
 } else {
 	_damage = 0; //Non-players cause no damage to unit

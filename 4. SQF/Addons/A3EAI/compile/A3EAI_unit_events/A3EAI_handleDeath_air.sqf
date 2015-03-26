@@ -7,7 +7,7 @@ _vehicle = (_unitGroup getVariable ["assignedVehicle",objNull]);
 if (alive _vehicle) then {
 	if (_victim getVariable ["isDriver",false]) then {
 		_unitGroup setVariable ["unitType","aircrashed"]; //prevent this case from being run for ejected non-pilot units
-		_parachuted = [_vehicle] call A3EAI_heliEvacuated;
+		_parachuted = [_vehicle,_unitGroup] call A3EAI_heliEvacuated;
 		if (_parachuted) then {
 			_nul = _vehicle spawn {
 				_this setFuel 0;

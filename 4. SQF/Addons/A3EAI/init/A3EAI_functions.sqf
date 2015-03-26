@@ -21,10 +21,13 @@ A3EAI_hasLOS = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_
 A3EAI_getSpawnParams = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getSpawnParams.sqf",A3EAI_directory];
 A3EAI_createInfantryQueue = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_staticInfantrySpawnQueue.sqf",A3EAI_directory];
 A3EAI_createRandomInfantrySpawnQueue = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_randomInfantrySpawnQueue.sqf",A3EAI_directory];
-A3EAI_transferGroupToHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_transferGroup.sqf",A3EAI_directory];
+A3EAI_addVehicleGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addVehicleGroup.sqf",A3EAI_directory];
+A3EAI_respawnAIVehicle = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_respawnAIVehicle.sqf",A3EAI_directory];
+A3EAI_staticSpawn_init = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_init_static.sqf",A3EAI_directory];
+A3EAI_initializeTrigger = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initialize_trigger.sqf",A3EAI_directory];
+A3EAI_reloadVehicleTurrets = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_reloadVehicleTurrets.sqf",A3EAI_directory];
 A3EAI_createUnit = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_unit.sqf",A3EAI_directory];
 A3EAI_spawnGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_group.sqf",A3EAI_directory];
-A3EAI_initializeTrigger = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_initialize_trigger.sqf",A3EAI_directory];
 A3EAI_spawnBandits_custom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_custom.sqf",A3EAI_directory];
 A3EAI_spawnVehicle_custom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_vehiclecustom.sqf",A3EAI_directory];
 A3EAI_createCustomSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_customspawn.sqf",A3EAI_directory];
@@ -33,7 +36,6 @@ A3EAI_addRespawnQueue = compileFinal preprocessFileLineNumbers format ["%1\compi
 A3EAI_processRespawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_process_respawn.sqf",A3EAI_directory];
 A3EAI_despawn_static = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_despawn_static.sqf",A3EAI_directory];
 A3EAI_spawnUnits_static = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_static.sqf",A3EAI_directory];
-A3EAI_staticSpawn_init = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_init_static.sqf",A3EAI_directory];
 A3EAI_setupStaticSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_staticspawn.sqf",A3EAI_directory];
 A3EAI_cancelDynamicSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_cancel_dynamicspawn.sqf",A3EAI_directory];
 A3EAI_spawnUnits_dynamic = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_dynamic.sqf",A3EAI_directory];
@@ -43,10 +45,12 @@ A3EAI_cancelRandomSpawn = compileFinal preprocessFileLineNumbers format ["%1\com
 A3EAI_spawnUnits_random = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_random.sqf",A3EAI_directory];
 A3EAI_despawn_random = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_despawn_random.sqf",A3EAI_directory];
 A3EAI_spawnVehiclePatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_vehiclepatrol.sqf",A3EAI_directory];
+A3EAI_addParaGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_addParaGroup.sqf",A3EAI_directory];
+A3EAI_addVehicleGunners = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_addVehicleGunners.sqf",A3EAI_directory];
 A3EAI_generateLoadout = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_scripts\A3EAI_generate_loadout.sqf",A3EAI_directory];
 A3EAI_generateLoot = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_scripts\A3EAI_generate_loot.sqf",A3EAI_directory];
 A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_scripts\A3EAI_group_manager.sqf",A3EAI_directory];
-A3EAI_addGroupManager2 = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_scripts\A3EAI_group_manager2.sqf",A3EAI_directory];
+A3EAI_generateLootPool = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_scripts\A3EAI_generateLootPool.sqf",A3EAI_directory];
 A3EAI_handleDamageUnit = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_events\A3EAI_handleDamage_unit.sqf",A3EAI_directory];
 A3EAI_handleDamageHeli = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_events\A3EAI_handleDamage_heli.sqf",A3EAI_directory];
 A3EAI_handleDamageVeh = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_events\A3EAI_handleDamage_veh.sqf",A3EAI_directory];
@@ -71,6 +75,9 @@ A3EAI_heliDetection = compileFinal preprocessFileLineNumbers format ["%1\compile
 A3EAI_heliStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_heli_patrolling.sqf",A3EAI_directory];
 A3EAI_heliReinforce = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_reinforce_location.sqf",A3EAI_directory];
 A3EAI_vehStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_vehicle_patrolling.sqf",A3EAI_directory];
+A3EAI_startHunting = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_startHunting.sqf",A3EAI_directory];
+A3EAI_hunterLocate = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_hunterLocate.sqf",A3EAI_directory];
+
 
 //Miscellaneous functions 
 //------------------------------------------------------------------------------------------------------------------------
@@ -78,22 +85,34 @@ A3EAI_vehStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compil
 
 A3EAI_radioSend = compileFinal '
 	A3EAI_SMS = (_this select 1);
-	(owner (_this select 0)) publicVariableClient "A3EAI_SMS";
+	
+	if (isDedicated) then {
+		(owner (_this select 0)) publicVariableClient "A3EAI_SMS";
+	} else {
+		A3EAI_SMS_PVS = [(_this select 0),A3EAI_SMS];
+		publicVariableServer "A3EAI_SMS_PVS";
+	};
+	
 	true
 ';
 
 A3EAI_sendKillMessage = compileFinal '
-	private ["_killer","_victimName"];
+	private ["_killer","_victim"];
 	_killer = _this select 0;
-	_victimName = _this select 1;
+	_victim = _this select 1;
 	
-	{
-		if (isPlayer _x) then {
-			A3EAI_killMSG = _victimName;
-			(owner _x) publicVariableClient "A3EAI_killMSG";
-			
-		};
-	} count (crew _killer);
+	if (isDedicated) then {
+		_victimName = _victim getVariable ["bodyName","Bandit"];
+		{
+			if (isPlayer _x) then {
+				A3EAI_killMSG = _victimName;
+				(owner _x) publicVariableClient "A3EAI_killMSG";
+			};
+		} count (crew _killer);
+	} else {
+		A3EAI_killMsg_PVS = [_killer,_victim];
+		publicVariableServer "A3EAI_killMsg_PVS";
+	};
 ';
 
 
@@ -120,7 +139,7 @@ A3EAI_createGroup = compileFinal '
 
 	_unitGroup = createGroup resistance;
 	if ((count _this) > 1) then {_unitGroup call A3EAI_protectGroup};
-	_unitGroup setVariable ["unitType",_unitType,A3EAI_enableHC];
+	_unitGroup setVariable ["unitType",_unitType];
 	[_unitGroup,true] call A3EAI_updGroupCount;
 	
 	_unitGroup
@@ -155,7 +174,7 @@ A3EAI_lootSearching = compileFinal '
 	_unitGroup = _this select 0;
 	_searchRange = _this select 1;
 	
-	_lootPiles = (getPosASL (leader _unitGroup)) nearObjects ["Animated_Loot",_searchRange];
+	_lootPiles = (getPosATL (leader _unitGroup)) nearObjects ["Animated_Loot",_searchRange];
 	if ((count _lootPiles) > 0) then {
 		_lootPos = getPosATL (_lootPiles call BIS_fnc_selectRandom2);
 		if ((behaviour (leader _unitGroup)) != "AWARE") then {_unitGroup setBehaviour "AWARE"};
@@ -165,7 +184,6 @@ A3EAI_lootSearching = compileFinal '
 	};
 ';
 
-//Prevents object from being destroyed/deleted from DayZ's anti-hacker check
 A3EAI_protectObject = compileFinal '
 	private ["_objectMonitor","_object","_index"];
 	_object = _this;
@@ -173,6 +191,9 @@ A3EAI_protectObject = compileFinal '
 	_object call EPOCH_server_setVToken;
 	_object setVariable["LOCK_OWNER", "-1"];
 	_object setVariable["LOCKED_TILL", 3.4028235e38];
+	_object setVehicleLock "LOCKEDPLAYER";
+	//_object lockDriver true;
+	_object enableCopilot false;
 	
 	_index = A3EAI_monitoredObjects pushBack _object;
 	
@@ -184,8 +205,8 @@ A3EAI_getUnitLevel = compileFinal '
 	_unitLevelIndexTable = _this;
 	
 	_indexWeighted = call {
-		if (_unitLevelIndexTable isEqualTo "airvehicle") exitWith {A3EAI_levelIndicesAir};			//2: Air vehicle AI spawns
-		if (_unitLevelIndexTable isEqualTo "landvehicle") exitWith {A3EAI_levelIndicesLand};		//3: Land vehicle AI spawns
+		if (_unitLevelIndexTable isEqualTo "airvehicle") exitWith {A3EAI_levelIndicesAir};
+		if (_unitLevelIndexTable isEqualTo "landvehicle") exitWith {A3EAI_levelIndicesLand};
 		[0]
 	};
 		
@@ -197,8 +218,12 @@ A3EAI_protectGroup = compileFinal '
 	
 	_dummy = _this createUnit ["Logic",[0,0,0],[],0,"FORM"];
 	[_dummy] joinSilent _this;
-	if ((behaviour _dummy) != "AWARE") then {_this setBehaviour "AWARE"};
-	_this setVariable ["dummyUnit",_dummy,A3EAI_enableHC];
+	if (isDedicated) then {
+		_this setVariable ["dummyUnit",_dummy];
+	} else {
+		A3EAI_protectGroup_PVS = [_unitGroup,_dummy];
+		publicVariableServer "A3EAI_protectGroup_PVS";
+	};
 	
 	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: Spawned 1 dummy AI unit to preserve group %1.",_this];};
 	
@@ -208,30 +233,6 @@ A3EAI_protectGroup = compileFinal '
 A3EAI_addTempNVG = compileFinal '
 	_this addWeapon "NVG_EPOCH";
 	_this setVariable ["RemoveNVG",true,A3EAI_enableHC];
-	
-	true
-';
-
-A3EAI_respawnAIVehicle = compileFinal '
-	private ["_vehicle","_unitType"];
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Respawning AI vehicle with params %1",_this]};
-	_vehicle = _this select 0;
-	_vehicleType = (_this select 1) select 0;
-	_isCustom = (_this select 1) select 1;
-	call {
-		if (_isCustom) then {
-			private ["_spawnParams"];
-			_spawnParams = _vehicle getVariable ["spawnParams",false];
-			if (_spawnParams select 4) then {
-				[1,_spawnParams] call A3EAI_addRespawnQueue;
-			};
-			if (_vehicleType isKindOf "Air") then {A3EAI_curHeliPatrols = A3EAI_curHeliPatrols - 1} else {A3EAI_curLandPatrols = A3EAI_curLandPatrols - 1};
-		} else {
-			[2,_vehicleType] call A3EAI_addRespawnQueue;
-			if (_vehicleType isKindOf "Air") then {A3EAI_curHeliPatrols = A3EAI_curHeliPatrols - 1} else {A3EAI_curLandPatrols = A3EAI_curLandPatrols - 1};
-		};
-	};
-	_vehicle setVariable ["A3EAI_deathTime",diag_tickTime,A3EAI_enableHC]; //mark vehicle for cleanup
 	
 	true
 ';
@@ -332,7 +333,9 @@ A3EAI_addEH = compileFinal '
 		"Killed",
 		"_this call A3EAI_handleDeathEvent;"
 	];
-
+	
+	_this setVariable ["bodyName",(name _this)];
+	
 	true
 ';
 
@@ -378,6 +381,15 @@ A3EAI_setFirstWPPos = compileFinal '
 	};
 	
 	_result
+';
+
+A3EAI_secureVehicle = compileFinal '
+	_this addEventHandler ["GetIn",{
+		if (isPlayer (_this select 2)) then {
+			(_this select 2) action ["getOut",(_this select 0)]; 
+			(_this select 0) setVehicleLock "LOCKEDPLAYER";
+		};
+	}];
 ';
 
 diag_log "[A3EAI] A3EAI functions compiled.";

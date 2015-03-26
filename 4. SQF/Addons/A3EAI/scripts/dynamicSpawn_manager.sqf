@@ -18,8 +18,6 @@ _playerUID_DB = [];			//Database of all collected playerUIDs
 _lastSpawned_DB = [];		//Database of timestamps for each corresponding playerUID
 _lastOnline_DB = [];		//Database of last online checks
 
-
-
 while {true} do {
 	if (({isPlayer _x} count playableUnits) > 0) then {
 		_allPlayers = [];		//Do not edit
@@ -61,9 +59,9 @@ while {true} do {
 		_playerCount = (count _allPlayers);
 		_maxSpawnsPossible = (_playerCount min A3EAI_dynMaxSpawns);	//Can't have more spawns than players (doesn't count current number of dynamic spawns)
 		
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Preparing to create %1 dynamic spawns.",(_maxSpawnsPossible - _activeDynamicSpawns)];};
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Preparing to create %1 dynamic spawns (Players: %2, Dynamic Spawns: %3).",(_maxSpawnsPossible - _activeDynamicSpawns),_playerCount,_activeDynamicSpawns];};
 
-		while {_allPlayers = _allPlayers - [objNull]; (((_maxSpawnsPossible - _activeDynamicSpawns) > 0) && {(count _allPlayers) > 0})} do {	//_spawns: Have we created enough spawns? _allPlayers: Are there enough players to create spawns for?
+		while {_allPlayers = _allPlayers - [objNull]; (((_maxSpawnsPossible - _activeDynamicSpawns) > 0) && {!(_allPlayers isEqualTo [])})} do {	//_spawns: Have we created enough spawns? _allPlayers: Are there enough players to create spawns for?
 			_time = diag_tickTime;
 			_player = _allPlayers call BIS_fnc_selectRandom2;
 			_playerUID = (getPlayerUID _player);
@@ -83,6 +81,7 @@ while {true} do {
 					) then {
 						_lastSpawned_DB set [_index,diag_tickTime];
 						_trigger = createTrigger ["EmptyDetector",_playerPos];
+						_trigger enableSimulationGlobal false;
 						_location = [_playerPos,600] call A3EAI_createBlackListArea;
 						_trigger setVariable ["triggerLocation",_location];
 						_trigger setTriggerArea [600, 600, 0, false];
@@ -93,6 +92,7 @@ while {true} do {
 						_trigger setVariable ["targetplayerUID",_playerUID];
 						//_trigActStatements = format ["0 = [150,thisTrigger,%1,%2,%3] call A3EAI_spawnUnits_dynamic;",_spawnParams select 0,_spawnParams select 1,_spawnParams select 2];
 						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;","", "[thisTrigger] spawn A3EAI_despawn_dynamic;"];
+						_trigger enableSimulation true;
 						if (A3EAI_debugMarkersEnabled) then {
 							_nul = _trigger spawn {
 								_marker = str(_this);
@@ -106,10 +106,6 @@ while {true} do {
 							};
 						};
 						0 = [150,_trigger,_spawnParams select 0,_spawnParams select 1,_spawnParams select 2] call A3EAI_spawnUnits_dynamic;
-						if (((count A3EAI_reinforcePlaces) < A3EAI_curHeliPatrols) && {A3EAI_heliReinforceChance call A3EAI_chance}) then {
-							A3EAI_reinforcePlaces pushBack _trigger;
-							if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Sending AI helicopter patrol to search for %1.",_playername];};
-						};
 						if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created dynamic trigger at %1 with params %2. Triggered by player: %3.",(mapGridPosition _trigger),_spawnParams,_playername];};
 					} else {
 						if (A3EAI_debugLevel > 1) then {
@@ -122,7 +118,7 @@ while {true} do {
 						};
 					};
 				} else {
-					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Dynamic spawn probability check failed for player %1.",_playername];};
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Dynamic spawn probability check failed for player %1 (Probability: %2).",_playername,_spawnChance];};
 				};
 			} else {
 				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Cancel dynamic spawn check for player %1 (Reason: Player not in suitable state).",_player]};

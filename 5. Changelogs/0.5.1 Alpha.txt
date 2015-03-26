@@ -1,0 +1,32 @@
+A3EAI 0.5.1 Alpha
+
+Files changed:
+A3EAI.pbo
+A3EAI_config.sqf
+A3EAI Client Addon
+
+[INFO] A3EAI HC code is completed and support will be added in an upcoming update.
+[FIXED] A3EAI will only add AI vehicle gunners to positions that have mounted weapons defined.
+[FIXED] Fixed bug where AI land vehicle patrols would not respawn under some situations.
+[FIXED] Fixed bug where AI air vehicle patrol groups would trigger 2 more empty groups to be created.
+[FIXED] Static AI level promotions now trigger upon death of all AI group members instead of on each unit death.
+[FIXED] Radio messages sent to multiple players should now all be the same (instead of randomly selected message per player).
+[FIXED] Plane-type AI vehicles now spawn and fly properly.
+[UPDATED] Reworked dynamic AI hunting system for headless client compatibility. Radio messages for dynamic AI will now only be sent after they have reached a waypoint.
+[UPDATED] Simplified AI vehicle patrol respawning for improved reliability.
+[UPDATED] A3EAI can now check ammo and reload each turret on an individual basis for AI vehicles.
+[UPDATED] Updated player detection script for custom spawned AI air vehicles for HC compatibility.
+[UPDATED] Dynamic classname functions updated for Epoch 0.3 loot table structure.
+[CHANGED] Lowered default spawn probabilities for static/dynamic/random AI spawns by 10% for each location type.
+[CHANGED] Wilderness AI may now have up to 3 units in a group (up from max of 2).
+[CHANGED] Temporary blacklist areas created after dynamic/random AI are despawned now remain for 1200 seconds (20 minutes) up from 600 seconds (10 minutes).
+[CHANGED] Changed minimum AI level requirement to use rifle-mounted grenade launchers from 2 to 1.
+[CHANGED] Added B_MRAP_01_EPOCH to default list of usable land vehicles.
+[CHANGED] AI air vehicle player detection range increased from 275m (centered 100m in front of the vehicle) to 500m (centered with vehicle).
+[CHANGED] Abandoned AI vehicles will now be cleaned up much faster.
+[CHANGED] A3EAI will no longer create AI vehicle patrol waypoints within 600m of a fresh spawn location.
+
+
+A3EAI Client Addon (1.1.1)
+
+[UPDATED] AI radio dialogue is now defined in A3EAI_client_config.sqf instead of sent as strings from server to client.

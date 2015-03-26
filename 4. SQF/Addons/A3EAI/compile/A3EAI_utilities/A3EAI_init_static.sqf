@@ -49,6 +49,7 @@ if ((count _positionArray) isEqualTo 0) then {
 };
 
 _newTrigger = createTrigger ["EmptyDetector", _triggerPos];
+_trigger enableSimulationGlobal false;
 _newTrigger setTriggerArea [600, 600, 0, false];
 _newTrigger setTriggerActivation ["ANY", "PRESENT", true];
 _newTrigger setTriggerTimeout [10, 15, 20, true];

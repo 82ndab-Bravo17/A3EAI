@@ -1,16 +1,40 @@
+private ["_startTime", "_backpackList", "_items", "_itemClassInfo", "_itemClassBias", "_itemClassType", "_item", "_itemList", "_itemInfo", "_itemBias", "_itemType","_itemClass"];
+
 _startTime = diag_tickTime;
 
 _backpackList = [configFile >> "CfgLootTable" >> "Backpack","items",[]] call BIS_fnc_returnConfigEntry;
+_items = [];
 {
-	_backpackList set [_forEachIndex,(_x select 0)];
+	_itemClassInfo = _x select 0;
+	_itemClassBias = _x select 1;
+	_itemClassType = _itemClassInfo select 1;
+	call {
+		if (_itemClassType isEqualTo "backpack") exitWith {
+			_item = _itemClassInfo select 0;
+			_items pushBack _item;
+		};
+		if (_itemClassType isEqualTo "CfgLootTable") exitWith {
+			_itemClass = _itemClassInfo select 0;
+			_itemList = [configFile >> "CfgLootTable" >> _itemClass,"items",[]] call BIS_fnc_returnConfigEntry;
+			{
+				_itemInfo = _x select 0;
+				_itemBias = _x select 1;
+				_itemType = _itemInfo select 1;
+				if (_itemType isEqualTo "backpack") then {
+					_item = _itemInfo select 0;
+					_items pushBack _item;
+				};
+			} forEach _itemList;
+		};
+	};
 } forEach _backpackList;
 
-if !(_backpackList isEqualTo []) then {
-	A3EAI_backpackTypes0 = _backpackList;
-	A3EAI_backpackTypes1 = +_backpackList;
-	A3EAI_backpackTypes2 = +_backpackList;
-	A3EAI_backpackTypes3 = +_backpackList;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 backpack classnames in %2 seconds.",(count _backpackList),diag_tickTime - _startTime]};
+if !(_items isEqualTo []) then {
+	A3EAI_backpackTypes0 = _items;
+	A3EAI_backpackTypes1 = +_items;
+	A3EAI_backpackTypes2 = +_items;
+	A3EAI_backpackTypes3 = +_items;
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 backpack classnames in %2 seconds.",(count _items),diag_tickTime - _startTime]};
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate backpack classname list. Classnames from A3EAI_config.sqf used instead.";
 };

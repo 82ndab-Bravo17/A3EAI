@@ -47,15 +47,17 @@ _pos = _this select 1;
 _max_dist = _this select 2;
 _unitType = _unitGroup getVariable ["unitType",""];
 _allowWater = (_unitType isEqualTo "aircustom");
-//_allowWaterNumeric = if (_allowWater) then {1} else {0};
-_searchLoot = _unitType in ["static","dynamic"];
+_searchLoot = _unitType in ["static","dynamic","random"];
 _isVehicle = (_unitType isEqualTo "landcustom");
 
-//_unitGroup setBehaviour "AWARE";
 if (_max_dist < 75) then {_unitGroup setSpeedMode "LIMITED"};
-//_unitGroup setCombatMode "RED";
 
-_wpStatements = if ((_max_dist >= 100) && {_searchLoot}) then {"if ((random 3) > 2) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(group this),75] spawn A3EAI_lootSearching;};"} else {"if ((random 3) > 2) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};"};
+_wpStatements = call {
+	if (_searchLoot && {_max_dist > 100}) exitWith {"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(group this),75] spawn A3EAI_lootSearching;};};"};
+	if (_unitType isEqualTo "aircustom") exitWith {"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};};"};
+	"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};};"
+};
+
 _wpTimeouts = if (_max_dist >= 100) then {[0, 3, 5]} else {[3, 6, 9]};
 
 _center_x = (_pos) select 0;
@@ -158,10 +160,10 @@ while {count _wp_array < _wp_count} do
 			_roadsCount = count _nearRoads;
 			_returnPos = [];
 			if (_roadsCount > 0) then {
-				_returnPos = getPosASL (_nearRoads select 0);
+				_returnPos = getPosATL (_nearRoads select 0);
 				if (_roadsCount > 1) then {
 					for "_i" from 1 to (_roadsCount -1) do {
-						_comparePos = getPosASL (_nearRoads select _i);
+						_comparePos = getPosATL (_nearRoads select _i);
 						if ((_comparePos distance _wp_pos) < (_returnPos distance _wp_pos)) then {
 							_returnPos = _comparePos;
 						};
@@ -190,7 +192,7 @@ for "_i" from 1 to (_wp_count - 1) do
 		_wp setWaypointType "MOVE";
 		_wp setWaypointCompletionRadius _completionRadius;
 		_wp setWaypointTimeout [_wpTimeouts select 0, _wpTimeouts select 1, _wpTimeouts select 2];
-		_wp setWaypointStatements ["true", _wpStatements];
+		_wp setWaypointStatements ["true",_wpStatements];
 	};
 	uiSleep 0.25;
 };
@@ -202,7 +204,7 @@ if (_searchLoot) then {
 	_wp1 = _unitGroup addWaypoint [_endWP, 0];
 	_wp1 setWaypointType "MOVE";
 	_wp1 setWaypointCompletionRadius (_max_dist max 50);
-	[_unitGroup,(count waypoints _unitGroup)] setWaypointStatements ["true", "group this setCurrentWaypoint [(group this), (round (random 2) + 1)];"];
+	[_unitGroup,(count waypoints _unitGroup)] setWaypointStatements ["true", "if (local this) then {group this setCurrentWaypoint [(group this), (round (random 2) + 1)];};"];
 };
 
 // Cycle in case we reach the end

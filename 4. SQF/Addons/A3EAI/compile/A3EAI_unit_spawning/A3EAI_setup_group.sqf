@@ -58,14 +58,14 @@ if (({if (isPlayer _x) exitWith {1}} count (_spawnPos nearEntities [["Epoch_Male
 _dummy = _unitGroup getVariable "dummyUnit";
 if (!isNil "_dummy") then {
 	deleteVehicle _dummy;
-	_unitGroup setVariable ["dummyUnit",nil,A3EAI_enableHC];
+	_unitGroup setVariable ["dummyUnit",nil];
 	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: Deleted 1 dummy unit for group %1.",_unitGroup];};
 };
 
 _unitGroup selectLeader ((units _unitGroup) select 0);
-_unitGroup setVariable ["trigger",_trigger,A3EAI_enableHC];
-_unitGroup setVariable ["GroupSize",_totalAI,A3EAI_enableHC];
-_unitGroup setVariable ["unitLevel",_unitLevel,A3EAI_enableHC];
+_unitGroup setVariable ["trigger",_trigger];
+_unitGroup setVariable ["GroupSize",_totalAI];
+_unitGroup setVariable ["unitLevel",_unitLevel];
 _unitGroup setFormDir (random 360);
 _unitGroup allowFleeing 0;
 

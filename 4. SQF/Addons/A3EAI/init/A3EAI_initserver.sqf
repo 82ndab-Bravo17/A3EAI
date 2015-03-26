@@ -13,27 +13,29 @@ _directoryAsArray = toArray __FILE__;
 _directoryAsArray resize ((count _directoryAsArray) - 26);
 A3EAI_directory = toString _directoryAsArray;
 
-if !(isNil "A3EAI_devOptions") then {
-	if ("readoverridefile" in A3EAI_devOptions) then {A3EAI_overrideEnabled = true} else {A3EAI_overrideEnabled = nil};
-	if ("enabledebugmarkers" in A3EAI_devOptions) then {A3EAI_debugMarkersEnabled = true} else {A3EAI_debugMarkersEnabled = false};
-	if ("enableHC" in A3EAI_devOptions) then {A3EAI_enableHC = true} else {A3EAI_enableHC = false};
-	A3EAI_devOptions = nil;
-} else {
+if (isNil "A3EAI_devOptions") then {
 	A3EAI_overrideEnabled = nil;
 	A3EAI_debugMarkersEnabled = false;
-	A3EAI_enableHC = false;
+} else {
+	if ("readoverridefile" in A3EAI_devOptions) then {A3EAI_overrideEnabled = true} else {A3EAI_overrideEnabled = nil};
+	if ("enabledebugmarkers" in A3EAI_devOptions) then {A3EAI_debugMarkersEnabled = true} else {A3EAI_debugMarkersEnabled = false};
+	A3EAI_devOptions = nil;
+};
+
+if (isNil "A3EAI_EpochHiveDir") then {
+	A3EAI_EpochHiveDir = "@EpochHive";
 };
 
 //Report A3EAI version to RPT log
 diag_log format ["[A3EAI] Initializing A3EAI version %1 using base path %2.",[configFile >> "CfgPatches" >> "A3EAI","A3EAIVersion","error - unknown version"] call BIS_fnc_returnConfigEntry,A3EAI_directory];
 
 //Load A3EAI main configuration file
-call compile preprocessFileLineNumbers "@EpochHive\A3EAI_config.sqf";
+call compile preprocessFileLineNumbers format ["%1\A3EAI_config.sqf",A3EAI_EpochHiveDir];
 
 call compile preprocessFileLineNumbers format ["%1\scripts\verifySettings.sqf",A3EAI_directory];
 
 //Load custom A3EAI settings file.
-if ((!isNil "A3EAI_overrideEnabled") && {A3EAI_overrideEnabled}) then {call compile preprocessFileLineNumbers "@EpochHive\A3EAI_settings_override.sqf"};
+if ((!isNil "A3EAI_overrideEnabled") && {A3EAI_overrideEnabled}) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
 
 //Load A3EAI functions
 call compile preprocessFileLineNumbers format ["%1\init\A3EAI_functions.sqf",A3EAI_directory];

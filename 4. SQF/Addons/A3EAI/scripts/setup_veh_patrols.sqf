@@ -1,5 +1,5 @@
 
-waitUntil {uiSleep 0.3; (!isNil "A3EAI_locations_ready" && {!isNil "A3EAI_classnamesVerified"} && {!isNil "EPOCH_server_setVToken"})};
+waitUntil {uiSleep 0.3; (!isNil "A3EAI_locations_ready" && {!isNil "A3EAI_classnamesVerified"} && {!(isNil "EPOCH_server_setVToken")})};
 
 if (A3EAI_maxHeliPatrols > 0) then {
 	_nul = [] spawn {

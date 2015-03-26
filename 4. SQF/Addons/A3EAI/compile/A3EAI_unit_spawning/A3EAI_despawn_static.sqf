@@ -58,12 +58,14 @@ _trigger setTriggerStatements ["this","true","false"]; //temporarily disable tri
 _permDelete = _trigger getVariable ["permadelete",false];
 {
 	if (!isNull _x) then {
-		_groupSize = (_x getVariable ["groupSize",0]);
+		_groupSize = (_x getVariable ["GroupSize",0]);
 		if ((_groupSize > 0) or {_permDelete}) then { //If trigger is not set to permanently despawn, then ignore empty groups.
-			//(A3EAI_numAIUnits - _groupSize) call A3EAI_updateUnitCount;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Despawning group %1 with %2 active units.",_x,(_x getVariable ["groupSize",0])];};
-			//_x call A3EAI_deleteGroup;
-			_x setVariable ["GroupSize",-1,A3EAI_HCIsConnected];
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Despawning group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
+			_x setVariable ["GroupSize",-1];
+			if (A3EAI_HCIsConnected) then {
+				A3EAI_updateGroupSize_PVC = [_x,-1];
+				A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupSize_PVC";
+			};
 			_grpArray set [_forEachIndex,grpNull];
 		};
 	};
@@ -86,12 +88,10 @@ if !(_permDelete) then {
 		};
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Despawned AI units at %1. Reset trigger's group array to: %2.",(triggerText _trigger),_trigger getVariable "GroupArray"];};
-	//diag_log format ["DEBUG :: Despawned trigger %1 has statements %2.",triggerText _trigger,triggerStatements _trigger];
 } else {
 	if (A3EAI_debugMarkersEnabled) then {
 		deleteMarker (str (_trigger));
 	};
-	deleteMarker (_trigger getVariable ["spawnmarker",""]);
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Permanently deleting a static spawn at %1.",triggerText _trigger]};
 	deleteVehicle _trigger;
 };

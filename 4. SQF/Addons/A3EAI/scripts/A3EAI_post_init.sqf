@@ -20,8 +20,8 @@ A3EAI_reinforcePlaces = [];									//AI helicopter patrols will periodically ch
 A3EAI_checkedClassnames = [[],[],[]];						//Classnames verified - Weapons/Magazines/Vehicles
 A3EAI_invalidClassnames = [[],[],[]];						//Classnames known as invalid - Weapons/Magazines/Vehicles
 A3EAI_respawnTimeVariance = (abs (A3EAI_respawnTimeMax - A3EAI_respawnTimeMin));
-A3EAI_respawnTimeVarAir = (abs (A3EAI_respawnTMaxA - A3EAI_respawnTMinA));
-A3EAI_respawnTimeVarLand = (abs (A3EAI_respawnTMaxL - A3EAI_respawnTMinL));
+A3EAI_respawnTimeVarAir = (abs (A3EAI_respawnAirMaxTime - A3EAI_respawnAirMinTime));
+A3EAI_respawnTimeVarLand = (abs (A3EAI_respawnLandMaxTime - A3EAI_respawnLandMaxTime));
 A3EAI_monitoredObjects = []; //used to cleanup AI vehicles that may not be destroyed.
 A3EAI_activeGroups = [];
 A3EAI_locations = [];
@@ -37,6 +37,7 @@ A3EAI_weaponTypeIndices3 = [];
 A3EAI_failedDynamicSpawns = [];
 A3EAI_HCObject = objNull;
 A3EAI_HCIsConnected = false;
+A3EAI_HCObjectOwnerID = 0;
 A3EAI_activeGroupAmount = 0;
 A3EAI_staticInfantrySpawnQueue = [];
 A3EAI_customBlacklistQueue = [];
@@ -46,7 +47,9 @@ A3EAI_customVehicleSpawnQueue = [];
 A3EAI_randomInfantrySpawnQueue = [];
 
 if (A3EAI_enableHC) then {
-	[] call compile preprocessFileLineNumbers format ["%1\scripts\A3EAI_initHCServer.sqf",A3EAI_directory];
+	[] call compile preprocessFileLineNumbers format ["%1\init\A3EAI_ServerHC_functions.sqf",A3EAI_directory];
+	[] call compile preprocessFileLineNumbers format ["%1\init\A3EAI_ServerHC_PVEH.sqf",A3EAI_directory];
+	diag_log "[A3EAI] A3EAI is now listening for headless client connection.";
 };
 
 //Create default trigger object if AI is spawned without trigger object specified (ie: for custom vehicle AI groups)
@@ -61,6 +64,8 @@ _nul = [] spawn {
 	A3EAI_defaultTrigger setVariable ["maxUnits",[0,0]];
 	A3EAI_defaultTrigger setVariable ["GroupSize",0];
 	A3EAI_defaultTrigger setVariable ["initialized",true];
+	A3EAI_defaultTrigger setVariable ["spawnChance",0];
+	A3EAI_defaultTrigger setVariable ["spawnType",""];
 	A3EAI_defaultTrigger setTriggerText "Default Trigger Object";
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Default trigger check result: %1",[!(isNull A3EAI_defaultTrigger),(typeOf A3EAI_defaultTrigger),(getPosASL A3EAI_defaultTrigger)]]};
 };
@@ -73,9 +78,9 @@ if (A3EAI_verifyClassnames) then {
 				"A3EAI_uniformTypes0","A3EAI_uniformTypes1","A3EAI_uniformTypes2","A3EAI_uniformTypes3","A3EAI_launcherTypes","A3EAI_vestTypes0","A3EAI_vestTypes1","A3EAI_vestTypes2","A3EAI_vestTypes3"];
 };
 
-//Build skin classname tables
+
 if (A3EAI_dynamicUniformList) then {
-	_skinlist = [] execVM format ['%1\scripts\A3EAI_buildSkinList.sqf',A3EAI_directory];
+	_skinlist = [] execVM format ['%1\scripts\A3EAI_buildUniformList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _skinlist};
 };
 
@@ -120,6 +125,7 @@ if (A3EAI_dynamicLootLargeList) then {
 	_lootlistlarge = [] execVM format ['%1\scripts\A3EAI_buildLootLargeList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _lootlistlarge};
 };
+
 
 //Check classname tables if enabled
 if (A3EAI_verifyClassnames) then {

@@ -74,8 +74,8 @@ _startTime = diag_tickTime;
 	["A3EAI_minRandSpawnDist",600],
 	["A3EAI_maxHeliPatrols",0],
 	["A3EAI_levelChancesAir",[0.00,0.50,0.35,0.15]],
-	["A3EAI_respawnTMinA",600],
-	["A3EAI_respawnTMaxA",900],
+	["A3EAI_respawnAirMinTime",600],
+	["A3EAI_respawnAirMaxTime",900],
 	["A3EAI_heliList",[
 		["B_Heli_Light_01_armed_F",5],
 		["B_Heli_Attack_01_F",2]
@@ -88,8 +88,8 @@ _startTime = diag_tickTime;
 	["A3EAI_paraDropAmount",3],
 	["A3EAI_maxLandPatrols",0],
 	["A3EAI_levelChancesLand",[0.00,0.50,0.35,0.15]],
-	["A3EAI_respawnTMinL",600],
-	["A3EAI_respawnTMaxL",900],
+	["A3EAI_respawnLandMinTime",600],
+	["A3EAI_respawnLandMaxTime",900],
 	["A3EAI_vehList",[
 		["C_Van_01_transport_EPOCH",5],
 		["C_Offroad_01_EPOCH",5],

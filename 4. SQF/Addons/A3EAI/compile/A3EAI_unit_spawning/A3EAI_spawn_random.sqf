@@ -48,7 +48,6 @@ if (_spawnChance call A3EAI_chance) then {
 		if (
 			({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 150)}) exitWith {1}} count (_spawnPosSelected nearEntities [["Epoch_Male_F","Epoch_Female_F","Car"], 200]) isEqualTo 0) && 
 			{!(surfaceIsWater _spawnPosSelected)} &&
-			{!((_spawnPosSelASL) call A3EAI_posInBuilding)} &&
 			{((_spawnPosSelected nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}
 		) then {
 			_spawnPos = _spawnPosSelected;

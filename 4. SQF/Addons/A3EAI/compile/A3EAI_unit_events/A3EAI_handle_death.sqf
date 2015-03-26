@@ -1,12 +1,5 @@
-/*
-		A3EAI_handleDeathEvent
-		
-		Description: Called when AI unit blood level drops below zero to process unit death.
-		
-        Usage: [_unit,_killer] call A3EAI_handleDeathEvent;
-*/
 
-private["_victim","_killer","_unitGroup","_unitType","_launchWeapon","_launchAmmo","_groupIsEmpty","_unitsAlive","_vehicle","_groupSize"];
+private["_victim","_killer","_unitGroup","_unitType","_launchWeapon","_launchAmmo","_groupIsEmpty","_unitsAlive","_vehicle","_groupSize","_newGroupSize"];
 
 _victim = _this select 0;
 _killer = _this select 1;
@@ -17,10 +10,7 @@ _victim setVariable ["deathhandled",true];
 _vehicle = (vehicle _victim);
 _unitGroup = (group _victim);
 
-_victim setDamage 1;
-{
-	_victim removeAllEventHandlers _x;
-} count ["Killed","HandleDamage"];
+{_victim removeAllEventHandlers _x} count ["Killed","HandleDamage"];
 
 //Check number of units alive, preserve group immediately if empty.
 _unitsAlive = ({alive _x} count (units _unitGroup));
@@ -28,7 +18,14 @@ _groupIsEmpty = if (_unitsAlive isEqualTo 0) then {_unitGroup call A3EAI_protect
 
 //Update group size counter
 _groupSize = (_unitGroup getVariable ["GroupSize",0]);
-if (_groupSize > 0) then {_unitGroup setVariable ["GroupSize",(_groupSize - 1),A3EAI_enableHC]};
+if (_groupSize > 0) then {
+	_newGroupSize = (_groupSize - 1);
+	_unitGroup setVariable ["GroupSize",_newGroupSize];
+	if !(isDedicated) then {
+		A3EAI_updateGroupSize_PVS = [_unitGroup,_newGroupSize];
+		publicVariableServer "A3EAI_updateGroupSize_PVS";
+	};
+};
 
 //Retrieve group type
 _unitType = _unitGroup getVariable ["unitType",""];
@@ -55,7 +52,11 @@ call {
 	};
 	if (_unitType isEqualTo "aircrashed") exitWith {};
 	if (_groupIsEmpty) then {
-		_unitGroup setVariable ["GroupSize",-1,A3EAI_enableHC];
+		_unitGroup setVariable ["GroupSize",-1];
+		if !(isDedicated) then {
+			A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
+			publicVariableServer "A3EAI_updateGroupSize_PVS";
+		};
 	};
 };
 
@@ -78,10 +79,16 @@ if !(isNull _victim) then {
 		_victim setPosATL (getPosATL _victim);
 	};
 	if (A3EAI_deathMessages && {isPlayer _killer}) then {
-		_bodyName = _victim getVariable ["bodyName","An unknown bandit"];
-		_nul = [_killer,_bodyName] spawn A3EAI_sendKillMessage;
+		_nul = [_killer,_victim] spawn A3EAI_sendKillMessage;
 	};
-	_victim setVariable ["A3EAI_deathTime",diag_tickTime,A3EAI_enableHC];
+	if (isDedicated) then {
+		_victim setVariable ["A3EAI_deathTime",diag_tickTime];
+	} else {
+		A3EAI_setDeathTime_PVS = _victim;
+		publicVariableServer "A3EAI_setDeathTime_PVS";
+	};
 };
+
+_victim setDamage 1;
 
 _victim

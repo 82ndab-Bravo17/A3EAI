@@ -1,20 +1,42 @@
-if (isServer) exitWith {};
+if !(hasInterface) exitWith {};
 
 #include "A3EAI_client_version.txt"
 
 call compile preprocessFileLineNumbers "A3EAI_Client\A3EAI_client_config.sqf";
 
 if (A3EAIC_radio) then {
+	A3EAIC_lastRadioMessage = 0;
 	"A3EAI_SMS" addPublicVariableEventHandler {
-		_sound = format ["UAV_0%1",(floor (random 5) + 1)];
-		playSound [_sound,true];
-		if ((_this select 1) != "") then {systemChat (_this select 1);};
+		_dialogueType = (_this select 1) select 0;
+		_dialogueParams = (_this select 1) select 1;
+		
+		if ((diag_tickTime - A3EAIC_lastRadioMessage) > 5) then {
+			_sound = format ["UAV_0%1",(floor (random 5) + 1)];
+			playSound [_sound,true];
+			A3EAIC_lastRadioMessage = diag_tickTime;
+		
+			_paramCount = (count _dialogueParams);
+			_dialogueTextTemplate = missionNamespace getVariable [format ["A3EAIC_radioMessage%1",_dialogueType],""];
+			_dialogueTextFormat = call {
+				if (_paramCount isEqualTo 0) exitWith {
+					_dialogueTextTemplate
+				};
+				if (_paramCount isEqualTo 1) exitWith {
+					format [_dialogueTextTemplate,_dialogueParams select 0]
+				};
+				if (_paramCount isEqualTo 2) exitWith {
+					format [_dialogueTextTemplate,_dialogueParams select 0,_dialogueParams select 1]
+				};
+				""
+			};
+			systemChat _dialogueTextFormat;
+		};
 	};
 };
 
 if (A3EAIC_deathMessages) then {
 	"A3EAI_killMSG" addPublicVariableEventHandler {
-		systemChat (format ["%1 was killed",(_this select 1)]);
+		systemChat (format [A3EAIC_killMessage0,(_this select 1)]);
 		//diag_log format ["A3EAI Debug: %1 was killed.",(_this select 1)];
 	};
 };

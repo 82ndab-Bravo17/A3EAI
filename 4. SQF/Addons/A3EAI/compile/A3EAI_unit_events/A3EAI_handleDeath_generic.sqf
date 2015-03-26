@@ -1,5 +1,5 @@
-
 private["_victim","_killer","_unitGroup","_unitType","_unitsAlive"];
+
 _victim = _this select 0;
 _killer = _this select 1;
 _unitGroup = _this select 2;

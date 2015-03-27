@@ -1,0 +1,8 @@
+A3EAI 0.5.2 Alpha
+
+Files changed:
+A3EAI.pbo
+
+[FIXED] Fixed a bug with AI vehicle ammo reloading script. Thanks to PryMary for reporting this issue.
+[UPDATED] A3EAI may now reload multiple weapons per AI vehicle turret.
+[CHANGED] Missile ammunition is now also removed with missile weapons for AI vehicles.

@@ -31,6 +31,7 @@ if (_unitsAlive > 0) then {
 		unassignVehicle _x;
 	} forEach (units _unitGroup);
 	(units _unitGroup) allowGetIn false;
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to static type.",_unitGroup];};
 } else {
 	_unitGroup setVariable ["GroupSize",-1];
 	if !(isDedicated) then {

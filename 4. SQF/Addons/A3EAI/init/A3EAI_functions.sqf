@@ -26,6 +26,7 @@ A3EAI_respawnAIVehicle = compileFinal preprocessFileLineNumbers format ["%1\comp
 A3EAI_staticSpawn_init = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_init_static.sqf",A3EAI_directory];
 A3EAI_initializeTrigger = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initialize_trigger.sqf",A3EAI_directory];
 A3EAI_reloadVehicleTurrets = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_reloadVehicleTurrets.sqf",A3EAI_directory];
+A3EAI_checkIsWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_checkIsWeapon.sqf",A3EAI_directory];
 A3EAI_createUnit = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_unit.sqf",A3EAI_directory];
 A3EAI_spawnGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_group.sqf",A3EAI_directory];
 A3EAI_spawnBandits_custom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_custom.sqf",A3EAI_directory];

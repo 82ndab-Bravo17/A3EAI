@@ -41,7 +41,8 @@ if (!surfaceIsWater _vehPos) then {
 				_unitGroup setVariable ["unitType","static"];
 			};
 			
-			if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+			if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+			if ((combatMode _unitGroup) isEqualTo "BLUE") then {_unitGroup setCombatMode "YELLOW"};
 		};
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI %1 group %2 parachuted with %3 surviving units.",(typeOf _vehicle),_unitGroup,_unitsAlive];};
 	} else {

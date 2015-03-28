@@ -9,7 +9,7 @@ _groupSize = _unitGroup getVariable ["GroupSize",-1];
 _vehicle = assignedVehicle (leader _unitGroup);
 _unitGroup setVariable ["assignedVehicle",_vehicle];
 (assignedDriver _vehicle) setVariable ["isDriver",true];
-_vehicle addEventHandler ["Killed",{[_this,_unitGroup] call A3EAI_vehDestroyed;}];
+_vehicle addEventHandler ["Killed",format ["[_this,call %1] call A3EAI_vehDestroyed;",{_unitGroup}]];
 _vehicle addEventHandler ["HandleDamage",{_this call A3EAI_handleDamageVeh}];
 _vehicle setVariable ["unitGroup",_unitGroup];
 _vehicle call A3EAI_secureVehicle;

@@ -35,7 +35,8 @@ if (_unitsAlive > 0) then {
 		_unitGroup setVariable ["unitType","static"];
 	};
 
-	if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+	if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+	if ((combatMode _unitGroup) isEqualTo "BLUE") then {_unitGroup setCombatMode "YELLOW"};
 
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI helicopter %1 landed at %2.",typeOf _vehicle,mapGridPosition _vehicle];};
 };

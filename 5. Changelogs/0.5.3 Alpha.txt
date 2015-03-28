@@ -3,4 +3,4 @@ A3EAI 0.5.3 Alpha
 Files changed:
 A3EAI.pbo
 
-
+[FIXED] Fixed bug where AI vehicle groups could not be cleaned up if their vehicle was destroyed or disabled.

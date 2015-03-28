@@ -77,11 +77,11 @@ _vehicle setVariable ["unitGroup",_unitGroup];
 //Determine vehicle type and add needed eventhandlers
 if (_isAirVehicle) then {
 	_vehicle setVariable ["durability",[0,0,0]];	//[structural, engine, tail rotor]
-	_vehicle addEventHandler ["Killed",format ["[_this,%1] call A3EAI_heliDestroyed;",_unitGroup]];					//Begin despawn process when heli is destroyed.
-	_vehicle addEventHandler ["GetOut",format ["[_this,%1] call A3EAI_heliLanded;",_unitGroup]];	//Converts AI crew to ground AI units.
-	_vehicle addEventHandler ["HandleDamage",format ["[_this,%1] call A3EAI_handleDamageHeli;",_unitGroup]];
+	_vehicle addEventHandler ["Killed",format ["[_this,call %1] call A3EAI_heliDestroyed;",{_unitGroup}]];					//Begin despawn process when heli is destroyed.
+	_vehicle addEventHandler ["GetOut",format ["[_this,call %1] call A3EAI_heliLanded;",{_unitGroup}]];	//Converts AI crew to ground AI units.
+	_vehicle addEventHandler ["HandleDamage",format ["[_this,call %1] call A3EAI_handleDamageHeli;",{_unitGroup}]];
 } else {
-	_vehicle addEventHandler ["Killed",format ["[_this,%1] call A3EAI_vehDestroyed;",_unitGroup]];
+	_vehicle addEventHandler ["Killed",format ["[_this,call %1] call A3EAI_vehDestroyed;",{_unitGroup}]];
 	_vehicle addEventHandler ["HandleDamage",{_this call A3EAI_handleDamageVeh}];
 };
 _vehicle allowCrewInImmobile (!_isAirVehicle);
@@ -128,6 +128,13 @@ if (_isAirVehicle) then {
 	if (A3EAI_removeMissileWeapons) then {
 		_result = _vehicle call A3EAI_clearMissileWeapons; //Remove missile weaponry for air vehicles
 	};
+	
+	if ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) isEqualTo 0) && {_gunnersAdded isEqualTo 0}) then {
+		_unitGroup setBehaviour "CARELESS";
+		_unitGroup setCombatMode "BLUE";
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: AI group %1 air vehicle %2 set to Careless behavior mode",_unitGroup,_vehicleType];};
+	};
+	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curHeliPatrols = A3EAI_curHeliPatrols + 1;
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Custom AI helicopter crew group %1 is now active and patrolling.",_unitGroup];};

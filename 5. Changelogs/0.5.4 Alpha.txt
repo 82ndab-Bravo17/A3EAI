@@ -1,0 +1,7 @@
+A3EAI 0.5.4 Alpha
+
+Files changed:
+A3EAI.pbo
+
+[FIXED] Unarmed air vehicles should no longer attempt to engage enemies.
+[FIXED] Fixed AI vehicle eventhandlers.

@@ -5,7 +5,6 @@ _hit = 			(_this select 0) select 1;				//Name of the selection where the unit w
 _damage = 		(_this select 0) select 2;				//Resulting level of damage for the selection. (Received damage)
 _source = 		(_this select 0) select 3;				//The source unit that caused the damage. 
 _ammo = 		(_this select 0) select 4;				//Classname of the projectile that caused inflicted the damage. ("" for unknown, such as falling damage.) 
-_unitGroup = 	_this select 1;
 
 _durability = _vehicle getVariable "durability";
 if (isNil "_durability") then {
@@ -20,7 +19,7 @@ if (_ammo != "") then {
 			_partdamage = (_durability select 0) + _damage;
 			_durability set [0,_partdamage];
 			if (((_partdamage >= 0.9) or {((_durability select 1) >= 0.9)}) && {(alive _vehicle)}) then {
-				0 = [_vehicle,_unitGroup] call A3EAI_heliEvacuated; 
+				0 = [_vehicle] call A3EAI_heliEvacuated; 
 				_nul = _vehicle spawn {
 					uiSleep 3;
 					_this setVehicleAmmo 0;

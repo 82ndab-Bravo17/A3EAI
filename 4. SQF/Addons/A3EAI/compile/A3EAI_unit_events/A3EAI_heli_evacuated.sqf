@@ -1,12 +1,11 @@
 private ["_vehicle","_vehPos","_unitGroup"];
 
-_vehicle = _this select 0;
-_unitGroup = _this select 1;
+_vehicle = (_this select 0);
 
 if (_vehicle getVariable ["heli_disabled",false]) exitWith {false};
 _vehicle setVariable ["heli_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
-//_unitGroup = _vehicle getVariable "unitGroup";
+_unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
 _vehPos = getPosATL _vehicle;
 

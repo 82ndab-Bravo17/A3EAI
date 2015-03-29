@@ -25,6 +25,4 @@ if (isPlayer _killer) then {
 	};
 };
 
-if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: %1 AI unit %2 killed by %3, %4 units left alive in group.",_unitType,_victim,_killer,_unitsAlive];};
-
 true

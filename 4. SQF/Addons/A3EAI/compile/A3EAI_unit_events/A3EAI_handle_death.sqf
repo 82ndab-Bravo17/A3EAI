@@ -87,8 +87,10 @@ if !(isNull _victim) then {
 		A3EAI_setDeathTime_PVS = _victim;
 		publicVariableServer "A3EAI_setDeathTime_PVS";
 	};
+	
+	_victim setDamage 1;
+	
+	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: %1 AI unit %2 killed by %3, %4 units left alive in group %5.",_unitType,_victim,_killer,_unitsAlive,_unitGroup];};
 };
-
-_victim setDamage 1;
 
 _victim

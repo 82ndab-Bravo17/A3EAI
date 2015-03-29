@@ -1,13 +1,11 @@
 private ["_vehicle","_trigger","_pos","_unitsAlive","_unitGroup","_waypointCount"];
 
-_vehicle = (_this select 0) select 0;
-_unitGroup = _this select 1;
-
+_vehicle = (_this select 0);
 
 if (_vehicle getVariable ["heli_disabled",false]) exitWith {};
 _vehicle setVariable ["heli_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
-//_unitGroup = _vehicle getVariable ["unitGroup",(group (_this select 2))];
+_unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
 
 _unitsAlive = {alive _x} count (units _unitGroup);
@@ -38,5 +36,5 @@ if (_unitsAlive > 0) then {
 	if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
 	if ((combatMode _unitGroup) isEqualTo "BLUE") then {_unitGroup setCombatMode "YELLOW"};
 
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI helicopter %1 landed at %2.",typeOf _vehicle,mapGridPosition _vehicle];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 landed at %3",_unitGroup,(typeOf _vehicle),mapGridPosition _vehicle];};
 };

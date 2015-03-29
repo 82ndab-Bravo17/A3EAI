@@ -1,0 +1,6 @@
+A3EAI 0.5.5 Alpha
+
+Files changed:
+A3EAI.pbo
+
+[FIXED] Fixed AI vehicle eventhandlers. (Again)

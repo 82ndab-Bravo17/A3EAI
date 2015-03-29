@@ -1,12 +1,13 @@
 private ["_vehicle","_unitGroup","_unitsAlive"];
 
-_vehicle = (_this select 0) select 0;
-_unitGroup = _this select 1;
+_vehicle = (_this select 0);
 
 if (_vehicle getVariable ["veh_disabled",false]) exitWith {};
 _vehicle setVariable ["veh_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","Killed"];
+_unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
+
 _unitsAlive = {alive _x} count (units _unitGroup);
 
 if (_unitsAlive > 0) then {
@@ -40,4 +41,4 @@ if (_unitsAlive > 0) then {
 	};
 };
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle patrol disabled at %1",mapGridPosition _vehicle];};
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 destroyed at %3",_unitGroup,(typeOf _vehicle),mapGridPosition _vehicle];};

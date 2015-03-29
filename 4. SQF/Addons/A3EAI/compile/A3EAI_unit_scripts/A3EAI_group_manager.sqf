@@ -377,7 +377,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 						_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 					} else {
 						if (!(_vehicle getVariable ["veh_disabled",false])) then {
-							[[_vehicle],_unitGroup] call A3EAI_vehDestroyed;
+							[_vehicle] call A3EAI_vehDestroyed;
 							if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: AI vehicle %1 (Group: %2) is immobilized. Respawning vehicle patrol group.",(typeOf _vehicle),_unitGroup];};
 						};
 					};

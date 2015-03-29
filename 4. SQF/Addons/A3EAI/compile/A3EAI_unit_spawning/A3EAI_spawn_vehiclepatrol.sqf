@@ -82,12 +82,12 @@ _vehicle setVariable ["unitGroup",_unitGroup];
 //Determine vehicle type and add needed eventhandlers
 if (_isAirVehicle) then {
 	_vehicle setVariable ["durability",[0,0,0]];	//[structural, engine, tail rotor]
-	_vehicle addEventHandler ["Killed",format ["[_this,call %1] call A3EAI_heliDestroyed;",{_unitGroup}]];					//Begin despawn process when heli is destroyed.
-	_vehicle addEventHandler ["GetOut",format ["[_this,call %1] call A3EAI_heliLanded;",{_unitGroup}]];	//Converts AI crew to ground AI units.
-	_vehicle addEventHandler ["HandleDamage",format ["[_this,call %1] call A3EAI_handleDamageHeli;",{_unitGroup}]];
+	_vehicle addEventHandler ["Killed","_this call A3EAI_heliDestroyed"];
+	_vehicle addEventHandler ["GetOut","_this call A3EAI_heliLanded"];
+	_vehicle addEventHandler ["HandleDamage","_this call A3EAI_handleDamageHeli"];
 } else {
-	_vehicle addEventHandler ["Killed",format ["[_this,call %1] call A3EAI_vehDestroyed;",{_unitGroup}]];
-	_vehicle addEventHandler ["HandleDamage",{_this call A3EAI_handleDamageVeh}];
+	_vehicle addEventHandler ["Killed","_this call A3EAI_vehDestroyed"];
+	_vehicle addEventHandler ["HandleDamage","_this call A3EAI_handleDamageVeh"];
 };
 _vehicle allowCrewInImmobile (!_isAirVehicle);
 _vehicle setUnloadInCombat [!_isAirVehicle,false];

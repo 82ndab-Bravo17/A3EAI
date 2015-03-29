@@ -1,12 +1,11 @@
 private ["_vehicle","_unitGroup","_unitLevel"];
 
-_vehicle = (_this select 0) select 0;
-_unitGroup = _this select 1;
+_vehicle = (_this select 0);
 
 if (_vehicle getVariable ["heli_disabled",false]) exitWith {false};
 _vehicle setVariable ["heli_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
-//_unitGroup = _vehicle getVariable "unitGroup";
+_unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
 
 if !(surfaceIsWater (getPosASL _vehicle)) then {
@@ -26,6 +25,6 @@ if !(isDedicated) then {
 	A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
 	publicVariableServer "A3EAI_updateGroupSize_PVS";
 };
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI helicopter patrol destroyed at %1",mapGridPosition _vehicle];};
 
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 destroyed at %3",_unitGroup,(typeOf _vehicle),mapGridPosition _vehicle];};
 true

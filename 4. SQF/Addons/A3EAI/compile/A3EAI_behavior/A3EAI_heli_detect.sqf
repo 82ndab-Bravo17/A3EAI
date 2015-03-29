@@ -10,7 +10,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
 	_detectStartPos = getPosASL _vehicle;
 	_detectStartPos set [2,0];
-	_canParaDrop = ((_unitGroup getVariable ["HeliReinforceOrdered",false]) or {(A3EAI_paraDropChance call A3EAI_chance) && {(diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",(diag_tickTime - A3EAI_paraDropCooldown)])) > 1800}});
+	_canParaDrop = ((_unitGroup getVariable ["HeliReinforceOrdered",false]) or {(A3EAI_paraDropChance call A3EAI_chance) && {(diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",-A3EAI_paraDropCooldown])) > A3EAI_paraDropCooldown}});
 	while {!(_vehicle getVariable ["heli_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
 		private ["_detected","_detectOrigin","_startPos"];
 		//diag_log format ["DEBUG: Group %1 AI %2 is beginning detection sweep...",_unitGroup,(typeOf _vehicle)];
@@ -28,6 +28,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 					} else {
 						_unitGroup setVariable ["HeliLastParaDrop",diag_tickTime];
 					};
+					_nul = [_unitGroup,_vehicle,_x] spawn A3EAI_heliParaDrop;
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: %1 group %2 is deploying paradrop reinforcements at %3.",(typeOf _vehicle),_unitGroup,_detectOrigin];};
 				};
 				//diag_log format ["DEBUG: Group %1 AI %2 is checking LOS with player %3...",_unitGroup,(typeOf _vehicle),_x];

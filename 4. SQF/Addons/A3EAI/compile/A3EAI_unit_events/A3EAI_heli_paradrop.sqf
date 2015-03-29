@@ -16,11 +16,9 @@ if (_cargoAvailable > 0) then {
 	};
 	
 	if (isDedicated) then {
-		[_vehicle,_targetPlayer] call A3EAI_addParaGroup;
+		[_vehicle,_unitGroup,_cargoAvailable,_targetPlayer] call A3EAI_addParaGroup;
 	} else {
 		A3EAI_addParaGroup_PVS = [_vehicle,_targetPlayer];
 		publicVariableServer "A3EAI_addParaGroup_PVS";
 	};
-	
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Paradrop group %1 with %2 units deployed at %3 by %4 group %5.",_paraGroup,_cargoAvailable,_startPos,typeOf _vehicle,_unitGroup];};
 };

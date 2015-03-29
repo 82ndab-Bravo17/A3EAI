@@ -1,9 +1,11 @@
-private ["_targetPlayer", "_vehicle", "_startPos", "_unitLevel", "_unitGroup", "_paraGroup", "_cargoAvailable", "_unit", "_vehiclePos", "_parachute", "_unitsAlive", "_trigger", "_rearm"];
+private ["_targetPlayer", "_vehicle", "_startPos", "_unitLevel", "_unitGroup", "_paraGroup", "_cargoAvailable", "_unit", "_vehiclePos", "_parachute", "_unitsAlive", "_trigger", "_rearm", "_cargoAvailable"];
 	
 _vehicle = _this select 0;
-_targetPlayer = _this select 1;
+_unitGroup = _this select 1;
+_cargoAvailable = _this select 2;
+_targetPlayer = _this select 3;
 
-_target = if ((owner _targetPlayer) isEqualTo 0) then {_vehicle} else {_targetPlayer};
+_target = if (isPlayer _targetPlayer) then {_targetPlayer} else {_vehicle};
 _startPos = getPosATL _target;
 _startPos set [2,0];
 
@@ -20,9 +22,6 @@ for "_i" from 1 to _cargoAvailable do {
 };
 
 _unitsAlive = {alive _x} count (units _paraGroup);
-_paraGroup setVariable ["GroupSize",_unitsAlive];
-_paraGroup setVariable ["trigger",_trigger];
-
 _trigger = createTrigger ["EmptyDetector",_startPos];
 _trigger enableSimulationGlobal false;
 _trigger setTriggerArea [600, 600, 0, false];
@@ -38,6 +37,10 @@ _trigger setVariable ["respawn",false]; //landed AI units should never respawn
 _trigger setVariable ["permadelete",true]; //units should be permanently despawned
 _trigger setVariable ["spawnType","static"];
 
+
+_paraGroup setVariable ["GroupSize",_unitsAlive];
+_paraGroup setVariable ["trigger",_trigger];
+
 [_trigger,"A3EAI_staticTriggerArray"] call A3EAI_updateSpawnCount;
 0 = [_trigger] spawn A3EAI_despawn_static;
 
@@ -46,10 +49,12 @@ _trigger setVariable ["spawnType","static"];
 _rearm = [_paraGroup,_unitLevel] spawn A3EAI_addGroupManager;
 
 if (A3EAI_HCIsConnected) then {
-	A3EAI_sendGroupTriggerVars_PVC = [[_unitGroup,_trigger],[_paraGroup],75,1,1,[_unitsAlive,0],0,"static",false,true];
+	A3EAI_sendGroupTriggerVars_PVC = [[_paraGroup,_trigger],[_paraGroup],75,1,1,[_unitsAlive,0],0,"static",false,true];
 	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_sendGroupTriggerVars_PVC";
 };
 
 _trigger enableSimulation true;
+
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Paradrop group %1 with %2 units deployed at %3 by %4 group %5.",_paraGroup,_cargoAvailable,_startPos,typeOf _vehicle,_unitGroup];};
 
 true

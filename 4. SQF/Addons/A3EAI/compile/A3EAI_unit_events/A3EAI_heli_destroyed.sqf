@@ -7,6 +7,7 @@ _vehicle setVariable ["heli_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
+if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
 
 if !(surfaceIsWater (getPosASL _vehicle)) then {
 	_unitLevel = _unitGroup getVariable ["unitLevel",1];

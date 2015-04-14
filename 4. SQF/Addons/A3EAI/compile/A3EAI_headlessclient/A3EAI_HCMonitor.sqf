@@ -15,6 +15,7 @@ _getUptime = {
 
 while {true} do {
 	_currentTime = diag_tickTime;
+
 	if ((A3EAI_monitorRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorRate)}) then {
 		_uptime = [] call _getUptime;
 		diag_log format ["A3EAI Monitor: Uptime: %1:%2:%3. FPS: %4. HC Groups: %5.",_uptime select 0, _uptime select 1, _uptime select 2,diag_fps,A3EAI_HCGroupsCount];

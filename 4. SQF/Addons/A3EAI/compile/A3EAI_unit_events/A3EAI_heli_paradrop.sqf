@@ -18,7 +18,7 @@ if (_cargoAvailable > 0) then {
 	if (isDedicated) then {
 		[_vehicle,_unitGroup,_cargoAvailable,_targetPlayer] call A3EAI_addParaGroup;
 	} else {
-		A3EAI_addParaGroup_PVS = [_vehicle,_targetPlayer];
+		A3EAI_addParaGroup_PVS = [_vehicle,_unitGroup,_cargoAvailable,_targetPlayer];
 		publicVariableServer "A3EAI_addParaGroup_PVS";
 	};
 };

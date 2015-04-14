@@ -1,4 +1,5 @@
-private ["_vehicle","_vehicleType","_spawnParams"];
+private ["_vehicle", "_vehicleType", "_spawnParams"];
+if (isNull _this) exitWith {diag_log format ["Error: %1 attempted to respawn null vehicle",__FILE__];};
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Respawning AI vehicle %1.",_this]};
 if (isDedicated) then {
 	_vehicle = _this;
@@ -17,6 +18,6 @@ if (isDedicated) then {
 	A3EAI_respawnVehicle_PVS = _this;
 	publicVariableServer "A3EAI_respawnVehicle_PVS";
 };
-{_this removeAllEventHandlers _x} count ["HandleDamage","Killed","GetOut"];
+{_this removeAllEventHandlers _x} count ["HandleDamage","Killed","GetOut","Local"];
 
 true

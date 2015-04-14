@@ -23,6 +23,11 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 	{
 		if !(_x in _verified) then {
 			call {
+				if ((isNil {_x}) or {!((typeName _x) isEqualTo "STRING")}) exitWith {
+					diag_log format ["A3EAI] Removing non-string item %1 from classname table.",_x];
+					_array set [_forEachIndex,""];
+					if (!_errorFound) then {_errorFound = true};
+				};
 				if (isClass (configFile >> "CfgWeapons" >> _x)) exitWith {
 					if (((str(inheritsFrom (configFile >> "CfgWeapons" >> _x))) isEqualTo WEAPON_BANNED_STRING) or {(getNumber (configFile >> "CfgWeapons" >> _x >> "scope")) isEqualTo 0}) then {
 						diag_log format ["[A3EAI] Removing invalid classname: %1.",_x];
@@ -43,7 +48,7 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 				};
 				if (isClass (configFile >> "CfgVehicles" >> _x)) exitWith {
 					if (((str(inheritsFrom (configFile >> "CfgVehicles" >> _x))) isEqualTo VEHICLE_BANNED_STRING) or {(getNumber (configFile >> "CfgVehicles" >> _x >> "scope")) isEqualTo 0}) then {
-						diag_log format ["[A3EAI] Removing banned classname: %1.",_x];
+						diag_log format ["[A3EAI] Removing invalid classname: %1.",_x];
 						_array set [_forEachIndex,""];
 						if (!_errorFound) then {_errorFound = true};
 					} else {
@@ -122,10 +127,10 @@ if ("" in A3EAI_sniperList) then {A3EAI_sniperList = A3EAI_sniperList - [""];};
 if ("" in A3EAI_launcherTypes) then {A3EAI_launcherTypes = A3EAI_launcherTypes - [""];};
 
 //Anticipate cases where all elements of an array are invalid
-if (A3EAI_pistolList isEqualTo []) then {A3EAI_pistolList = ["hgun_ACPC2_F", "hgun_ACPC2_F", "hgun_Rook40_F", "hgun_Rook40_F", "hgun_Rook40_F", "hgun_P07_F", "hgun_P07_F", "hgun_Pistol_heavy_01_F", "hgun_Pistol_heavy_02_F", "ruger_pistol_epoch", "ruger_pistol_epoch", "1911_pistol_epoch", "1911_pistol_epoch"]};
-if (A3EAI_rifleList isEqualTo []) then {A3EAI_rifleList = ["arifle_Katiba_F", "arifle_Katiba_F", "arifle_Katiba_C_F", "arifle_Katiba_GL_F", "arifle_MXC_F", "arifle_MX_F", "arifle_MX_F", "arifle_MX_GL_F", "arifle_MXM_F", "arifle_SDAR_F", "arifle_TRG21_F", "arifle_TRG20_F", "arifle_TRG21_GL_F", "arifle_Mk20_F", "arifle_Mk20C_F", "arifle_Mk20_GL_F", "arifle_Mk20_plain_F", "arifle_Mk20_plain_F", "arifle_Mk20C_plain_F", "arifle_Mk20_GL_plain_F", "SMG_01_F", "SMG_02_F", "SMG_01_F", "SMG_02_F", "hgun_PDW2000_F", "hgun_PDW2000_F", "arifle_MXM_Black_F", "arifle_MX_GL_Black_F", "arifle_MX_Black_F", "arifle_MXC_Black_F", "Rollins_F", "Rollins_F", "Rollins_F", "Rollins_F", "AKM_EPOCH", "m4a3_EPOCH", "m16_EPOCH", "m16Red_EPOCH"]};
-if (A3EAI_machinegunList isEqualTo []) then {A3EAI_machinegunList = ["LMG_Mk200_F", "arifle_MX_SW_F", "LMG_Zafir_F", "arifle_MX_SW_Black_F", "m249_EPOCH", "m249Tan_EPOCH"]};
-if (A3EAI_sniperList isEqualTo []) then {A3EAI_sniperList = ["srifle_EBR_F", "srifle_EBR_F", "srifle_GM6_F", "srifle_GM6_F", "srifle_LRR_F", "srifle_DMR_01_F", "M14_EPOCH", "M14Grn_EPOCH", "m107_EPOCH", "m107Tan_EPOCH"]};
+if (A3EAI_pistolList isEqualTo []) then {A3EAI_pistolList = ["hgun_Pistol_heavy_01_F","hgun_P07_F","hgun_Rook40_F","hgun_Pistol_heavy_02_F","1911_pistol_epoch","hgun_ACPC2_F","ruger_pistol_epoch"]};
+if (A3EAI_rifleList isEqualTo []) then {A3EAI_rifleList = ["AKM_EPOCH","sr25_epoch","arifle_Katiba_GL_F","arifle_Katiba_C_F","arifle_Katiba_F","arifle_MX_GL_F","arifle_MX_GL_Black_F","arifle_MXM_Black_F","arifle_MXC_Black_F","arifle_MX_Black_F","arifle_MXM_F","arifle_MXC_F","arifle_MX_F","l85a2_epoch","l85a2_pink_epoch","l85a2_ugl_epoch","m4a3_EPOCH","m16_EPOCH","m16Red_EPOCH","arifle_Mk20_GL_F","arifle_Mk20_GL_plain_F","arifle_Mk20C_F","arifle_Mk20C_plain_F","arifle_Mk20_F","arifle_Mk20_plain_F","arifle_TRG21_GL_F","arifle_TRG21_F","arifle_TRG20_F","arifle_SDAR_F","Rollins_F","SMG_01_F","SMG_02_F","hgun_PDW2000_F"]};
+if (A3EAI_machinegunList isEqualTo []) then {A3EAI_machinegunList = ["LMG_Zafir_F","arifle_MX_SW_F","arifle_MX_SW_Black_F","LMG_Mk200_F","m249_EPOCH","m249Tan_EPOCH","MMG_01_hex_F","MMG_01_tan_F","MMG_02_camo_F","MMG_02_black_F","MMG_02_sand_F"]};
+if (A3EAI_sniperList isEqualTo []) then {A3EAI_sniperList = ["m107_EPOCH","m107Tan_EPOCH","srifle_DMR_02_F","srifle_DMR_02_camo_F","srifle_DMR_02_sniper_F","srifle_DMR_03_F","srifle_DMR_03_khaki_F","srifle_DMR_03_tan_F","srifle_DMR_03_multicam_F","srifle_DMR_03_woodland_F","srifle_DMR_03_spotter_F","srifle_DMR_04_F","srifle_DMR_04_Tan_F","srifle_DMR_05_blk_F","srifle_DMR_05_hex_F","srifle_DMR_05_tan_f","srifle_DMR_06_camo_F","srifle_DMR_06_olive_F","srifle_LRR_F","srifle_GM6_F","srifle_DMR_01_F","M14_EPOCH","M14Grn_EPOCH","srifle_EBR_F"]};
 if (A3EAI_foodLoot isEqualTo []) then {A3EAI_foodLootCount = 0};
 if (A3EAI_MiscLoot1 isEqualTo []) then {A3EAI_miscLootCount1 = 0};
 if (A3EAI_MiscLoot2 isEqualTo []) then {A3EAI_miscLootCount2 = 0};

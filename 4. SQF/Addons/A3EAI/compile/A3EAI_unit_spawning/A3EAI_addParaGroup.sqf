@@ -18,7 +18,6 @@ for "_i" from 1 to _cargoAvailable do {
 	_parachute = createVehicle ["Steerable_Parachute_F", [_vehiclePos select 0, _vehiclePos select 1, (_vehiclePos select 2)], [], (-10 + (random 10)), "FLY"];
 	_unit moveInDriver _parachute;
 	_unit call A3EAI_addTempNVG;
-	uiSleep 0.5;
 };
 
 _unitsAlive = {alive _x} count (units _paraGroup);

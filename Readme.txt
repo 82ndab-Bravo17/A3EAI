@@ -1,4 +1,4 @@
-A3EAI - Current Version: 0.5.7 (Alpha)
+A3EAI - Current Version: 0.5.8 (Alpha)
 =====
 
 ---
@@ -6,9 +6,6 @@ Introduction
 ---
 A3EAI is an AI spawning manger addon designed for ArmA 3 Epoch Mod (http://epochmod.com). It was developed from a heavily modified verion of DZAI (AI addon for DayZ Mod). The DZAI project began in late 2012 and has undergone continuous development since then. Today, this project focuses specifically on the ArmA 3 Epoch Mod under the codename 'A3EAI'.
 
-if you would like to support development of A3EAI, you can contribute to the A3EAI/DZAI Tip Jar by clicking on the Tip Jar Icon below.
-
-[![Donate](http://imageshack.com/a/img673/6646/qjrNdn.png)](http://imraising.com/dzai/)
 
 ---
 Installing A3EAI

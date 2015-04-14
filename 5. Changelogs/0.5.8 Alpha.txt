@@ -1,0 +1,18 @@
+A3EAI 0.5.8 Alpha
+
+Files changed:
+A3EAI.pbo
+A3EAI_config.sqf
+
+[ADDED] Added support for bipods.
+[ADDED] Added map center/size data for Bornholm map.
+[FIXED] Fixed AI air vehicle reinforcement for HCs.
+[FIXED] Fixed bug relating to custom spawns and evacuated vehicle AI units for HCs.
+[FIXED] Fixed paradrop AI groups for HCs.
+[FIXED] Fixed bug relating to air vehicle AI, if pilot is only vehicle crew member.
+[FIXED] All items in AI vehicle storage are now properly cleared.
+[FIXED] Land vehicle AI groups will now abandon their vehicles if a wheel is critically damaged or destroyed.
+[CHANGED] Destroying AI helicopter tail rotor now causes crew to evacuate.
+[CHANGED] A3EAI teleport stuck AI vehicles a short distance if vehicle is stuck in one location for too long.
+[CHANGED] A3EAI now automatically adjusts the number of Random AI spawn locations based on the map, up to a maximum of 15 spawns. Users may also manually specify maximum number of Random AI spawn locations.
+[CHANGED] Added config option to have A3EAI pause all spawning functions until HC has successfully connected. Note: If this option is enabled and HC fails to connect, A3EAI will be unable to continue.

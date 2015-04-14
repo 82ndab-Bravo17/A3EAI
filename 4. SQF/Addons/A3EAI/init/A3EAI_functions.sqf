@@ -7,7 +7,6 @@ diag_log "[A3EAI] Compiling A3EAI functions.";
 
 if (isNil "SHK_pos_getPos") then {call compile preprocessFile format ["%1\compile\SHK_pos\shk_pos_init.sqf",A3EAI_directory];};
 
-A3EAI_getWeaponList = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getWeaponList.sqf",A3EAI_directory];
 BIS_fnc_selectRandom2 = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\fn_selectRandom.sqf",A3EAI_directory];
 A3EAI_checkClassname = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_check_classname.sqf",A3EAI_directory];
 A3EAI_posInBuilding = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_insideBuildingCheck.sqf",A3EAI_directory];
@@ -27,6 +26,13 @@ A3EAI_staticSpawn_init = compileFinal preprocessFileLineNumbers format ["%1\comp
 A3EAI_initializeTrigger = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initialize_trigger.sqf",A3EAI_directory];
 A3EAI_reloadVehicleTurrets = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_reloadVehicleTurrets.sqf",A3EAI_directory];
 A3EAI_checkIsWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_checkIsWeapon.sqf",A3EAI_directory];
+A3EAI_addUnitEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addUnitEH.sqf",A3EAI_directory];
+A3EAI_addVehAirEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addVehAirEH.sqf",A3EAI_directory];
+A3EAI_addLandVehEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addLandVehEH.sqf",A3EAI_directory];
+A3EAI_getWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getWeapon.sqf",A3EAI_directory];
+A3EAI_deleteCustomSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_deleteCustomSpawn.sqf",A3EAI_directory];
+A3EAI_clearVehicleCargo = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_clearVehicleCargo.sqf",A3EAI_directory];
+A3EAI_fixStuckGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_fixStuckGroup.sqf",A3EAI_directory];
 A3EAI_createUnit = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_unit.sqf",A3EAI_directory];
 A3EAI_spawnGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_group.sqf",A3EAI_directory];
 A3EAI_spawnBandits_custom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_custom.sqf",A3EAI_directory];
@@ -219,9 +225,8 @@ A3EAI_protectGroup = compileFinal '
 	
 	_dummy = _this createUnit ["Logic",[0,0,0],[],0,"FORM"];
 	[_dummy] joinSilent _this;
-	if (isDedicated) then {
-		_this setVariable ["dummyUnit",_dummy];
-	} else {
+	_this setVariable ["dummyUnit",_dummy];
+	if !(isDedicated) then {
 		A3EAI_protectGroup_PVS = [_unitGroup,_dummy];
 		publicVariableServer "A3EAI_protectGroup_PVS";
 	};
@@ -319,25 +324,6 @@ A3EAI_addItem = compileFinal '
 	if (_unit canAddItemToVest _item) exitWith {_unit addItemToVest _item; true};
 	if (_unit canAddItemToBackpack _item) exitWith {_unit addItemToBackpack _item; true};
 	false
-';
-
-
-A3EAI_addEH = compileFinal '
-	if (isNull _this) exitWith {};
-
-	_this addEventHandler [
-		"HandleDamage",
-		"_this call A3EAI_handleDamageUnit;"
-	];
-
-	_this addEventHandler [
-		"Killed",
-		"_this call A3EAI_handleDeathEvent;"
-	];
-	
-	_this setVariable ["bodyName",(name _this)];
-	
-	true
 ';
 
 A3EAI_forceBehavior = compileFinal '

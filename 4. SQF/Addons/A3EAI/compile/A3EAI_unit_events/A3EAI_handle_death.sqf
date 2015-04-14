@@ -10,7 +10,8 @@ _victim setVariable ["deathhandled",true];
 _vehicle = (vehicle _victim);
 _unitGroup = (group _victim);
 
-{_victim removeAllEventHandlers _x} count ["Killed","HandleDamage"];
+{_victim removeAllEventHandlers _x} count ["Killed","HandleDamage","Local"];
+_victim setDamage 1;
 
 //Check number of units alive, preserve group immediately if empty.
 _unitsAlive = ({alive _x} count (units _unitGroup));
@@ -88,9 +89,9 @@ if !(isNull _victim) then {
 		publicVariableServer "A3EAI_setDeathTime_PVS";
 	};
 	
-	_victim setDamage 1;
-	
 	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: %1 AI unit %2 killed by %3, %4 units left alive in group %5.",_unitType,_victim,_killer,_unitsAlive,_unitGroup];};
+} else {
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI unit %1 killed by %2 is null.",_victim,_killer];};
 };
 
 _victim

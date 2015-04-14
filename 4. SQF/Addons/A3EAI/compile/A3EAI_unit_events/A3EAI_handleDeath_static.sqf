@@ -21,22 +21,11 @@ if (_groupIsEmpty) then {
 			};
 		};
 	} else {
-		if (A3EAI_debugMarkersEnabled) then {deleteMarker str(_trigger)};
-		_nul = _trigger spawn {
-			_trigger = _this;
-			_trigger setTriggerStatements ["this","true","false"]; //Disable trigger from activating or deactivating while cleanup is performed
-			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting custom-defined AI spawn %1 at %2 in 30 seconds.",triggerText _trigger, mapGridPosition _trigger];};
-			uiSleep 30;
-			{
-				_x setVariable ["GroupSize",-1];
-				if !(isDedicated) then {
-					A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
-					publicVariableServer "A3EAI_updateGroupSize_PVS";
-				};
-			} forEach (_trigger getVariable ["GroupArray",[]]);
-			deleteMarker (_trigger getVariable ["spawnmarker",""]);
-			[_trigger,"A3EAI_staticTriggerArray"] call A3EAI_updateSpawnCount;
-			deleteVehicle _trigger;
+		if (isDedicated) then {
+			_nul = _trigger spawn A3EAI_deleteCustomSpawn;
+		} else {
+			A3EAI_deleteCustomSpawn_PVS = _trigger;
+			publicVariableServer "A3EAI_deleteCustomSpawn_PVS";
 		};
 	};
 } else {

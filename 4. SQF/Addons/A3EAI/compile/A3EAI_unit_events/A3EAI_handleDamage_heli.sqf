@@ -18,7 +18,7 @@ if (_ammo != "") then {
 			//Structural damage
 			_partdamage = (_durability select 0) + _damage;
 			_durability set [0,_partdamage];
-			if (((_partdamage >= 0.9) or {((_durability select 1) >= 0.9)}) && {(alive _vehicle)}) then {
+			if (((_partdamage >= 0.9) or {((_durability select 1) >= 0.9)}) && {alive _vehicle}) then {
 				0 = [_vehicle] call A3EAI_heliEvacuated; 
 				_nul = _vehicle spawn {
 					uiSleep 3;
@@ -39,9 +39,10 @@ if (_ammo != "") then {
 		if (_hit isEqualTo "tail_rotor_hit") exitWith {
 			_partdamage = (_durability select 2) + _damage;
 			_durability set [2,_partdamage];
-			if ((_partdamage >= 0.9) && {_vehicle getVariable ["tailRotorFunctional",true]}) then {
+			if ((_partdamage >= 0.9) && {_vehicle getVariable ["tailRotorFunctional",true]} && {alive _vehicle}) then {
 				_vehicle setHitPointDamage ["tail_rotor_hit",1];	//Knock out helicopter tail rotor when sufficiently damaged
 				_vehicle setVariable ["tailRotorFunctional",false];
+				0 = [_vehicle] call A3EAI_heliEvacuated; 
 				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Air vehicle %1 (%2) tail rotor disabled at %3.",(typeOf _vehicle),(group _vehicle),(mapGridPosition _vehicle)];};
 			};
 		};

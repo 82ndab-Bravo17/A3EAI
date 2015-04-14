@@ -29,7 +29,7 @@ _getUptime = {
 };
 
 _purgeEH = {
-	{_this removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired"];
+	{_this removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired","Local"];
 };
 
 uiSleep 60;
@@ -96,16 +96,12 @@ while {true} do {
 				_deathTime = _x getVariable "A3EAI_deathTime";
 				if (!isNil "_deathTime") then {
 					if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
-						_x call _purgeEH;
-						//diag_log format ["DEBUG :: Deleting object %1 (type: %2).",_x,typeOf _x];
-						{
-							if (!alive _x) then {
-								deleteVehicle _x;
-							};
-						} forEach (crew _x);
-						deleteVehicle _x;
-						_vehiclesCleaned = _vehiclesCleaned + 1;
-						_nullObjects = _nullObjects + 1;
+						if (({alive _x} count (crew _x)) isEqualTo 0) then {
+							_x call _purgeEH;
+							deleteVehicle _x;
+							_vehiclesCleaned = _vehiclesCleaned + 1;
+							_nullObjects = _nullObjects + 1;
+						};
 					};
 				};
 			} else {

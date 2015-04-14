@@ -13,7 +13,8 @@
 "A3EAI_protectGroup_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_protectRemoteGroup;diag_log format ["Debug: %1",_this];};
 "A3EAI_updateGroupSize_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateGroupSizeServer;diag_log format ["Debug: %1",_this];};
 "A3EAI_HCLogin_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_HCListener;diag_log format ["Debug: %1",_this];};
-"A3EAI_upateReinforcePlaces_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateReinforcePlaces;diag_log format ["Debug: %1",_this];};
+"A3EAI_updateReinforcePlaces_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateReinforcePlaces;diag_log format ["Debug: %1",_this];};
 "A3EAI_setPermaDeleteSpawn_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["permadelete",true];diag_log format ["Debug: %1",_this];};
+"A3EAI_deleteCustomSpawn_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_deleteCustomSpawn;diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] Serverside PVEHs loaded.";

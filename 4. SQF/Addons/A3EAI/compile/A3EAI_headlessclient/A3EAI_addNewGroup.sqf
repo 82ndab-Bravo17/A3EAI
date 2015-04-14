@@ -9,7 +9,7 @@ _lootPool = _this select 5;
 _miscData = if ((count _this) > 6) then {_this select 6};
 
 {
-	_x call A3EAI_addEH;
+	_x call A3EAI_addUnitEH;
 } forEach (units _unitGroup);
 
 _unitGroup setVariable ["unitLevel",_unitLevel];

@@ -2,7 +2,7 @@ private ["_HCObject","_versionHC","_requiredVersion"];
 _HCObject = _this select 0;
 _versionHC = _this select 1;
 if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "HeadlessClient_F"}) then {
-	_requiredVersion = [configFile >> "CfgPatches" >> "A3EAI","A3EAIVersion",""] call BIS_fnc_returnConfigEntry;
+	_requiredVersion = [configFile >> "CfgPatches" >> "A3EAI","A3EAI_requiredHCVersion","0"] call BIS_fnc_returnConfigEntry;
 	if (_versionHC isEqualTo _requiredVersion) then {
 		A3EAI_HCObject = _HCObject;
 		A3EAI_HCObject addEventHandler ["Local",{
@@ -14,7 +14,7 @@ if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "Headl
 				_unit = _this select 0;
 				_unitGroup = (group _unit);
 				_unit removeAllEventHandlers "Local";
-				diag_log format ["[A3EAI] Deleting disconnected headless client unit %1.",typeOf _unit];
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting disconnected headless client unit %1.",typeOf _unit];};
 				deleteVehicle _unit;
 				deleteGroup _unitGroup;
 			};
@@ -26,7 +26,7 @@ if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "Headl
 		if !(A3EAI_reinforcePlaces isEqualTo []) then {A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_reinforcePlaces";};
 		diag_log format ["[A3EAI] Headless client %1 (owner: %2) logged in successfully.",A3EAI_HCObject,A3EAI_HCObjectOwnerID];
 	} else {
-		diag_log format ["[A3EAI] Headless client %1 (owner: %2) has wrong A3EAI version %2.",_HCObject,owner _HCObject,_versionHC];
+		diag_log format ["[A3EAI] Headless client %1 (owner: %2) has wrong A3EAI version %3 (Required version: %4).",_HCObject,owner _HCObject,_versionHC,_requiredVersion];
 	};
 } else {
 	A3EAI_HC_serverResponse = false;

@@ -8,6 +8,7 @@ private ["_index","_trigger","_targetPlayer","_unitGroup","_reinforcePos","_last
 _unitGroup = _this select 0;
 _helicopter = _this select 1;
 
+A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [objNull];
 _index = floor (random (count A3EAI_reinforcePlaces));
 _trigger = A3EAI_reinforcePlaces select _index;
 
@@ -37,8 +38,7 @@ if (!isNull _trigger) then {
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Helicopter %1 (%2) redirected to dynamic spawn area at %3.",_helicopter,(typeOf _helicopter),mapGridPosition _reinforcePos]};
 };
 
-A3EAI_reinforcePlaces set [_index,objNull];
-A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [objNull];
+A3EAI_reinforcePlaces deleteAt _index;
 
 if (isDedicated) then {
 	if !(A3EAI_HCObjectOwnerID isEqualTo 0) then {
@@ -46,8 +46,8 @@ if (isDedicated) then {
 	};
 } else {
 	//publicVariableServer "A3EAI_reinforcePlaces";
-	A3EAI_updateReinforcePlaces = _trigger;
-	publicVariableServer "A3EAI_updateReinforcePlaces";
+	A3EAI_updateReinforcePlaces_PVS = _trigger;
+	publicVariableServer "A3EAI_updateReinforcePlaces_PVS";
 };
 
 true

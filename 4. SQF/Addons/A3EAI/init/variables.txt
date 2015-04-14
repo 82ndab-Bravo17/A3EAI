@@ -35,3 +35,4 @@ A3EAI_createCustomSpawnQueue = [];
 A3EAI_customVehicleSpawnQueue = [];
 A3EAI_randomInfantrySpawnQueue = [];
 A3EAI_defaultTrigger = objNull;
+A3EAI_hiddenObjectsList = [];

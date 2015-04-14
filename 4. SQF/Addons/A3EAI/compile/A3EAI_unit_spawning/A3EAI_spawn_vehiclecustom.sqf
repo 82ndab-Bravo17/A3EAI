@@ -46,6 +46,8 @@ _driver moveInDriver _vehicle;
 
 _vehicle call A3EAI_protectObject;
 _vehicle call A3EAI_secureVehicle;
+_vehicle call A3EAI_clearVehicleCargo;
+
 call {
 	if (_vehicle isKindOf "Plane") exitWith {
 		_direction = (random 360);
@@ -76,18 +78,12 @@ _vehicle setVariable ["unitGroup",_unitGroup];
 
 //Determine vehicle type and add needed eventhandlers
 if (_isAirVehicle) then {
-	_vehicle setVariable ["durability",[0,0,0]];	//[structural, engine, tail rotor]
-	_vehicle addEventHandler ["Killed","_this call A3EAI_heliDestroyed"];
-	_vehicle addEventHandler ["GetOut","_this call A3EAI_heliLanded"];
-	_vehicle addEventHandler ["HandleDamage","_this call A3EAI_handleDamageHeli"];
+	_vehicle call A3EAI_addVehAirEH;
 } else {
-	_vehicle addEventHandler ["Killed","_this call A3EAI_vehDestroyed"];
-	_vehicle addEventHandler ["HandleDamage","_this call A3EAI_handleDamageVeh"];
+	_vehicle call A3EAI_addLandVehEH;
 };
 _vehicle allowCrewInImmobile (!_isAirVehicle);
 _vehicle setUnloadInCombat [!_isAirVehicle,false];
-clearWeaponCargoGlobal _vehicle;
-clearMagazineCargoGlobal _vehicle;
 
 if (!(_driver hasWeapon "NVG_EPOCH")) then {
 	_nvg = _driver call A3EAI_addTempNVG;

@@ -9,22 +9,22 @@ _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
 _vehPos = getPosATL _vehicle;
 
-if (!surfaceIsWater _vehPos) then {
+if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	private ["_unitsAlive","_trigger","_unitLevel","_units","_waypointCount"];
 	_unitLevel = _unitGroup getVariable ["unitLevel",1];
 	_units = (units _unitGroup);
-	if (((_vehPos select 2) > 60) or {(0.40 call A3EAI_chance)}) then {
-		{
+	if (!(surfaceIsWater _vehPos) && {(_vehPos select 2) > 50}) then {
+		_unitsAlive = {
 			if (alive _x) then {
 				unassignVehicle _x;
 				_x action ["eject",_vehicle];
+				true
 			} else {
 				0 = [_x,_unitLevel] spawn A3EAI_generateLoot;
+				false
 			};
-		} forEach _units;
-		
-		_unitsAlive = {alive _x} count _units;
-		if (_unitsAlive > 0) then {
+		} count _units;
+		if !(_unitsAlive isEqualTo 0) then {
 			for "_i" from ((count (waypoints _unitGroup)) - 1) to 0 step -1 do {
 				deleteWaypoint [_unitGroup,_i];
 			};
@@ -38,6 +38,7 @@ if (!surfaceIsWater _vehPos) then {
 				A3EAI_addVehicleGroup_PVS = [_unitGroup,_vehicle];
 				publicVariableServer "A3EAI_addVehicleGroup_PVS";
 				_unitGroup setVariable ["unitType","static"];
+				
 			};
 			
 			if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
@@ -64,7 +65,7 @@ if (!surfaceIsWater _vehPos) then {
 		A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
 		publicVariableServer "A3EAI_updateGroupSize_PVS";
 	};
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI %1 group %2 was destroyed over water position.",(typeOf _vehicle),_unitGroup];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI %1 group %2 is now empty.",(typeOf _vehicle),_unitGroup];};
 };
 
 true

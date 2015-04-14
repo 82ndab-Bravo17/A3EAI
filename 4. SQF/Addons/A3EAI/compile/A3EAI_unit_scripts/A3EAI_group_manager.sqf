@@ -1,4 +1,4 @@
-private ["_unitGroup","_unitLevel","_vehicle","_lastRearmTime","_useLaunchers","_useGL","_marker","_marker2","_antistuckTime","_antistuckPos","_lastReinforceTime","_vehicleMoved","_lootPool","_pullChance","_pullRate","_antistuckObj","_updateServerLoot"];
+private ["_unitGroup","_unitLevel","_vehicle","_lastRearmTime","_useLaunchers","_useGL","_marker","_groupWPMarker","_antistuckTime","_antistuckPos","_lastReinforceTime","_vehicleMoved","_lootPool","_pullChance","_pullRate","_antistuckObj","_updateServerLoot"];
 
 _unitGroup = _this select 0;
 _unitLevel = _this select 1;
@@ -7,24 +7,24 @@ if (_unitGroup getVariable ["isManaged",false]) exitWith {};
 _unitGroup setVariable ["isManaged",true];
 
 _unitType = (_unitGroup getVariable ["unitType",""]);
-_vehicle = if (_unitType in ["static","dynamic","random"]) then {objNull} else {_unitGroup getVariable ["assignedVehicle",objNull]};
+_vehicle = if (_unitType in ["air","land","aircustom","landcustom"]) then {assignedVehicle (leader _unitGroup)} else {objNull};
+
 _useGL = if !(A3EAI_GLRequirement isEqualTo -1) then {_unitLevel >= A3EAI_GLRequirement} else {false};
 _useLaunchers = if !(A3EAI_launcherLevelReq isEqualTo -1) then {((count A3EAI_launcherTypes) > 0) && {(_unitLevel >= A3EAI_launcherLevelReq)}} else {false};
 _antistuckPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
 if (isNil {_unitGroup getVariable "GroupSize"}) then {_unitGroup setVariable ["GroupSize",(count (units _unitGroup))]};
-_vehicleMoved = true;
 _stuckCheckTime = call {
-	if (_unitType isEqualTo "static") then {300};
-	if (_unitType isEqualTo "aircustom") then {300};
-	if (_unitType isEqualTo "landcustom") then {300};
-	if (_unitType isEqualTo "air") then {300};
-	if (_unitType isEqualTo "land") then {450};
+	if (_unitType isEqualTo "static") exitWith {300};
+	if (_unitType isEqualTo "aircustom") exitWith {300};
+	if (_unitType isEqualTo "landcustom") exitWith {300};
+	if (_unitType isEqualTo "air") exitWith {300};
+	if (_unitType isEqualTo "land") exitWith {450};
 	300
 };
 
 //set up debug variables
-_marker = "";
-_marker2 = "";
+_groupLeadMarker = "";
+_groupWPMarker = "";
 
 //Set up timer variables
 _lastRearmTime = diag_tickTime;
@@ -68,11 +68,19 @@ if (isDedicated) then {
 			_weaponMuzzles = getArray(configFile >> "cfgWeapons" >> ((_loadout select 0) select 0) >> "muzzles");
 			if ((count _weaponMuzzles) > 1) then {
 				_GLWeapon = _weaponMuzzles select 1;
-				if ("1Rnd_HE_Grenade_shell" in (getArray (configFile >> "CfgWeapons" >> ((_loadout select 0) select 0) >> _GLWeapon >> "magazines"))) then {
-					_x addMagazine "1Rnd_HE_Grenade_shell";
+				_GLMagazines = (getArray (configFile >> "CfgWeapons" >> ((_loadout select 0) select 0) >> _GLWeapon >> "magazines"));
+				if ("3Rnd_HE_Grenade_shell" in _GLMagazines) then {
+					_x addMagazine "3Rnd_HE_Grenade_shell";
 					(_loadout select 0) pushBack _GLWeapon;
-					(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+					(_loadout select 1) pushBack "3Rnd_HE_Grenade_shell";
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
+				} else {
+					if ("1Rnd_HE_Grenade_shell" in _GLMagazines) then {
+						_x addMagazine "1Rnd_HE_Grenade_shell";
+						(_loadout select 0) pushBack _GLWeapon;
+						(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
+					}
 				};
 			};
 		};
@@ -113,35 +121,33 @@ if (isDedicated) then {
 			};
 		};
 
-		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Unit %1 loadout: %2. unitLevel %3.",_x,_x getVariable ["loadout",[]],_unitLevel];};
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Unit %1 loadout: %2. unitLevel %3.",_x,_x getVariable ["loadout",[]],_unitLevel];};
 	} forEach (units _unitGroup);
 
 	if (A3EAI_debugMarkersEnabled) then {
-		_markername = format ["%1-1",_unitGroup];
-		if ((getMarkerColor _markername) != "") then {deleteMarker _markername; uiSleep 0.5};	//Delete the previous marker if it wasn't deleted for some reason.
-		_marker = createMarker [_markername,getPosATL (leader _unitGroup)];
-		_marker setMarkerType "mil_warning";
-		_marker setMarkerBrush "Solid";
-		_marker setMarkerColor "ColorBlack";
+		_groupLeadMarker = format ["%1_Lead",_unitGroup];
+		if ((getMarkerColor _groupLeadMarker) != "") then {deleteMarker _groupLeadMarker; uiSleep 0.5};	//Delete the previous marker if it wasn't deleted for some reason.
+		_groupLeadMarker = createMarker [_groupLeadMarker,getPosATL (leader _unitGroup)];
+		_groupLeadMarker setMarkerType "mil_warning";
+		_groupLeadMarker setMarkerBrush "Solid";
+		_groupLeadMarker setMarkerColor "ColorBlack";
 		
 		if (isNull _vehicle) then {
-			_marker setMarkerText format ["%1 (AI L%2)",_unitGroup,_unitLevel];
+			_groupLeadMarker setMarkerText format ["%1 (AI L%2)",_unitGroup,_unitLevel];
 		} else {
-			_marker setMarkerText format ["%1 (AI L%2 %3)",_unitGroup,_unitLevel,(typeOf (vehicle (leader _unitGroup)))];
+			_groupLeadMarker setMarkerText format ["%1 (AI L%2 %3)",_unitGroup,_unitLevel,(typeOf (vehicle (leader _unitGroup)))];
 		};
 		
-		_markername2 = format ["%1-2",_unitGroup];
-		if ((getMarkerColor _markername2) != "") then {deleteMarker _markername2; uiSleep 0.5;};	//Delete the previous marker if it wasn't deleted for some reason.
-		_marker2 = createMarker [_markername2,(getWPPos [_unitGroup,(currentWaypoint _unitGroup)])];
-		_marker2 setMarkerText format ["%1 WP",_unitGroup];
-		_marker2 setMarkerType "Waypoint";
-		_marker2 setMarkerColor "ColorBlue";
-		_marker2 setMarkerBrush "Solid";
+		_groupWPMarker = (format ["%1_WP",_unitGroup]);
+		if ((getMarkerColor _groupWPMarker) != "") then {deleteMarker _groupWPMarker; uiSleep 0.5;};	//Delete the previous marker if it wasn't deleted for some reason.
+		_groupWPMarker = createMarker [_groupWPMarker,(getWPPos [_unitGroup,(currentWaypoint _unitGroup)])];
+		_groupWPMarker setMarkerText format ["%1 Waypoint",_unitGroup];
+		_groupWPMarker setMarkerType "Waypoint";
+		_groupWPMarker setMarkerColor "ColorBlue";
+		_groupWPMarker setMarkerBrush "Solid";
 		
-		[_unitGroup,_marker,_marker2] spawn {
+		[_unitGroup] spawn {
 			_unitGroup = _this select 0;
-			_marker = _this select 1;
-			_marker2 = _this select 2;
 			{
 				_markname = str(_x);
 				if ((getMarkerColor _markname) != "") then {deleteMarker _markname; uiSleep 0.5};
@@ -152,18 +158,21 @@ if (isDedicated) then {
 				_mark setMarkerBrush "SolidBorder";
 				_nul = _x spawn {
 					_markername = str (_this);
+					_unitGroup = group _this;
 					while {alive _this} do {
-						_markername setMarkerPos (getPosATL _this);
-						uiSleep 15;
+						if (local _this) then {
+							_unitPos = getPosATL _this;
+							if ((leader _unitGroup) isEqualTo _this) then {
+								(format ["%1_Lead",_unitGroup]) setMarkerPos _unitPos;
+								(format ["%1_WP",_unitGroup]) setMarkerPos (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
+							};
+							_markername setMarkerPos _unitPos;
+						};
+						uiSleep 10;
 					};
 					deleteMarker _markername;
 				};
 			} forEach (units _unitGroup);
-			while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} do {
-				_marker setMarkerPos (getPosATL (leader _unitGroup));
-				_marker2 setMarkerPos (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
-				if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {uiSleep 15};
-			};
 		};
 	};
 	
@@ -199,16 +208,46 @@ if (isDedicated) then {
 			_weaponMuzzles = getArray(configFile >> "cfgWeapons" >> ((_loadout select 0) select 0) >> "muzzles");
 			if ((count _weaponMuzzles) > 1) then {
 				_GLWeapon = _weaponMuzzles select 1;
-				if ("1Rnd_HE_Grenade_shell" in (getArray (configFile >> "CfgWeapons" >> ((_loadout select 0) select 0) >> _GLWeapon >> "magazines"))) then {
+				_GLMagazines = (getArray (configFile >> "CfgWeapons" >> ((_loadout select 0) select 0) >> _GLWeapon >> "magazines"));
+				if ("3Rnd_HE_Grenade_shell" in _GLMagazines) then {
+					_x addMagazine "3Rnd_HE_Grenade_shell";
 					(_loadout select 0) pushBack _GLWeapon;
-					(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+					(_loadout select 1) pushBack "3Rnd_HE_Grenade_shell";
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
+				} else {
+					if ("1Rnd_HE_Grenade_shell" in _GLMagazines) then {
+						_x addMagazine "1Rnd_HE_Grenade_shell";
+						(_loadout select 0) pushBack _GLWeapon;
+						(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
+					}
 				};
 			};
 		};
 		
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Unit %1 loadout: %2. unitLevel %3.",_x,_x getVariable ["loadout",[]],_unitLevel];};
 	} forEach (units _unitGroup);
+	
+	if (A3EAI_debugMarkersEnabled) then {
+		{
+			_nul = _x spawn {
+				waitUntil {sleep 5; ((local _this) or {!(alive _this)})};
+				_unitMarker = str (_this);
+				_unitGroup = group _this;
+				while {alive _this} do {
+					if (local _this) then {
+						_unitPos = getPosATL _this;
+						if ((leader _unitGroup) isEqualTo _this) then {
+							(format ["%1_Lead",_unitGroup]) setMarkerPos _unitPos;
+							(format ["%1_WP",_unitGroup]) setMarkerPos (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
+						};
+						_unitMarker setMarkerPos _unitPos;
+					};
+					uiSleep 10;
+				};
+			};
+		} forEach (units _unitGroup);
+	};
 	
 	if (A3EAI_debugLevel > 1) then {
 		_lootPool = _unitGroup getVariable ["LootPool",[]];
@@ -249,7 +288,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 			_nul = _x spawn {
 				if (!alive _this) exitWith {};
 				_unit = _this;
-				_loadout = _unit getVariable ["loadout",[[],[]]];
+				_loadout = _unit getVariable "loadout";
 				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Unpacked unit manager for unit %1. Loadout found: %2.",_unit,_loadout];};
 				if (!isNil "_loadout") then {
 					while {(alive _unit) && {(vehicle _unit) isEqualTo _unit} && {local _unit}} do {
@@ -307,29 +346,30 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 		_lastRearmTime = diag_tickTime;
 	};
 	
-	//Antistuck detection
+	//Antistuck 
 	if ((diag_tickTime - _antistuckTime) > _stuckCheckTime) then {
 		_unitType = (_unitGroup getVariable ["unitType",""]);
 		call {
 			if (_unitType in ["static","landcustom"]) exitWith {
 				//Static and custom land vehicle patrol anti stuck routine
-				_wpPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
-				if (_antistuckPos isEqualTo _wpPos) then {
+				_checkPos = (getPosATL (leader _unitGroup));
+				if ((_antistuckPos distance _checkPos) < 5) then {
 					_currentWP = (currentWaypoint _unitGroup);
 					_allWP = (waypoints _unitGroup);
 					_nextWP = _currentWP + 1;
 					if ((count _allWP) isEqualTo _nextWP) then {_nextWP = 1}; //Cycle back to first added waypoint if group is currently on last waypoint.
+					[_unitGroup] call A3EAI_fixStuckGroup;
 					_unitGroup setCurrentWaypoint [_unitGroup,_nextWP];
-					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck detection triggered for AI group %1. Forcing next waypoint.",_unitGroup];};
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI group %1. Forcing next waypoint.",_unitGroup];};
 					_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 				} else {
-					_antistuckPos = _wpPos;
+					_antistuckPos = _checkPos;
 					_antistuckTime = diag_tickTime;
 				};
 			};
-			if (_unitType isEqualTo "air") exitWith {
-				_wpPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
-				if ((_wpPos isEqualTo _antistuckPos) && {canMove _vehicle}) then {
+			if ((_unitType isEqualTo "air") && {!isNull _vehicle}) exitWith {
+				_checkPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
+				if ((_checkPos isEqualTo _antistuckPos) && {canMove _vehicle}) then {
 					_tooClose = true;
 					_wpSelect = [];
 					while {_tooClose} do {
@@ -347,18 +387,18 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 					if (_unitGroup getVariable ["HeliReinforceOrdered",false]) then {_unitGroup setVariable ["HeliReinforceOrdered",false];}; //Cancel reinforcement order
 					//_vehicle doMove _wpSelect;
 					_antistuckPos = _wpSelect;
-					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck detection triggered for AI air vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI air vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
 					_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 				} else {
-					_antistuckPos = _wpPos;
+					_antistuckPos = _checkPos;
 					_antistuckTime = diag_tickTime;
 				};
 			};
-			if (_unitType isEqualTo "land") exitWith {
+			if ((_unitType isEqualTo "land") && {!isNull _vehicle}) exitWith {
 				//Mapwide land vehicle patrol anti stuck routine
 				_currentPos = (getPosATL _vehicle);
-				if ((_antistuckPos distance _currentPos) < 30) then {
-					if (_vehicleMoved && {canMove _vehicle}) then {
+				if ((_antistuckPos distance _currentPos) < 100) then {
+					if (canMove _vehicle) then {
 						_tooClose = true;
 						_wpSelect = [];
 						while {_tooClose} do {
@@ -370,10 +410,10 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 							};
 						};
 						_wpSelect = [_wpSelect,random(300),random(360),0,[1,300]] call SHK_pos;
+						[_unitGroup] call A3EAI_fixStuckGroup;
 						[_unitGroup,0] setWPPos _wpSelect;
 						_antistuckPos = _currentPos;
-						_vehicleMoved = false;
-						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck prevention triggered for AI land vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI land vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
 						_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 					} else {
 						if (!(_vehicle getVariable ["veh_disabled",false])) then {
@@ -383,25 +423,21 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 					};
 				} else {
 					_antistuckPos = _currentPos;
-					if (!_vehicleMoved) then {
-						_vehicleMoved = true;
-						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck check passed for AI vehicle %1 (Group: %2). Reset vehicleMoved flag.",(typeOf _vehicle),_unitGroup];};
-					};
 					_antistuckTime = diag_tickTime;
 				};
 			};
-			if (_unitType isEqualTo "aircustom") exitWith {
-				_wpPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
-				if ((_wpPos isEqualTo _antistuckPos) && {canMove _vehicle}) then {
+			if ((_unitType isEqualTo "aircustom") && {!isNull _vehicle}) exitWith {
+				_checkPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
+				if ((_checkPos isEqualTo _antistuckPos) && {canMove _vehicle}) then {
 					_currentWP = (currentWaypoint _unitGroup);
 					_allWP = (waypoints _unitGroup);
 					_nextWP = _currentWP + 1;
 					if ((count _allWP) isEqualTo _nextWP) then {_nextWP = 1}; //Cycle back to first added waypoint if group is currently on last waypoint.
 					_unitGroup setCurrentWaypoint [_unitGroup,_nextWP];
-					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck detection triggered for AI air (custom) group %1. Forcing next waypoint.",_unitGroup];};
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI air (custom) group %1. Forcing next waypoint.",_unitGroup];};
 					_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 				} else {
-					_antistuckPos = _wpPos;
+					_antistuckPos = _checkPos;
 					_antistuckTime = diag_tickTime;
 				};
 			};
@@ -412,7 +448,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 		_unitGroup setGroupOwner A3EAI_HCObjectOwnerID;
 		[_unitGroup] call A3EAI_transferGroupToHC;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Transferred ownership of group %1 to HC %2.",_unitGroup,A3EAI_HCObjectOwnerID];};
-		waitUntil {sleep 15; ((!A3EAI_HCIsConnected) or {local _unitGroup})};
+		waitUntil {sleep 15; ((local _unitGroup) or {isNull _unitGroup})};
 		if ((_unitGroup getVariable ["GroupSize",-1]) > 0) then {
 			_lastRearmTime = diag_tickTime;	//Update all timestamps to current time
 			_antistuckTime = diag_tickTime;
@@ -438,8 +474,8 @@ if !(isDedicated) exitWith {
 if (isEngineOn _vehicle) then {_vehicle engineOn false};
 
 if (A3EAI_debugMarkersEnabled) then {
-	deleteMarker _marker;
-	deleteMarker _marker2;
+	deleteMarker _groupLeadMarker;
+	deleteMarker _groupWPMarker;
 };
 
 while {(_unitGroup getVariable ["GroupSize",-1]) isEqualTo 0} do {	//Wait until group is either respawned or marked for deletion. A dummy unit should be created to preserve group.

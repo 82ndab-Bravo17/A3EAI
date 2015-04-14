@@ -7,6 +7,7 @@ _vehicle setVariable ["veh_disabled",true];
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","Killed"];
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
+if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
 
 _unitsAlive = {alive _x} count (units _unitGroup);
 

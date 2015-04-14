@@ -23,7 +23,7 @@ if (isNil "A3EAI_devOptions") then {
 };
 
 if (isNil "A3EAI_EpochHiveDir") then {
-	A3EAI_EpochHiveDir = "@EpochHive";
+	A3EAI_EpochHiveDir = "@epochhive";
 };
 
 //Report A3EAI version to RPT log
@@ -91,5 +91,5 @@ if ((west getFriend resistance) > 0) then {west setFriend [resistance, 0]};
 
 //Report A3EAI startup settings to RPT log
 diag_log format ["[A3EAI] A3EAI settings: Debug Level: %1. DebugMarkers: %2. WorldName: %3. VerifyClassnames: %4. VerifySettings: %5.",A3EAI_debugLevel,A3EAI_debugMarkersEnabled,_worldname,A3EAI_verifyClassnames,A3EAI_verifySettings];
-diag_log format ["[A3EAI] AI spawn settings: Static: %1. Dynamic: %2. Random: %3. Air: %4. Land: %5.",A3EAI_autoGenerateStatic,(A3EAI_dynMaxSpawns > 0),(A3EAI_maxRandomSpawns > 0),(A3EAI_maxHeliPatrols>0),(A3EAI_maxLandPatrols>0)];
+diag_log format ["[A3EAI] AI spawn settings: Static: %1. Dynamic: %2. Random: %3. Air: %4. Land: %5.",A3EAI_autoGenerateStatic,!(A3EAI_dynMaxSpawns isEqualTo 0),!(A3EAI_maxRandomSpawns isEqualTo 0),!(A3EAI_maxHeliPatrols isEqualTo 0),!(A3EAI_maxLandPatrols isEqualTo 0)];
 diag_log format ["[A3EAI] A3EAI loading completed in %1 seconds.",(diag_tickTime - _startTime)];

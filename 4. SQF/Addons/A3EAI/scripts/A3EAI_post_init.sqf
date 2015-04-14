@@ -45,6 +45,7 @@ A3EAI_customInfantrySpawnQueue = [];
 A3EAI_createCustomSpawnQueue = [];
 A3EAI_customVehicleSpawnQueue = [];
 A3EAI_randomInfantrySpawnQueue = [];
+A3EAI_hiddenObjectsList = [];
 
 if (A3EAI_enableHC) then {
 	[] call compile preprocessFileLineNumbers format ["%1\init\A3EAI_ServerHC_functions.sqf",A3EAI_directory];
@@ -131,6 +132,12 @@ if (A3EAI_dynamicLootLargeList) then {
 if (A3EAI_verifyClassnames) then {
 	_verifyClassnames = [] execVM format ["%1\scripts\verifyClassnames.sqf",A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _verifyClassnames};
+};
+
+if (A3EAI_enableHC && {A3EAI_waitForHC}) then {
+	diag_log "[A3EAI] Waiting for headless client to connect. A3EAI post-initialization process paused.";
+	waitUntil {uiSleep 5; A3EAI_HCIsConnected};
+	diag_log format ["[A3EAI] Headless client connected with owner ID %1. A3EAI post-initialization process continuing.",A3EAI_HCObjectOwnerID];
 };
 
 A3EAI_classnamesVerified = true;

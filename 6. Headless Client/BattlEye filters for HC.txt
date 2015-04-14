@@ -1,0 +1,5 @@
+scripts.txt exceptions for headless client
+
+7 "BIS_fnc_" !"this call bis_fnc_initVirtualUnit;"
+7 allowDamage !="unit setvariable ["bis_fnc_objectside_side",_side];_unit allowdamage false;"
+7 exec !"initVirtualUnit"

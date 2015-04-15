@@ -1,4 +1,4 @@
-//A3EAI Editor Tool Version 1.0.2
+//A3EAI Editor Tool Version 1.1
 
 [] spawn {
 	waitUntil {player == player};
@@ -117,12 +117,12 @@
 					_patrolRadius = if ((count _this) > 2) then {_this select 2} else {100};
 					_maxUnits = if ((count _this) > 3) then {_this select 3} else {[1,1]};
 					_unitLevel = if ((count _this) > 4) then {_this select 4} else {1};
-					_respawn = if ((count _this) > 5) then {if ((typeName (_this select 5)) == "BOOL") then {_this select 4} else {true}} else {true};
+					_respawn = if ((count _this) > 5) then {if ((typeName (_this select 5)) == "BOOL") then {_this select 4} else {false}} else {false};
 					_respawnTime = if ((count _this) > 6) then {if ((typeName (_this select 6)) == "SCALAR") then {_this select 5} else {0}} else {0};
 					
 					//playerMarker setMarkerSize [_patrolRadius,_patrolRadius];
 					
-					_statement = format ["[%1,%2,%3,%4,%5,%6] call A3EAI_createCustomVehicleQueue;",_spawnName,_spawnPos,_vehicleType,_patrolRadius,_maxUnits,_unitLevel,_respawn,_respawnTime];
+					_statement = format ["[%1,%2,%3,%4,%5,%6,%7,%8] call A3EAI_createCustomVehicleQueue;",_spawnName,_spawnPos,_vehicleType,_patrolRadius,_maxUnits,_unitLevel,_respawn,_respawnTime];
 				};
 				if (currentEditorMode == "Blacklists") exitWith {
 					_areaRadius = _this select 1;

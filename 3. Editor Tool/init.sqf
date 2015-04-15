@@ -1,4 +1,4 @@
-//A3EAI Editor Tool Version 1.1.1
+//A3EAI Editor Tool Version 1.1.2
 
 [] spawn {
 	waitUntil {player == player};
@@ -50,7 +50,7 @@
 	
 	generateBlacklistStatement = format ["['AreaName1',%1] call A3EAI_generateArea;",100];
 	
-	hintSilent parseText format ["
+	editorHelpStatement = parseText format ["
 			
 		To start creating custom spawns, use the A3EAI_generateArea function and the Debug Console. An example has been copied to your clipboard.
 		<br/>
@@ -59,6 +59,8 @@
 		<br/>Single-click on the map to teleport to a new location.
 		
 	"];
+	
+	hintSilent editorHelpStatement;
 	
 	if (isNil "A3EAI_customSpawnUnitAction") then {
 		A3EAI_customSpawnUnitAction = true;
@@ -93,6 +95,14 @@
 			copyToClipboard A3EAI_spawnsGenerated;
 			titleText ["Successfully exported custom spawn configs to clipboard.","plain down"];
 		'];
+	};
+	
+	if (isNil "A3EAI_getHelp") then {
+		A3EAI_getHelp = true;
+		player addAction ["Display Help",'
+			hintSilent editorHelpStatement;
+		'];
+		
 	};
 
 	if (isNil "A3EAI_generateArea") then {

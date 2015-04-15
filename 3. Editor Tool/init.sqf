@@ -1,4 +1,4 @@
-//A3EAI Editor Tool Version 1.1
+//A3EAI Editor Tool Version 1.1.1
 
 [] spawn {
 	waitUntil {player == player};
@@ -50,8 +50,15 @@
 	
 	generateBlacklistStatement = format ["['AreaName1',%1] call A3EAI_generateArea;",100];
 	
-	systemChat format ["To start creating custom spawns, use the A3EAI_generateArea function and the Debug Console. An example has been copied to your clipboard."];
-	systemChat format ["Single-click on the map to teleport to a new location."];
+	hintSilent parseText format ["
+			
+		To start creating custom spawns, use the A3EAI_generateArea function and the Debug Console. An example has been copied to your clipboard.
+		<br/>
+		<br/>Change editing modes using the scroll-wheel options.
+		<br/>
+		<br/>Single-click on the map to teleport to a new location.
+		
+	"];
 	
 	if (isNil "A3EAI_customSpawnUnitAction") then {
 		A3EAI_customSpawnUnitAction = true;
@@ -117,8 +124,8 @@
 					_patrolRadius = if ((count _this) > 2) then {_this select 2} else {100};
 					_maxUnits = if ((count _this) > 3) then {_this select 3} else {[1,1]};
 					_unitLevel = if ((count _this) > 4) then {_this select 4} else {1};
-					_respawn = if ((count _this) > 5) then {if ((typeName (_this select 5)) == "BOOL") then {_this select 4} else {false}} else {false};
-					_respawnTime = if ((count _this) > 6) then {if ((typeName (_this select 6)) == "SCALAR") then {_this select 5} else {0}} else {0};
+					_respawn = if ((count _this) > 5) then {if ((typeName (_this select 5)) == "BOOL") then {_this select 5} else {false}} else {false};
+					_respawnTime = if ((count _this) > 6) then {if ((typeName (_this select 6)) == "SCALAR") then {_this select 6} else {0}} else {0};
 					
 					//playerMarker setMarkerSize [_patrolRadius,_patrolRadius];
 					
@@ -143,11 +150,11 @@
 				<br/>To add your custom spawns to A3EAI, paste clipboard contents to @EpochHive\custom_spawn_defs.sqf
 				
 			",_spawnName];
-			systemChat format ["Total custom spawns generated and saved: %1.",(count A3EAI_spawnsIndex)];
+			hintSilent format ["Total custom spawns generated and saved: %1.",(count A3EAI_spawnsIndex)];
 			diag_log format ["Custom spawn %1 generated and saved to clipboard: %2",_spawnName,_statement];
 			diag_log "To add your custom spawns to A3EAI, paste clipboard contents to @EpochHive\custom_spawn_defs.sqf";
 		} else {
-			systemChat format ["Error: Custom spawn with name %1 already exists. Please use another name.",_spawnName];
+			hintSilent format ["Error: Custom spawn with name %1 already exists. Please use another name.",_spawnName];
 			diag_log format ["Error: Custom spawn with name %1 already exists. Please use another name.",_spawnName];
 		};
 		

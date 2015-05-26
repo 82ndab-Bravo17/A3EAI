@@ -1,0 +1,26 @@
+A3EAI 0.6.0 Alpha
+
+Files changed:
+A3EAI.pbo updated: Yes
+A3EAI_config.sqf updated: Yes
+Headless Client Files/Keys updated: Yes
+
+[NEW] Reworked air reinforcement system to allow defined AI unit types to call for reinforcements once a group member is killed (no effect for lone units). 
+	Once called, an AI air patrol is spawned and sent to the reinforcement location, where they will patrol the area for a defined amount of time, then leave and despawn.
+	Armed air vehicles will engage detected players. Unarmed air vehicles will deploy a paradrop AI group.
+[ADDED] Added config option to disable filtering of AI vehicle classnames that contain init statements (disabled by default).
+[ADDED] Added manual and dynamic definitions option for AI-usable scopes. Dynamic: Epoch loot tables will be used as a whitelist of allowed weapon scopes.
+[ADDED] Added dynamic spawn chance scaling to allow full defined spawn chance to be in effect once a certain number of online players is reached.
+[CHANGED] Scopes with thermal functions are now banned from dynamic classname list.
+[CHANGED] Increased default air vehicle player detection probability slightly.
+[CHANGED] Lowered default maximum Krypto rewards.
+[CHANGED] Tweaked default AI item loot probabilities.
+[CHANGED] A3EAI will now allow Tanks to be used for AI land vehicle patrols.
+[CHANGED] A3EAI will now transfer AI groups to HC at a controlled rate, rather than all at once to prevent issues.
+[CHANGED] A3EAI will now attempt to remove dropped launcher weapons.
+[CHANGED] AI tool item probabilities (ie: NVG) can now be defined on a per-level basis.
+[CHANGED] Custom AI vehicle spawns: Spawn prevention distance for nearby players reduced from 300 meters to 100 meters.
+[CHANGED] A3EAI can now also add loot items to AI uniform storage slots.
+[CHANGED] A3EAI will now wait until all Epoch buildables have been spawned before generating static spawns, and avoid creating spawns near Frequency Jammers. Note: Placing a Jammer will only prevent a static spawn from being generated on next server restart.
+[FIXED] AI groups with single waypoint will no longer trigger anti-stuck functions.
+[FIXED] A3EAI will now properly clean up dummy HC units for failed authorization attempts.

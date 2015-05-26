@@ -1,6 +1,10 @@
-private ["_unit","_pistol","_pistols","_unitLevel","_magazine","_currentWeapon","_toolselect","_chance","_tool","_toolsArray","_loot","_weaponLoot","_toolLoot","_kryptoAmount","_kryptoAmountMax","_kryptoPos","_kryptoDevice"];
+private ["_unit", "_unitLevel", "_weaponLoot", "_loot", "_toolLoot", "_pistol", "_magazine", "_kryptoAmountMax", "_kryptoAmount", "_kryptoPos", "_kryptoDevice", "_toolsArray", "_item"];
+
 _unit = _this select 0;
 _unitLevel = _this select 1;
+
+if (_unit getVariable ["LootGenerated",false]) exitWith {};
+_unit setVariable ["LootGenerated",true];
 
 if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: Generating loot for AI unit with unitLevel %2.",_unit,_unitLevel];};
 
@@ -21,17 +25,21 @@ if !((primaryWeapon _unit) isEqualTo "") then {
 };
 
 //Generate Krypto
-_kryptoAmountMax = missionNamespace getVariable ["A3EAI_kryptoAmount"+str(_unitLevel),200];
+_kryptoAmountMax = missionNamespace getVariable ["A3EAI_kryptoAmount"+str(_unitLevel),0];
 _kryptoAmount = floor (random (_kryptoAmountMax + 1));
 if(_kryptoAmount > 0) then {
 	_kryptoPos = getPosATL _unit;
 	_kryptoDevice = createVehicle ["Land_MPS_EPOCH",_kryptoPos,[],1.5,"CAN_COLLIDE"];
 	_kryptoDevice setVariable ["Crypto",_kryptoAmount,true];
 	_unit setVariable ["KryptoDevice",_kryptoDevice];
+	_kryptoPosEmpty = _kryptoPos findEmptyPosition [0.5,1.5,"Land_MPS_EPOCH"];
+	if !(_kryptoPosEmpty isEqualTo []) then {
+		_kryptoDevice setPosATL _kryptoPosEmpty;
+	};
 };
 
 //Add tool items
-_toolsArray = if (_unitLevel < 2) then {A3EAI_tools0} else {A3EAI_tools1};
+_toolsArray = missionNamespace getVariable ["A3EAI_tools"+str(_unitLevel),[]];
 {
 	_item = _x select 0;
 	if (((_x select 1) call A3EAI_chance) && {[_item,"weapon"] call A3EAI_checkClassname}) then {

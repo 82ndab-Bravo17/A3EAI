@@ -12,7 +12,7 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	if (A3EAI_radioMsgs) then {
 		//diag_log "DEBUG: Sending radio static";
 		if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {
-			_nearbyUnits = _targetPlayer nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+			_nearbyUnits = _targetPlayer nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 			if ((count _nearbyUnits) > 10) then {_nearbyUnits resize 10;};
 			{
 				if (isPlayer _x) then {
@@ -37,7 +37,7 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	_unitGroup setCurrentWaypoint _waypoint;
 	
 	_unitGroup setVariable ["targetplayer",_targetPlayer];
-	if (A3EAI_enableHC) then {
+	if (A3EAI_enableHC && {"dynamic" in A3EAI_HCAllowedTypes}) then {
 		_unitGroup setVariable ["HC_Ready",true];
 		_unitGroup setVariable ["MiscData",_targetPlayer];
 	};

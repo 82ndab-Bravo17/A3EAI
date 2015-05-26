@@ -36,7 +36,7 @@ call {
 		_trigger setVariable ["locationArray",(_this select 5)];
 		_trigger setVariable ["maxUnits",(_this select 6)];
 		_trigger setVariable ["spawnChance",1];
-		_trigger setVariable ["spawnType","custom"];
+		_trigger setVariable ["spawnType","staticcustom"];
 		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: Initialized custom spawn at %1. GroupArray: %2, PatrolDist: %3. unitLevel: %4. %LocationArray %5 positions, MaxUnits %6.",triggerText _trigger,(_this select 2),(_this select 3),(_this select 4),count (_this select 5),(_this select 6)];};
 	};
 };

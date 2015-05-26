@@ -21,9 +21,13 @@ if !(isNil "_miscData") then {
 	call {
 		if (_unitType isEqualTo "dynamic") exitWith {
 			_unitGroup setVariable ["targetplayer",_miscData];
+			_trigger setVariable ["targetplayer",_miscData];
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Dynamic group %1 has target player %2.",_unitGroup,_miscData];};
 		};
 	};
+};
+if (_unitType in ["air","land","aircustom","landcustom","air_reinforce"]) then {
+	_unitGroup setVariable ["assignedVehicle",_trigger];
 };
 
 _functionCall = missionNamespace getVariable ["A3EAI_handle"+_unitType,{false}];

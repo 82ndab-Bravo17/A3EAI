@@ -23,8 +23,20 @@
 	diag_log format ["Debug: %1",_this];
 };
 
+/*
 "A3EAI_upateReinforcePlaces_PVC" addPublicVariableEventHandler {
 	(_this select 1) call A3EAI_updateReinforcePlacesHC;
+	diag_log format ["Debug: %1",_this];
+};
+*/
+
+"A3EAI_setCurrentWaypoint_PVC" addPublicVariableEventHandler {
+	(_this select 1) call A3EAI_setCurrentWaypointHC;
+	diag_log format ["Debug: %1",_this];
+};
+
+"A3EAI_setBehavior_PVC" addPublicVariableEventHandler {
+	(_this select 1) call A3EAI_setBehaviorHC;
 	diag_log format ["Debug: %1",_this];
 };
 

@@ -17,10 +17,10 @@ call {
 		_maxGunnerUnits = A3EAI_heliGunnerUnits;
 		_unitLevel = "airvehicle" call A3EAI_getUnitLevel;
 		_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + (random((getMarkerSize "A3EAI_centerMarker") select 0)),random(360),1] call SHK_pos;
-		_vehiclePosition set [2,150];
+		_vehiclePosition set [2,200];
 		_spawnMode = "FLY";
 	};
-	if (_vehicleType isKindOf "Car") exitWith {
+	if (_vehicleType isKindOf "LandVehicle") exitWith {
 		_maxGunnerUnits = A3EAI_vehGunnerUnits;
 		_maxCargoUnits = A3EAI_vehCargoUnits;
 		_unitLevel = "landvehicle" call A3EAI_getUnitLevel;
@@ -63,7 +63,7 @@ call {
 	if (_vehicle isKindOf "Helicopter") exitWith {
 		_vehicle setDir (random 360);
 	};
-	if (_vehicle isKindOf "Car") exitWith {
+	if (_vehicle isKindOf "LandVehicle") exitWith {
 		_nearRoads = _vehiclePosition nearRoads 100;
 		if !(_nearRoads isEqualTo []) then {
 			_nextRoads = roadsConnectedTo (_nearRoads select 0);
@@ -87,13 +87,12 @@ if (_isAirVehicle) then {
 } else {
 	_vehicle call A3EAI_addLandVehEH;
 };
+
 _vehicle allowCrewInImmobile (!_isAirVehicle);
 _vehicle setUnloadInCombat [!_isAirVehicle,false];
 
 //Setup group and crew
-if (!(_driver hasWeapon "NVG_EPOCH")) then {
-	_nvg = _driver call A3EAI_addTempNVG;
-};
+_nvg = _driver call A3EAI_addTempNVG;
 _driver assignAsDriver _vehicle;
 _driver setVariable ["isDriver",true];
 _unitGroup selectLeader _driver;
@@ -104,17 +103,15 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawned 
 _cargoSpots = _vehicle emptyPositions "cargo";
 for "_i" from 0 to ((_cargoSpots min _maxCargoUnits) - 1) do {
 	_cargo = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
-	if (!(_cargo hasWeapon "NVG_EPOCH")) then {
-		_nvg = _cargo call A3EAI_addTempNVG;
-	};
+	_nvg = _cargo call A3EAI_addTempNVG;
 	_cargo assignAsCargoIndex [_vehicle,_i];
 	_cargo moveInCargo _vehicle;
 };
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawned %1 cargo units for %2 vehicle %3.",(_cargoSpots min _maxCargoUnits),_unitGroup,_vehicleType]};
 
 _unitGroup setBehaviour "AWARE";
-_unitGroup setSpeedMode "NORMAL";
 _unitGroup setCombatMode "YELLOW";
+_unitGroup setSpeedMode "NORMAL";
 _unitGroup allowFleeing 0;
 
 _unitGroup setVariable ["unitLevel",_unitLevel];
@@ -170,13 +167,15 @@ if (_isAirVehicle) then {
 } else {
 	[_unitGroup] spawn A3EAI_vehStartPatrol;
 };
+
 _rearm = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager
 
-if (A3EAI_enableHC) then {
-	_nul = _unitGroup spawn {
-		uiSleep 30;
-		_this setVariable ["HC_Ready",true];
-	};
+if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
+	_unitGroup setVariable ["HC_Ready",true];
+};
+
+if (_unitType in A3EAI_airReinforcementAllowedTypes) then {
+	_unitGroup setVariable ["ReinforceAvailable",true];
 };
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle patrol at %1 with vehicle type %2 with %3 crew units.",_vehiclePosition,_vehicleType,(count (units _unitGroup))]};

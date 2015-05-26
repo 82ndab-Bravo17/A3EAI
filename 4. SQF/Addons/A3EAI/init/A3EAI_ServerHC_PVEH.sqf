@@ -8,7 +8,7 @@
 "A3EAI_transferGroup_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_HCGroupToServer;diag_log format ["Debug: %1",_this];};
 "A3EAI_SMS_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_radioSend;diag_log format ["Debug: %1",_this];};
 "A3EAI_getGroupTriggerVars_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_getGroupTriggerVars;diag_log format ["Debug: %1",_this];};
-"A3EAI_setDeathTime_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["A3EAI_deathTime",diag_tickTime];diag_log format ["Debug: %1",_this];};
+"A3EAI_registerDeath_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_registerDeath;diag_log format ["Debug: %1",_this];};
 "A3EAI_updateGroupLoot_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateGroupLootPool;diag_log format ["Debug: %1",_this];};
 "A3EAI_protectGroup_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_protectRemoteGroup;diag_log format ["Debug: %1",_this];};
 "A3EAI_updateGroupSize_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateGroupSizeServer;diag_log format ["Debug: %1",_this];};
@@ -16,5 +16,6 @@
 "A3EAI_updateReinforcePlaces_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateReinforcePlaces;diag_log format ["Debug: %1",_this];};
 "A3EAI_setPermaDeleteSpawn_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["permadelete",true];diag_log format ["Debug: %1",_this];};
 "A3EAI_deleteCustomSpawn_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_deleteCustomSpawn;diag_log format ["Debug: %1",_this];};
+//"A3EAI_enableSimulationGlobal" addPublicVariableEventHandler {((_this select 1) select 0) enableSimulationGlobal ((_this select 1) select 1);diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] Serverside PVEHs loaded.";

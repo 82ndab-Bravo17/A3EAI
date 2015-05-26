@@ -108,9 +108,14 @@ _nul = [] spawn {
 	if (isNil "A3EAI_HC_serverResponse") exitWith {
 		diag_log "[A3EAI] Headless client connection timed out after 60 seconds of no response from server.";
 		diag_log format ["HC Object Check: %1. Group: %2",A3EAI_HCObject,A3EAI_HCObjectGroup];
+		{deleteVehicle _x} forEach (units A3EAI_HCObjectGroup);
 	};
 	
-	if !(A3EAI_HC_serverResponse) exitWith {diag_log "[A3EAI] Headless client connection unsuccessful. HC authorization request rejected (incorrect HC version?).";};
+	if !(A3EAI_HC_serverResponse) exitWith {
+		diag_log "[A3EAI] Headless client connection unsuccessful. HC authorization request rejected (incorrect HC version?).";
+		{deleteVehicle _x} forEach (units A3EAI_HCObjectGroup);
+	};
+	
 	diag_log "[A3EAI] Headless client connection successful. HC authorization request granted.";
 	
 	_serverMonitor = [] execVM format ['%1\compile\A3EAI_headlessclient\A3EAI_HCMonitor.sqf',A3EAI_directory];

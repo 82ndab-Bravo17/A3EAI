@@ -8,7 +8,7 @@ _unitGroup setVariable ["IsDetecting",true];
 
 uiSleep (round (random 20));
 
-if (!(_vehicle getVariable ["heli_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}) then{
+if (!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}) then{
 	_detectOrigin = [getPosATL _vehicle,0,getDir _vehicle,1] call SHK_pos;
 	_detectOrigin set [2,0];
 	_detected = _detectOrigin nearEntities [["Epoch_Male_F","Epoch_Female_F"],500];

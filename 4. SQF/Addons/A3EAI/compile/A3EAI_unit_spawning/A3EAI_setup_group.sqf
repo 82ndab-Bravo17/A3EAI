@@ -45,12 +45,12 @@ for "_i" from 1 to (_totalAI max 1) do {
 };
 
 if (({if (isPlayer _x) exitWith {1}} count (_spawnPos nearEntities [["Epoch_Male_F", "Epoch_Female_F"],100])) isEqualTo 0) then {
-	_unitGroup setCombatMode "RED";	
+	_unitGroup setCombatMode "YELLOW";	
 } else {
 	_unitGroup setCombatMode "BLUE";
 	_nul = _unitGroup spawn {
 		uiSleep 10;
-		_this setCombatMode "RED";	//Activate AI group hostility after 'x' seconds
+		_this setCombatMode "YELLOW";	//Activate AI group hostility after 'x' seconds
 	};
 };
 
@@ -70,5 +70,9 @@ _unitGroup setFormDir (random 360);
 _unitGroup allowFleeing 0;
 
 0 = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager
+
+if (_unitType in A3EAI_airReinforcementAllowedTypes) then {
+	_unitGroup setVariable ["ReinforceAvailable",true];
+};
 
 _unitGroup

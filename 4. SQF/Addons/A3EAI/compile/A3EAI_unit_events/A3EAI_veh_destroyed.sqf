@@ -2,9 +2,10 @@ private ["_vehicle","_unitGroup","_unitsAlive"];
 
 _vehicle = (_this select 0);
 
-if (_vehicle getVariable ["veh_disabled",false]) exitWith {};
-_vehicle setVariable ["veh_disabled",true];
-{_vehicle removeAllEventHandlers _x} count ["HandleDamage","Killed"];
+if (isNull _vehicle) exitWith {};
+if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {};
+_vehicle setVariable ["vehicle_disabled",true];
+{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 _vehicle call A3EAI_respawnAIVehicle;
 if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
@@ -26,14 +27,14 @@ if (_unitsAlive > 0) then {
 	} else {
 		A3EAI_addVehicleGroup_PVS = [_unitGroup,_vehicle];
 		publicVariableServer "A3EAI_addVehicleGroup_PVS";
-		_unitGroup setVariable ["unitType","static"];
+		_unitGroup setVariable ["unitType","vehiclecrew"];
 	};
 
 	{
 		unassignVehicle _x;
 	} forEach (units _unitGroup);
 	(units _unitGroup) allowGetIn false;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to static type.",_unitGroup];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to vehiclecrew type.",_unitGroup];};
 } else {
 	_unitGroup setVariable ["GroupSize",-1];
 	if !(isDedicated) then {

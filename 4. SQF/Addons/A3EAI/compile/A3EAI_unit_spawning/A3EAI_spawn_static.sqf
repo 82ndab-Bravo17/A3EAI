@@ -1,4 +1,4 @@
-private ["_minAI","_addAI","_patrolDist","_trigger","_unitLevel","_numGroups","_grpArray","_triggerPos","_startTime","_totalSpawned","_triggerStatements","_groupsActive"];
+private ["_minAI","_addAI","_patrolDist","_trigger","_unitLevel","_numGroups","_grpArray","_triggerPos","_startTime","_totalSpawned","_triggerStatements","_groupsActive","_spawnChance"];
 
 _minAI = _this select 0;									//Mandatory minimum number of AI units to spawn
 _addAI = _this select 1;									//Maximum number of additional AI units to spawn
@@ -26,6 +26,7 @@ for "_j" from 1 to (_numGroups - _groupsActive) do {
 	private ["_unitGroup","_spawnPos","_totalAI"];
 	_totalAI = 0;
 	_spawnPos = [];
+	_spawnChance = ((_trigger getVariable ["spawnChance",1]) * A3EAI_spawnChanceMultiplier);
 	if ((_trigger getVariable ["spawnChance",1]) call A3EAI_chance) then {
 		_totalAI = (_minAI + round(random _addAI));
 		_spawnPos = if ((count _locationArray) > 0) then {_locationArray call A3EAI_findSpawnPos} else {[(getPosATL _trigger),random (_patrolDist),random(360),0] call SHK_pos};
@@ -39,7 +40,7 @@ for "_j" from 1 to (_numGroups - _groupsActive) do {
 		if (_patrolDist > 1) then {
 			0 = [_unitGroup,_triggerPos,_patrolDist] spawn A3EAI_BIN_taskPatrol;
 		} else {
-			[_unitGroup, 0] setWaypointType "HOLD";
+			[_unitGroup, 0] setWaypointType "GUARD";
 		};
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawned group %1 (unitLevel: %2) with %3 units.",_unitGroup,_unitLevel,_totalAI];};
 	} else {

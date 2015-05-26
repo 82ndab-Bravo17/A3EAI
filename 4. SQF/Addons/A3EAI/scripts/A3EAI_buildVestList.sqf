@@ -19,7 +19,15 @@ if !(_items isEqualTo []) then {
 	A3EAI_vestTypes1 = +_items;
 	A3EAI_vestTypes2 = +_items;
 	A3EAI_vestTypes3 = +_items;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 vest classnames in %2 seconds.",(count _items),diag_tickTime - _startTime]};
+	if (A3EAI_debugLevel > 0) then {
+		diag_log format ["A3EAI Debug: Generated %1 vest classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
+		if (A3EAI_debugLevel > 1) then {
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes0: %1",A3EAI_vestTypes0];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes1: %1",A3EAI_vestTypes1];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes2: %1",A3EAI_vestTypes2];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes3: %1",A3EAI_vestTypes3];
+		};
+	};
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate vest classname list. Classnames from A3EAI_config.sqf used instead.";
 };

@@ -1,4 +1,4 @@
-private ["_unitGroup", "_unitLevel", "_trigger", "_unitType", "_groupSize","_vehicle"];
+private ["_unitGroup", "_unitLevel", "_trigger", "_unitType", "_groupSize","_patrolParams"];
 
 _unitGroup = _this;
 
@@ -13,6 +13,9 @@ _vehicle = _unitGroup getVariable ["assignedVehicle",assignedVehicle (leader _un
 _vehicle call A3EAI_addVehAirEH;
 _vehicle call A3EAI_secureVehicle;
 _vehicle setVariable ["unitGroup",_unitGroup];
+_vehicle setVariable ["vehicle_disabled",true];
+
+[_unitGroup,_vehicle] spawn A3EAI_airReinforcementDetection;
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 (Level: %2): %3, %4, %5, %6",_unitGroup,_unitLevel,_vehicle,(assignedDriver _vehicle),_unitType,_groupSize];};
 

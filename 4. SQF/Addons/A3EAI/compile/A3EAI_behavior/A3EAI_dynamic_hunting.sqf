@@ -27,7 +27,7 @@ _radioType = "EpochRadio0";
 if (A3EAI_radioMsgs) then {
 	//diag_log "DEBUG: Sending radio static";
 	if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {
-		_nearbyUnits = _targetPlayer nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+		_nearbyUnits = _targetPlayer nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 		{
 			if (isPlayer _x) then {
 				if (({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0) then {
@@ -57,7 +57,7 @@ while {
 		if ((A3EAI_radioMsgs) && {0.6 call A3EAI_chance}) then {
 			//Warn player of AI bandit presence if they have a radio.
 			if ((alive _leader) && {(_leader distance _targetPlayer) < 250}) then {
-				_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+				_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 				if !(_nearbyUnits isEqualTo []) then {
 					if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {
 						_index = (floor (random 4));
@@ -101,7 +101,7 @@ uiSleep 5;
 if (A3EAI_radioMsgs) then {
 	_leader = (leader _unitGroup);
 	if ((alive _leader) && {(_unitGroup getVariable ["GroupSize",0]) > 1} && {isPlayer _targetPlayer}) then {
-		_nearbyUnits = _targetPlayer nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+		_nearbyUnits = _targetPlayer nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 		{
 			if ((isPlayer _x) && {({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
 				_radioText = if (alive _targetPlayer) then {14} else {15};

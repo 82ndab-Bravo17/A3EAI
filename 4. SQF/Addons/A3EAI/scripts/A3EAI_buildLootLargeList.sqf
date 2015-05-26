@@ -34,7 +34,12 @@ _items = [];
 
 if !(_items isEqualTo []) then {
 	A3EAI_MiscLoot2 = _items;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 generic loot (large) classnames in %2 seconds.",(count _items),diag_tickTime - _startTime]};
+	if (A3EAI_debugLevel > 0) then {
+		diag_log format ["A3EAI Debug: Generated %1 generic loot (large) classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
+		if (A3EAI_debugLevel > 1) then {
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_MiscLoot2: %1",A3EAI_MiscLoot2];
+		};
+	};
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate loot (large) classname list. Classnames from A3EAI_config.sqf used instead.";
 };

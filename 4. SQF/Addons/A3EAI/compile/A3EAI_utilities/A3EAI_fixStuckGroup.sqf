@@ -20,7 +20,7 @@ if (_nearPlayers isEqualTo 0) then {
 		} forEach (units _unitGroup);
 	} else {
 		_vehicle setPosATL _newPos;
-		_vehicle setVelocity [0,0,1];
+		_vehicle setVelocity [0,0,0.25];
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Relocated stuck group %1 (%2) to new location %3m away.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"]),(_leaderPos distance _newPos)];};
 	true

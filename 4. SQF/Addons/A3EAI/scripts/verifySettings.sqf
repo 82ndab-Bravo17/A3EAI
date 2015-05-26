@@ -11,6 +11,7 @@ _startTime = diag_tickTime;
 	["A3EAI_debugLevel",0],
 	["A3EAI_monitorRate",300],
 	["A3EAI_verifyClassnames",true],
+	["A3EAI_checkVehicleInit",true],
 	["A3EAI_cleanupDelay",900],
 	["A3EAI_dynamicUniformList",true],
 	["A3EAI_dynamicWeaponList",true],
@@ -21,6 +22,17 @@ _startTime = diag_tickTime;
 	["A3EAI_dynamicLootList",true],
 	["A3EAI_dynamicLootLargeList",true],
 	["A3EAI_dynamicWeaponBlacklist",[]],
+	["A3EAI_playerCountThreshold",20],
+	["A3EAI_chanceScalingThreshold",0.50],
+	["A3EAI_upwardsChanceScaling",true],
+	["A3EAI_maxAirReinforcements",5],
+	["A3EAI_airReinforcementVehicles",["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]],
+	["A3EAI_airReinforcementSpawnChance0",0.00],
+	["A3EAI_airReinforcementSpawnChance1",0.15],
+	["A3EAI_airReinforcementSpawnChance2",0.30],
+	["A3EAI_airReinforcementSpawnChance3",0.45],
+	["A3EAI_airReinforcementAllowedTypes",["static","dynamic","random"]],
+	["A3EAI_airReinforcementDuration",300],
 	["A3EAI_findKiller",true],
 	["A3EAI_tempNVGs",false],
 	["A3EAI_GLRequirement",2],
@@ -64,12 +76,11 @@ _startTime = diag_tickTime;
 	["A3EAI_respawnLimit_capitalCity",-1],
 	["A3EAI_respawnLimit_remoteArea",-1],
 	["A3EAI_staticBlacklistLocations",[]],
-	//["A3EAI_dynAISpawns",true],
 	["A3EAI_dynMaxSpawns",15],
 	["A3EAI_dynCooldownTime",900],
 	["A3EAI_dynResetLastSpawn",3600],
 	["A3EAI_huntingChance",0.60],
-	["A3EAI_heliReinforceChance",0.30],
+	//["A3EAI_airReinforceChance",0.40],
 	["A3EAI_dynDespawnWait",120],
 	["A3EAI_maxRandomSpawns",-1],
 	["A3EAI_randDespawnWait",120],
@@ -192,6 +203,7 @@ _startTime = diag_tickTime;
 	["A3EAI_rifleList",["AKM_EPOCH","sr25_epoch","arifle_Katiba_GL_F","arifle_Katiba_C_F","arifle_Katiba_F","arifle_MX_GL_F","arifle_MX_GL_Black_F","arifle_MXM_Black_F","arifle_MXC_Black_F","arifle_MX_Black_F","arifle_MXM_F","arifle_MXC_F","arifle_MX_F","l85a2_epoch","l85a2_pink_epoch","l85a2_ugl_epoch","m4a3_EPOCH","m16_EPOCH","m16Red_EPOCH","arifle_Mk20_GL_F","arifle_Mk20_GL_plain_F","arifle_Mk20C_F","arifle_Mk20C_plain_F","arifle_Mk20_F","arifle_Mk20_plain_F","arifle_TRG21_GL_F","arifle_TRG21_F","arifle_TRG20_F","arifle_SDAR_F","Rollins_F","SMG_01_F","SMG_02_F","hgun_PDW2000_F"]],
 	["A3EAI_machinegunList",["LMG_Zafir_F","arifle_MX_SW_F","arifle_MX_SW_Black_F","LMG_Mk200_F","m249_EPOCH","m249Tan_EPOCH","MMG_01_hex_F","MMG_01_tan_F","MMG_02_camo_F","MMG_02_black_F","MMG_02_sand_F"]],
 	["A3EAI_sniperList",["m107_EPOCH","m107Tan_EPOCH","srifle_DMR_02_F","srifle_DMR_02_camo_F","srifle_DMR_02_sniper_F","srifle_DMR_03_F","srifle_DMR_03_khaki_F","srifle_DMR_03_tan_F","srifle_DMR_03_multicam_F","srifle_DMR_03_woodland_F","srifle_DMR_03_spotter_F","srifle_DMR_04_F","srifle_DMR_04_Tan_F","srifle_DMR_05_blk_F","srifle_DMR_05_hex_F","srifle_DMR_05_tan_f","srifle_DMR_06_camo_F","srifle_DMR_06_olive_F","srifle_LRR_F","srifle_GM6_F","srifle_DMR_01_F","M14_EPOCH","M14Grn_EPOCH","srifle_EBR_F"]],
+	["A3EAI_weaponOpticsList",["optic_NVS","optic_SOS","optic_LRPS","optic_AMS","optic_AMS_khk","optic_AMS_snd","optic_KHS_blk","optic_KHS_hex","optic_KHS_old","optic_KHS_tan","optic_DMS","optic_Arco","optic_Hamr","Elcan_epoch","Elcan_reflex_epoch","optic_MRCO","optic_Holosight","optic_Holosight_smg","optic_Aco","optic_ACO_grn","optic_Aco_smg","optic_ACO_grn_smg","optic_Yorris","optic_MRD"]],
 	["A3EAI_backpackTypes0",["B_AssaultPack_cbr", "B_AssaultPack_dgtl", "B_AssaultPack_khk", "B_AssaultPack_mcamo", "B_AssaultPack_ocamo", "B_AssaultPack_rgr", "B_AssaultPack_sgg", "B_Carryall_cbr", "B_Carryall_khk", "B_Carryall_mcamo", "B_Carryall_ocamo", "B_Carryall_oli", "B_Carryall_oucamo", "B_FieldPack_blk", "B_FieldPack_cbr", "B_FieldPack_khk", "B_FieldPack_ocamo", "B_FieldPack_oli", "B_FieldPack_oucamo", "B_Kitbag_cbr", "B_Kitbag_mcamo", "B_Kitbag_rgr", "B_Kitbag_sgg", "B_Parachute", "B_TacticalPack_blk", "B_TacticalPack_mcamo", "B_TacticalPack_ocamo", "B_TacticalPack_oli", "B_TacticalPack_rgr", "smallbackpack_red_epoch", "smallbackpack_green_epoch", "smallbackpack_teal_epoch", "smallbackpack_pink_epoch"]],
 	["A3EAI_backpackTypes1",["B_AssaultPack_cbr", "B_AssaultPack_dgtl", "B_AssaultPack_khk", "B_AssaultPack_mcamo", "B_AssaultPack_ocamo", "B_AssaultPack_rgr", "B_AssaultPack_sgg", "B_Carryall_cbr", "B_Carryall_khk", "B_Carryall_mcamo", "B_Carryall_ocamo", "B_Carryall_oli", "B_Carryall_oucamo", "B_FieldPack_blk", "B_FieldPack_cbr", "B_FieldPack_khk", "B_FieldPack_ocamo", "B_FieldPack_oli", "B_FieldPack_oucamo", "B_Kitbag_cbr", "B_Kitbag_mcamo", "B_Kitbag_rgr", "B_Kitbag_sgg", "B_Parachute", "B_TacticalPack_blk", "B_TacticalPack_mcamo", "B_TacticalPack_ocamo", "B_TacticalPack_oli", "B_TacticalPack_rgr", "smallbackpack_red_epoch", "smallbackpack_green_epoch", "smallbackpack_teal_epoch", "smallbackpack_pink_epoch"]],
 	["A3EAI_backpackTypes2",["B_AssaultPack_cbr", "B_AssaultPack_dgtl", "B_AssaultPack_khk", "B_AssaultPack_mcamo", "B_AssaultPack_ocamo", "B_AssaultPack_rgr", "B_AssaultPack_sgg", "B_Carryall_cbr", "B_Carryall_khk", "B_Carryall_mcamo", "B_Carryall_ocamo", "B_Carryall_oli", "B_Carryall_oucamo", "B_FieldPack_blk", "B_FieldPack_cbr", "B_FieldPack_khk", "B_FieldPack_ocamo", "B_FieldPack_oli", "B_FieldPack_oucamo", "B_Kitbag_cbr", "B_Kitbag_mcamo", "B_Kitbag_rgr", "B_Kitbag_sgg", "B_Parachute", "B_TacticalPack_blk", "B_TacticalPack_mcamo", "B_TacticalPack_ocamo", "B_TacticalPack_oli", "B_TacticalPack_rgr", "smallbackpack_red_epoch", "smallbackpack_green_epoch", "smallbackpack_teal_epoch", "smallbackpack_pink_epoch"]],
@@ -207,10 +219,14 @@ _startTime = diag_tickTime;
 	["A3EAI_foodLoot",["FoodSnooter","FoodWalkNSons","FoodBioMeat","ItemSodaOrangeSherbet","ItemSodaPurple","ItemSodaMocha","ItemSodaBurst","ItemSodaRbull","honey_epoch","emptyjar_epoch","sardines_epoch","meatballs_epoch","scam_epoch","sweetcorn_epoch","WhiskeyNoodle","ItemCoolerE"]],
 	["A3EAI_MiscLoot1",["PaintCanClear","PaintCanBlk","PaintCanBlu","PaintCanBrn","PaintCanGrn","PaintCanOra","PaintCanPur","PaintCanRed","PaintCanTeal","PaintCanYel","ItemDocument","ItemMixOil","emptyjar_epoch","emptyjar_epoch","FoodBioMeat","ItemSodaOrangeSherbet","ItemSodaPurple","ItemSodaMocha","ItemSodaBurst","ItemSodaRbull","sardines_epoch","meatballs_epoch","scam_epoch","sweetcorn_epoch","Towelette","Towelette","Towelette","Towelette","Towelette","HeatPack","HeatPack","HeatPack","ColdPack","ColdPack","VehicleRepair","CircuitParts","ItemCoolerE","ItemScraps","ItemScraps"]],
 	["A3EAI_MiscLoot2",["MortarBucket","MortarBucket","ItemCorrugated","CinderBlocks","jerrycan_epoch","jerrycan_epoch","VehicleRepair","VehicleRepair","CircuitParts"]],
-	["A3EAI_tools0",[["ItemWatch",0.70],["ItemCompass",0.50],["ItemMap",0.40],["ItemGPS",0.05],["EpochRadio0",0.10]]],
-	["A3EAI_tools1",[["ItemWatch",0.80],["ItemCompass",0.75],["ItemMap",0.70],["ItemGPS",0.15],["EpochRadio0",0.20]]],
-	["A3EAI_gadgets0",[["binocular",0.40],["NVG_EPOCH",0.10]]],
-	["A3EAI_gadgets1",[["binocular",0.70],["NVG_EPOCH",0.25]]]
+	["A3EAI_tools0",[["ItemWatch",0.70],["ItemCompass",0.50],["ItemMap",0.50],["ItemGPS",0.05],["EpochRadio0",0.05]]],
+	["A3EAI_tools1",[["ItemWatch",0.80],["ItemCompass",0.60],["ItemMap",0.60],["ItemGPS",0.10],["EpochRadio0",0.10]]],
+	["A3EAI_tools2",[["ItemWatch",0.80],["ItemCompass",0.70],["ItemMap",0.70],["ItemGPS",0.15],["EpochRadio0",0.15]]],
+	["A3EAI_tools3",[["ItemWatch",0.80],["ItemCompass",0.80],["ItemMap",0.80],["ItemGPS",0.20],["EpochRadio0",0.20]]],
+	["A3EAI_gadgets0",[["binocular",0.40],["NVG_EPOCH",0.05]]],
+	["A3EAI_gadgets1",[["binocular",0.50],["NVG_EPOCH",0.10]]],
+	["A3EAI_gadgets2",[["binocular",0.60],["NVG_EPOCH",0.15]]],
+	["A3EAI_gadgets3",[["binocular",0.70],["NVG_EPOCH",0.20]]]
 ];
 
 if (A3EAI_verifySettings) then {
@@ -236,6 +252,7 @@ if (A3EAI_verifySettings) then {
 	if !((count A3EAI_useWeaponChance1) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance1, resetting to default value."]; A3EAI_useWeaponChance1 = [0.00,0.90,0.05,0.05]};
 	if !((count A3EAI_useWeaponChance2) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance2, resetting to default value."]; A3EAI_useWeaponChance2 = [0.00,0.80,0.10,0.10]};
 	if !((count A3EAI_useWeaponChance3) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance3, resetting to default value."]; A3EAI_useWeaponChance3 = [0.00,0.70,0.15,0.15]};
+	if ("air_reinforce" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["air_reinforce"]};
 };
 
 diag_log format ["[A3EAI] Verified all A3EAI settings in %1 seconds.",(diag_tickTime - _startTime)];

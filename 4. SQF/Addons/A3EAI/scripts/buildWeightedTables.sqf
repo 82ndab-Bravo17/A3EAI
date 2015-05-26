@@ -46,9 +46,11 @@ _getWeightedIndices = {
 {
 	private ["_weightedTable","_gradeChances"];
 	_gradeChances = missionNamespace getVariable (_x select 0);
-	_weightedTable = [A3EAI_unitLevels,_gradeChances] call _getWeightedIndices;
-	missionNamespace setVariable [_x select 1,_weightedTable];
-	missionNamespace setVariable [_x select 0,nil];
+	if !(isNil "_gradeChances") then {
+		_weightedTable = [A3EAI_unitLevels,_gradeChances] call _getWeightedIndices;
+		missionNamespace setVariable [_x select 1,_weightedTable];
+		missionNamespace setVariable [_x select 0,nil];
+	};
 } count [
 			//Input variable - Gradechances array, Output variable - Gradeindices array
 			["A3EAI_levelChancesAir","A3EAI_levelIndicesAir"],

@@ -46,8 +46,8 @@ _unitGroup = _this select 0;
 _pos = _this select 1;
 _max_dist = _this select 2;
 _unitType = _unitGroup getVariable ["unitType",""];
-_allowWater = (_unitType isEqualTo "aircustom");
-_searchLoot = _unitType in ["static","dynamic","random"];
+_allowWater = (_unitType in ["aircustom","air_reinforce"]);
+_searchLoot = _unitType in ["static","staticcustom","vehiclecrew","dynamic","random"];
 _isVehicle = (_unitType isEqualTo "landcustom");
 
 if (_max_dist < 75) then {_unitGroup setSpeedMode "LIMITED"};
@@ -147,7 +147,8 @@ while {count _wp_array < _wp_count} do
 			_y = _x buildingPos _i;
 			//while {format["%1", _y] != "[0,0,0]"} do {
 			while {!(_y isEqualTo [0,0,0]) } do {
-				_bldgpos = _bldgpos + [_y];
+				//_bldgpos = _bldgpos + [_y];
+				_bldgpos pushBack _y;
 				_i = _i + 1;
 				_y = _x buildingPos _i;
 			};
@@ -212,6 +213,13 @@ _wp2 = _unitGroup addWaypoint [_endWP, 0];
 _wp2 setWaypointType "CYCLE";
 _wp2 setWaypointCompletionRadius (_max_dist max 50);
 
-if (A3EAI_enableHC) then {_unitGroup setVariable ["HC_Ready",true];};
+for "_i" from ((count (waypoints _unitGroup)) - 1) to 0 step -1 do {
+	if ((getWPPos [_unitGroup,_i]) isEqualTo [0,0,0]) then {
+		diag_log format ["A3EAI Error: Waypoint %1 is invalid position.",[_unitGroup,_i]];
+		deleteWaypoint [_unitGroup,_i];
+	};
+};
+
+if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {_unitGroup setVariable ["HC_Ready",true];};
 
 true

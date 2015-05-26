@@ -1,12 +1,15 @@
 private ["_vehicle","_victim","_unitGroup","_parachuted"];
 
 _victim = _this select 0;
-_unitGroup = _this select 1;
+_unitGroup = _this select 2;
 
 _vehicle = (_unitGroup getVariable ["assignedVehicle",objNull]);
+//diag_log format ["Debug: %1 assigned vehicle is %2.",_unitGroup,_vehicle];
 if (alive _vehicle) then {
+	//diag_log format ["Debug: %1 assigned vehicle %2 is alive.",_victim,_unitGroup,_vehicle];
 	if (_victim getVariable ["isDriver",false]) then {
-		_unitGroup setVariable ["unitType","aircrashed"]; //prevent this case from being run for ejected non-pilot units
+		//diag_log format ["Debug: %1 is driver of %2 assigned vehicle %3",_unitGroup,_vehicle];
+		if !((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {_unitGroup setVariable ["unitType","aircrashed"];};
 		_parachuted = [_vehicle,_unitGroup] call A3EAI_heliEvacuated;
 		if (_parachuted) then {
 			_nul = _vehicle spawn {

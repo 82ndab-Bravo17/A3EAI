@@ -21,17 +21,17 @@ _trigger setVariable ["unitLevel",_unitLevel];
 _trigger setVariable ["maxUnits",[_unitsAlive,0]];
 _trigger setVariable ["respawn",false]; 					//landed AI units should never respawn
 _trigger setVariable ["permadelete",true]; 	//units should be permanently despawned
-_trigger setVariable ["spawnType","static"];
+_trigger setVariable ["spawnType","vehiclecrew"];
 
 _unitGroup setVariable ["GroupSize",_unitsAlive];
-_unitGroup setVariable ["unitType","static"];
+_unitGroup setVariable ["unitType","vehiclecrew"];
 _unitGroup setVariable ["trigger",_trigger];
 
 [_trigger,"A3EAI_staticTriggerArray"] call A3EAI_updateSpawnCount;
 0 = [_trigger] spawn A3EAI_despawn_static;
 
 if !(A3EAI_HCObjectOwnerID isEqualTo 0) then {
-	A3EAI_sendGroupTriggerVars_PVC = [[_unitGroup,_trigger],[_unitGroup],75,1,1,[_unitsAlive,0],0,"static",false,true];
+	A3EAI_sendGroupTriggerVars_PVC = [[_unitGroup,_trigger],[_unitGroup],75,1,1,[_unitsAlive,0],0,"vehiclecrew",false,true];
 	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_sendGroupTriggerVars_PVC";
 };
 

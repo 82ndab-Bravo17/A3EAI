@@ -1,6 +1,7 @@
-//Generates static spawns for maps that A3EAI is not configured to support
+private ["_expireTime", "_spawnsCreated", "_startTime", "_cfgWorldName"];
 
-waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready"};
+_expireTime = diag_tickTime + 300;
+waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready" && {(!isNil "EPOCH_BuildingSlotCount") or {diag_tickTime > _expireTime}}};
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: A3EAI is generating static spawns."];};
 
@@ -15,10 +16,10 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 	_placeType = _x select 2;
 	
 	if !(_placeName in A3EAI_staticBlacklistLocations) then {
-		if (!(surfaceIsWater _placePos)) then {
+		if !(surfaceIsWater _placePos) then {
 			private ["_nearbldgs"];
 			_nearbldgs = _placePos nearObjects ["HouseBase",250];
-			if ((count _nearbldgs) > 20) then {
+			if (((count _nearbldgs) > 20) && {({if ((typeOf _x) isEqualTo "PlotPole_EPOCH") exitWith {1}} count _nearbldgs) isEqualTo 0}) then {
 				_spawnPositions = [];
 				_spawnPoints = 0;
 				{

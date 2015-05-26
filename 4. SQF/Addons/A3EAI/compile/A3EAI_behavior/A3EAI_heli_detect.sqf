@@ -1,7 +1,7 @@
 private ["_unitGroup","_detectBase","_detectFactor","_vehicle","_canParaDrop","_detectStartPos"];
 _unitGroup = _this select 0;
 
-if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = vehicle (leader _unitGroup);
 uiSleep 2;
@@ -11,7 +11,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_detectStartPos = getPosASL _vehicle;
 	_detectStartPos set [2,0];
 	_canParaDrop = ((_unitGroup getVariable ["HeliReinforceOrdered",false]) or {(A3EAI_paraDropChance call A3EAI_chance) && {(diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",-A3EAI_paraDropCooldown])) > A3EAI_paraDropCooldown}});
-	while {!(_vehicle getVariable ["heli_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
+	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
 		private ["_detected","_detectOrigin","_startPos"];
 		//diag_log format ["DEBUG: Group %1 AI %2 is beginning detection sweep...",_unitGroup,(typeOf _vehicle)];
 		_startPos = getPosATL _vehicle;
@@ -21,7 +21,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 		if ((count _detected) > 10) then {_detected resize 10};
 		//diag_log format ["DEBUG: Group %1 AI %2 has paradrop available: %3",_unitGroup,(typeOf _vehicle),((diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",diag_tickTime])) > 1800)];
 		{
-			if ((isPlayer _x) && {!(captive _x)}) then {
+			if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 4}) then {
 				if (_canParaDrop) then {
 					if (_unitGroup getVariable ["HeliReinforceOrdered",false]) then {
 						_unitGroup setVariable ["HeliReinforceOrdered",false];
@@ -41,7 +41,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > 600) or {_vehicle getVariable ["heli_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
+		if (((_vehicle distance _detectStartPos) > 600) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
 		uiSleep 15;
 	};
 };

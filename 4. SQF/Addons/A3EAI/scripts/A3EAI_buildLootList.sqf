@@ -1,10 +1,10 @@
-private ["_startTime", "_lootList1", "_lootList2", "_lootList", "_items", "_itemClassInfo", "_itemClassBias", "_itemClassType", "_item", "_itemSubClass", "_itemSubClasses", "_itemInfo", "_itemBias", "_itemType"];
+private ["_startTime", "_lootList1", "_lootList2", "_items", "_itemClassInfo", "_itemClassBias", "_itemClassType", "_item", "_itemSubClass", "_itemSubClasses", "_itemInfo", "_itemBias", "_itemType"];
 
 _startTime = diag_tickTime;
 
 _lootList1 = [configFile >> "CfgLootTable" >> "Generic","items",[]] call BIS_fnc_returnConfigEntry;
 _lootList2 = [configFile >> "CfgLootTable" >> "GenericBed","items",[]] call BIS_fnc_returnConfigEntry;
-_lootList = _lootList1 + _lootList2;
+_lootList1 append _lootList2;
 
 _items = [];
 {
@@ -30,11 +30,15 @@ _items = [];
 			} forEach _itemSubClasses;
 		};
 	};
-} forEach _lootList;
+} forEach _lootList1;
 
 if !(_items isEqualTo []) then {
 	A3EAI_MiscLoot1 = _items;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 generic loot classnames in %2 seconds.",(count _items),diag_tickTime - _startTime]};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 generic loot classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
+		if (A3EAI_debugLevel > 1) then {
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_MiscLoot1: %1",A3EAI_MiscLoot1];
+		};
+	};
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate loot classname list. Classnames from A3EAI_config.sqf used instead.";
 };

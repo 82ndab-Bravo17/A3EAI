@@ -30,7 +30,7 @@ if (
 	if (A3EAI_radioMsgs) then {
 		_leader = (leader _unitGroup);
 		if ((_leader distance _targetPlayer) < 250) then {
-			_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+			_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 			if !(_nearbyUnits isEqualTo []) then {
 				if ((count _nearbyUnits) > 10) then {_nearbyUnits resize 10;};
 				if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {

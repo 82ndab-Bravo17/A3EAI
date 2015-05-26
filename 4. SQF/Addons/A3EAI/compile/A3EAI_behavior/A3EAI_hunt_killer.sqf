@@ -40,7 +40,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	
 	if (A3EAI_debugMarkersEnabled) then {
 		_markername = format ["%1 Target",_unitGroup];
-		if ((getMarkerColor _markername) != "") then {deleteMarker _markername; uiSleep 0.5;};
+		if (_markername in allMapMarkers) then {deleteMarker _markername; uiSleep 0.5;};
 		_marker = createMarker [_markername,getPosASL _targetPlayer];
 		_marker setMarkerText _markername;
 		_marker setMarkerType "mil_warning";
@@ -66,7 +66,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 		if ((A3EAI_radioMsgs) && {0.6 call A3EAI_chance}) then {
 			_leader = (leader _unitGroup);
 			if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST}) then {
-				_nearbyUnits = _targetPlayerPos nearEntities [["Epoch_Male_F","Epoch_Female_F","Car"],TRANSMIT_RANGE];
+				_nearbyUnits = _targetPlayerPos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],TRANSMIT_RANGE];
 				if !(_nearbyUnits isEqualTo []) then {	//Have at least 1 player to send a message to
 					if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {	//Have at least 1 AI unit to send a message from
 						_speechIndex = (floor (random 3));
@@ -121,7 +121,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 				if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST} && {((_unitGroup getVariable ["GroupSize",0]) > 1)} && {isPlayer _targetPlayer}) then {
 					_radioText = if (alive _targetPlayer) then {4} else {5};
 					_radioSpeech = [_radioText,[name (leader _unitGroup)]];
-					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["Car","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 					{
 						if ((isPlayer _x) && {({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
 							[_x,_radioSpeech] call A3EAI_radioSend;

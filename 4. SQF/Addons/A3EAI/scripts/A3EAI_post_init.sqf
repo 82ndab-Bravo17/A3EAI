@@ -45,7 +45,12 @@ A3EAI_customInfantrySpawnQueue = [];
 A3EAI_createCustomSpawnQueue = [];
 A3EAI_customVehicleSpawnQueue = [];
 A3EAI_randomInfantrySpawnQueue = [];
-A3EAI_hiddenObjectsList = [];
+A3EAI_activeReinforcements = [];
+A3EAI_reinforcedPositions = [];
+A3EAI_spawnChanceMultiplier = 1;
+//A3EAI_HCAllowedTypes = ["static", "dynamic", "random", /*"air",*/ "land", "staticcustom", /*"aircustom",*/ "landcustom", "vehiclecrew"/*, "air_reinforce"*/];
+A3EAI_HCAllowedTypes = ["static", "dynamic", "random", "air", "land", "staticcustom", "aircustom", "landcustom", "vehiclecrew", "air_reinforce"];
+A3EAI_lastGroupTransfer = 0;
 
 if (A3EAI_enableHC) then {
 	[] call compile preprocessFileLineNumbers format ["%1\init\A3EAI_ServerHC_functions.sqf",A3EAI_directory];
@@ -127,6 +132,10 @@ if (A3EAI_dynamicLootLargeList) then {
 	waitUntil {uiSleep 0.05; scriptDone _lootlistlarge};
 };
 
+if (A3EAI_dynamicOpticsList) then {
+	_weaponScopes = [] execVM format ['%1\scripts\A3EAI_buildScopeList.sqf',A3EAI_directory];
+	waitUntil {uiSleep 0.05; scriptDone _weaponScopes};
+};
 
 //Check classname tables if enabled
 if (A3EAI_verifyClassnames) then {

@@ -37,7 +37,7 @@ if ((count _positionArray) isEqualTo 0) then {
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawn trigger %1 is generating spawn positions from nearby buildings.",triggerText _trigger];};
 } else {
 	{
-		if ((getMarkerColor _x) != "") then {
+		if (_x in allMapMarkers) then {
 			_pos = getMarkerPos _x;
 				if !(surfaceIsWater _pos) then {
 				_locationArray pushBack _pos;

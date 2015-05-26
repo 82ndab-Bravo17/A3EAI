@@ -71,17 +71,29 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 } forEach A3EAI_tableChecklist;
 
 {
-	if (!((_x select 0) isKindOf "Air") or {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_heliList array: %1.",(_x select 0)];
-		A3EAI_heliList set [_forEachIndex,""];
+	call {
+		if (!((_x select 0) isKindOf "Air")) exitWith {
+			diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_heliList array: %1.",(_x select 0)];
+			A3EAI_heliList set [_forEachIndex,""];
+		};
+		if (A3EAI_checkVehicleInit && {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) exitWith {
+			diag_log format ["[A3EAI] Removing vehicle with init statement from A3EAI_heliList array: %1.",(_x select 0)];
+			A3EAI_heliList set [_forEachIndex,""];
+		};
 	};
 } forEach A3EAI_heliList;
 if ("" in A3EAI_heliList) then {A3EAI_heliList = A3EAI_heliList - [""];};
 
 {
-	if (!((_x select 0) isKindOf "LandVehicle") or {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_vehList array: %1.",(_x select 0)];
-		A3EAI_vehList set [_forEachIndex,""];
+	call {
+		if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
+			diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
+			A3EAI_heliList set [_forEachIndex,""];
+		};
+		if (A3EAI_checkVehicleInit && {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) exitWith {
+			diag_log format ["[A3EAI] Removing vehicle with init statement from A3EAI_vehList array: %1.",(_x select 0)];
+			A3EAI_heliList set [_forEachIndex,""];
+		};
 	};
 } forEach A3EAI_vehList;
 if ("" in A3EAI_vehList) then {A3EAI_vehList = A3EAI_vehList - [""];};
@@ -125,6 +137,7 @@ if ("" in A3EAI_sniperList) then {A3EAI_sniperList = A3EAI_sniperList - [""];};
 	};
 } forEach A3EAI_launcherTypes;
 if ("" in A3EAI_launcherTypes) then {A3EAI_launcherTypes = A3EAI_launcherTypes - [""];};
+
 
 //Anticipate cases where all elements of an array are invalid
 if (A3EAI_pistolList isEqualTo []) then {A3EAI_pistolList = ["hgun_Pistol_heavy_01_F","hgun_P07_F","hgun_Rook40_F","hgun_Pistol_heavy_02_F","1911_pistol_epoch","hgun_ACPC2_F","ruger_pistol_epoch"]};

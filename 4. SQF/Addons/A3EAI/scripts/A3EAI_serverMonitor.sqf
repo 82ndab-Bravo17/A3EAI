@@ -1,10 +1,11 @@
 //Function frequency definitions
 #define CLEANDEAD_FREQ 600
-#define VEHICLE_CLEANUP_FREQ 30
+#define VEHICLE_CLEANUP_FREQ 60
 #define LOCATION_CLEANUP_FREQ 360
 #define RANDSPAWN_CHECK_FREQ 360
 #define RANDSPAWN_EXPIRY_TIME 1080
 #define SIDECHECK_TIME 1200
+#define UPDATE_PLAYER_COUNT_FREQ 60
 
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Server Monitor will start in 60 seconds."};
 
@@ -16,6 +17,27 @@ _deleteObjects = _currentTime;
 _dynLocations = _currentTime;
 _checkRandomSpawns = _currentTime - (RANDSPAWN_CHECK_FREQ/2);
 _sideCheck = _currentTime;
+_playerCountTime = _currentTime - UPDATE_PLAYER_COUNT_FREQ;
+
+//Setup variables
+_currentPlayerCount = 0;
+_lastPlayerCount = 0;
+_multiplierLowPlayers = 0;
+_multiplierHighPlayers = 0;
+_maxSpawnChancePlayers = (A3EAI_playerCountThreshold max 1);
+
+if (A3EAI_upwardsChanceScaling) then {
+	_multiplierLowPlayers = A3EAI_chanceScalingThreshold;
+	_multiplierHighPlayers = 1;
+} else {
+	_multiplierLowPlayers = 1;
+	_multiplierHighPlayers = A3EAI_chanceScalingThreshold;
+};
+
+//Cleanup global variables
+A3EAI_chanceScalingThreshold = nil;
+A3EAI_upwardsChanceScaling = nil;
+A3EAI_playerCountThreshold = nil;
 
 //Local functions
 _getUptime = {
@@ -48,17 +70,17 @@ while {true} do {
 			/*
 			if (!isNil "_deathTime") then {
 				diag_log format ["A3EAI Cleanup Debug: Checking unit %1 (%2). diag_tickTime: %3. deathTime: %4.",_x,typeOf _x,diag_tickTime,_deathTime];
-				diag_log format ["A3EAI Cleanup Debug: is CAManBase: %1. Timer complete: %2. No players: %3.",(_x isKindOf "CAManBase"),((diag_tickTime - _deathTime) > A3EAI_cleanupDelay),(({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","Car"],30])) isEqualTo 0)];
+				diag_log format ["A3EAI Cleanup Debug: is CAManBase: %1. Timer complete: %2. No players: %3.",(_x isKindOf "CAManBase"),((diag_tickTime - _deathTime) > A3EAI_cleanupDelay),(({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0)];
 			};*/
 			if (!isNil "_deathTime") then {
 				if (_x isKindOf "CAManBase") then {
 					//diag_log "A3EAI Cleanup Debug: Unit type is CAManBase";
 					if ((_currentTime - _deathTime) > A3EAI_cleanupDelay) then {
 						//diag_log "A3EAI Cleanup Debug: Timer complete, checking for nearby players";
-						if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","Car"],30])) isEqualTo 0) then {
+						if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0) then {
 							//diag_log "A3EAI Cleanup Debug: No nearby players. Deleting unit";
 							_kryptoDevice = _x getVariable ["KryptoDevice",objNull];
-							if (!isNull _kryptoDevice) then {deleteVehicle _kryptoDevice};	//Delete Krypto item if not already removed
+							if !(isNull _kryptoDevice) then {deleteVehicle _kryptoDevice};	//Delete Krypto item if not already removed
 							_x call _purgeEH;
 							//diag_log format ["DEBUG :: Deleting object %1 (type: %2).",_x,typeOf _x];
 							deleteVehicle _x;
@@ -68,7 +90,7 @@ while {true} do {
 				} else {
 					if (_x isKindOf "AllVehicles") then {
 						if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
-							if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","Car"],60])) isEqualTo 0) then {
+							if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],60])) isEqualTo 0) then {
 								if (_x in A3EAI_monitoredObjects) then {
 									{
 										if (!(alive _x)) then {
@@ -159,19 +181,30 @@ while {true} do {
 		_checkRandomSpawns = _currentTime;
 	};
 	
+	if ((_currentTime - _playerCountTime) > UPDATE_PLAYER_COUNT_FREQ) then {
+		_currentPlayerCount = ({isPlayer _x} count playableUnits);
+		if (A3EAI_HCIsConnected) then {_currentPlayerCount = _currentPlayerCount - 1};
+		if !(_lastPlayerCount isEqualTo _currentPlayerCount) then {
+			A3EAI_spawnChanceMultiplier = linearConversion [1, _maxSpawnChancePlayers, _currentPlayerCount, _multiplierLowPlayers, _multiplierHighPlayers, true];
+			_lastPlayerCount = _currentPlayerCount;
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Updated A3EAI_spawnChanceMultiplier to %1",A3EAI_spawnChanceMultiplier];};
+		};
+		_playerCountTime = _currentTime;
+	};
+	
 	//Check for unwanted side modifications
 	if ((_currentTime - _sideCheck) > SIDECHECK_TIME) then {
-		if ((resistance getFriend west) > 0) then {resistance setFriend [west, 0]};
-		if ((resistance getFriend east) > 0) then {resistance setFriend [east, 0]};
-		if ((east getFriend resistance) > 0) then {east setFriend [resistance, 0]};
-		if ((west getFriend resistance) > 0) then {west setFriend [resistance, 0]};
-		if ((resistance getFriend resistance) < 1) then {resistance setFriend [resistance, 1]};
+		if !((resistance getFriend west) isEqualTo 0) then {resistance setFriend [west, 0]};
+		if !((resistance getFriend east) isEqualTo 0) then {resistance setFriend [east, 0]};
+		if !((east getFriend resistance) isEqualTo 0) then {east setFriend [resistance, 0]};
+		if !((west getFriend resistance) isEqualTo 0) then {west setFriend [resistance, 0]};
+		if !((resistance getFriend resistance) isEqualTo 1) then {resistance setFriend [resistance, 1]};
 		_sideCheck = _currentTime;
 	};
 	
 	if (A3EAI_debugMarkersEnabled) then {
 		{
-			if ((getMarkerColor _x) != "") then {
+			if (_x in allMapMarkers) then {
 				_x setMarkerPos (getMarkerPos _x);
 			} else {
 				A3EAI_mapMarkerArray set [_forEachIndex,""];
@@ -181,7 +214,8 @@ while {true} do {
 		A3EAI_mapMarkerArray = A3EAI_mapMarkerArray - [""];
 	};
 	
-	A3EAI_activeGroupAmount = ({!isNull _x} count A3EAI_activeGroups);
+	A3EAI_activeGroups = A3EAI_activeGroups - [grpNull];
+	A3EAI_activeGroupAmount = (count A3EAI_activeGroups);
 	
 	//Report statistics to RPT log
 	if ((A3EAI_monitorRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorRate)}) then {

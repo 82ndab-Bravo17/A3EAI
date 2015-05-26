@@ -1,8 +1,9 @@
-private ["_victim","_vehicle","_unitGroup","_groupIsEmpty"];
+private ["_victim","_killer","_vehicle","_unitGroup","_groupIsEmpty"];
 
 _victim = _this select 0;
-_unitGroup = _this select 1;
-_groupIsEmpty = _this select 2;
+_killer = _this select 1;
+_unitGroup = _this select 2;
+_groupIsEmpty = _this select 3;
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
 

@@ -22,6 +22,9 @@ A3EAI_monitorRate = 300;
 //If disabled, any invalid classnames will not be removed and clients may crash if AI bodies with invalid items are looted. Only disable if a previous scan shows no invalid classnames (Default: true).										
 A3EAI_verifyClassnames = true;
 
+//Enable filter against vehicles with init statements, which may cause BattlEye kicks. Enable if experiencing BattlEye kicks after adding new vehicle classnames (Default: false).
+A3EAI_checkVehicleInit = false;
+
 //Enables checking of all A3EAI config settings. (Default: true)
 A3EAI_verifySettings = true;
 
@@ -32,8 +35,7 @@ A3EAI_cleanupDelay = 900;
 A3EAI_loadCustomFile = false;
 
 
-
-/*	A3EAI HC Settings - NOTE: NOT YET SUPPORTED!
+/*	A3EAI HC Settings
 --------------------------------------------------------------------------------------------------------------------*/	
 
 //Enables A3EAI headless client support. (Default: false)
@@ -48,28 +50,40 @@ A3EAI_waitForHC = false;
 	If a setting is disabled, A3EAI will use the corresponding classname table further below. See "AI skin, weapon, loot, and equipment settings" section.
 --------------------------------------------------------------------------------------------------------------------*/	
 
-//Enable to generate AI uniform types from Epoch loot tables (Default: true)
+//true: Generate AI uniform types from Epoch loot tables (Default)
+//false: Uniforms defined by A3EAI_uniformTypes0, A3EAI_uniformTypes1, A3EAI_uniformTypes2, A3EAI_uniformTypes3
 A3EAI_dynamicUniformList = true;
 
-//Enable to generate AI skin types from Epoch loot tables (Default: true)
+//true: Generate AI weapons from Epoch loot tables (Default)
+//false: Weapons defined by A3EAI_pistolList, A3EAI_rifleList, A3EAI_machinegunList, A3EAI_sniperList
 A3EAI_dynamicWeaponList = true;
 
-//Enable to generate AI backpack types from Epoch loot tables (Default: true)
+//true: Use Epoch loot table data as whitelist for AI-usable weapon scopes (Default)
+//false: Scopes defined by A3EAI_weaponOpticsList
+A3EAI_dynamicOpticsList = true;
+
+//true: Generate AI backpack types from Epoch loot tables (Default)
+//false: Backpacks defined by A3EAI_backpackTypes0, A3EAI_backpackTypes1, A3EAI_backpackTypes2, A3EAI_backpackTypes3
 A3EAI_dynamicBackpackList = true;
 
-//Enable to generate AI backpack types from Epoch loot tables (Default: true)
+//true: Generate AI backpack types from Epoch loot tables (Default)
+//false: Vests defined by A3EAI_vestTypes0, A3EAI_vestTypes1, A3EAI_vestTypes2, A3EAI_vestTypes3
 A3EAI_dynamicVestList = true;
 
-//Enable to generate AI headgear types from Epoch loot tables (Default: true)
+//true: Generate AI headgear types from Epoch loot tables (Default)
+//false: Headgear defined by A3EAI_headgearTypes0, A3EAI_headgearTypes1, A3EAI_headgearTypes2, A3EAI_headgearTypes3
 A3EAI_dynamicHeadgearList = true;
 
-//Enable to generate AI food types from Epoch loot tables (Default: true)
+//true: Generate AI food types from Epoch loot tables (Default)
+//false: Food defined by A3EAI_foodLoot
 A3EAI_dynamicFoodList = true;
 
-//Enable to generate AI generic loot types from Epoch loot tables (Default: true)
+//true: Generate AI generic loot types from Epoch loot tables (Default)
+//false: Loot defined by A3EAI_MiscLoot1
 A3EAI_dynamicLootList = true;
 
-//Enable to generate AI generic loot (large) types from Epoch loot tables (Default: true)
+//true: Generate AI generic loot (large) types from Epoch loot tables (Default)
+//false: Loot defined by A3EAI_MiscLoot2
 A3EAI_dynamicLootLargeList = true;
 
 //Classnames of weapons to ignore from Epoch loot tables
@@ -77,7 +91,16 @@ A3EAI_dynamicWeaponBlacklist = [];
 
 
 /*	Shared AI Unit Settings. These settings affect all AI spawned unless noted otherwise.
---------------------------------------------------------------------------------------------------------------------*/		
+--------------------------------------------------------------------------------------------------------------------*/	
+
+//Number of online players required for maximum (or minimum) AI spawn chance. Affects Static, Dynamic, Random AI spawns. (Default: 20)	
+A3EAI_playerCountThreshold = 20;
+
+//Spawn chance at player count threshold defined by A3EAI_playerCountThreshold
+A3EAI_chanceScalingThreshold = 0.50;
+
+//true: Spawn chance multiplier scales upwards from the above defined value to 1.00. false: Spawn chance multiplier scales downwards from 1.00 to the above defined value.
+A3EAI_upwardsChanceScaling = true;
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_village = 1; //1
@@ -224,25 +247,27 @@ A3EAI_heliList = [
 ];
 
 //Maximum number of gunner units per air vehicle. Limited by actual number of available gunner positions. (Default: 2)
+//Affects: All AI air vehicle patrols, including custom and reinforcement.
 A3EAI_heliGunnerUnits = 2;
 
-//If enabled, A3EAI will remove all missile/rocket-type weaponry from spawned air vehicles. Affects both map-wide patrols and custom-spawned air vehicles. (Default: true)
+//If enabled, A3EAI will remove all missile/rocket-type weaponry from spawned air vehicles. Affects all air vehicle types (patrols/custom/etc). (Default: true)
+//Affects: All AI air vehicle patrols, including custom and reinforcement.
 A3EAI_removeMissileWeapons = true;
 
-//Probability of AI helicopter sucessfully detecting player if there is line-of-sight. AI helicopters will conduct a visual sweep upon arriving at each waypoint and some distance after leaving. (Default: 0.70)
-A3EAI_detectChance = 0.70;
-
-//Probability to send first available AI helicopter to reinforce dynamic AI group. No effect if A3EAI_maxHeliPatrols is set to zero. (Default: 0.30)
-A3EAI_heliReinforceChance = 0.30;
+//Probability of AI helicopter sucessfully detecting player if there is line-of-sight. AI helicopters will conduct a visual sweep upon arriving at each waypoint and some distance after leaving. (Default: 0.80)
+//Affects: All AI air vehicle patrols, including custom and reinforcement.
+A3EAI_detectChance = 0.80;
 
 //Probability of AI to deploy units by parachute if players are nearby when helicopter is investigating a waypoint. (Default: 0.50)
-//Note: Helicopters called to reinforce a position will always deploy a paradrop group. Probability of reinforcement determined by A3EAI_heliReinforceChance.
+//Affects: Air vehicle patrols.
 A3EAI_paraDropChance = 0.50;
 
 //Cooldown time for AI paradrop deployment in seconds. Note: Cooldown does not affect helicopter reinforcement for dynamic AI spawns. (Default: 1800).
+//Affects: Air vehicle patrols.
 A3EAI_paraDropCooldown = 1800;
 
 //Number of AI to paradrop if players are nearby when helicopter is investigating a waypoint, or if helicopter is reinforcing a dynamic AI spawn. Limited by number of cargo seats available in the vehicle. (Default: 3)
+//Affects: Air vehicle patrols, air reinforcements.
 A3EAI_paraDropAmount = 3;
 
 
@@ -277,6 +302,30 @@ A3EAI_vehGunnerUnits = 2;
 
 //Maximum number of cargo units per land vehicle. Limited by actual number of available cargo positions. (Default: 3)
 A3EAI_vehCargoUnits = 3;
+
+
+/*	AI Air Reinforcement Settings
+--------------------------------------------------------------------------------------------------------------------*/
+
+//Maximum allowed number of simultaneous active reinforcements (Default: 5)
+A3EAI_maxAirReinforcements = 5;
+
+//Air vehicles to use as reinforcement vehicles. Default: ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]
+//Armed air vehicles will detect and engage players within reinforcement area. Unarmed air vehicles will deploy an AI paradrop group.
+A3EAI_airReinforcementVehicles = ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]; 
+
+//Probability to spawn reinforcements for each AI level.
+A3EAI_airReinforcementSpawnChance0 = 0.00; //Probability of reinforcing Level 0 AI (Default: 0.00)
+A3EAI_airReinforcementSpawnChance1 = 0.10; //Probability of reinforcing Level 1 AI (Default: 0.15)
+A3EAI_airReinforcementSpawnChance2 = 0.30; //Probability of reinforcing Level 2 AI (Default: 0.30)
+A3EAI_airReinforcementSpawnChance3 = 0.50; //Probability of reinforcing Level 3 AI (Default: 0.45)
+
+//AI types permitted to summon reinforcements. Default: ["static","dynamic","random"]
+//Usable AI types: "static", "dynamic", "random", "air", "land", "staticcustom", "aircustom", "landcustom", "vehiclecrew"
+A3EAI_airReinforcementAllowedTypes = ["static","dynamic","random"];
+
+//Maximum time for reinforcement for armed air vehicles in seconds. AI air vehicle will leave the area after this time if not destroyed. (Default: 300)
+A3EAI_airReinforcementDuration = 300;
 
 
 /*	Shared AI Vehicle (Air & Land) Settings
@@ -394,8 +443,8 @@ A3EAI_underbarrelChance3 = 0.75;
 //Maximum amount of Krypto generated for level 0-3 AI. Actual amount will be randomized up to the specified amount.
 A3EAI_kryptoAmount0 = 25; 	//Default for level 0 AI: 25
 A3EAI_kryptoAmount1 = 50; 	//Default for level 1 AI: 50
-A3EAI_kryptoAmount2 = 100; 	//Default for level 2 AI: 100
-A3EAI_kryptoAmount3 = 200; 	//Default for level 3 AI: 200
+A3EAI_kryptoAmount2 = 75; 	//Default for level 2 AI: 75
+A3EAI_kryptoAmount3 = 100; 	//Default for level 3 AI: 100
 
 //Maximum number of food loot items found on AI. (Default: 1)								
 A3EAI_foodLootCount = 1;
@@ -452,6 +501,10 @@ A3EAI_machinegunList = ["LMG_Zafir_F","arifle_MX_SW_F","arifle_MX_SW_Black_F","L
 A3EAI_sniperList = ["m107_EPOCH","m107Tan_EPOCH","srifle_DMR_02_F","srifle_DMR_02_camo_F","srifle_DMR_02_sniper_F","srifle_DMR_03_F","srifle_DMR_03_khaki_F","srifle_DMR_03_tan_F","srifle_DMR_03_multicam_F","srifle_DMR_03_woodland_F","srifle_DMR_03_spotter_F","srifle_DMR_04_F","srifle_DMR_04_Tan_F","srifle_DMR_05_blk_F","srifle_DMR_05_hex_F","srifle_DMR_05_tan_f","srifle_DMR_06_camo_F","srifle_DMR_06_olive_F","srifle_LRR_F","srifle_GM6_F","srifle_DMR_01_F","M14_EPOCH","M14Grn_EPOCH","srifle_EBR_F"];
 
 
+//AI weapon scope attachment settings. Note: A3EAI_weaponOpticsList will not be read if A3EAI_dynamicOpticsList is enabled.
+A3EAI_weaponOpticsList = ["optic_NVS","optic_SOS","optic_LRPS","optic_AMS","optic_AMS_khk","optic_AMS_snd","optic_KHS_blk","optic_KHS_hex","optic_KHS_old","optic_KHS_tan","optic_DMS","optic_Arco","optic_Hamr","Elcan_epoch","Elcan_reflex_epoch","optic_MRCO","optic_Holosight","optic_Holosight_smg","optic_Aco","optic_ACO_grn","optic_Aco_smg","optic_ACO_grn_smg","optic_Yorris","optic_MRD"];
+
+
 //AI backpack types (for AI levels 0-3). Note: A3EAI_backpackTypes0-3 will not be read if A3EAI_dynamicBackpackList is enabled.
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 A3EAI_backpackTypes0 = ["B_AssaultPack_cbr", "B_AssaultPack_dgtl", "B_AssaultPack_khk", "B_AssaultPack_mcamo", "B_AssaultPack_ocamo", "B_AssaultPack_rgr", "B_AssaultPack_sgg", "B_Carryall_cbr", "B_Carryall_khk", "B_Carryall_mcamo", "B_Carryall_ocamo", "B_Carryall_oli", "B_Carryall_oucamo", "B_FieldPack_blk", "B_FieldPack_cbr", "B_FieldPack_khk", "B_FieldPack_ocamo", "B_FieldPack_oli", "B_FieldPack_oucamo", "B_Kitbag_cbr", "B_Kitbag_mcamo", "B_Kitbag_rgr", "B_Kitbag_sgg", "B_Parachute", "B_TacticalPack_blk", "B_TacticalPack_mcamo", "B_TacticalPack_ocamo", "B_TacticalPack_oli", "B_TacticalPack_rgr", "smallbackpack_red_epoch", "smallbackpack_green_epoch", "smallbackpack_teal_epoch", "smallbackpack_pink_epoch"];
@@ -486,28 +539,37 @@ A3EAI_MiscLoot2 = ["MortarBucket","MortarBucket","ItemCorrugated","CinderBlocks"
 
 
 //AI toolbelt item types. Toolbelt items are added to AI inventory upon death. Format: [item classname, item probability]
-//unitLevel level 0-1 AI will use A3EAI_tools0 table, unitLevel level 2-3 AI will use A3EAI_tools1 table. Custom-spawned AI will use A3EAI_tools1 table.
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 A3EAI_tools0 = [
-	["ItemWatch",0.70],["ItemCompass",0.50],["ItemMap",0.40],["ItemGPS",0.05],["EpochRadio0",0.10]
+	["ItemWatch",0.70],["ItemCompass",0.50],["ItemMap",0.50],["ItemGPS",0.05],["EpochRadio0",0.05]
 ];
 A3EAI_tools1 = [
-	["ItemWatch",0.80],["ItemCompass",0.75],["ItemMap",0.70],["ItemGPS",0.15],["EpochRadio0",0.20]
+	["ItemWatch",0.80],["ItemCompass",0.60],["ItemMap",0.60],["ItemGPS",0.10],["EpochRadio0",0.10]
+];
+A3EAI_tools2 = [
+	["ItemWatch",0.80],["ItemCompass",0.70],["ItemMap",0.70],["ItemGPS",0.15],["EpochRadio0",0.15]
+];
+A3EAI_tools3 = [
+	["ItemWatch",0.80],["ItemCompass",0.80],["ItemMap",0.80],["ItemGPS",0.20],["EpochRadio0",0.20]
 ];
 
 
 //AI-useable toolbelt item types. These items are added to AI inventory at unit creation and may be used by AI. Format: [item classname, item probability]
-//unitLevel level 0-1 AI will use A3EAI_gadgets0 table, unitLevel level 2-3 AI will use A3EAI_gadgets1 table. Custom-spawned AI will use A3EAI_gadgets1 table.
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 A3EAI_gadgets0 = [
-	["binocular",0.40],["NVG_EPOCH",0.10]
+	["binocular",0.40],["NVG_EPOCH",0.05]
 ];
 A3EAI_gadgets1 = [
-	["binocular",0.70],["NVG_EPOCH",0.25]
+	["binocular",0.50],["NVG_EPOCH",0.10]
 ];
-
+A3EAI_gadgets2 = [
+	["binocular",0.60],["NVG_EPOCH",0.15]
+];
+A3EAI_gadgets3 = [
+	["binocular",0.70],["NVG_EPOCH",0.20]
+];
 
 //NOTHING TO EDIT BEYOND THIS POINT
 diag_log "[A3EAI] A3EAI configuration file loaded.";

@@ -1,11 +1,24 @@
 private ["_vehicle","_trigger","_pos","_unitsAlive","_unitGroup","_waypointCount"];
 
 _vehicle = (_this select 0);
-
-if (_vehicle getVariable ["heli_disabled",false]) exitWith {};
-_vehicle setVariable ["heli_disabled",true];
-{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
+
+if (isNull _vehicle) exitWith {};
+if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {
+	if ((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {
+		//diag_log format ["Debug: %1",__FILE__];
+		
+		_unitGroup setVariable ["GroupSize",-1];
+		if !(isDedicated) then {
+			A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
+			publicVariableServer "A3EAI_updateGroupSize_PVS";
+		};
+	};
+	false
+};
+
+{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
+_vehicle setVariable ["vehicle_disabled",true];
 _vehicle call A3EAI_respawnAIVehicle;
 if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
 
@@ -31,10 +44,10 @@ if (_unitsAlive > 0) then {
 	} else {
 		A3EAI_addVehicleGroup_PVS = [_unitGroup,_vehicle];
 		publicVariableServer "A3EAI_addVehicleGroup_PVS";
-		_unitGroup setVariable ["unitType","static"];
+		_unitGroup setVariable ["unitType","vehiclecrew"];
 	};
 
-	if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+	if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 	if ((combatMode _unitGroup) isEqualTo "BLUE") then {_unitGroup setCombatMode "YELLOW"};
 
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 landed at %3",_unitGroup,(typeOf _vehicle),mapGridPosition _vehicle];};

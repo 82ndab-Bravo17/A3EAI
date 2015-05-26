@@ -1,4 +1,6 @@
-private ["_unit","_unitLevel","_weaponSelected","_magazine","_gadgetsArray","_backpack","_gadget","_isRifle"];
+private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_uniform", "_backpack", "_vest", "_headgear", "_magazine", "_useGL", "_weaponMuzzles", "_GLWeapon", 
+"_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];
+
 _unit = _this select 0;
 _unitLevel = _this select 1;
 
@@ -12,6 +14,7 @@ if !(_unitLevel in A3EAI_unitLevelsAll) then {
 
 _unit call A3EAI_purgeUnitGear;	//Clear unwanted gear from unit first.
 
+_loadout = [[],[]];
 _weaponSelected = _unitLevel call A3EAI_getWeapon;
 _uniform = (missionNamespace getVariable ["A3EAI_uniformTypes"+str(_unitLevel),A3EAI_uniformTypes3]) call BIS_fnc_selectRandom2;
 _backpack = (missionNamespace getVariable ["A3EAI_backpackTypes"+str(_unitLevel),A3EAI_backpackTypes3]) call BIS_fnc_selectRandom2;
@@ -26,16 +29,45 @@ if ((!isNil "_headgear") && {!(_headgear isEqualTo "")}) then {_unit addHeadgear
 _unit addMagazine _magazine;
 _unit addWeapon _weaponSelected;
 _unit selectWeapon _weaponSelected;
-if ((getNumber (configFile >> "CfgMagazines" >> _magazine >> "count")) < 6) then {_unit addMagazine _magazine};
+(_loadout select 0) pushBack _weaponSelected;
+(_loadout select 1) pushBack _magazine;
+if ((getNumber (configFile >> "CfgMagazines" >> _magazine >> "count")) < 6) then {
+	_unit setVariable ["extraMag",true];
+	_unit addMagazine _magazine;
+};
+
+//Grenades
+_useGL = if !(A3EAI_GLRequirement isEqualTo -1) then {_unitLevel >= A3EAI_GLRequirement} else {false};
+if (_useGL) then {
+	_weaponMuzzles = getArray(configFile >> "cfgWeapons" >> _weaponSelected >> "muzzles");
+	if ((count _weaponMuzzles) > 1) then {
+		_GLWeapon = _weaponMuzzles select 1;
+		_GLMagazines = (getArray (configFile >> "CfgWeapons" >> _weaponSelected >> _GLWeapon >> "magazines"));
+		if ("3Rnd_HE_Grenade_shell" in _GLMagazines) then {
+			_unit addMagazine "3Rnd_HE_Grenade_shell";
+			(_loadout select 0) pushBack _GLWeapon;
+			(_loadout select 1) pushBack "3Rnd_HE_Grenade_shell";
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_unit,_loadout];};
+		} else {
+			if ("1Rnd_HE_Grenade_shell" in _GLMagazines) then {
+				_unit addMagazine "1Rnd_HE_Grenade_shell";
+				(_loadout select 0) pushBack _GLWeapon;
+				(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Modified unit %1 loadout to %2.",_unit,_loadout];};
+			}
+		};
+	};
+};
 
 //Select weapon optics
 _isRifle = ((getNumber (configFile >> "CfgWeapons" >> _weaponSelected >> "type")) isEqualTo 1);
 if ((missionNamespace getVariable [("A3EAI_opticsChance"+str(_unitLevel)),3]) call A3EAI_chance) then {
 	_opticsList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "CowsSlot" >> "compatibleItems");
 	if !(_opticsList isEqualTo []) then {
-		_opticsType = _opticsList call BIS_fnc_selectRandom2;
-		if (_isRifle) then {_unit addPrimaryWeaponItem _opticsType} else {_unit addHandGunItem _opticsType};
-		//diag_log format ["DEBUG :: Added optics item %1 to unit %2.",_opticsType,_unit];
+		_opticsType = A3EAI_weaponOpticsList call BIS_fnc_selectRandom2;
+		if (_opticsType in _opticsList) then {
+			if (_isRifle) then {_unit addPrimaryWeaponItem _opticsType} else {_unit addHandGunItem _opticsType};
+		};
 	};
 };
 
@@ -69,7 +101,27 @@ if ((missionNamespace getVariable [("A3EAI_underbarrelChance"+str(_unitLevel)),3
 	};
 };
 
-_unit setVariable ["loadout",[[_weaponSelected],[_magazine]]];
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Created loadout for unit %1 (unitLevel: %2): %3.",_unit,_unitLevel,[_uniform,_weaponSelected,_magazine,_backpack,_vest,_headgear]];};
+_gadgetsArray = missionNamespace getVariable ["A3EAI_gadgets"+str(_unitLevel),[]];
+for "_i" from 0 to ((count _gadgetsArray) - 1) do {
+	if (((_gadgetsArray select _i) select 1) call A3EAI_chance) then {
+		_gadget = ((_gadgetsArray select _i) select 0);
+		_unit addWeapon _gadget;
+	};
+};
+
+//If unit was not given NVGs, give the unit temporary NVGs which will be removed at death.
+if (A3EAI_tempNVGs && {sunOrMoon < 1}) then {
+	_unit call A3EAI_addTempNVG;
+};
+
+//Give unit temporary first aid kits to allow self-healing (unit level 1+)
+if (A3EAI_enableHealing) then {
+	for "_i" from 1 to (_unitLevel min 3) do {
+		[_unit,"FirstAidKit"] call A3EAI_addItem;
+	};
+};
+
+_unit setVariable ["loadout",_loadout];
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Created loadout for unit %1 (unitLevel: %2): %3.",_unit,_unitLevel,_loadout];};
 
 true

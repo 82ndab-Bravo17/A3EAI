@@ -70,7 +70,7 @@ while {true} do {
 				_index = _playerUID_DB find _playerUID;
 				_playerPos = getPosATL _player;
 				_spawnParams = _playerPos call A3EAI_getSpawnParams;
-				_spawnChance = missionNamespace getVariable ["A3EAI_spawnChance"+str(_spawnParams select 2),0.5];
+				_spawnChance = ((missionNamespace getVariable ["A3EAI_spawnChance"+str(_spawnParams select 2),1]) * A3EAI_spawnChanceMultiplier);
 				if (_spawnChance call A3EAI_chance) then {
 					if (
 						!((vehicle _player) isKindOf "Air") &&												//Player must not be in air vehicle
@@ -96,7 +96,7 @@ while {true} do {
 						if (A3EAI_debugMarkersEnabled) then {
 							_nul = _trigger spawn {
 								_marker = str(_this);
-								if ((getMarkerColor _marker) != "") then {deleteMarker _marker};
+								if (_marker in allMapMarkers) then {deleteMarker _marker};
 								_marker = createMarker[_marker,(getPosASL _this)];
 								_marker setMarkerShape "ELLIPSE";
 								_marker setMarkerType "Flag";

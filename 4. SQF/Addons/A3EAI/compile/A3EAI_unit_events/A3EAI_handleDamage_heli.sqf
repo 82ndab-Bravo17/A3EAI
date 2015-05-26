@@ -6,6 +6,8 @@ _damage = 		_this select 2;				//Resulting level of damage for the selection. (R
 _source = 		_this select 3;				//The source unit that caused the damage. 
 _ammo = 		_this select 4;				//Classname of the projectile that caused inflicted the damage. ("" for unknown, such as falling damage.) 
 
+if !(simulationEnabled _vehicle) exitWith {};
+
 _durability = _vehicle getVariable "durability";
 if (isNil "_durability") then {
 	_vehicle setVariable ["durability",[0,0,0]];

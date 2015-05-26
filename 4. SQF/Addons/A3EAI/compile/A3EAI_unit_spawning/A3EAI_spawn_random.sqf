@@ -12,6 +12,7 @@ _addAI = _this select 4;
 _unitLevel = _this select 5;
 _spawnChance = _this select 6;
 
+_spawnChance = (_spawnChance * A3EAI_spawnChanceMultiplier);
 if (_spawnChance call A3EAI_chance) then {
 	_baseDist = 0;
 	_extraDist = 300;
@@ -46,7 +47,7 @@ if (_spawnChance call A3EAI_chance) then {
 		_spawnPosSelASL = ATLToASL _spawnPosSelected;
 		if ((count _spawnPosSelected) isEqualTo 2) then {_spawnPosSelected set [2,0];};
 		if (
-			({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 150)}) exitWith {1}} count (_spawnPosSelected nearEntities [["Epoch_Male_F","Epoch_Female_F","Car"], 200]) isEqualTo 0) && 
+			({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 150)}) exitWith {1}} count (_spawnPosSelected nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"], 200]) isEqualTo 0) && 
 			{!(surfaceIsWater _spawnPosSelected)} &&
 			{((_spawnPosSelected nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}
 		) then {

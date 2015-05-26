@@ -43,7 +43,15 @@ if !(_items isEqualTo []) then {
 	A3EAI_uniformTypes1 = +_items;
 	A3EAI_uniformTypes2 = +_items;
 	A3EAI_uniformTypes3 = +_items;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 uniform classnames in %2 seconds.",(count _items),diag_tickTime - _startTime]};
+	if (A3EAI_debugLevel > 0) then {
+		diag_log format ["A3EAI Debug: Generated %1 uniform classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
+		if (A3EAI_debugLevel > 1) then {
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes0: %1",A3EAI_uniformTypes0];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes1: %1",A3EAI_uniformTypes1];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes2: %1",A3EAI_uniformTypes2];
+			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes3: %1",A3EAI_uniformTypes3];
+		};
+	};
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate uniform classname list. Classnames from A3EAI_config.sqf used instead.";
 };

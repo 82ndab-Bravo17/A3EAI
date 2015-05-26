@@ -10,7 +10,7 @@ _startPos = getPosATL _target;
 _startPos set [2,0];
 
 _unitLevel = _unitGroup getVariable ["unitLevel",1];
-_paraGroup = ["static"] call A3EAI_createGroup;
+_paraGroup = ["vehiclecrew"] call A3EAI_createGroup;
 
 for "_i" from 1 to _cargoAvailable do {
 	_unit = [_paraGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
@@ -34,7 +34,7 @@ _trigger setVariable ["unitLevel",_unitLevel];
 _trigger setVariable ["maxUnits",[_unitsAlive,0]];
 _trigger setVariable ["respawn",false]; //landed AI units should never respawn
 _trigger setVariable ["permadelete",true]; //units should be permanently despawned
-_trigger setVariable ["spawnType","static"];
+_trigger setVariable ["spawnType","vehiclecrew"];
 
 
 _paraGroup setVariable ["GroupSize",_unitsAlive];
@@ -48,7 +48,7 @@ _paraGroup setVariable ["trigger",_trigger];
 _rearm = [_paraGroup,_unitLevel] spawn A3EAI_addGroupManager;
 
 if (A3EAI_HCIsConnected) then {
-	A3EAI_sendGroupTriggerVars_PVC = [[_paraGroup,_trigger],[_paraGroup],75,1,1,[_unitsAlive,0],0,"static",false,true];
+	A3EAI_sendGroupTriggerVars_PVC = [[_paraGroup,_trigger],[_paraGroup],75,1,1,[_unitsAlive,0],0,"vehiclecrew",false,true];
 	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_sendGroupTriggerVars_PVC";
 };
 

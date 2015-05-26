@@ -19,8 +19,8 @@ if (_isAirVehicle) then {
 	_roadSearching = 0;				//No need to search for road positions for air vehicles
 	_waterPosAllowed = 1; 			//Allow water position for air vehicles
 	_spawnMode = "FLY"; 			//set flying mode for air vehicles
-	_vehiclePosition set [2,180]; 	//spawn air vehicles in air
-	_spawnPos set [2,150]; 			//set marker height in air
+	_vehiclePosition set [2,200]; 	//spawn air vehicles in air
+	_spawnPos set [2,200]; 			//set marker height in air
 	if !(_maxCargoUnits isEqualTo 0) then {_maxCargoUnits = 0}; //disable cargo units for air vehicles
 };
 
@@ -28,7 +28,7 @@ _keepLooking = true;
 _waitTime = 10;
 while {_keepLooking} do {
 	_vehiclePosition = [_spawnPos,random _patrolDist,random(360),_waterPosAllowed,[_roadSearching,200]] call SHK_pos;
-	if (({if (isPlayer _x) exitWith {1}} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"],300])) isEqualTo 0) then {
+	if (({if (isPlayer _x) exitWith {1}} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"],100])) isEqualTo 0) then {
 		_keepLooking = false; //safe area found, continue to spawn the vehicle and crew
 	} else {
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Waiting %1 seconds for area at %2 to have no players nearby to spawn custom AI vehicle %3.",_waitTime,_marker,_vehicleType]};
@@ -58,7 +58,7 @@ call {
 	if (_vehicle isKindOf "Helicopter") exitWith {
 		_vehicle setDir (random 360);
 	};
-	if (_vehicle isKindOf "Car") exitWith {
+	if (_vehicle isKindOf "LandVehicle") exitWith {
 		_nearRoads = _vehiclePosition nearRoads 100;
 		if !(_nearRoads isEqualTo []) then {
 			_nextRoads = roadsConnectedTo (_nearRoads select 0);
@@ -85,10 +85,7 @@ if (_isAirVehicle) then {
 _vehicle allowCrewInImmobile (!_isAirVehicle);
 _vehicle setUnloadInCombat [!_isAirVehicle,false];
 
-if (!(_driver hasWeapon "NVG_EPOCH")) then {
-	_nvg = _driver call A3EAI_addTempNVG;
-};
-
+_nvg = _driver call A3EAI_addTempNVG;
 _driver assignAsDriver _vehicle;
 _driver setVariable ["isDriver",true];
 _unitGroup selectLeader _driver;
@@ -101,9 +98,7 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawned 
 _cargoSpots = _vehicle emptyPositions "cargo";
 for "_i" from 0 to ((_cargoSpots min _maxCargoUnits) - 1) do {
 	_cargo = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
-	if (!(_cargo hasWeapon "NVG_EPOCH")) then {
-		_nvg = _cargo call A3EAI_addTempNVG;
-	};
+	_nvg = _cargo call A3EAI_addTempNVG;
 	_cargo assignAsCargo _vehicle;
 	_cargo moveInCargo [_vehicle,_i];
 };
@@ -145,11 +140,12 @@ if (_isAirVehicle) then {
 0 = [_unitGroup,_spawnPos,_patrolDist,false] spawn A3EAI_BIN_taskPatrol;
 0 = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;
 
-if (A3EAI_enableHC) then {
-	_nul = _unitGroup spawn {
-		uiSleep 30;
-		_this setVariable ["HC_Ready",true];
-	};
+if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
+	_unitGroup setVariable ["HC_Ready",true];
+};
+
+if (_unitType in A3EAI_airReinforcementAllowedTypes) then {
+	_unitGroup setVariable ["ReinforceAvailable",true];
 };
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created custom vehicle spawn at %1 with vehicle type %2 with %3 crew units.",_spawnName,_vehicleType,(count (units _unitGroup))]};

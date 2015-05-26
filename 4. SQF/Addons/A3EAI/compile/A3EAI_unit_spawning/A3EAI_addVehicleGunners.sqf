@@ -16,7 +16,7 @@ _fnc_addGunner = {
 	_unitLevel = _this select 3;
 	
 	_gunner = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
-	if (!(_gunner hasWeapon "NVG_EPOCH")) then {_nvg = _gunner call A3EAI_addTempNVG;};
+	_nvg = _gunner call A3EAI_addTempNVG;
 	_gunner assignAsTurret [_vehicle,_turretPosition];
 	_gunner moveInTurret [_vehicle,_turretPosition];
 	

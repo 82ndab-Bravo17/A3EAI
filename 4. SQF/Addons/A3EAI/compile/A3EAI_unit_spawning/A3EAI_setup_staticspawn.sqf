@@ -10,7 +10,7 @@
 private ["_spawnMarker","_minAI","_addAI","_positionArray","_unitLevel","_numGroups","_patrolDist","_onActStatements","_trigger","_abort"];
 
 _spawnMarker = _this select 0;
-if ((getMarkerColor _spawnMarker) isEqualTo "") exitWith {diag_log format ["A3EAI Error: Static spawn marker %1 does not exist!",_spawnMarker];};
+if (_spawnMarker in allMapMarkers) exitWith {diag_log format ["A3EAI Error: Static spawn marker %1 does not exist!",_spawnMarker];};
 if ((markerAlpha _spawnMarker) > 0) then {_spawnMarker setMarkerAlpha 0};
 
 _abort = true;

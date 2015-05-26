@@ -1,11 +1,24 @@
 private ["_vehicle","_vehPos","_unitGroup"];
 
 _vehicle = (_this select 0);
-
-if (_vehicle getVariable ["heli_disabled",false]) exitWith {false};
-_vehicle setVariable ["heli_disabled",true];
-{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
+
+if (isNull _vehicle) exitWith {};
+if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {
+	if ((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {
+		//diag_log format ["Debug: %1",__FILE__];
+		{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
+		_unitGroup setVariable ["GroupSize",-1];
+		if !(isDedicated) then {
+			A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
+			publicVariableServer "A3EAI_updateGroupSize_PVS";
+		};
+	};
+	false
+};
+
+{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
+_vehicle setVariable ["vehicle_disabled",true];
 _vehicle call A3EAI_respawnAIVehicle;
 _vehPos = getPosATL _vehicle;
 
@@ -37,11 +50,11 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 			} else {
 				A3EAI_addVehicleGroup_PVS = [_unitGroup,_vehicle];
 				publicVariableServer "A3EAI_addVehicleGroup_PVS";
-				_unitGroup setVariable ["unitType","static"];
+				_unitGroup setVariable ["unitType","vehiclecrew"];
 				
 			};
 			
-			if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"IgnoreEnemies_Undo"] call A3EAI_forceBehavior};
+			if ((behaviour (leader _unitGroup)) isEqualTo "CARELESS") then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 			if ((combatMode _unitGroup) isEqualTo "BLUE") then {_unitGroup setCombatMode "YELLOW"};
 		};
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI %1 group %2 parachuted with %3 surviving units.",(typeOf _vehicle),_unitGroup,_unitsAlive];};
@@ -49,7 +62,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 		_unitGroup setVariable ["unitType","aircrashed"];
 		{
 			_x action ["eject",_vehicle];
-			_nul = [_x,_x] call A3EAI_handleDeathEvent;
+			_nul = [_x,objNull] call A3EAI_handleDeathEvent;
 			0 = [_x,_unitLevel] spawn A3EAI_generateLoot;
 		} forEach _units;
 		_unitGroup setVariable ["GroupSize",-1];

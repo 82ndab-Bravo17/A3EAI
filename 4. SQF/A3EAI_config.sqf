@@ -96,7 +96,7 @@ A3EAI_dynamicWeaponBlacklist = [];
 //Number of online players required for maximum (or minimum) AI spawn chance. Affects Static, Dynamic, Random AI spawns. (Default: 20)	
 A3EAI_playerCountThreshold = 20;
 
-//Spawn chance at player count threshold defined by A3EAI_playerCountThreshold
+//If A3EAI_upwardsChanceScaling is true: Initial spawn chance multiplier. If A3EAI_upwardsChanceScaling is false: Final spawn chance multiplier. (Default: 0.50)
 A3EAI_chanceScalingThreshold = 0.50;
 
 //true: Spawn chance multiplier scales upwards from the above defined value to 1.00. false: Spawn chance multiplier scales downwards from 1.00 to the above defined value.

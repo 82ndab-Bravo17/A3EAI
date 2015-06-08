@@ -11,10 +11,6 @@ if (A3EAIC_radio) then {
 		_dialogueParams = (_this select 1) select 1;
 		
 		if ((diag_tickTime - A3EAIC_lastRadioMessage) > 5) then {
-			_sound = format ["UAV_0%1",(floor (random 5) + 1)];
-			playSound [_sound,true];
-			A3EAIC_lastRadioMessage = diag_tickTime;
-		
 			_paramCount = (count _dialogueParams);
 			_dialogueTextTemplate = missionNamespace getVariable [format ["A3EAIC_radioMessage%1",_dialogueType],""];
 			_dialogueTextFormat = call {
@@ -29,7 +25,11 @@ if (A3EAIC_radio) then {
 				};
 				""
 			};
-			systemChat _dialogueTextFormat;
+			if !(_dialogueTextFormat isEqualTo "") then {
+				systemChat _dialogueTextFormat;
+				playSound [format ["UAV_0%1",(floor (random 5) + 1)],true];
+				A3EAIC_lastRadioMessage = diag_tickTime;
+			};
 		};
 	};
 };

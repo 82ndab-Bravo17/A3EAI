@@ -41,7 +41,6 @@ if (isNull _unitGroup) then {
 for "_i" from 1 to (_totalAI max 1) do {
 	private ["_unit"];
 	_unit = [_unitGroup,_unitLevel,_spawnPos] call A3EAI_createUnit;
-	_unit setPos _spawnPos;
 };
 
 if (({if (isPlayer _x) exitWith {1}} count (_spawnPos nearEntities [["Epoch_Male_F", "Epoch_Female_F"],100])) isEqualTo 0) then {

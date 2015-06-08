@@ -40,4 +40,9 @@
 	diag_log format ["Debug: %1",_this];
 };
 
+"A3EAI_cleanupReinforcement_PVC" addPublicVariableEventHandler {
+	(_this select 1) spawn A3EAI_cleanupReinforcementHC;
+	diag_log format ["Debug: %1",_this];
+};
+
 diag_log "Debug: A3EAI HC PVEHs loaded.";

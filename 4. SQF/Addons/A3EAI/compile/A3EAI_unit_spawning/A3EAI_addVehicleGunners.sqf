@@ -24,12 +24,15 @@ _fnc_addGunner = {
 };
 
 {
-	private ["_turretWeapons"];
+	private ["_turretWeapons","_turretMagazines"];
 	_turretWeapons = _vehicle weaponsTurret _x;
 	if !(_turretWeapons isEqualTo []) then {
-		[_vehicle,_x,_unitGroup,_unitLevel] call _fnc_addGunner;
-		_gunnersAdded = _gunnersAdded + 1;
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Added gunner unit %1 to %2 %3 with weapon %4.",_gunnersAdded,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0)];};
+		_turretMagazines = _vehicle magazinesTurret _x;
+		if !(_turretMagazines isEqualTo []) then {
+			[_vehicle,_x,_unitGroup,_unitLevel] call _fnc_addGunner;
+			_gunnersAdded = _gunnersAdded + 1;
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Added gunner unit %1 to %2 %3 with weapon %4.",_gunnersAdded,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0)];};
+		};
 	};
 	if (_gunnersAdded isEqualTo _maxGunners) exitWith {};
 } forEach _vehicleTurrets;

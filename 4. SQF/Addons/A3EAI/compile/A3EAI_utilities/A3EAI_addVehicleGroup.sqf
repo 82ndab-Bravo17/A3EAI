@@ -6,6 +6,9 @@ _vehicle = _this select 1;
 _pos = getPosATL _vehicle;
 _pos set [2,0];
 _unitsAlive = {alive _x} count (units _unitGroup);
+
+if (_unitsAlive isEqualTo 0) exitWith {diag_log format ["A3EAI Error: %1 cannot create trigger area for empty group %2.",__FILE__,_unitGroup];};
+
 _unitLevel = _unitGroup getVariable ["unitLevel",1];
 
 _trigger = createTrigger ["EmptyDetector",_pos];

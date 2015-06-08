@@ -202,14 +202,7 @@ if (isDedicated) then {
 			};
 		} forEach (units _unitGroup);
 	};
-	
-	/*
-	if !(isNull _vehicle) then {
-		A3EAI_enableSimulationGlobal = [_vehicle,true];
-		publicVariableServer "A3EAI_enableSimulationGlobal";
-	};
-	*/
-	
+
 	if (A3EAI_debugLevel > 1) then {
 		_lootPool = _unitGroup getVariable ["LootPool",[]];
 		//diag_log format ["Debug: Found loot pool for group %1 from server: %2",_unitGroup,_lootPool];
@@ -353,21 +346,23 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 				_currentPos = (getPosATL _vehicle);
 				if ((_antistuckPos distance _currentPos) < 100) then {
 					if (canMove _vehicle) then {
-						_tooClose = true;
-						_wpSelect = [];
-						while {_tooClose} do {
-							_wpSelect = (A3EAI_locationsLand call BIS_fnc_selectRandom2) select 1;
-							if (((waypointPosition [_unitGroup,0]) distance _wpSelect) < 300) then {
-								_tooClose = false;
-							} else {
-								uiSleep 0.1;
-							};
-						};
-						_wpSelect = [_wpSelect,random(300),random(360),0,[1,300]] call SHK_pos;
 						[_unitGroup] call A3EAI_fixStuckGroup;
-						[_unitGroup,0] setWPPos _wpSelect;
+						if ((count (waypoints _unitGroup)) isEqualTo 1) then {
+							_tooClose = true;
+							_wpSelect = [];
+							while {_tooClose} do {
+								_wpSelect = (A3EAI_locationsLand call BIS_fnc_selectRandom2) select 1;
+								if (((waypointPosition [_unitGroup,0]) distance _wpSelect) < 300) then {
+									_tooClose = false;
+								} else {
+									uiSleep 0.1;
+								};
+							};
+							_wpSelect = [_wpSelect,random(300),random(360),0,[1,300]] call SHK_pos;
+							[_unitGroup,0] setWPPos _wpSelect;
+							if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI land vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
+						};
 						_antistuckPos = _currentPos;
-						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Antistuck triggered for AI land vehicle %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
 						_antistuckTime = diag_tickTime + (_stuckCheckTime/2);
 					} else {
 						if (!(_vehicle getVariable ["vehicle_disabled",false])) then {

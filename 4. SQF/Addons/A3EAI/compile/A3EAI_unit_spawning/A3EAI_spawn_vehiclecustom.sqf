@@ -47,6 +47,7 @@ _driver moveInDriver _vehicle;
 _vehicle call A3EAI_protectObject;
 _vehicle call A3EAI_secureVehicle;
 _vehicle call A3EAI_clearVehicleCargo;
+_vehicle call A3EAI_randomizeVehicleColor;
 
 call {
 	if (_vehicle isKindOf "Plane") exitWith {
@@ -120,7 +121,7 @@ if (_isAirVehicle) then {
 		_result = _vehicle call A3EAI_clearMissileWeapons; //Remove missile weaponry for air vehicles
 	};
 	
-	if ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) isEqualTo 0) && {_gunnersAdded isEqualTo 0}) then {
+	if ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) isEqualTo 0) && {({_x call A3EAI_checkIsWeapon} count (_vehicle weaponsTurret [-1])) isEqualTo 0} && {_gunnersAdded isEqualTo 0}) then {
 		_unitGroup setBehaviour "CARELESS";
 		_unitGroup setCombatMode "BLUE";
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: AI group %1 air vehicle %2 set to Careless behavior mode",_unitGroup,_vehicleType];};

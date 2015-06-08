@@ -8,6 +8,9 @@ _unit = _unitGroup createUnit ["i_survivor_F",_spawnPos,[],0,"FORM"];
 0 = _unit call A3EAI_addUnitEH;
 0 = [_unit, _unitLevel] call A3EAI_generateLoadout;									// Assign unit loadout
 0 = [_unit, _unitLevel] call A3EAI_setSkills;										// Set AI skill
+_unit setPos _spawnPos;
+_unit setVelocity [0,0,1];
+
 if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: Spawned AI Type %1 with unitLevel %2 for group %3.",_unit,_unitLevel,_unitGroup];};
 
 _unit

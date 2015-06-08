@@ -1,4 +1,4 @@
-private ["_unitGroup", "_waypoint", "_vehicle", "_endTime", "_vehiclePos", "_nearUnits", "_heliAimPos", "_playerEyePos", "_vehPos", "_despawnPos", "_reinforcePos","_vehicleArmed","_paraDrop"];
+private ["_unitGroup", "_waypoint", "_vehicle", "_endTime", "_vehiclePos", "_nearUnits", "_vehPos", "_despawnPos", "_reinforcePos","_vehicleArmed","_paraDrop","_reinforceTime"];
 
 _unitGroup = _this;
 
@@ -21,22 +21,32 @@ if (_vehicleArmed) then {
 		A3EAI_setCurrentWaypoint_PVC = _waypoint;
 		A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_setCurrentWaypoint_PVC";
 	};
-
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,A3EAI_airReinforcementDuration];};
+	
+	_reinforceTime = call {
+		private ["_unitLevel"];
+		_unitLevel = _unitGroup getVariable ["unitLevel",-1];
+		if (_unitLevel isEqualTo 3) exitWith {A3EAI_airReinforcementDuration3};
+		if (_unitLevel isEqualTo 2) exitWith {A3EAI_airReinforcementDuration2};
+		if (_unitLevel isEqualTo 1) exitWith {A3EAI_airReinforcementDuration1};
+		if (_unitLevel isEqualTo 0) exitWith {A3EAI_airReinforcementDuration0};
+		0
+	};
+	
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,_reinforceTime];};
 
 	_unitGroup setSpeedMode "LIMITED";
-	_endTime = diag_tickTime + A3EAI_airReinforcementDuration;
+	_endTime = diag_tickTime + _reinforceTime;
 	while {(diag_tickTime < _endTime) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {(_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce"}} do {
 		if (local _unitGroup) then {
 			_vehiclePos = getPosATL _vehicle;
 			_vehiclePos set [2,0];
-			_nearUnits = _vehiclePos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],500];
+			_nearUnits = _vehiclePos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],250];
+			if ((count _nearUnits) > 5) then {_nearUnits resize 5};
 			{
 				if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 3}) then {
-					_heliAimPos = aimPos _vehicle;
-					_playerEyePos = eyePos _x;
-					if (!(terrainIntersectASL [_heliAimPos,_playerEyePos]) && {!(lineIntersects [_heliAimPos,_playerEyePos,_vehicle,_x])} && {A3EAI_detectChance call A3EAI_chance}) then {
-						_unitGroup reveal [_x,3]; 
+					_unitGroup reveal [_x,3];
+					if (({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0) then {
+						[_x,[31+(floor (random 5)),[name (leader _unitGroup)]]] call A3EAI_radioSend;
 					};
 				};
 			} forEach _nearUnits;

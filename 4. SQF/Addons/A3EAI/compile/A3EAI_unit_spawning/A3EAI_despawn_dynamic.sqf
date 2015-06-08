@@ -68,7 +68,6 @@ if (_canDespawn) then {
 	_triggerLocation = _trigger getVariable "triggerLocation";
 	_triggerLocation setVariable ["deletetime",(diag_tickTime + A3EAI_tempBlacklistTime)];
 	A3EAI_areaBlacklists pushBack _triggerLocation;
-	if (_trigger in A3EAI_reinforcePlaces) then {A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [_trigger]};
 
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Removing expired dynamic trigger at %1.",mapGridPosition _trigger];};
 	deleteVehicle _trigger;

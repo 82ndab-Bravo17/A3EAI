@@ -18,7 +18,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 		_detectOrigin = [_startPos,0,getDir _vehicle,1] call SHK_pos;
 		_detectOrigin set [2,0];
 		_detected = _detectOrigin nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],500];
-		if ((count _detected) > 10) then {_detected resize 10};
+		if ((count _detected) > 5) then {_detected resize 5};
 		//diag_log format ["DEBUG: Group %1 AI %2 has paradrop available: %3",_unitGroup,(typeOf _vehicle),((diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",diag_tickTime])) > 1800)];
 		{
 			if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 4}) then {
@@ -36,6 +36,9 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 				_playerEyePos = eyePos _x;
 				if (!(terrainIntersectASL [_heliAimPos,_playerEyePos]) && {!(lineIntersects [_heliAimPos,_playerEyePos,_vehicle,_x])} && {A3EAI_detectChance call A3EAI_chance}) then { //if no intersection of terrain and objects between helicopter and player, then reveal player
 					_unitGroup reveal [_x,2]; 
+					if (({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0) then {
+						[_x,[31+(floor (random 5)),[name (leader _unitGroup)]]] call A3EAI_radioSend;
+					};
 				};
 				_canParaDrop = false;
 			};

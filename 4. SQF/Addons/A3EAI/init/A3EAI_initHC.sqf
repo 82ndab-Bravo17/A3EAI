@@ -4,7 +4,7 @@
 	Description: Handles startup process for A3EAI. Does not contain any values intended for modification.
 */
 
-if (hasInterface ||!isNil "A3EAI_HC_isActive") exitWith {};
+if (hasInterface || isDedicated || !isNil "A3EAI_HC_isActive") exitWith {};
 
 A3EAI_HC_isActive = true;
 A3EAI_directory = "A3EAI";
@@ -88,7 +88,9 @@ _nul = [] spawn {
 	
 	diag_log "[A3EAI] Waiting for HC player object setup to be completed.";
 	
-	waitUntil {uiSleep 3; A3EAI_HCPlayerLoggedIn};
+	waitUntil {uiSleep 2; player == player};
+	
+	/*waitUntil {uiSleep 3; A3EAI_HCPlayerLoggedIn};
 
 	diag_log "[A3EAI] HC player setup, creating HC unit.";
 	
@@ -96,8 +98,12 @@ _nul = [] spawn {
 	A3EAI_HCObjectGroup = createGroup sideLogic;
 	A3EAI_HCObject = A3EAI_HCObjectGroup createUnit ["HeadlessClient_F",(getPosATL player),[],0,"NONE"];
 	A3EAI_HCObject allowDamage false;
-	A3EAI_HCObject enableSimulationGlobal false;
 	diag_log format ["[A3EAI] Created HC unit %1",A3EAI_HCObject];
+	*/
+	
+	A3EAI_HCObject = player;
+	A3EAI_HCObjectGroup = (group player);
+	A3EAI_HCObject allowDamage false;
 	
 	diag_log "Attempting to connect to A3EAI server...";
 	A3EAI_HCLogin_PVS = [A3EAI_HCObject,_versionKey]; 
@@ -107,13 +113,17 @@ _nul = [] spawn {
 	
 	if (isNil "A3EAI_HC_serverResponse") exitWith {
 		diag_log "[A3EAI] Headless client connection timed out after 60 seconds of no response from server.";
-		diag_log format ["HC Object Check: %1. Group: %2",A3EAI_HCObject,A3EAI_HCObjectGroup];
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: HC Object %1. Group %2",A3EAI_HCObject,A3EAI_HCObjectGroup];};
 		{deleteVehicle _x} forEach (units A3EAI_HCObjectGroup);
+		deleteGroup A3EAI_HCObjectGroup;
+		endMission "END1";
 	};
 	
 	if !(A3EAI_HC_serverResponse) exitWith {
 		diag_log "[A3EAI] Headless client connection unsuccessful. HC authorization request rejected (incorrect HC version?).";
 		{deleteVehicle _x} forEach (units A3EAI_HCObjectGroup);
+		deleteGroup A3EAI_HCObjectGroup;
+		endMission "END1";
 	};
 	
 	diag_log "[A3EAI] Headless client connection successful. HC authorization request granted.";
@@ -121,9 +131,9 @@ _nul = [] spawn {
 	_serverMonitor = [] execVM format ['%1\compile\A3EAI_headlessclient\A3EAI_HCMonitor.sqf',A3EAI_directory];
 };
 
+/*
 _nul = [] spawn {
-	waitUntil {uiSleep 2; player isEqualTo player};
-	waitUntil {uiSleep 2; (typeOf player) isEqualTo "Epoch_Male_F"};
+	waitUntil {uiSleep 2; (player isEqualTo player) && {(typeOf player) isEqualTo "Epoch_Male_F"}};
 
 	player allowDamage false;
 	player setCaptive true;
@@ -141,3 +151,4 @@ _nul = [] spawn {
 		uiSleep 600;
 	};
 };
+*/

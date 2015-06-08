@@ -3,6 +3,8 @@ private ["_unitGroup","_vehicle","_loadWP","_loadWPCond"];
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
 
+if ((count (waypoints _unitGroup)) > 1) exitWith {};
+
 _loadWP = _unitGroup addWaypoint [(getPosATL _vehicle),0];
 _loadWP setWaypointType "LOAD";
 _loadWPCond = "_vehicle = (group this) getVariable ['assignedVehicle',objNull]; ({_x isEqualTo (vehicle _x)} count (assignedCargo _vehicle)) isEqualTo 0";

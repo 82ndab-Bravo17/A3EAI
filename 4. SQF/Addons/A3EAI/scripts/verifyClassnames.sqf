@@ -88,11 +88,15 @@ if ("" in A3EAI_heliList) then {A3EAI_heliList = A3EAI_heliList - [""];};
 	call {
 		if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
 			diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
-			A3EAI_heliList set [_forEachIndex,""];
+			A3EAI_vehList set [_forEachIndex,""];
+		};
+		if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
+			diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
+			A3EAI_vehList set [_forEachIndex,""];
 		};
 		if (A3EAI_checkVehicleInit && {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) exitWith {
 			diag_log format ["[A3EAI] Removing vehicle with init statement from A3EAI_vehList array: %1.",(_x select 0)];
-			A3EAI_heliList set [_forEachIndex,""];
+			A3EAI_vehList set [_forEachIndex,""];
 		};
 	};
 } forEach A3EAI_vehList;
@@ -151,5 +155,6 @@ if (A3EAI_vestTypes0 isEqualTo []) then {A3EAI_vestTypes0 = ["V_1_EPOCH", "V_2_E
 if (A3EAI_vestTypes1 isEqualTo []) then {A3EAI_vestTypes1 = ["V_1_EPOCH", "V_2_EPOCH", "V_3_EPOCH", "V_4_EPOCH", "V_5_EPOCH", "V_6_EPOCH", "V_7_EPOCH", "V_8_EPOCH", "V_9_EPOCH", "V_10_EPOCH", "V_11_EPOCH", "V_12_EPOCH", "V_13_EPOCH", "V_14_EPOCH", "V_15_EPOCH", "V_16_EPOCH", "V_17_EPOCH", "V_18_EPOCH", "V_19_EPOCH", "V_20_EPOCH", "V_21_EPOCH", "V_22_EPOCH", "V_23_EPOCH", "V_24_EPOCH", "V_25_EPOCH", "V_26_EPOCH", "V_27_EPOCH", "V_28_EPOCH", "V_29_EPOCH", "V_30_EPOCH", "V_31_EPOCH", "V_32_EPOCH", "V_33_EPOCH", "V_34_EPOCH", "V_35_EPOCH", "V_36_EPOCH", "V_37_EPOCH", "V_38_EPOCH", "V_39_EPOCH", "V_40_EPOCH"]};
 if (A3EAI_vestTypes2 isEqualTo []) then {A3EAI_vestTypes2 = ["V_1_EPOCH", "V_2_EPOCH", "V_3_EPOCH", "V_4_EPOCH", "V_5_EPOCH", "V_6_EPOCH", "V_7_EPOCH", "V_8_EPOCH", "V_9_EPOCH", "V_10_EPOCH", "V_11_EPOCH", "V_12_EPOCH", "V_13_EPOCH", "V_14_EPOCH", "V_15_EPOCH", "V_16_EPOCH", "V_17_EPOCH", "V_18_EPOCH", "V_19_EPOCH", "V_20_EPOCH", "V_21_EPOCH", "V_22_EPOCH", "V_23_EPOCH", "V_24_EPOCH", "V_25_EPOCH", "V_26_EPOCH", "V_27_EPOCH", "V_28_EPOCH", "V_29_EPOCH", "V_30_EPOCH", "V_31_EPOCH", "V_32_EPOCH", "V_33_EPOCH", "V_34_EPOCH", "V_35_EPOCH", "V_36_EPOCH", "V_37_EPOCH", "V_38_EPOCH", "V_39_EPOCH", "V_40_EPOCH"]};
 if (A3EAI_vestTypes3 isEqualTo []) then {A3EAI_vestTypes3 = ["V_1_EPOCH", "V_2_EPOCH", "V_3_EPOCH", "V_4_EPOCH", "V_5_EPOCH", "V_6_EPOCH", "V_7_EPOCH", "V_8_EPOCH", "V_9_EPOCH", "V_10_EPOCH", "V_11_EPOCH", "V_12_EPOCH", "V_13_EPOCH", "V_14_EPOCH", "V_15_EPOCH", "V_16_EPOCH", "V_17_EPOCH", "V_18_EPOCH", "V_19_EPOCH", "V_20_EPOCH", "V_21_EPOCH", "V_22_EPOCH", "V_23_EPOCH", "V_24_EPOCH", "V_25_EPOCH", "V_26_EPOCH", "V_27_EPOCH", "V_28_EPOCH", "V_29_EPOCH", "V_30_EPOCH", "V_31_EPOCH", "V_32_EPOCH", "V_33_EPOCH", "V_34_EPOCH", "V_35_EPOCH", "V_36_EPOCH", "V_37_EPOCH", "V_38_EPOCH", "V_39_EPOCH", "V_40_EPOCH"]};
+if (A3EAI_airReinforcementVehicles isEqualTo []) then {A3EAI_maxAirReinforcements = 0; A3EAI_airReinforcementSpawnChance1 = 0; A3EAI_airReinforcementSpawnChance2 = 0; A3EAI_airReinforcementSpawnChance3 = 0;};
 
 diag_log format ["[A3EAI] Verified %1 unique classnames in %2 seconds.",(count _verified),(diag_tickTime - _startTime)];

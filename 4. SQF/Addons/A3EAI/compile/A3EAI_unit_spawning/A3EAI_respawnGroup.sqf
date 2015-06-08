@@ -60,7 +60,7 @@ if (_unitType isEqualTo "") then {
 
 _aiGroup = [_totalAI,_unitGroup,_unitType,_spawnPos,_trigger,_unitLevelEffective,_checkPos] call A3EAI_spawnGroup;
 if (isNull _unitGroup) then {diag_log format ["A3EAI Error: Respawned group at %1 was null group. New group reassigned: %2.",triggerText _trigger,_aiGroup]; _unitGroup = _aiGroup};
-if (_unitLevel != _unitLevelEffective) then {_trigger setVariable ["unitLevelEffective",_unitLevel]}; //Reset unitLevel after respawning promoted group
+//if (_unitLevel != _unitLevelEffective) then {_trigger setVariable ["unitLevelEffective",_unitLevel]}; //Reset unitLevel after respawning promoted group
 if (_patrolDist > 1) then {
 	if ((count (waypoints _unitGroup)) > 1) then {
 		_unitGroup setCurrentWaypoint ((waypoints _unitGroup) call BIS_fnc_selectRandom2);

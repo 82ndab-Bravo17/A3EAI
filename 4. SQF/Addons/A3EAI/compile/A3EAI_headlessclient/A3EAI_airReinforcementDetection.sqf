@@ -7,19 +7,17 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Waiting 
 waitUntil {uiSleep 10; diag_log format ["Debug: Group %1 behavior is %2",_unitGroup,(behaviour (leader _unitGroup))]; !((behaviour (leader _unitGroup)) isEqualTo "CARELESS")};
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 has now entered ready state.",_unitGroup];};
 
-//_endTime = diag_tickTime + A3EAI_airReinforcementDuration;
-//while {(diag_tickTime < _endTime) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {(_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce"}} do {
 while {((behaviour (leader _unitGroup)) in ["AWARE","COMBAT"]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} do {
 	if (local _unitGroup) then {
 		_vehiclePos = getPosATL _vehicle;
 		_vehiclePos set [2,0];
-		_nearUnits = _vehiclePos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],500];
+		_nearUnits = _vehiclePos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],250];
+		if ((count _nearUnits) > 5) then {_nearUnits resize 5};
 		{
 			if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 3}) then {
-				_heliAimPos = aimPos _vehicle;
-				_playerEyePos = eyePos _x;
-				if (!(terrainIntersectASL [_heliAimPos,_playerEyePos]) && {!(lineIntersects [_heliAimPos,_playerEyePos,_vehicle,_x])} && {A3EAI_detectChance call A3EAI_chance}) then {
-					_unitGroup reveal [_x,3]; 
+				_unitGroup reveal [_x,3];
+				if (({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0) then {
+					[_x,[31+(floor (random 5)),[name (leader _unitGroup)]]] call A3EAI_radioSend;
 				};
 			};
 		} forEach _nearUnits;

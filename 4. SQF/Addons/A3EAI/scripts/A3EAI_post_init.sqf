@@ -16,7 +16,6 @@ A3EAI_dynTriggerArray = [];									//List of all generated dynamic triggers.
 A3EAI_staticTriggerArray = [];								//List of all static triggers
 A3EAI_respawnQueue = [];									//Queue of AI groups that require respawning. Group ID is removed from queue after it is respawned.
 A3EAI_areaBlacklists = [];									//Queue of temporary dynamic spawn area blacklists for deletion
-A3EAI_reinforcePlaces = [];									//AI helicopter patrols will periodically check this array for dynamic trigger objects to use as reinforcement positions.
 A3EAI_checkedClassnames = [[],[],[]];						//Classnames verified - Weapons/Magazines/Vehicles
 A3EAI_invalidClassnames = [[],[],[]];						//Classnames known as invalid - Weapons/Magazines/Vehicles
 A3EAI_respawnTimeVariance = (abs (A3EAI_respawnTimeMax - A3EAI_respawnTimeMin));
@@ -80,7 +79,7 @@ _nul = [] spawn {
 
 if (A3EAI_verifyClassnames) then {
 	A3EAI_tableChecklist = ["A3EAI_pistolList","A3EAI_rifleList","A3EAI_machinegunList","A3EAI_sniperList","A3EAI_headgearTypes0","A3EAI_headgearTypes1","A3EAI_headgearTypes2","A3EAI_headgearTypes3",
-				"A3EAI_backpackTypes0","A3EAI_backpackTypes1","A3EAI_backpackTypes2","A3EAI_backpackTypes3","A3EAI_foodLoot","A3EAI_MiscLoot1","A3EAI_MiscLoot2",
+				"A3EAI_backpackTypes0","A3EAI_backpackTypes1","A3EAI_backpackTypes2","A3EAI_backpackTypes3","A3EAI_foodLoot","A3EAI_MiscLoot1","A3EAI_MiscLoot2","A3EAI_airReinforcementVehicles",
 				"A3EAI_uniformTypes0","A3EAI_uniformTypes1","A3EAI_uniformTypes2","A3EAI_uniformTypes3","A3EAI_launcherTypes","A3EAI_vestTypes0","A3EAI_vestTypes1","A3EAI_vestTypes2","A3EAI_vestTypes3"];
 };
 

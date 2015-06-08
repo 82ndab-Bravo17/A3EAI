@@ -37,5 +37,12 @@ A3EAIC_radioMessage13 = "[RADIO] %1: Target's distance is %2 meters. Move in to 
 A3EAIC_radioMessage14 = "[RADIO] %1: We've lost contact with the target. Let's move out."; //%1: AI leader name
 A3EAIC_radioMessage15 = "[RADIO] %1: The target has been killed."; //%1: AI leader name
 
-//AI helicopter reinforcement warning message
-A3EAIC_radioMessage20 = "Warning: Hostile %1 inbound."; //%1: Helicopter type
+//AI air patrol reinforcement warning message
+A3EAIC_radioMessage20 = "Warning: Hostile %1 inbound."; //%1: Air vehicle type
+
+//AI air patrol dialogue. Displayed when player is detected by air patrol.
+A3EAIC_radioMessage31 = "[RADIO] %1: Target spotted below. Engaging."; //%1: AI leader name
+A3EAIC_radioMessage32 = "[RADIO] %1: We've arrived at the location. Moving in on the target."; //%1: AI leader name
+A3EAIC_radioMessage33 = "[RADIO] %1: Thats's the one we're looking for. Take him out."; //%1: AI leader name
+A3EAIC_radioMessage34 = "[RADIO] %1: Located the target. Let's take him out."; //%1: AI leader name
+A3EAIC_radioMessage35 = "[RADIO] %1: Priority target confirmed. Proceeding to engage."; //%1: AI leader name

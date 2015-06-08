@@ -3,15 +3,15 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "0.6.0 Alpha";
-		A3EAI_requiredHCVersion = "3";
+		A3EAIVersion = "0.7.0";
+		A3EAICompatibleHCVersions[] = {"4"};
 		requiredAddons[] = {"a3_epoch_code"};
 	};
 	class A3EAI_HC {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAI_HCVersion = "3";
+		A3EAI_HCVersion = "4";
 		requiredAddons[] = {"a3_epoch_code"};
 	};
 };
@@ -19,9 +19,24 @@ class CfgPatches {
 class CfgFunctions {
 	class A3EAI {
 		class A3EAI_Server {
-		file = "A3EAI";
+			file = "A3EAI";
+			
 			class A3EAI_init {
 				preInit = 1;
+			};
+		};
+	};
+	
+	class A3E {
+		class Client {
+			file = "\A3EAI\init";
+			
+			class init {
+				preInit = 1;
+			};
+			
+			class postinit {
+				postInit = 1;
 			};
 		};
 	};

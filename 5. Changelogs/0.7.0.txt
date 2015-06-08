@@ -1,0 +1,37 @@
+A3EAI 0.7.0
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+A3EAI Client Addon update required: Yes
+Headless Client Files/Keys update required: Yes
+
+[INFO] Correction to 0.6.0 changelog: Air reinforcements may be summoned even for deaths of lone AI units.
+[ADDED] Added more Epoch vehicles to list of usable AI land vehicles.
+[ADDED] Added armed WY-55 Hellcat to list of usable AI air vehicles.
+[ADDED] Added vehicle color randomization to Epoch vehicles.
+[ADDED] Added Epoch client code bypass for headless client. A3EAI HC will no longer be present and visible in the spawning area, and the HC will be able to start working much faster.
+[ADDED] Players with radios detected by air patrols now receive text notifications.
+[FIXED] Several fixes for Air reinforcement spawning.
+[FIXED] AI vehicle driver will now leave their vehicle if all crew members have been killed, and vehicle patrol will be added to respawn queue.
+[FIXED] Target of AI air reinforcement (and their crew, if in vehicle) will be sent radio warning if target or at least one crew member carries a Radio and if target is within 300m of reinforcement location.
+[FIXED] Destroying AI vehicle wheels will no longer cause gunner to abandon vehicle.
+[FIXED] Missile weaponry will now also be removed from driver turret of air vehicles, and all vehicle turrets.
+[FIXED] A3EAI will now also check air vehicle pilot weaponry to categorize vehicle as armed or unarmed.
+[FIXED] Static weapons now properly prevented from being spawned.
+[FIXED] Fixed classname verification for land vehicle classnames.
+[FIXED] Land vehicle patrols will be exempt from anti-stuck fixing while under "regroup" status.
+[FIXED] Reassigned driver state for AI land vehicles is now passed from HC to dedicated.
+[FIXED] Fixed bug where static AI could not be respawned in certain circumstances.
+[CHANGED] Default spawn chances increased by 0.10 for each location type to slightly offset reductions from scaling spawn chances added in 0.6.0.
+[CHANGED] Changed default air reinforcement probabilities from 0%/10%/30%/50% to 10%/20%/30%/40% for Level 0/1/2/3 AI (per unit death).
+[CHANGED] Air reinforcement durations can now be set by AI level.
+[CHANGED] Enabled evacuation behaviors for air reinforcement vehicle crew.
+[CHANGED] Randomness of AI infantry patrols now scales with their patrol radius.
+[CHANGED] Disabled AI vehicles will now self-delete after ejecting players who attempt to board.
+[CHANGED] AI land vehicle patrols will now abandon vehicle if one unit is left alive. Exception if vehicle group started with one unit.
+[CHANGED] Air reinforcement patrols no longer require line-of-sight or probability checks to detect nearby players, but detection radius reduced from 500m to 250.
+[CHANGED] Reduced default AI skill levels, and compressed skill level ranges.
+[CHANGED] Reduced sensitivity for auto static spawn generator. (Generally fewer static spawns will be generated)
+[REMOVED] Removed in-building check for static spawn AI until further notice.
+[REMOVED] Removed AI unit promotion system, to be reworked in a future update.

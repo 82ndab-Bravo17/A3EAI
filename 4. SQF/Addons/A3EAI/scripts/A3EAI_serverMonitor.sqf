@@ -216,6 +216,9 @@ while {true} do {
 	
 	A3EAI_activeGroups = A3EAI_activeGroups - [grpNull];
 	A3EAI_activeGroupAmount = (count A3EAI_activeGroups);
+	if (A3EAI_debugLevel > 1) then {
+		diag_log format ["A3EAI Extended Debug: A3EAI_activeGroups %1",A3EAI_activeGroups];
+	};
 	
 	//Report statistics to RPT log
 	if ((A3EAI_monitorRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorRate)}) then {

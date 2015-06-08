@@ -25,7 +25,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 				{
 					scopeName "bldgloop";
 					_pos = getPosATL _x;
-					if (!(surfaceIsWater _pos) && {(sizeOf (typeOf _x)) > 15}) then {
+					if (!(surfaceIsWater _pos) && {(sizeOf (typeOf _x)) > 19}) then {
 						_spawnPositions pushBack _pos;
 						_spawnPoints = _spawnPoints + 1;
 					};
@@ -33,7 +33,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 						breakOut "bldgloop";
 					};
 				} count _nearbldgs;
-				if ((count _spawnPositions) > 9) then {
+				if ((count _spawnPositions) > 5) then {
 					_aiCount = [0,0];
 					_unitLevel = 0;
 					//_patrolRadius = 100;

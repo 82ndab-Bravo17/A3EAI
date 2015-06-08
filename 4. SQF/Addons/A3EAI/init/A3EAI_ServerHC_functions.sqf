@@ -16,14 +16,4 @@ A3EAI_protectRemoteGroup = compileFinal '
 	true
 ';
 
-A3EAI_updateReinforcePlaces = compileFinal '
-	private ["_trigger"];
-	_trigger = _this;
-	A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [_trigger];
-	if (objNull in A3EAI_reinforcePlaces) then {
-		A3EAI_reinforcePlaces = A3EAI_reinforcePlaces - [objNull];
-	};
-	true
-';
-
 diag_log "[A3EAI] A3EAI HC functions compiled.";

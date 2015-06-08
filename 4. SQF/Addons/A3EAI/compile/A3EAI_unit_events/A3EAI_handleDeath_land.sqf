@@ -22,11 +22,12 @@ if (_groupIsEmpty) then {
 		publicVariableServer "A3EAI_updateGroupSize_PVS";
 	};
 } else {
-	if (_victim getVariable ["isDriver",false]) then {
-		_dummyUnit = _unitGroup getVariable ["dummyUnit",objNull];
-		_groupUnits = (units _unitGroup) - [_victim,_dummyUnit];
-		if !(_groupUnits isEqualTo []) then {
-			_newDriver = _groupUnits call BIS_fnc_selectRandom2;	//Find another unit to serve as driver
+	private ["_groupUnits","_newDriver","_unit"];
+	_groupUnits = (units _unitGroup) - [_victim,gunner _vehicle];
+	_groupSize = _unitGroup getVariable ["GroupSize",(count _groupUnits)];
+	if (_groupSize > 1) then {
+		if (_victim getVariable ["isDriver",false]) then {
+			_newDriver = _groupUnits call BIS_fnc_selectRandom2;	//Find another unit to serve as driver (besides the gunner)
 			_nul = [_newDriver,_vehicle] spawn {
 				private ["_newDriver","_vehicle"];
 				_newDriver = _this select 0;
@@ -38,9 +39,24 @@ if (_groupIsEmpty) then {
 				};
 				[_newDriver] orderGetIn true;
 				_newDriver setVariable ["isDriver",true];
-				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Replaced driver unit for group %1 vehicle %2.",(group _newDriver),(typeOf _vehicle)];};
+				if !(isDedicated) then {
+					A3EAI_setDriverUnit_PVS = _newDriver;
+					publicVariableServer "A3EAI_setDriverUnit_PVS";
+				};
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Replaced driver unit for group %1 vehicle %2.",_unitGroup,(typeOf _vehicle)];};
 			};
 		};
+	} else {
+		{
+			if (alive _x) then {
+				if !((gunner _vehicle) isEqualTo _x) then {
+					unassignVehicle _x;
+					[_x] orderGetIn false;
+				};
+				[_vehicle] call A3EAI_vehDestroyed;
+			};
+		} forEach _groupUnits;
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 vehicle %2 has single unit remaining. Adding patrol to respawn queue.",_unitGroup,(typeOf _vehicle)];};
 	};
 };
 

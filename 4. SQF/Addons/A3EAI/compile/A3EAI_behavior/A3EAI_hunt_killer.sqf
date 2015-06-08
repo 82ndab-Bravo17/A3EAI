@@ -1,5 +1,5 @@
 
-private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_radioType","_enableHCReady"];
+private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_enableHCReady"];
 
 _targetPlayer = _this select 0;
 _unitGroup = _this select 1;
@@ -21,7 +21,6 @@ if (_unitGroup getVariable ["HC_Ready",false]) then { //If HC mode enabled and A
 
 _startPos = _unitGroup getVariable ["trigger",(getPosASL (leader _unitGroup))];
 _chaseDistance = _unitGroup getVariable ["patrolDist",250];
-_radioType = "EpochRadio0";
 
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player
 #define RECEIVE_DIST 200 //distance requirement to receive message from AI group leader
@@ -83,13 +82,13 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 							[0,[]]
 						};
 						{
-							if ((isPlayer _x) && {({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+							if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
 								[_x,_radioSpeech] call A3EAI_radioSend;
 							};
 						} count _nearbyUnits;
 					} else {
 						{
-							if ((isPlayer _x) && {({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+							if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
 								[_x,[0,[]]] call A3EAI_radioSend;
 							};
 						} count _nearbyUnits;
@@ -123,7 +122,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 					_radioSpeech = [_radioText,[name (leader _unitGroup)]];
 					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
 					{
-						if ((isPlayer _x) && {({if (_radioType in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+						if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
 							[_x,_radioSpeech] call A3EAI_radioSend;
 						};
 					} count _nearbyUnits;

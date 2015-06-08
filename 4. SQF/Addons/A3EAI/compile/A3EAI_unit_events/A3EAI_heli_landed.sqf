@@ -4,22 +4,11 @@ _vehicle = (_this select 0);
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 
 if (isNull _vehicle) exitWith {};
-if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {
-	if ((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {
-		//diag_log format ["Debug: %1",__FILE__];
-		
-		_unitGroup setVariable ["GroupSize",-1];
-		if !(isDedicated) then {
-			A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
-			publicVariableServer "A3EAI_updateGroupSize_PVS";
-		};
-	};
-	false
-};
+if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {};
 
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _vehicle setVariable ["vehicle_disabled",true];
-_vehicle call A3EAI_respawnAIVehicle;
+if !((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {_vehicle call A3EAI_respawnAIVehicle;};
 if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
 
 _unitsAlive = {alive _x} count (units _unitGroup);

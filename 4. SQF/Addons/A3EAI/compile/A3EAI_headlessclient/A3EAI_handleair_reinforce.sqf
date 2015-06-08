@@ -13,7 +13,6 @@ _vehicle = _unitGroup getVariable ["assignedVehicle",assignedVehicle (leader _un
 _vehicle call A3EAI_addVehAirEH;
 _vehicle call A3EAI_secureVehicle;
 _vehicle setVariable ["unitGroup",_unitGroup];
-_vehicle setVariable ["vehicle_disabled",true];
 
 [_unitGroup,_vehicle] spawn A3EAI_airReinforcementDetection;
 

@@ -27,12 +27,15 @@ _startTime = diag_tickTime;
 	["A3EAI_upwardsChanceScaling",true],
 	["A3EAI_maxAirReinforcements",5],
 	["A3EAI_airReinforcementVehicles",["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]],
-	["A3EAI_airReinforcementSpawnChance0",0.00],
-	["A3EAI_airReinforcementSpawnChance1",0.15],
+	["A3EAI_airReinforcementSpawnChance0",0.10],
+	["A3EAI_airReinforcementSpawnChance1",0.20],
 	["A3EAI_airReinforcementSpawnChance2",0.30],
-	["A3EAI_airReinforcementSpawnChance3",0.45],
+	["A3EAI_airReinforcementSpawnChance3",0.40],
 	["A3EAI_airReinforcementAllowedTypes",["static","dynamic","random"]],
-	["A3EAI_airReinforcementDuration",300],
+	["A3EAI_airReinforcementDuration0",120],
+	["A3EAI_airReinforcementDuration1",180],
+	["A3EAI_airReinforcementDuration2",240],
+	["A3EAI_airReinforcementDuration3",300],
 	["A3EAI_findKiller",true],
 	["A3EAI_tempNVGs",false],
 	["A3EAI_GLRequirement",2],
@@ -62,7 +65,7 @@ _startTime = diag_tickTime;
 	["A3EAI_addAI_wilderness",1],
 	["A3EAI_unitLevel_wilderness",2],
 	["A3EAI_tempBlacklistTime",600],
-	["A3EAI_promoteChances",[0.20,0.10,0.10]],
+	//["A3EAI_promoteChances",[0.20,0.10,0.10]],
 	["A3EAI_respawnTimeMin",300],
 	["A3EAI_respawnTimeMax",600],
 	["A3EAI_despawnWait",120],
@@ -245,7 +248,7 @@ if (A3EAI_verifySettings) then {
 	if !(A3EAI_minAI_wilderness in [0,1,2,3,4,5]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_minAI_remoteArea, resetting to default value."]; A3EAI_minAI_wilderness = 1};
 	if !(A3EAI_addAI_wilderness in [0,1,2,3,4,5]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_unitLevel_remoteArea, resetting to default value."]; A3EAI_addAI_wilderness = 1};
 	if !(A3EAI_unitLevel_wilderness in [0,1,2,3]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_unitLevel_remoteArea, resetting to default value."]; A3EAI_unitLevel_wilderness = 2};
-	if !((count A3EAI_promoteChances) isEqualTo 3) then {diag_log format ["[A3EAI] Error found in variable A3EAI_promoteChances, resetting to default value."]; A3EAI_promoteChances = [0.20,0.10,0.10]};
+	//if !((count A3EAI_promoteChances) isEqualTo 3) then {diag_log format ["[A3EAI] Error found in variable A3EAI_promoteChances, resetting to default value."]; A3EAI_promoteChances = [0.20,0.10,0.10]};
 	if !((count A3EAI_levelChancesAir) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_levelChancesAir, resetting to default value."]; A3EAI_levelChancesAir = [0.00,0.50,0.35,0.15]};
 	if !((count A3EAI_levelChancesLand) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_levelChancesLand, resetting to default value."]; A3EAI_levelChancesAir = [0.00,0.50,0.35,0.15]};
 	if !((count A3EAI_useWeaponChance0) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance0, resetting to default value."]; A3EAI_useWeaponChance0 = [0.20,0.80,0.00,0.00]};

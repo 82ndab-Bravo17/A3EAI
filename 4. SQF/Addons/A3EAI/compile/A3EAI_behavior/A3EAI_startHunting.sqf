@@ -29,7 +29,7 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	
 	_waypoint = [_unitGroup,0];	//Group will move to waypoint index 0 (first waypoint).
 	_waypoint setWaypointType "MOVE";
-	_waypoint setWaypointCompletionRadius 35;
+	_waypoint setWaypointCompletionRadius 50;
 	_waypoint setWaypointTimeout [5,5,5];
 	_waypoint setWPPos (getPosATL _targetPlayer);
 	_waypoint setWaypointStatements ["true","if (local this) then {(group this) spawn A3EAI_hunterLocate;};"];

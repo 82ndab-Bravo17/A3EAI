@@ -11,8 +11,8 @@ _vehicle hideObjectGlobal true;
 {_x enableSimulationGlobal false;} forEach (units _unitGroup);
 _unitGroup setVariable ["GroupSize",-1];
 if (A3EAI_HCIsConnected) then {
-	A3EAI_updateGroupSize_PVC = [_unitGroup,-1];
-	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupSize_PVC";
+	A3EAI_cleanupReinforcement_PVC = [_unitGroup,_vehicle];
+	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_cleanupReinforcement_PVC";
 };
 
 true

@@ -13,6 +13,7 @@ A3EAI_addNewGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A
 A3EAI_addHunterGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_addHunterGroup.sqf",A3EAI_directory]; 
 A3EAI_updateGroupSizeHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_updateGroupSizeHC.sqf",A3EAI_directory];
 A3EAI_airReinforcementDetection = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_airReinforcementDetection.sqf",A3EAI_directory]; 
+A3EAI_cleanupReinforcementHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_cleanupReinforcementHC.sqf",A3EAI_directory]; 
 
 A3EAI_requestGroupVars = compileFinal '
 	A3EAI_getGroupTriggerVars_PVS = _this;
@@ -34,20 +35,6 @@ A3EAI_updateGroupLootPoolHC = compileFinal '
 	_unitGroup setVariable ["LootPool",_lootPool];
 	
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Updated group %1 loot pool to %2.",_unitGroup,_lootPool];};
-	
-	true
-';
-
-A3EAI_updateReinforcePlacesHC = compileFinal '
-	private ["_trigger","_targetPlayer"];
-	_trigger = _this select 0; //dynamic spawn trigger object
-	_targetPlayer = _this select 1; //target player object
-	if (_trigger isKindOf "EmptyDetector") then {
-		_trigger setVariable ["targetplayer",_targetPlayer];
-		A3EAI_reinforcePlaces pushBack _trigger;
-	};
-	
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Received new dynamic trigger %1 from server with target player %2.",_trigger,_targetPlayer];};
 	
 	true
 ';

@@ -34,6 +34,7 @@ A3EAI_deleteCustomSpawn = compileFinal preprocessFileLineNumbers format ["%1\com
 A3EAI_clearVehicleCargo = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_clearVehicleCargo.sqf",A3EAI_directory];
 A3EAI_fixStuckGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_fixStuckGroup.sqf",A3EAI_directory];
 A3EAI_cleanupReinforcementGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_cleanupReinforcementGroup.sqf",A3EAI_directory];
+A3EAI_randomizeVehicleColor = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_randomizeVehicleColor.sqf",A3EAI_directory];
 A3EAI_createUnit = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_unit.sqf",A3EAI_directory];
 A3EAI_spawnGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_setup_group.sqf",A3EAI_directory];
 A3EAI_spawnBandits_custom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawn_custom.sqf",A3EAI_directory];
@@ -85,7 +86,6 @@ A3EAI_huntKiller = compileFinal preprocessFileLineNumbers format ["%1\compile\A3
 A3EAI_BIN_taskPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\BIN_taskPatrol.sqf",A3EAI_directory];
 A3EAI_customHeliDetect = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_customheli_detect.sqf",A3EAI_directory];
 A3EAI_vehCrewRegroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_vehicle_crew_regroup.sqf",A3EAI_directory];
-A3EAI_dynamicHunting = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_dynamic_hunting.sqf",A3EAI_directory];
 A3EAI_heliDetection = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_heli_detect.sqf",A3EAI_directory];
 A3EAI_heliStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_heli_patrolling.sqf",A3EAI_directory];
 A3EAI_heliReinforce = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_reinforce_location.sqf",A3EAI_directory];
@@ -163,13 +163,13 @@ A3EAI_createGroup = compileFinal '
 
 //Sets skills for unit based on their unitLevel value.
 A3EAI_setSkills = compileFinal '
-	private["_unit","_unitLevel","_skillArray"];
+	private["_unit","_unitLevel","_skillArray","_skillTypeArray"];
 	_unit = _this select 0;
 	_unitLevel = _this select 1;
-
 	_skillArray = missionNamespace getVariable ["A3EAI_skill"+str(_unitLevel),A3EAI_skill3];
+	_skillTypeArray = ["aimingAccuracy","aimingShake","aimingSpeed","spotDistance","spotTime","courage","reloadSpeed","commanding","general"];
 	{
-		_unit setskill [_x select 0,(((_x select 1) + random ((_x select 2)-(_x select 1))) min 1)];
+		_unit setSkill [_skillTypeArray select _forEachIndex,((_x select 1) + random ((_x select 2)-(_x select 1))) min 1];
 	} forEach _skillArray;
 ';
 
@@ -193,8 +193,6 @@ A3EAI_protectObject = compileFinal '
 	_object = _this;
 	
 	_object call EPOCH_server_setVToken;
-	_object setVariable["LOCK_OWNER", "-1"];
-	_object setVariable["LOCKED_TILL", 3.4028235e38];
 	_object setVehicleLock "LOCKEDPLAYER";
 	_object enableCopilot false;
 	
@@ -374,7 +372,7 @@ A3EAI_setFirstWPPos = compileFinal '
 		_waypoint = [_unitGroup,0];
 		_waypoint setWaypointType "MOVE";
 		_waypoint setWaypointCompletionRadius 40;
-		_waypoint setWaypointTimeout [4,6,8];
+		_waypoint setWaypointTimeout [3,4,5];
 		_waypoint setWPPos _position;
 		_unitGroup setCurrentWaypoint _waypoint;
 		_result = true;
@@ -386,10 +384,18 @@ A3EAI_setFirstWPPos = compileFinal '
 A3EAI_secureVehicle = compileFinal '
 	_this addEventHandler ["GetIn",{
 		if (isPlayer (_this select 2)) then {
-			(_this select 2) action ["getOut",(_this select 0)]; 
-			(_this select 0) setVehicleLock "LOCKEDPLAYER";
+			(_this select 2) action ["getOut",(_this select 0)];
+			if ((_this select 0) getVariable ["vehicle_disabled",false]) then {deleteVehicle (_this select 0);};
 		};
 	}];
+';
+
+A3EAI_unitHasRadio = compileFinal '
+	private ["_unit","radio"];
+	_unit = _this;
+	_radio = {if ((_x find "EpochRadio") > -1) exitWith {1}} count (assignedItems _unit);
+	
+	(_radio isEqualTo 1)
 ';
 
 diag_log "[A3EAI] A3EAI functions compiled.";

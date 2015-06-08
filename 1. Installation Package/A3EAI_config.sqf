@@ -106,31 +106,31 @@ A3EAI_upwardsChanceScaling = true;
 A3EAI_minAI_village = 1; //1
 A3EAI_addAI_village = 1; //1
 A3EAI_unitLevel_village = 0; //0
-A3EAI_spawnChance_village = 0.30; //0.30
+A3EAI_spawnChance_village = 0.40; //0.40
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_city = 1; //1
 A3EAI_addAI_city = 2; //2
 A3EAI_unitLevel_city = 1; //1
-A3EAI_spawnChance_city = 0.50; //0.50
+A3EAI_spawnChance_city = 0.60; //0.60
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_capitalCity = 2; //2
 A3EAI_addAI_capitalCity = 1; //1
 A3EAI_unitLevel_capitalCity = 1; //1
-A3EAI_spawnChance_capitalCity = 0.60; //0.60
+A3EAI_spawnChance_capitalCity = 0.70; //0.70
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_remoteArea = 1; //1
 A3EAI_addAI_remoteArea = 1; //1
 A3EAI_unitLevel_remoteArea = 2; //2
-A3EAI_spawnChance_remoteArea = 0.70; //0.70
+A3EAI_spawnChance_remoteArea = 0.80; //0.80
 
 //(Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_wilderness = 1; //1
 A3EAI_addAI_wilderness = 2; //2
 A3EAI_unitLevel_wilderness = 1; //1
-A3EAI_spawnChance_wilderness = 0.40; //0.40
+A3EAI_spawnChance_wilderness = 0.50; //0.50
 
 //(For dynamic and random spawns only) Defines amount of time to wait in seconds until cleaning up temporary blacklist area after dynamic/random spawn is deactivated (Default: 1200)
 A3EAI_tempBlacklistTime = 1200;
@@ -173,10 +173,6 @@ A3EAI_deathMessages = false;
 //Enable or disable static AI spawns. If enabled, AI spawn points will be generated in cities, towns, and other named areas.
 //Enabled: A3EAI automatically generates static spawns at named locations on map. Disabled: No static spawns will be generated. (Default: true)
 A3EAI_autoGenerateStatic = true;
-
-//Probability to increase unit level by 1 upon respawning an AI group.
-//Format: Probability to increase to [level 1,level 2,level 3].
-A3EAI_promoteChances = [0.20,0.10,0.10];
 
 //Set minimum and maximum wait time in seconds to respawn an AI group after all units have been killed. Applies to both static AI and custom spawned AI (Default: Min 300, Max 600).									
 A3EAI_respawnTimeMin = 300;
@@ -243,7 +239,8 @@ A3EAI_respawnAirMaxTime = 900;
 //Classnames of air vehicle types to use, with the maximum amount of each type to spawn.
 A3EAI_heliList = [
 	["B_Heli_Light_01_armed_F",5],
-	["B_Heli_Transport_01_F",5]
+	["B_Heli_Transport_01_F",5],
+	["I_Heli_light_03_F",5]
 ];
 
 //Maximum number of gunner units per air vehicle. Limited by actual number of available gunner positions. (Default: 2)
@@ -287,14 +284,20 @@ A3EAI_respawnLandMaxTime = 900;
 //Classnames of land vehicle types to use, with the maximum amount of each type to spawn.
 A3EAI_vehList = [
 	["B_MRAP_01_EPOCH",5],
+	["C_Van_01_box_EPOCH",5],
 	["C_Van_01_transport_EPOCH",5],
 	["C_Offroad_01_EPOCH",5],
 	["C_Hatchback_02_EPOCH",5],
 	["C_Hatchback_01_EPOCH",5],
+	["C_SUV_01_EPOCH",5],
 	["B_Truck_01_transport_EPOCH",5],
-	["B_Truck_01_mover_EPOCH",5],
-	["B_Truck_01_covered_EPOCH",5],
-	["B_Truck_01_box_EPOCH",5]
+    ["B_Truck_01_covered_EPOCH",5],
+    ["B_Truck_01_mover_EPOCH",5],
+    ["B_Truck_01_box_EPOCH",5],
+    ["O_Truck_02_covered_EPOCH",5],
+    ["O_Truck_02_transport_EPOCH",5],
+    ["O_Truck_03_covered_EPOCH",5],
+    ["O_Truck_02_box_EPOCH",5]
 ];
 
 //Maximum number of gunner units per land vehicle. Limited by actual number of available gunner positions. (Default: 2)
@@ -315,17 +318,20 @@ A3EAI_maxAirReinforcements = 5;
 A3EAI_airReinforcementVehicles = ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]; 
 
 //Probability to spawn reinforcements for each AI level.
-A3EAI_airReinforcementSpawnChance0 = 0.00; //Probability of reinforcing Level 0 AI (Default: 0.00)
-A3EAI_airReinforcementSpawnChance1 = 0.10; //Probability of reinforcing Level 1 AI (Default: 0.15)
+A3EAI_airReinforcementSpawnChance0 = 0.10; //Probability of reinforcing Level 0 AI (Default: 0.10)
+A3EAI_airReinforcementSpawnChance1 = 0.20; //Probability of reinforcing Level 1 AI (Default: 0.20)
 A3EAI_airReinforcementSpawnChance2 = 0.30; //Probability of reinforcing Level 2 AI (Default: 0.30)
-A3EAI_airReinforcementSpawnChance3 = 0.50; //Probability of reinforcing Level 3 AI (Default: 0.45)
+A3EAI_airReinforcementSpawnChance3 = 0.40; //Probability of reinforcing Level 3 AI (Default: 0.40)
 
 //AI types permitted to summon reinforcements. Default: ["static","dynamic","random"]
 //Usable AI types: "static", "dynamic", "random", "air", "land", "staticcustom", "aircustom", "landcustom", "vehiclecrew"
 A3EAI_airReinforcementAllowedTypes = ["static","dynamic","random"];
 
-//Maximum time for reinforcement for armed air vehicles in seconds. AI air vehicle will leave the area after this time if not destroyed. (Default: 300)
-A3EAI_airReinforcementDuration = 300;
+//Maximum time for reinforcement for armed air vehicles in seconds. AI air vehicle will leave the area after this time if not destroyed.
+A3EAI_airReinforcementDuration0 = 120; //Level 0 Default: 120
+A3EAI_airReinforcementDuration1 = 180; //Level 1 Default: 180
+A3EAI_airReinforcementDuration2 = 240; //Level 2 Default: 240
+A3EAI_airReinforcementDuration3 = 300; //Level 3 Default: 300
 
 
 /*	Shared AI Vehicle (Air & Land) Settings
@@ -342,60 +348,62 @@ A3EAI_waypointBlacklist = [];
 	0: Low-level AI found in villages
 	1: Medium-level AI found in cities and capital cities
 	2: High-level AI found in remote areas such as factories and military bases
-	3: Expert-level AI. AI with level 2 have a chance to be promoted to level 3 when respawning. Promotion probabilities defined by A3EAI_promoteChances.
+	3: Expert-level AI.
+	
+	Valid skill range: 0.00 - 1.00.
 	Hint: For all skill types, higher number = better skill. For skill sub-type explanation, see: https://community.bistudio.com/wiki/AI_Sub-skills
 */
 
-//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.50
+//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.40
 A3EAI_skill0 = [	
-	["aimingAccuracy",0.10,0.15],
-	["aimingShake",0.50,0.59],
-	["aimingSpeed",0.50,0.59],
-	["spotDistance",0.50,0.59],
-	["spotTime",0.50,0.59],
-	["courage",0.50,0.59],
-	["reloadSpeed",0.50,0.59],
-	["commanding",0.50,0.59],
-	["general",0.50,0.59]
+	["aimingAccuracy",0.05,0.10],
+	["aimingShake",0.40,0.50],
+	["aimingSpeed",0.40,0.50],
+	["spotDistance",0.40,0.50],
+	["spotTime",0.40,0.50],
+	["courage",0.40,0.50],
+	["reloadSpeed",0.40,0.50],
+	["commanding",0.40,0.50],
+	["general",0.40,0.50]
 ];
 
-//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.60
+//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.50
 A3EAI_skill1 = [	
-	["aimingAccuracy",0.15,0.20],
-	["aimingShake",0.60,0.69],
-	["aimingSpeed",0.60,0.69],
-	["spotDistance",0.60,0.69],
-	["spotTime",0.60,0.69],
-	["courage",0.60,0.69],
-	["reloadSpeed",0.60,0.69],
-	["commanding",0.60,0.69],
-	["general",0.60,0.69]
+	["aimingAccuracy",0.10,0.15],
+	["aimingShake",0.50,0.60],
+	["aimingSpeed",0.50,0.60],
+	["spotDistance",0.50,0.60],
+	["spotTime",0.50,0.60],
+	["courage",0.50,0.60],
+	["reloadSpeed",0.50,0.60],
+	["commanding",0.50,0.60],
+	["general",0.50,0.60]
 ];
 
-//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.70
+//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.60
 A3EAI_skill2 = [	
-	["aimingAccuracy",0.20,0.25],
-	["aimingShake",0.70,0.85],
-	["aimingSpeed",0.70,0.85],
-	["spotDistance",0.70,0.85],
-	["spotTime",0.70,0.85],
-	["courage",0.70,0.85],
-	["reloadSpeed",0.70,0.85],
-	["commanding",0.70,0.85],
-	["general",0.70,0.85]
+	["aimingAccuracy",0.15,0.20],
+	["aimingShake",0.60,0.70],
+	["aimingSpeed",0.60,0.70],
+	["spotDistance",0.60,0.70],
+	["spotTime",0.60,0.70],
+	["courage",0.60,0.70],
+	["reloadSpeed",0.60,0.70],
+	["commanding",0.60,0.70],
+	["general",0.60,0.70]
 ];
 
-//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.80
+//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.70
 A3EAI_skill3 = [	
-	["aimingAccuracy",0.25,0.30],
-	["aimingShake",0.85,0.95],
-	["aimingSpeed",0.85,0.95],
-	["spotDistance",0.85,0.95],
-	["spotTime",0.85,0.95],
-	["courage",0.85,0.95],
-	["reloadSpeed",0.85,0.95],
-	["commanding",0.85,0.95],
-	["general",0.85,0.95]
+	["aimingAccuracy",0.20,0.25],
+	["aimingShake",0.70,0.80],
+	["aimingSpeed",0.70,0.80],
+	["spotDistance",0.70,0.80],
+	["spotTime",0.70,0.80],
+	["courage",0.70,0.80],
+	["reloadSpeed",0.70,0.80],
+	["commanding",0.70,0.80],
+	["general",0.70,0.80]
 ];
 
 

@@ -1,25 +1,13 @@
-private ["_vehicle","_vehPos","_unitGroup"];
+private ["_vehicle","_vehPos","_unitGroup","_driver"];
 
 _vehicle = (_this select 0);
 _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 
-if (isNull _vehicle) exitWith {};
-if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {
-	if ((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {
-		//diag_log format ["Debug: %1",__FILE__];
-		{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
-		_unitGroup setVariable ["GroupSize",-1];
-		if !(isDedicated) then {
-			A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
-			publicVariableServer "A3EAI_updateGroupSize_PVS";
-		};
-	};
-	false
-};
+if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {};
 
 {_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
 _vehicle setVariable ["vehicle_disabled",true];
-_vehicle call A3EAI_respawnAIVehicle;
+if !((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {_vehicle call A3EAI_respawnAIVehicle;};
 _vehPos = getPosATL _vehicle;
 
 if (isNil {_unitGroup getVariable "dummyUnit"}) then {
@@ -27,6 +15,8 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	_unitLevel = _unitGroup getVariable ["unitLevel",1];
 	_units = (units _unitGroup);
 	if (!(surfaceIsWater _vehPos) && {(_vehPos select 2) > 50}) then {
+		//_driver = (driver _vehicle);
+		//if (alive _driver) then {_nul = [_driver,objNull] call A3EAI_handleDeathEvent;};
 		_unitsAlive = {
 			if (alive _x) then {
 				unassignVehicle _x;
@@ -37,7 +27,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 				false
 			};
 		} count _units;
-		if !(_unitsAlive isEqualTo 0) then {
+		if (_unitsAlive > 0) then {
 			for "_i" from ((count (waypoints _unitGroup)) - 1) to 0 step -1 do {
 				deleteWaypoint [_unitGroup,_i];
 			};

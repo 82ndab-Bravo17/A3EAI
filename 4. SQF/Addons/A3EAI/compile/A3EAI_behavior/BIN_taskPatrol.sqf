@@ -52,10 +52,13 @@ _isVehicle = (_unitType isEqualTo "landcustom");
 
 if (_max_dist < 75) then {_unitGroup setSpeedMode "LIMITED"};
 
+_randomizeChance = linearConversion [125,350,_max_dist,0.25,0.45,true];
+//diag_log format ["DEBUG: PatrolDist %1 has RandomizeChance %2",_max_dist,_randomizeChance];
+
 _wpStatements = call {
-	if (_searchLoot && {_max_dist > 100}) exitWith {"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(group this),75] spawn A3EAI_lootSearching;};};"};
-	if (_unitType isEqualTo "aircustom") exitWith {"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};};"};
-	"if (local this) then {if (0.3 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};};"
+	if (_searchLoot && {_max_dist > 100}) exitWith {format ["if (local this) then {if (%1 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(group this),75] spawn A3EAI_lootSearching;};};",_randomizeChance]};
+	if (_unitType isEqualTo "aircustom") exitWith {format ["if (local this) then {if (%1 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};};",_randomizeChance]};
+	format ["if (local this) then {if (%1 call A3EAI_chance) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};};",_randomizeChance]
 };
 
 _wpTimeouts = if (_max_dist >= 100) then {[0, 3, 5]} else {[3, 6, 9]};

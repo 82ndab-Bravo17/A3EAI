@@ -21,6 +21,12 @@ if (_nearPlayers isEqualTo 0) then {
 	} else {
 		_vehicle setPosATL _newPos;
 		_vehicle setVelocity [0,0,0.25];
+		{
+			if (((vehicle _x) isEqualTo _x) && {(_x distance _vehicle) > 100}) then {
+				_newUnitPos = [_vehicle,25 + random(25),random(360),0,[0,0]] call SHK_pos;
+				_x setPosATL _newUnitPos;
+			};
+		} forEach (units _unitGroup);
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Relocated stuck group %1 (%2) to new location %3m away.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"]),(_leaderPos distance _newPos)];};
 	true

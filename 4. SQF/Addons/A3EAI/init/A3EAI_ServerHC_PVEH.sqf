@@ -16,6 +16,6 @@
 "A3EAI_updateReinforcePlaces_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateReinforcePlaces;diag_log format ["Debug: %1",_this];};
 "A3EAI_setPermaDeleteSpawn_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["permadelete",true];diag_log format ["Debug: %1",_this];};
 "A3EAI_deleteCustomSpawn_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_deleteCustomSpawn;diag_log format ["Debug: %1",_this];};
-//"A3EAI_enableSimulationGlobal" addPublicVariableEventHandler {((_this select 1) select 0) enableSimulationGlobal ((_this select 1) select 1);diag_log format ["Debug: %1",_this];};
+"A3EAI_setDriverUnit_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["isDriver",true];diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] Serverside PVEHs loaded.";

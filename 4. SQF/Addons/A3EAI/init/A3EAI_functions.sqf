@@ -88,7 +88,6 @@ A3EAI_customHeliDetect = compileFinal preprocessFileLineNumbers format ["%1\comp
 A3EAI_vehCrewRegroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_vehicle_crew_regroup.sqf",A3EAI_directory];
 A3EAI_heliDetection = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_heli_detect.sqf",A3EAI_directory];
 A3EAI_heliStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_heli_patrolling.sqf",A3EAI_directory];
-A3EAI_heliReinforce = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_reinforce_location.sqf",A3EAI_directory];
 A3EAI_vehStartPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_vehicle_patrolling.sqf",A3EAI_directory];
 A3EAI_startHunting = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_startHunting.sqf",A3EAI_directory];
 A3EAI_hunterLocate = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_behavior\A3EAI_hunterLocate.sqf",A3EAI_directory];

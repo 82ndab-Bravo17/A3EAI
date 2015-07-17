@@ -187,7 +187,7 @@ while {true} do {
 		if !(_lastPlayerCount isEqualTo _currentPlayerCount) then {
 			A3EAI_spawnChanceMultiplier = linearConversion [1, _maxSpawnChancePlayers, _currentPlayerCount, _multiplierLowPlayers, _multiplierHighPlayers, true];
 			_lastPlayerCount = _currentPlayerCount;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Updated A3EAI_spawnChanceMultiplier to %1",A3EAI_spawnChanceMultiplier];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Updated A3EAI_spawnChanceMultiplier to %1",A3EAI_spawnChanceMultiplier];};
 		};
 		_playerCountTime = _currentTime;
 	};
@@ -215,16 +215,13 @@ while {true} do {
 	};
 	
 	A3EAI_activeGroups = A3EAI_activeGroups - [grpNull];
-	A3EAI_activeGroupAmount = (count A3EAI_activeGroups);
-	if (A3EAI_debugLevel > 1) then {
-		diag_log format ["A3EAI Extended Debug: A3EAI_activeGroups %1",A3EAI_activeGroups];
-	};
+	_activeGroupAmount = format ["%1/%2",{(_x getVariable ["GroupSize",0]) > 0} count A3EAI_activeGroups,count A3EAI_activeGroups];
 	
 	//Report statistics to RPT log
 	if ((A3EAI_monitorRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorRate)}) then {
 		_uptime = [] call _getUptime;
-		diag_log format ["A3EAI Monitor: Uptime: %1:%2:%3. FPS: %4. Active AI Groups: %5. Respawn Queue: %6 groups. HC Connected: %7.",_uptime select 0, _uptime select 1, _uptime select 2,diag_fps,A3EAI_activeGroupAmount,(count A3EAI_respawnQueue),A3EAI_HCIsConnected];
-		diag_log format ["A3EAI Monitor: Static Spawns: %1. Dynamic Spawns: %2. Random Spawns: %3. Air Patrols: %4. Land Patrols: %5.",(count A3EAI_staticTriggerArray),(count A3EAI_dynTriggerArray),(count A3EAI_randTriggerArray),A3EAI_curHeliPatrols,A3EAI_curLandPatrols];
+		diag_log format ["[A3EAI Monitor] [Uptime:%1:%2:%3][FPS:%4][Groups:%5][Respawn:%6][HC:%7]",_uptime select 0, _uptime select 1, _uptime select 2,round diag_fps,_activeGroupAmount,(count A3EAI_respawnQueue),A3EAI_HCIsConnected];
+		diag_log format ["[A3EAI Monitor] [Static:%1][Dynamic:%2][Random:%3][Air:%4][Land:%5][UAV:%6][UGV:%7]",(count A3EAI_staticTriggerArray),(count A3EAI_dynTriggerArray),(count A3EAI_randTriggerArray),A3EAI_curHeliPatrols,A3EAI_curLandPatrols,A3EAI_curUAVPatrols,A3EAI_curUGVPatrols];
 		_monitorReport = _currentTime;
 	};
 

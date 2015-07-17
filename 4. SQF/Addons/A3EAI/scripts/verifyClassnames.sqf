@@ -1,7 +1,3 @@
-#define WEAPON_BANNED_STRING "bin\config.bin/CfgWeapons/FakeWeapon"
-#define VEHICLE_BANNED_STRING "bin\config.bin/CfgVehicles/Banned"
-#define MAGAZINE_BANNED_STRING "bin\config.bin/CfgMagazines/FakeMagazine"
-
 private["_verified","_errorFound","_startTime"];
 
 _startTime = diag_tickTime;
@@ -29,7 +25,7 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 					if (!_errorFound) then {_errorFound = true};
 				};
 				if (isClass (configFile >> "CfgWeapons" >> _x)) exitWith {
-					if (((str(inheritsFrom (configFile >> "CfgWeapons" >> _x))) isEqualTo WEAPON_BANNED_STRING) or {(getNumber (configFile >> "CfgWeapons" >> _x >> "scope")) isEqualTo 0}) then {
+					if (((configName (inheritsFrom (configFile >> "CfgWeapons" >> _x))) isEqualTo "FakeWeapon") or {(getNumber (configFile >> "CfgWeapons" >> _x >> "scope")) isEqualTo 0}) then {
 						diag_log format ["[A3EAI] Removing invalid classname: %1.",_x];
 						_array set [_forEachIndex,""];
 						if (!_errorFound) then {_errorFound = true};
@@ -38,7 +34,7 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 					};
 				};
 				if (isClass (configFile >> "CfgMagazines" >> _x)) exitWith {
-					if (((str(inheritsFrom (configFile >> "CfgMagazines" >> _x))) isEqualTo MAGAZINE_BANNED_STRING) or {(getNumber (configFile >> "CfgMagazines" >> _x >> "scope")) isEqualTo 0}) then {
+					if (((configName (inheritsFrom (configFile >> "CfgMagazines" >> _x))) isEqualTo "FakeMagazine") or {(getNumber (configFile >> "CfgMagazines" >> _x >> "scope")) isEqualTo 0}) then {
 						diag_log format ["[A3EAI] Removing invalid classname: %1.",_x];
 						_array set [_forEachIndex,""];
 						if (!_errorFound) then {_errorFound = true};
@@ -47,7 +43,7 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 					};
 				};
 				if (isClass (configFile >> "CfgVehicles" >> _x)) exitWith {
-					if (((str(inheritsFrom (configFile >> "CfgVehicles" >> _x))) isEqualTo VEHICLE_BANNED_STRING) or {(getNumber (configFile >> "CfgVehicles" >> _x >> "scope")) isEqualTo 0}) then {
+					if (((configName (inheritsFrom (configFile >> "CfgVehicles" >> _x))) isEqualTo "Banned") or {(getNumber (configFile >> "CfgVehicles" >> _x >> "scope")) isEqualTo 0}) then {
 						diag_log format ["[A3EAI] Removing invalid classname: %1.",_x];
 						_array set [_forEachIndex,""];
 						if (!_errorFound) then {_errorFound = true};
@@ -70,41 +66,109 @@ while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) is
 	};
 } forEach A3EAI_tableChecklist;
 
-{
-	call {
-		if (!((_x select 0) isKindOf "Air")) exitWith {
-			diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_heliList array: %1.",(_x select 0)];
-			A3EAI_heliList set [_forEachIndex,""];
+if (A3EAI_maxHeliPatrols > 0) then {
+	{
+		call {
+			if (!((_x select 0) isKindOf "Air")) exitWith {
+				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_heliList array: %1.",(_x select 0)];
+				A3EAI_heliList set [_forEachIndex,""];
+			};
 		};
-		if (A3EAI_checkVehicleInit && {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) exitWith {
-			diag_log format ["[A3EAI] Removing vehicle with init statement from A3EAI_heliList array: %1.",(_x select 0)];
-			A3EAI_heliList set [_forEachIndex,""];
+	} forEach A3EAI_heliList;
+	if ("" in A3EAI_heliList) then {A3EAI_heliList = A3EAI_heliList - [""];};
+};
+
+if (A3EAI_maxLandPatrols > 0) then {
+	{
+		call {
+			if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
+				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
+				A3EAI_vehList set [_forEachIndex,""];
+			};
+			if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
+				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
+				A3EAI_vehList set [_forEachIndex,""];
+			};
 		};
-	};
-} forEach A3EAI_heliList;
-if ("" in A3EAI_heliList) then {A3EAI_heliList = A3EAI_heliList - [""];};
+	} forEach A3EAI_vehList;
+	if ("" in A3EAI_vehList) then {A3EAI_vehList = A3EAI_vehList - [""];};
+};
+
+if (A3EAI_maxAirReinforcements > 0) then {
+	{
+		call {
+			if (!(_x isKindOf "Air")) exitWith {
+				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airReinforcementVehicles array: %1.",_x];
+				A3EAI_airReinforcementVehicles set [_forEachIndex,""];
+			};
+		};
+	} forEach A3EAI_airReinforcementVehicles;
+	if ("" in A3EAI_airReinforcementVehicles) then {A3EAI_airReinforcementVehicles = A3EAI_airReinforcementVehicles - [""];};
+};
+
+if (A3EAI_maxUAVPatrols > 0) then {
+	{
+		call {
+			if (!((_x select 0) isKindOf "Air")) exitWith {
+				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_UAVList array: %1.",(_x select 0)];
+				A3EAI_UAVList set [_forEachIndex,""];
+			};
+		};
+	} forEach A3EAI_UAVList;
+	if ("" in A3EAI_UAVList) then {A3EAI_UAVList = A3EAI_UAVList - [""];};
+};
+
+if (A3EAI_maxUGVPatrols > 0) then {
+	{
+		call {
+			if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
+				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
+				A3EAI_UGVList set [_forEachIndex,""];
+			};
+			if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
+				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
+				A3EAI_UGVList set [_forEachIndex,""];
+			};
+		};
+	} forEach A3EAI_UGVList;
+	if ("" in A3EAI_UGVList) then {A3EAI_UGVList = A3EAI_UGVList - [""];};
+};
 
 {
-	call {
-		if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
-			diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
-			A3EAI_vehList set [_forEachIndex,""];
-		};
-		if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
-			diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
-			A3EAI_vehList set [_forEachIndex,""];
-		};
-		if (A3EAI_checkVehicleInit && {([configFile >> "CfgVehicles" >> (_x select 0) >> "Eventhandlers","init",""] call BIS_fnc_returnConfigEntry) != ""}) exitWith {
-			diag_log format ["[A3EAI] Removing vehicle with init statement from A3EAI_vehList array: %1.",(_x select 0)];
-			A3EAI_vehList set [_forEachIndex,""];
-		};
+	if (([configFile >> "CfgWeapons" >> _x >> "ItemInfo","uniformClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "") then {
+		diag_log format ["[A3EAI] Removing invalid uniform classname from A3EAI_uniformTypes0 array: %1.",_x];
+		A3EAI_uniformTypes0 set [_forEachIndex,""];
 	};
-} forEach A3EAI_vehList;
-if ("" in A3EAI_vehList) then {A3EAI_vehList = A3EAI_vehList - [""];};
+} forEach A3EAI_uniformTypes0;
+if ("" in A3EAI_uniformTypes0) then {A3EAI_uniformTypes0 = A3EAI_uniformTypes0 - [""];};
+
+{
+	if (([configFile >> "CfgWeapons" >> _x >> "ItemInfo","uniformClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "") then {
+		diag_log format ["[A3EAI] Removing invalid uniform classname from A3EAI_uniformTypes1 array: %1.",_x];
+		A3EAI_uniformTypes1 set [_forEachIndex,""];
+	};
+} forEach A3EAI_uniformTypes1;
+if ("" in A3EAI_uniformTypes1) then {A3EAI_uniformTypes1 = A3EAI_uniformTypes1 - [""];};
+
+{
+	if (([configFile >> "CfgWeapons" >> _x >> "ItemInfo","uniformClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "") then {
+		diag_log format ["[A3EAI] Removing invalid uniform classname from A3EAI_uniformTypes2 array: %1.",_x];
+		A3EAI_uniformTypes2 set [_forEachIndex,""];
+	};
+} forEach A3EAI_uniformTypes2;
+if ("" in A3EAI_uniformTypes2) then {A3EAI_uniformTypes2 = A3EAI_uniformTypes2 - [""];};
+
+{
+	if (([configFile >> "CfgWeapons" >> _x >> "ItemInfo","uniformClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "") then {
+		diag_log format ["[A3EAI] Removing invalid uniform classname from A3EAI_uniformTypes3 array: %1.",_x];
+		A3EAI_uniformTypes3 set [_forEachIndex,""];
+	};
+} forEach A3EAI_uniformTypes3;
+if ("" in A3EAI_uniformTypes3) then {A3EAI_uniformTypes3 = A3EAI_uniformTypes3 - [""];};
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x,"type",-1] call BIS_fnc_returnConfigEntry) isEqualTo 2) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_pistolList array: %1.",_x];
+		diag_log format ["[A3EAI] Removing invalid pistol classname from A3EAI_pistolList array: %1.",_x];
 		A3EAI_pistolList set [_forEachIndex,""];
 	};
 } forEach A3EAI_pistolList;
@@ -112,7 +176,7 @@ if ("" in A3EAI_pistolList) then {A3EAI_pistolList = A3EAI_pistolList - [""];};
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x,"type",-1] call BIS_fnc_returnConfigEntry) isEqualTo 1) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_rifleList array: %1.",_x];
+		diag_log format ["[A3EAI] Removing invalid rifle classname from A3EAI_rifleList array: %1.",_x];
 		A3EAI_rifleList set [_forEachIndex,""];
 	};
 } forEach A3EAI_rifleList;
@@ -120,7 +184,7 @@ if ("" in A3EAI_rifleList) then {A3EAI_rifleList = A3EAI_rifleList - [""];};
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x,"type",-1] call BIS_fnc_returnConfigEntry) isEqualTo 1) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_machinegunList array: %1.",_x];
+		diag_log format ["[A3EAI] Removing invalid machine gun classname from A3EAI_machinegunList array: %1.",_x];
 		A3EAI_machinegunList set [_forEachIndex,""];
 	};
 } forEach A3EAI_machinegunList;
@@ -128,7 +192,7 @@ if ("" in A3EAI_machinegunList) then {A3EAI_machinegunList = A3EAI_machinegunLis
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x,"type",-1] call BIS_fnc_returnConfigEntry) isEqualTo 1) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_sniperList array: %1.",_x];
+		diag_log format ["[A3EAI] Removing invalid sniper classname from A3EAI_sniperList array: %1.",_x];
 		A3EAI_sniperList set [_forEachIndex,""];
 	};
 } forEach A3EAI_sniperList;
@@ -136,11 +200,123 @@ if ("" in A3EAI_sniperList) then {A3EAI_sniperList = A3EAI_sniperList - [""];};
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x,"type",-1] call BIS_fnc_returnConfigEntry) isEqualTo 4) then {
-		diag_log format ["[A3EAI] Removing invalid classname from A3EAI_launcherTypes array: %1.",_x];
+		diag_log format ["[A3EAI] Removing invalid launcher classname from A3EAI_launcherTypes array: %1.",_x];
 		A3EAI_launcherTypes set [_forEachIndex,""];
 	};
 } forEach A3EAI_launcherTypes;
 if ("" in A3EAI_launcherTypes) then {A3EAI_launcherTypes = A3EAI_launcherTypes - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","mountAction",""] call BIS_fnc_returnConfigEntry) isEqualTo "MountOptic") then {
+		diag_log format ["[A3EAI] Removing invalid optics classname from A3EAI_weaponOpticsList array: %1.",_x];
+		A3EAI_weaponOpticsList set [_forEachIndex,""];
+	};
+} forEach A3EAI_weaponOpticsList;
+if ("" in A3EAI_weaponOpticsList) then {A3EAI_weaponOpticsList = A3EAI_weaponOpticsList - [""];};
+
+{
+	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {
+		diag_log format ["[A3EAI] Removing invalid backpack classname from A3EAI_backpackTypes0 array: %1.",_x];
+		A3EAI_backpackTypes0 set [_forEachIndex,""];
+	};
+} forEach A3EAI_backpackTypes0;
+if ("" in A3EAI_backpackTypes0) then {A3EAI_backpackTypes0 = A3EAI_backpackTypes0 - [""];};
+
+{
+	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {
+		diag_log format ["[A3EAI] Removing invalid backpack classname from A3EAI_backpackTypes1 array: %1.",_x];
+		A3EAI_backpackTypes1 set [_forEachIndex,""];
+	};
+} forEach A3EAI_backpackTypes1;
+if ("" in A3EAI_backpackTypes1) then {A3EAI_backpackTypes1 = A3EAI_backpackTypes1 - [""];};
+
+{
+	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {
+		diag_log format ["[A3EAI] Removing invalid backpack classname from A3EAI_backpackTypes2 array: %1.",_x];
+		A3EAI_backpackTypes2 set [_forEachIndex,""];
+	};
+} forEach A3EAI_backpackTypes2;
+if ("" in A3EAI_backpackTypes2) then {A3EAI_backpackTypes2 = A3EAI_backpackTypes2 - [""];};
+
+{
+	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {
+		diag_log format ["[A3EAI] Removing invalid backpack classname from A3EAI_backpackTypes3 array: %1.",_x];
+		A3EAI_backpackTypes3 set [_forEachIndex,""];
+	};
+} forEach A3EAI_backpackTypes3;
+if ("" in A3EAI_backpackTypes3) then {A3EAI_backpackTypes3 = A3EAI_backpackTypes3 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitBody") then {
+		diag_log format ["[A3EAI] Removing invalid vest classname from A3EAI_vestTypes0 array: %1.",_x];
+		A3EAI_vestTypes0 set [_forEachIndex,""];
+	};
+} forEach A3EAI_vestTypes0;
+if ("" in A3EAI_vestTypes0) then {A3EAI_vestTypes0 = A3EAI_vestTypes0 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitBody") then {
+		diag_log format ["[A3EAI] Removing invalid vest classname from A3EAI_vestTypes1 array: %1.",_x];
+		A3EAI_vestTypes1 set [_forEachIndex,""];
+	};
+} forEach A3EAI_vestTypes1;
+if ("" in A3EAI_vestTypes1) then {A3EAI_vestTypes1 = A3EAI_vestTypes1 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitBody") then {
+		diag_log format ["[A3EAI] Removing invalid vest classname from A3EAI_vestTypes2 array: %1.",_x];
+		A3EAI_vestTypes2 set [_forEachIndex,""];
+	};
+} forEach A3EAI_vestTypes2;
+if ("" in A3EAI_vestTypes2) then {A3EAI_vestTypes2 = A3EAI_vestTypes2 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitBody") then {
+		diag_log format ["[A3EAI] Removing invalid vest classname from A3EAI_vestTypes3 array: %1.",_x];
+		A3EAI_vestTypes3 set [_forEachIndex,""];
+	};
+} forEach A3EAI_vestTypes3;
+if ("" in A3EAI_vestTypes3) then {A3EAI_vestTypes3 = A3EAI_vestTypes3 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitHead") then {
+		diag_log format ["[A3EAI] Removing invalid headgear classname from A3EAI_headgearTypes0 array: %1.",_x];
+		A3EAI_headgearTypes0 set [_forEachIndex,""];
+	};
+} forEach A3EAI_headgearTypes0;
+if ("" in A3EAI_headgearTypes0) then {A3EAI_headgearTypes0 = A3EAI_headgearTypes0 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitHead") then {
+		diag_log format ["[A3EAI] Removing invalid headgear classname from A3EAI_headgearTypes1 array: %1.",_x];
+		A3EAI_headgearTypes1 set [_forEachIndex,""];
+	};
+} forEach A3EAI_headgearTypes1;
+if ("" in A3EAI_headgearTypes1) then {A3EAI_headgearTypes1 = A3EAI_headgearTypes1 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitHead") then {
+		diag_log format ["[CfgWeapons] Removing invalid headgear classname from A3EAI_headgearTypes2 array: %1.",_x];
+		A3EAI_headgearTypes2 set [_forEachIndex,""];
+	};
+} forEach A3EAI_headgearTypes2;
+if ("" in A3EAI_headgearTypes2) then {A3EAI_headgearTypes2 = A3EAI_headgearTypes2 - [""];};
+
+{
+	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","hitpointName",""] call BIS_fnc_returnConfigEntry) isEqualTo "HitHead") then {
+		diag_log format ["[A3EAI] Removing invalid headgear classname from A3EAI_headgearTypes3 array: %1.",_x];
+		A3EAI_headgearTypes3 set [_forEachIndex,""];
+	};
+} forEach A3EAI_headgearTypes3;
+if ("" in A3EAI_headgearTypes3) then {A3EAI_headgearTypes3 = A3EAI_headgearTypes3 - [""];};
+
+{
+	if !(([configFile >> "CfgMagazines" >> _x,"interactText",""] call BIS_fnc_returnConfigEntry) in ["EAT","DRINK","CONSUME"]) then {
+		diag_log format ["[A3EAI] Removing invalid food classname from A3EAI_foodLoot array: %1.",_x];
+		A3EAI_foodLoot set [_forEachIndex,""];
+	};
+} forEach A3EAI_foodLoot;
+if ("" in A3EAI_foodLoot) then {A3EAI_foodLoot = A3EAI_foodLoot - [""];};
 
 
 //Anticipate cases where all elements of an array are invalid

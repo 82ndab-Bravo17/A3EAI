@@ -11,6 +11,10 @@ _items = [];
 	if (_itemType isEqualTo "item") then {
 		_item = _itemInfo select 0;
 		_items pushBack _item;
+		//_armor = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","armor",""] call BIS_fnc_returnConfigEntry;
+		//_container = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","containerClass",""] call BIS_fnc_returnConfigEntry;
+		//_maxload = [configfile >> "CfgVehicles" >> _container,"maximumLoad",""] call BIS_fnc_returnConfigEntry;
+		//diag_log format ["ITEMDATA: Vest %1: Armor %2, MaxLoad %3.",[configfile >> "CfgWeapons" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_armor,_maxload];
 	};
 } forEach _vestList;
 
@@ -22,10 +26,10 @@ if !(_items isEqualTo []) then {
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 vest classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes0: %1",A3EAI_vestTypes0];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes1: %1",A3EAI_vestTypes1];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes2: %1",A3EAI_vestTypes2];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_vestTypes3: %1",A3EAI_vestTypes3];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_vestTypes0: %1",A3EAI_vestTypes0];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_vestTypes1: %1",A3EAI_vestTypes1];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_vestTypes2: %1",A3EAI_vestTypes2];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_vestTypes3: %1",A3EAI_vestTypes3];
 		};
 	};
 } else {

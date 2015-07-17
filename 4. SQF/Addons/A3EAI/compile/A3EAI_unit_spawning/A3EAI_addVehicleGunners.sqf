@@ -31,7 +31,7 @@ _fnc_addGunner = {
 		if !(_turretMagazines isEqualTo []) then {
 			[_vehicle,_x,_unitGroup,_unitLevel] call _fnc_addGunner;
 			_gunnersAdded = _gunnersAdded + 1;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Added gunner unit %1 to %2 %3 with weapon %4.",_gunnersAdded,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0)];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added gunner unit %1 to %2 %3 with weapon %4.",_gunnersAdded,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0)];};
 		};
 	};
 	if (_gunnersAdded isEqualTo _maxGunners) exitWith {};

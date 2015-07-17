@@ -3,9 +3,9 @@ private ["_unitGroup", "_unitLevel", "_unitType", "_groupSize", "_vehicle"];
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Waiting for reinforcement group %1 ready state.",_unitGroup];};
-waitUntil {uiSleep 10; diag_log format ["Debug: Group %1 behavior is %2",_unitGroup,(behaviour (leader _unitGroup))]; !((behaviour (leader _unitGroup)) isEqualTo "CARELESS")};
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 has now entered ready state.",_unitGroup];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Waiting for reinforcement group %1 ready state.",_unitGroup];};
+waitUntil {uiSleep 10; diag_log format ["Debug: Group %1 behavior is %2, combat mode %3.",_unitGroup,(behaviour (leader _unitGroup)),(combatMode _unitGroup)]; !((behaviour (leader _unitGroup)) isEqualTo "CARELESS")};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 has now entered ready state.",_unitGroup];};
 
 while {((behaviour (leader _unitGroup)) in ["AWARE","COMBAT"]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} do {
 	if (local _unitGroup) then {
@@ -24,5 +24,3 @@ while {((behaviour (leader _unitGroup)) in ["AWARE","COMBAT"]) && {(_unitGroup g
 	};
 	uiSleep 15;
 };
-
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Reinforcement state ended for group %1. Behavior: %2",_unitGroup,(behaviour (leader _unitGroup))];};

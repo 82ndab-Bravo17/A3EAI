@@ -1,0 +1,1 @@
+#include "A3EAI_handlestatic.sqf"

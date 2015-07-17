@@ -46,7 +46,7 @@ if (isDedicated) then {
 	if (_placeType in ["NameCityCapital","NameCity","NameVillage","NameLocal"]) then {
 		_placeName = getText (_cfgWorldName >> _x >> "name");
 		_placePos = [] + getArray (_cfgWorldName >> _x >> "position");
-		_isAllowedPos = (!((toLower _placeName) in A3EAI_waypointBlacklist) && {(_placePos distance (getMarkerPos "respawn_west")) > 600} && {({(_x distance _placePos) < 900} count _telePositions) isEqualTo 0});
+		_isAllowedPos = (!((toLower _placeName) in A3EAI_waypointBlacklist) && {(_placePos distance (getMarkerPos "respawn_west")) > 600} && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
 		if (_isAllowedPos) then {
 			A3EAI_locations pushBack [_placeName,_placePos,_placeType];
 			if (_placeType != "NameLocal") then {
@@ -62,6 +62,16 @@ if (isDedicated) then {
 if (isDedicated && {A3EAI_maxRandomSpawns isEqualTo -1}) then {
 	A3EAI_maxRandomSpawns = (round (0.10 * (count _allLocations)) min 15);
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Adjusted random spawn limit to %1",A3EAI_maxRandomSpawns];};
+};
+
+if (A3EAI_locations isEqualTo []) then {
+	A3EAI_locations = +_allLocations;
+	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locations is empty, using _allLocations array instead.";};
+};
+
+if (A3EAI_locationsLand isEqualTo []) then {
+	A3EAI_locationsLand = +_allLocations;
+	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locationsLand is empty, using _allLocations array instead.";};
 };
 
 A3EAI_locations_ready = true;

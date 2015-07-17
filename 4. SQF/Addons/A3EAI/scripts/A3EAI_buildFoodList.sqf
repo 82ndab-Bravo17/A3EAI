@@ -18,13 +18,21 @@ _items = [];
 				_itemType = _itemInfo select 1;
 				if (_itemType isEqualTo "magazine") then {
 					_item = _itemInfo select 0;
-					_items pushBack _item;
+					if (([configFile >> "CfgMagazines" >> _item,"interactText",""] call BIS_fnc_returnConfigEntry) in ["EAT","DRINK","CONSUME"]) then {
+						_items pushBack _item;
+						//_dataArray = [configFile >> "CfgMagazines" >> _item,"interactAttributes",[0,0,0,0,0,0,0,0,0,0]] call BIS_fnc_returnConfigEntry;
+						//diag_log format ["ITEMDATA: Food %1: Hunger %2, Thirst %3, Toxicity %4, Stamina %5, Immunity %6, BP %7.",[configfile >> "CfgMagazines" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_dataArray select 1,_dataArray select 2,_dataArray select 6,_dataArray select 7,_dataArray select 5,_dataArray select 9];
+					};
 				};
 			} forEach _itemList;
 		};
 		if (_itemClassType isEqualTo "magazine") exitWith {
 			_item = _itemClassInfo select 0;
-			_items pushBack _item;
+			if (([configFile >> "CfgMagazines" >> _item,"interactText",""] call BIS_fnc_returnConfigEntry) in ["EAT","DRINK"]) then {
+				_items pushBack _item;
+				// _dataArray = [configFile >> "CfgMagazines" >> _item,"interactAttributes",[0,0,0,0,0,0,0,0,0,0]] call BIS_fnc_returnConfigEntry;
+				// diag_log format ["ITEMDATA: Food %1: Hunger %2, Thirst %3, Toxicity %4, Stamina %5, Immunity %6, BP %7.",[configfile >> "CfgMagazines" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_dataArray select 1,_dataArray select 2,_dataArray select 6,_dataArray select 7,_dataArray select 5,_dataArray select 9];
+			};
 		};
 	};
 } forEach _foodList;
@@ -34,7 +42,7 @@ if !(_items isEqualTo []) then {
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 food classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_foodLoot: %1",A3EAI_foodLoot];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_foodLoot: %1",A3EAI_foodLoot];
 		};
 	};
 } else {

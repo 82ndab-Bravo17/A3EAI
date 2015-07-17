@@ -1,19 +1,19 @@
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player (target player will also recieve messages)
 #define SEEK_RANGE 450 //distance to chase player from initial group spawn location
 
-private ["_unitGroup", "_trigger", "_targetPlayer", "_waypoint", "_leader", "_nearbyUnits", "_index", "_radioSpeech", "_patrolDist","_searchPos"];
+private ["_unitGroup", "_targetPlayer", "_waypoint", "_leader", "_nearbyUnits", "_index", "_radioSpeech", "_searchPos","_triggerPos"];
 
 _unitGroup = _this;
 
-_trigger = _unitGroup getVariable ["trigger",objNull];
+_triggerPos = getPosATL (_unitGroup getVariable ["trigger",objNull]);
 _targetPlayer = _unitGroup getVariable ["targetplayer",objNull];
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Hunter group %1 has target player %2 and trigger %3.",_unitGroup,_targetPlayer,_trigger];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Hunter group %1 has target player %2 and anchor pos %3.",_unitGroup,_targetPlayer,_triggerPos];};
 
 if (
 	(isPlayer _targetPlayer) && 
 	{(vehicle _targetPlayer) isKindOf "Land"} &&
-	{(_targetPlayer distance _trigger) < SEEK_RANGE}
+	{(_targetPlayer distance _triggerPos) < SEEK_RANGE}
 ) then {
 	_waypoint = [_unitGroup,0];
 	if (((getWPPos _waypoint) distance _targetPlayer) > 20) then {
@@ -59,9 +59,8 @@ if (
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Dynamic group %1 has located player %2.",_unitGroup,_targetPlayer];};
 } else {
-	_patrolDist = _trigger getVariable ["patrolDist",150];
 	[_unitGroup,0] setWaypointStatements ["true","if (local this) then {if ((random 1) < 0.50) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};};"];
-	0 = [_unitGroup,(getPosATL _trigger),_patrolDist] spawn A3EAI_BIN_taskPatrol;
+	0 = [_unitGroup,_triggerPos,150] spawn A3EAI_BIN_taskPatrol;
 	{_x enableFatigue true;} count (units _unitGroup);
 	_unitGroup setSpeedMode "NORMAL";
 	if (A3EAI_enableHC && {isDedicated}) then {_unitGroup setVariable ["MiscData",nil];};

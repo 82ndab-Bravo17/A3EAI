@@ -19,6 +19,9 @@ _items = [];
 				if (_itemType isEqualTo "item") exitWith {
 					_item = _itemInfo select 0;
 					_items pushBack _item;
+					//_container = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","containerClass",""] call BIS_fnc_returnConfigEntry;
+					//_maxload = [configfile >> "CfgVehicles" >> _container,"maximumLoad",""] call BIS_fnc_returnConfigEntry;
+					//diag_log format ["ITEMDATA: Uniform %1: MaxLoad %2.",[configfile >> "CfgWeapons" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_maxload];
 				};
 				if (_itemType isEqualTo "CfgLootTable") exitWith {
 					_itemSubClass = _itemInfo select 0;
@@ -30,6 +33,9 @@ _items = [];
 						if (_itemSubType isEqualTo "item") then {
 							_item = _itemSubInfo select 0;
 							_items pushBack _item;
+							//_container = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","containerClass",""] call BIS_fnc_returnConfigEntry;
+							//_maxload = [configfile >> "CfgVehicles" >> _container,"maximumLoad",""] call BIS_fnc_returnConfigEntry;
+							//diag_log format ["ITEMDATA: Uniform %1: MaxLoad %2.",[configfile >> "CfgWeapons" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_maxload];
 						};
 					} forEach _itemList;
 				};
@@ -46,10 +52,10 @@ if !(_items isEqualTo []) then {
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 uniform classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes0: %1",A3EAI_uniformTypes0];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes1: %1",A3EAI_uniformTypes1];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes2: %1",A3EAI_uniformTypes2];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_uniformTypes3: %1",A3EAI_uniformTypes3];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_uniformTypes0: %1",A3EAI_uniformTypes0];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_uniformTypes1: %1",A3EAI_uniformTypes1];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_uniformTypes2: %1",A3EAI_uniformTypes2];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_uniformTypes3: %1",A3EAI_uniformTypes3];
 		};
 	};
 } else {

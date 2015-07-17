@@ -3,9 +3,12 @@
 	
 	Description: Handles startup process for A3EAI. Does not contain any values intended for modification.
 */
-if (hasInterface ||!isNil "A3EAI_isActive") exitWith {};
-A3EAI_isActive = true;
+
+if (hasInterface || !isDedicated ||!isNil "A3EAI_isActive") exitWith {};
+
 _startTime = diag_tickTime;
+
+A3EAI_isActive = true;
 
 private ["_startTime","_directoryAsArray","_worldname","_allUnits"];
 
@@ -87,9 +90,9 @@ if ((east getFriend resistance) > 0) then {east setFriend [resistance, 0]};
 if ((west getFriend resistance) > 0) then {west setFriend [resistance, 0]};
 
 //Continue loading required A3EAI script files
-[] execVM format ['%1\scripts\A3EAI_post_init.sqf',A3EAI_directory];
+[] execVM format ['%1\init\A3EAI_post_init.sqf',A3EAI_directory];
 
 //Report A3EAI startup settings to RPT log
 diag_log format ["[A3EAI] A3EAI settings: Debug Level: %1. DebugMarkers: %2. WorldName: %3. VerifyClassnames: %4. VerifySettings: %5.",A3EAI_debugLevel,A3EAI_debugMarkersEnabled,_worldname,A3EAI_verifyClassnames,A3EAI_verifySettings];
-diag_log format ["[A3EAI] AI spawn settings: Static: %1. Dynamic: %2. Random: %3. Air: %4. Land: %5.",A3EAI_autoGenerateStatic,!(A3EAI_dynMaxSpawns isEqualTo 0),!(A3EAI_maxRandomSpawns isEqualTo 0),!(A3EAI_maxHeliPatrols isEqualTo 0),!(A3EAI_maxLandPatrols isEqualTo 0)];
+diag_log format ["[A3EAI] AI spawn settings: Static: %1. Dynamic: %2. Random: %3. Air: %4. Land: %5.",A3EAI_enableStaticSpawns,!(A3EAI_dynMaxSpawns isEqualTo 0),!(A3EAI_maxRandomSpawns isEqualTo 0),!(A3EAI_maxHeliPatrols isEqualTo 0),!(A3EAI_maxLandPatrols isEqualTo 0)];
 diag_log format ["[A3EAI] A3EAI loading completed in %1 seconds.",(diag_tickTime - _startTime)];

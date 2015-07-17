@@ -9,10 +9,25 @@ _unitsAlive = {alive _x} count (units _unitGroup);
 
 if (_unitsAlive isEqualTo 0) exitWith {diag_log format ["A3EAI Error: %1 cannot create trigger area for empty group %2.",__FILE__,_unitGroup];};
 
+{
+	if (alive _x) then {
+		if !(canMove _x) then {_x setHit ["legs",0]};
+		unassignVehicle _x;
+	};
+} count (units _unitGroup);
+
+for "_i" from ((count (waypoints _unitGroup)) - 1) to 0 step -1 do {
+	deleteWaypoint [_unitGroup,_i];
+};
+
+_unitGroup setCombatMode "YELLOW";
+_unitGroup setBehaviour "AWARE";
+[_unitGroup,_pos] call A3EAI_setFirstWPPos;
+0 = [_unitGroup,_pos,75] spawn A3EAI_BIN_taskPatrol;
+	
 _unitLevel = _unitGroup getVariable ["unitLevel",1];
 
-_trigger = createTrigger ["EmptyDetector",_pos];
-_trigger enableSimulationGlobal false;
+_trigger = createTrigger ["EmptyDetector",_pos,false];
 _trigger setTriggerArea [600, 600, 0, false];
 _trigger setTriggerActivation ["ANY", "PRESENT", true];
 _trigger setTriggerTimeout [5, 5, 5, true];
@@ -33,11 +48,9 @@ _unitGroup setVariable ["trigger",_trigger];
 [_trigger,"A3EAI_staticTriggerArray"] call A3EAI_updateSpawnCount;
 0 = [_trigger] spawn A3EAI_despawn_static;
 
-if !(A3EAI_HCObjectOwnerID isEqualTo 0) then {
-	A3EAI_sendGroupTriggerVars_PVC = [[_unitGroup,_trigger],[_unitGroup],75,1,1,[_unitsAlive,0],0,"vehiclecrew",false,true];
+if !(local _unitGroup) then {
+	A3EAI_sendGroupTriggerVars_PVC = [_unitGroup,[_unitGroup],75,1,1,[_unitsAlive,0],0,"vehiclecrew",false,true];
 	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_sendGroupTriggerVars_PVC";
 };
-
-_trigger enableSimulation true;
 
 true

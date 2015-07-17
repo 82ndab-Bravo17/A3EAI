@@ -17,8 +17,8 @@ _isCleaning = _trigger getVariable ["isCleaning",true];	//Find whether or not th
 _triggerStatements = triggerStatements _trigger;
 _grpCount = count _grpArray;
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Trigger %1 Group Array: %2. isCleaning: %3. In static trigger array: %4",triggerText _trigger,_grpArray,_isCleaning,(_trigger in A3EAI_staticTriggerArray)];};
-if (!(_trigger in A3EAI_staticTriggerArray) or {_isCleaning}) exitWith {if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Trigger %1 has a despawn script already running. Exiting despawn script.",triggerText _trigger];};};	
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Trigger %1 Group Array: %2. isCleaning: %3. In static trigger array: %4",triggerText _trigger,_grpArray,_isCleaning,(_trigger in A3EAI_staticTriggerArray)];};
+if (!(_trigger in A3EAI_staticTriggerArray) or {_isCleaning}) exitWith {if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Trigger %1 has a despawn script already running. Exiting despawn script.",triggerText _trigger];};};	
 
 _trigger setVariable["isCleaning",true];		//Mark the trigger as being in a cleanup state so that subsequent requests to despawn for the same trigger will not run.
 _deactStatements = _triggerStatements select 2;
@@ -26,7 +26,7 @@ _triggerStatements set [2,""];
 _trigger setTriggerStatements _triggerStatements;
 
 
-if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: No players remain in trigger area at %3. Deleting %1 AI groups in %2 seconds.",_grpCount, A3EAI_despawnWait,(triggerText _trigger)];};
+if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: No players remain in trigger area at %3. Deleting %1 AI groups in %2 seconds.",_grpCount, A3EAI_despawnWait,(triggerText _trigger)];};
 
 if (A3EAI_debugMarkersEnabled) then {
 	_nul = _trigger spawn {
@@ -44,7 +44,7 @@ if ((triggerActivated _trigger) && {({isNull _x} count _grpArray) < _grpCount}) 
 	_trigger setVariable ["isCleaning",false];	//Allow next despawn request.
 	_triggerStatements set [2,_deactStatements];
 	_trigger setTriggerStatements _triggerStatements;
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];};
 	if (A3EAI_debugMarkersEnabled) then {
 		_nul = _trigger spawn {
 			_tMarker = str (_this);
@@ -60,7 +60,7 @@ _permDelete = _trigger getVariable ["permadelete",false];
 	if (!isNull _x) then {
 		_groupSize = (_x getVariable ["GroupSize",0]);
 		if ((_groupSize > 0) or {_permDelete}) then { //If trigger is not set to permanently despawn, then ignore empty groups.
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Despawning group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Despawning group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
 			_x setVariable ["GroupSize",-1];
 			if (A3EAI_HCIsConnected) then {
 				A3EAI_updateGroupSize_PVC = [_x,-1];

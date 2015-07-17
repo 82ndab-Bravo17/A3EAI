@@ -59,11 +59,11 @@ while {true} do {
 		_playerCount = (count _allPlayers);
 		_maxSpawnsPossible = (_playerCount min A3EAI_dynMaxSpawns);	//Can't have more spawns than players (doesn't count current number of dynamic spawns)
 		
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Preparing to create %1 dynamic spawns (Players: %2, Dynamic Spawns: %3).",(_maxSpawnsPossible - _activeDynamicSpawns),_playerCount,_activeDynamicSpawns];};
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Preparing to create %1 dynamic spawns (Players: %2, Dynamic Spawns: %3).",(_maxSpawnsPossible - _activeDynamicSpawns),_playerCount,_activeDynamicSpawns];};
 
 		while {_allPlayers = _allPlayers - [objNull]; (((_maxSpawnsPossible - _activeDynamicSpawns) > 0) && {!(_allPlayers isEqualTo [])})} do {	//_spawns: Have we created enough spawns? _allPlayers: Are there enough players to create spawns for?
 			_time = diag_tickTime;
-			_player = _allPlayers call BIS_fnc_selectRandom2;
+			_player = _allPlayers call A3EAI_selectRandom;
 			_playerUID = (getPlayerUID _player);
 			if (alive _player) then {
 				_playername = name _player;
@@ -80,8 +80,7 @@ while {true} do {
 						{((_playerPos nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}					//Player must not be near Epoch buildables
 					) then {
 						_lastSpawned_DB set [_index,diag_tickTime];
-						_trigger = createTrigger ["EmptyDetector",_playerPos];
-						_trigger enableSimulationGlobal false;
+						_trigger = createTrigger ["EmptyDetector",_playerPos,false];
 						_location = [_playerPos,600] call A3EAI_createBlackListArea;
 						_trigger setVariable ["triggerLocation",_location];
 						_trigger setTriggerArea [600, 600, 0, false];
@@ -92,7 +91,6 @@ while {true} do {
 						_trigger setVariable ["targetplayerUID",_playerUID];
 						//_trigActStatements = format ["0 = [150,thisTrigger,%1,%2,%3] call A3EAI_spawnUnits_dynamic;",_spawnParams select 0,_spawnParams select 1,_spawnParams select 2];
 						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;","", "[thisTrigger] spawn A3EAI_despawn_dynamic;"];
-						_trigger enableSimulation true;
 						if (A3EAI_debugMarkersEnabled) then {
 							_nul = _trigger spawn {
 								_marker = str(_this);
@@ -109,7 +107,7 @@ while {true} do {
 						if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created dynamic trigger at %1 with params %2. Triggered by player: %3.",(mapGridPosition _trigger),_spawnParams,_playername];};
 					} else {
 						if (A3EAI_debugLevel > 1) then {
-							diag_log format ["A3EAI Extended Debug: Dynamic spawn conditions failed for player %1:",_playername];
+							diag_log format ["A3EAI Debug: Dynamic spawn conditions failed for player %1:",_playername];
 							diag_log format ["DEBUG: Player is not air: %1",!((vehicle _player) isKindOf "Air")];
 							diag_log format ["DEBUG: Player not in blacklisted area: %1",(({_playerPos in _x} count (nearestLocations [_playerPos,["Strategic"],1000])) isEqualTo 0)];
 							diag_log format ["DEBUG: Player not in water: %1",!(surfaceIsWater _playerPos)];
@@ -118,20 +116,20 @@ while {true} do {
 						};
 					};
 				} else {
-					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Dynamic spawn probability check failed for player %1 (Probability: %2).",_playername,_spawnChance];};
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn probability check failed for player %1 (Probability: %2).",_playername,_spawnChance];};
 				};
 			} else {
-				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Cancel dynamic spawn check for player %1 (Reason: Player not in suitable state).",_player]};
+				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Cancel dynamic spawn check for player %1 (Reason: Player not in suitable state).",_player]};
 			};
 			_allPlayers = _allPlayers - [_player];
 			_activeDynamicSpawns = _activeDynamicSpawns + 1;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Processed a spawning probability check in %1 seconds.",diag_tickTime - _time]};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Processed a spawning probability check in %1 seconds.",diag_tickTime - _time]};
 			uiSleep 5;
 		};
 	} else {
-		if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Extended Debug: No players online. Dynamic spawn manager is entering waiting state.";};
+		if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: No players online. Dynamic spawn manager is entering waiting state.";};
 	};
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Dynamic spawn manager is sleeping for %1 seconds.",SLEEP_DELAY];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn manager is sleeping for %1 seconds.",SLEEP_DELAY];};
 	uiSleep SLEEP_DELAY;
 };

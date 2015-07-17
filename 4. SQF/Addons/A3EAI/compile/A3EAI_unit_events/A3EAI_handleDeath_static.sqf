@@ -16,7 +16,7 @@ if (_groupIsEmpty) then {
 			if (isDedicated) then {
 				_trigger setVariable ["permadelete",true];	//deny respawn and delete trigger on next despawn.
 			} else {
-				A3EAI_setPermaDeleteSpawn_PVS = _trigger;
+				A3EAI_setPermaDeleteSpawn_PVS = _unitGroup;
 				publicVariableServer "A3EAI_setPermaDeleteSpawn_PVS";
 			};
 		};
@@ -24,7 +24,7 @@ if (_groupIsEmpty) then {
 		if (isDedicated) then {
 			_nul = _trigger spawn A3EAI_deleteCustomSpawn;
 		} else {
-			A3EAI_deleteCustomSpawn_PVS = _trigger;
+			A3EAI_deleteCustomSpawn_PVS = _unitGroup;
 			publicVariableServer "A3EAI_deleteCustomSpawn_PVS";
 		};
 	};
@@ -32,7 +32,7 @@ if (_groupIsEmpty) then {
 	if (!(_trigger getVariable ["respawn",true])) then {
 		_maxUnits = _trigger getVariable ["maxUnits",[0,0]]; //Reduce maximum AI for spawn trigger for each AI killed for non-respawning spawns.
 		_maxUnits set [0,(_maxUnits select 0) - 1];
-		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: MaxUnits variable for group %1 set to %2.",_unitGroup,_maxUnits];};
+		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: MaxUnits variable for group %1 set to %2.",_unitGroup,_maxUnits];};
 	};
 };
 

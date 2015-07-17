@@ -1,0 +1,37 @@
+private ["_unitGroup","_vehicle","_loadWP","_loadWPCond","_unit","_regroupPos"];
+
+_unitGroup = _this select 0;
+_vehicle = _this select 1;
+
+if ((count (waypoints _unitGroup)) > 1) exitWith {
+	if (isNull (driver _vehicle)) then {
+		[_unitGroup,1] setWaypointPosition (getPosATL _vehicle);
+		_unitGroup setCurrentWaypoint [_unitGroup,1];
+	};
+};
+
+_unit = objNull;
+{
+	if ((vehicle _x) isEqualTo _x) exitWith {_unit = _x};
+} forEach (units _unitGroup);
+
+if (isNull _unit) exitWith {_unitGroup call A3EAI_setVehicleRegrouped}; //If no units outside of vehicle, consider crew regrouped and exit script
+
+_regroupPos = if (isNull (driver _vehicle)) then {
+	(getPosATL _vehicle)
+} else {
+	([_vehicle,_unit] call A3EAI_getPosBetween)
+};
+
+_loadWP = _unitGroup addWaypoint [_regroupPos,0];
+_loadWP setWaypointType "LOAD";
+_loadWPCond = "_vehicle = (group this) getVariable ['assignedVehicle',objNull]; ({_x isEqualTo (vehicle _x)} count (assignedCargo _vehicle)) isEqualTo 0";
+//_loadWP setWaypointStatements [_loadWPCond,(format ["if (local this) then {_unitGroup = (group this); deleteWaypoint [_unitGroup,%1]; _unitGroup call A3EAI_setVehicleRegrouped; _unitGroup setCurrentWaypoint [_unitGroup,0];};",(_loadWP select 1)])];
+_loadWP setWaypointStatements [_loadWPCond,"if (local this) then {(group this) spawn A3EAI_vehCrewRegroupComplete;};"];
+
+_loadWP setWaypointCompletionRadius 10;
+_unitGroup setCurrentWaypoint _loadWP;
+
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Regroup order issued for AI group %1 to vehicle %2. Check WP count: %3.",_unitGroup,typeOf _vehicle,(count (waypoints _unitGroup))];};
+
+true

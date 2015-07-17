@@ -12,6 +12,7 @@ _items = [];
 		if (_itemClassType isEqualTo "backpack") exitWith {
 			_item = _itemClassInfo select 0;
 			_items pushBack _item;
+			// diag_log format ["ITEMDATA: Backpack %1: maximumLoad %2.",[configfile >> "CfgVehicles" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _item,"maximumLoad",-1] call BIS_fnc_returnConfigEntry];
 		};
 		if (_itemClassType isEqualTo "CfgLootTable") exitWith {
 			_itemClass = _itemClassInfo select 0;
@@ -23,6 +24,7 @@ _items = [];
 				if (_itemType isEqualTo "backpack") then {
 					_item = _itemInfo select 0;
 					_items pushBack _item;
+					// diag_log format ["ITEMDATA: Backpack %1: maximumLoad %2.",[configfile >> "CfgVehicles" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _item,"maximumLoad",-1] call BIS_fnc_returnConfigEntry];
 				};
 			} forEach _itemList;
 		};
@@ -37,10 +39,10 @@ if !(_items isEqualTo []) then {
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 backpack classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_backpackTypes0: %1",A3EAI_backpackTypes0];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_backpackTypes1: %1",A3EAI_backpackTypes1];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_backpackTypes2: %1",A3EAI_backpackTypes2];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_backpackTypes3: %1",A3EAI_backpackTypes3];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_backpackTypes0: %1",A3EAI_backpackTypes0];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_backpackTypes1: %1",A3EAI_backpackTypes1];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_backpackTypes2: %1",A3EAI_backpackTypes2];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_backpackTypes3: %1",A3EAI_backpackTypes3];
 		};
 	};
 } else {

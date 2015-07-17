@@ -54,7 +54,9 @@ _getWeightedIndices = {
 } count [
 			//Input variable - Gradechances array, Output variable - Gradeindices array
 			["A3EAI_levelChancesAir","A3EAI_levelIndicesAir"],
-			["A3EAI_levelChancesLand", "A3EAI_levelIndicesLand"],
+			["A3EAI_levelChancesLand","A3EAI_levelIndicesLand"],
+			["A3EAI_levelChancesUAV","A3EAI_levelIndicesUAV"],
+			["A3EAI_levelChancesUGV","A3EAI_levelIndicesUGV"],
 			["A3EAI_useWeaponChance0","A3EAI_weaponTypeIndices0"],
 			["A3EAI_useWeaponChance1","A3EAI_weaponTypeIndices1"],
 			["A3EAI_useWeaponChance2","A3EAI_weaponTypeIndices2"],

@@ -1,12 +1,18 @@
 private ["_arrayData", "_unitGroup", "_trigger"];
 _arrayData = _this;
-_unitGroup = (_arrayData select 0) select 0;
-_trigger = (_arrayData select 0) select 1;
-_unitGroup setVariable ["trigger",_trigger]; //Link group to trigger.
+_unitGroup = _arrayData select 0;
 
-//diag_log format ["Debug: Set group %1 trigger to %2.",_unitGroup,_trigger];
+/*
+if !(local _unitGroup) then {
+	diag_log format ["Debug: Server sent group trigger variables for remote group %1.",_unitGroup];
+};
+*/
 
-//Remove array headers
+_trigger = _unitGroup getVariable "trigger";
+
+if (isNil "_trigger") exitWith {diag_log format ["A3EAI Error: Group %1 has undefined trigger.",_unitGroup];};
+
+//Remove array headers (Group reference)
 _arrayData deleteAt 0;
 
 {
@@ -23,3 +29,5 @@ _arrayData deleteAt 0;
 	"respawn",
 	"permadelete"
 ];
+
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Set group trigger variables for group %1. Success check: %2.",_unitGroup,_trigger isKindOf "EmptyDetector"];};

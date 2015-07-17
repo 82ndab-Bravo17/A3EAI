@@ -1,4 +1,4 @@
-A3EAI - Current Version: 0.7.0
+A3EAI - Current Version: 0.8.0
 =====
 
 ---
@@ -21,6 +21,11 @@ Installing A3EAI
 6. (Optional) Configure A3EAI settings by editing A3EAI_config.sqf. 
 
 ---
+A3EAI Wiki
+---
+A3EAI now has its own Wiki site! A3EAI guides and tutorials can be found here: http://a3eai.wikia.com/wiki/A3EAI_Wiki
+
+---
 A3EAI Features
 ---
 1. Automatically-generated static AI spawns: A3EAI will spawn an AI group at various named locations on the map if players are nearby.
@@ -35,9 +40,5 @@ A3EAI Features
 10. Plug-and-play installation: Installing and upgrading A3EAI is a simple copy and paste job and does not require modifying any Epoch files.
 11. Easy configuration: A single configuration file contains all settings for A3EAI. This config file is external to the A3EAI pbo, so configuration changes can be made without ever having to unpack or repack the pbo file. 
 
----
-A3EAI Wiki
----
-A3EAI now has its own Wiki site! A3EAI guides and tutorials can be found here: http://a3eai.wikia.com/wiki/A3EAI_Wiki
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

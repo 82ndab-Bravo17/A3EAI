@@ -6,6 +6,8 @@
 
 if (hasInterface || isDedicated || !isNil "A3EAI_HC_isActive") exitWith {};
 
+_startTime = diag_tickTime;
+
 A3EAI_HC_isActive = true;
 A3EAI_directory = "A3EAI";
 A3EAI_HCPlayerLoggedIn = false;
@@ -27,10 +29,10 @@ if (isNil "A3EAI_EpochHiveDir") then {
 };
 
 //Create reference marker to act as boundary for spawning AI air/land vehicles.
-_worldname = (toLower worldName);
+_worldName = (toLower worldName);
 _markerInfo = call {
 	{
-		if (_worldname isEqualTo (_x select 0)) exitWith {
+		if (_worldName isEqualTo (_x select 0)) exitWith {
 			[_x select 1,_x select 2]
 		};
 	} forEach [
@@ -57,7 +59,7 @@ _markerInfo = call {
 		["trinity",[7183.8403, 7067.4727],5300],
 		["utes",[3519.8037, 3703.0649],1000],
 		["zargabad",[3917.6201, 3800.0376],2000],
-		[_worldname,[configFile >> "CfgWorlds" >> worldName,"centerPosition",[0,0,0]] call BIS_fnc_returnConfigEntry,([configFile >> "CfgWorlds" >> worldName,"mapSize",14000] call BIS_fnc_returnConfigEntry) * 0.5]
+		[_worldName,[configFile >> "CfgWorlds" >> worldName,"centerPosition",[0,0,0]] call BIS_fnc_returnConfigEntry,([configFile >> "CfgWorlds" >> worldName,"mapSize",14000] call BIS_fnc_returnConfigEntry) * 0.5]
 	];
 };
 _centerMarker = createMarkerLocal ["A3EAI_centerMarker",_markerInfo select 0];
@@ -68,7 +70,7 @@ _nul = [] spawn {
 	diag_log format ["[A3EAI] Initializing A3EAI HC build %1 using base path %2.",_versionKey,A3EAI_directory];
 
 	//Load A3EAI config file
-	diag_log "Loading A3EAI configuration file...";
+	diag_log "[A3EAI] Loading A3EAI configuration file...";
 	call compile preprocessFileLineNumbers format ["%1\A3EAI_config.sqf",A3EAI_EpochHiveDir];
 	call compile preprocessFileLineNumbers format ["%1\scripts\verifySettings.sqf",A3EAI_directory];
 	if ((!isNil "A3EAI_overrideEnabled") && {A3EAI_overrideEnabled}) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
@@ -77,11 +79,13 @@ _nul = [] spawn {
 	#include "variables.txt"
 
 	//Load A3EAI functions and A3EAI HC functions
-	diag_log "Compiling functions...";
+	diag_log "[A3EAI] Compiling functions...";
 	call compile preprocessFileLineNumbers "A3EAI\init\A3EAI_HCFunctions.sqf";
 	call compile preprocessFileLineNumbers "A3EAI\init\A3EAI_functions.sqf";
 	call compile preprocessFileLineNumbers "A3EAI\init\A3EAI_HC_PVEH.sqf";
 	
+	diag_log format ["[A3EAI] A3EAI settings: Debug Level: %1. WorldName: %2. VerifyClassnames: %3. VerifySettings: %4.",A3EAI_debugLevel,(toLower worldName),A3EAI_verifyClassnames,A3EAI_verifySettings];
+
 	//Build location list
 	_setupLocations = [] execVM format ['%1\scripts\setup_locations.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.5; scriptDone _setupLocations};
@@ -89,23 +93,15 @@ _nul = [] spawn {
 	diag_log "[A3EAI] Waiting for HC player object setup to be completed.";
 	
 	waitUntil {uiSleep 2; player == player};
-	
-	/*waitUntil {uiSleep 3; A3EAI_HCPlayerLoggedIn};
-
-	diag_log "[A3EAI] HC player setup, creating HC unit.";
-	
-	_newCenter = createCenter sideLogic;
-	A3EAI_HCObjectGroup = createGroup sideLogic;
-	A3EAI_HCObject = A3EAI_HCObjectGroup createUnit ["HeadlessClient_F",(getPosATL player),[],0,"NONE"];
-	A3EAI_HCObject allowDamage false;
-	diag_log format ["[A3EAI] Created HC unit %1",A3EAI_HCObject];
-	*/
+	if !((typeOf player) isEqualTo "HeadlessClient_F") exitWith {
+		diag_log format ["A3EAI Error: Headless client assigned to wrong player slot. Player Type: %1. Expected: HeadlessClient_F",(typeOf player)];
+	};
 	
 	A3EAI_HCObject = player;
 	A3EAI_HCObjectGroup = (group player);
 	A3EAI_HCObject allowDamage false;
 	
-	diag_log "Attempting to connect to A3EAI server...";
+	diag_log "[A3EAI] Attempting to connect to A3EAI server...";
 	A3EAI_HCLogin_PVS = [A3EAI_HCObject,_versionKey]; 
 	publicVariableServer "A3EAI_HCLogin_PVS";
 	_loginStart = diag_tickTime;
@@ -130,25 +126,3 @@ _nul = [] spawn {
 	
 	_serverMonitor = [] execVM format ['%1\compile\A3EAI_headlessclient\A3EAI_HCMonitor.sqf',A3EAI_directory];
 };
-
-/*
-_nul = [] spawn {
-	waitUntil {uiSleep 2; (player isEqualTo player) && {(typeOf player) isEqualTo "Epoch_Male_F"}};
-
-	player allowDamage false;
-	player setCaptive true;
-	A3EAI_HCPlayerLoggedIn = true;
-	
-	diag_log "[A3EAI] Headless player object set up completed.";
-	_defaultVarTypes = ["Temp","Hunger","Thirst","AliveTime","Energy","Wet","Soiled","Immunity","Toxicity","Stamina","Crypto","HitPoints","BloodP"];
-	_defaultVars = [98.6,5000,2500,0,0,0,0,0,0,100,0,[0,0,0,0],100];
-	while {true} do {
-		{
-			_variableName = ("EPOCH_player"+(_defaultVarTypes select _forEachIndex));
-			missionNamespace setVariable [_variableName,_x];
-			//diag_log format ["[A3EAI] Set headless player object variable %1 to %2.",_variableName,_x];
-		} forEach _defaultVars;
-		uiSleep 600;
-	};
-};
-*/

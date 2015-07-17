@@ -2,18 +2,20 @@ private ["_unitGroup", "_waypoint", "_vehicle", "_endTime", "_vehiclePos", "_nea
 
 _unitGroup = _this;
 
+
+if (!hasInterface && !isDedicated) exitWith {diag_log format ["Error: %1 executed on headless client.",__FILE__];};
 if !((typeName _unitGroup) isEqualTo "GROUP") exitWith {diag_log format ["A3EAI Error: Invalid group %1 provided to %2.",_unitGroup,__FILE__];};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
-_vehicleArmed = _vehicle getVariable ["ArmedVehicle",false];
+_vehicleArmed = ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) > 0) || {({_x call A3EAI_checkIsWeapon} count (_vehicle weaponsTurret [-1])) > 0} || {(_vehicle call A3EAI_countVehicleGunners) > 0});
 _reinforcePos = _unitGroup getVariable ["ReinforcePos",[0,0,0]];
 
 if (_vehicleArmed) then {
 	_waypoint = [_unitGroup,0];
 	_waypoint setWaypointStatements ["true",""];
-	_waypoint setWaypointType "SAD";
+	_waypoint setWaypointType "GUARD";
 	_waypoint setWaypointBehaviour "AWARE";
-	_waypoint setWaypointCombatMode "YELLOW";
+	_waypoint setWaypointCombatMode "RED";
 
 	if (local _unitGroup) then {
 		_unitGroup setCurrentWaypoint _waypoint;
@@ -22,17 +24,9 @@ if (_vehicleArmed) then {
 		A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_setCurrentWaypoint_PVC";
 	};
 	
-	_reinforceTime = call {
-		private ["_unitLevel"];
-		_unitLevel = _unitGroup getVariable ["unitLevel",-1];
-		if (_unitLevel isEqualTo 3) exitWith {A3EAI_airReinforcementDuration3};
-		if (_unitLevel isEqualTo 2) exitWith {A3EAI_airReinforcementDuration2};
-		if (_unitLevel isEqualTo 1) exitWith {A3EAI_airReinforcementDuration1};
-		if (_unitLevel isEqualTo 0) exitWith {A3EAI_airReinforcementDuration0};
-		0
-	};
+	_reinforceTime = missionNamespace getVariable [format ["A3EAI_airReinforcementDuration%1",_unitGroup getVariable ["unitLevel",0]],0];
 	
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,_reinforceTime];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,_reinforceTime];};
 
 	_unitGroup setSpeedMode "LIMITED";
 	_endTime = diag_tickTime + _reinforceTime;
@@ -55,20 +49,20 @@ if (_vehicleArmed) then {
 	};
 	_unitGroup setSpeedMode "NORMAL";
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 reinforcement timer complete.",_unitGroup];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 reinforcement timer complete.",_unitGroup];};
 } else {
 	_paraDrop = [_unitGroup,_vehicle,objNull] spawn A3EAI_heliParaDrop;
 	waitUntil {uiSleep 0.1; scriptDone _paraDrop};
 };
 
 if (((_unitGroup getVariable ["GroupSize",-1]) < 1) or {!((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce")}) exitWith {
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Group %1 (type: %2) is no longer reinforcing, reinforce timer exited.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"])];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 (type: %2) is no longer reinforcing, reinforce timer exited.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"])];};
 };
 
 _vehPos = (getPosATL _vehicle);
 _despawnPos = [_vehPos,2000,random(360),1] call SHK_pos;
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: %1 Vehicle %2 (pos %3) assigned despawn pos %4.",_unitGroup,(typeOf _vehicle),_vehPos,_despawnPos];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 Vehicle %2 (pos %3) assigned despawn pos %4.",_unitGroup,(typeOf _vehicle),_vehPos,_despawnPos];};
 
 _waypoint = _unitGroup addWaypoint [_despawnPos,0];
 _waypoint setWaypointType "MOVE";

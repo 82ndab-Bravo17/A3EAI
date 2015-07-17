@@ -7,9 +7,8 @@ _groupIsEmpty = _this select 3;
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
 
-//diag_log format ["Debug: Victim: %1. Group: %2. Empty Group: %3. Vehicle: %4. LandVehicle: %5.",_victim,_unitGroup,_groupIsEmpty,_vehicle,_vehicle isKindOf "LandVehicle"];
+//diag_log format ["%1 params: %2",__FILE__,_this];
 
-//diag_log format ["Land group %1 has vehicle %2. Group Empty: %3",_unitGroup,_vehicle,_groupIsEmpty];
 if (_groupIsEmpty) then {
 	if (_vehicle isKindOf "LandVehicle") then {
 		{_vehicle removeAllEventHandlers _x} count ["HandleDamage","Killed"];
@@ -27,7 +26,7 @@ if (_groupIsEmpty) then {
 	_groupSize = _unitGroup getVariable ["GroupSize",(count _groupUnits)];
 	if (_groupSize > 1) then {
 		if (_victim getVariable ["isDriver",false]) then {
-			_newDriver = _groupUnits call BIS_fnc_selectRandom2;	//Find another unit to serve as driver (besides the gunner)
+			_newDriver = _groupUnits call A3EAI_selectRandom;	//Find another unit to serve as driver (besides the gunner)
 			_nul = [_newDriver,_vehicle] spawn {
 				private ["_newDriver","_vehicle"];
 				_newDriver = _this select 0;
@@ -43,15 +42,19 @@ if (_groupIsEmpty) then {
 					A3EAI_setDriverUnit_PVS = _newDriver;
 					publicVariableServer "A3EAI_setDriverUnit_PVS";
 				};
-				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Replaced driver unit for group %1 vehicle %2.",_unitGroup,(typeOf _vehicle)];};
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Replaced driver unit for group %1 vehicle %2.",(group _newDriver),(typeOf _vehicle)];};
 			};
 		};
 	} else {
 		{
 			if (alive _x) then {
+				_forceOut = ((speed _vehicle) < 5);
 				if !((gunner _vehicle) isEqualTo _x) then {
 					unassignVehicle _x;
 					[_x] orderGetIn false;
+					if (_forceOut) then {
+						_x action ["eject",_vehicle];
+					};
 				};
 				[_vehicle] call A3EAI_vehDestroyed;
 			};

@@ -11,6 +11,6 @@ if !((_init find "bis_fnc_initVehicle") isEqualTo -1) exitWith {false};
 _this setVariable ["BIS_enableRandomization",true];
 [_this, "", [], false] call BIS_fnc_initVehicle;
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: %1 executed on AI %2.",__FILE__,_vehicleType]};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 executed on AI %2.",__FILE__,_vehicleType]};
 
 true

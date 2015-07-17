@@ -17,7 +17,7 @@ for "_i" from 1 to _maxRandomSpawns do {
 	} do {
 		_attempts = _attempts + 1;
 		_trigPos = if (_attempts < 2) then {
-			_randomLocation = (A3EAI_locations call BIS_fnc_selectRandom2) select 1;
+			_randomLocation = (A3EAI_locations call A3EAI_selectRandom) select 1;
 			[_randomLocation,300+(random 450),(random 360),0] call SHK_pos
 		} else {
 			["A3EAI_centerMarker",0] call SHK_pos
@@ -33,8 +33,7 @@ for "_i" from 1 to _maxRandomSpawns do {
 	
 	if !(_posCheckFail) then {
 		_spawnParams = _trigPos call A3EAI_getSpawnParams;
-		_trigger = createTrigger ["EmptyDetector",_trigPos];
-		_trigger enableSimulationGlobal false;
+		_trigger = createTrigger ["EmptyDetector",_trigPos,false];
 		_location = [_trigPos,600] call A3EAI_createBlackListArea;
 		_trigger setVariable ["triggerLocation",_location];
 		[_trigger,"A3EAI_randTriggerArray"] call A3EAI_updateSpawnCount;
@@ -43,7 +42,6 @@ for "_i" from 1 to _maxRandomSpawns do {
 		_trigger setTriggerActivation ["ANY", "PRESENT", true];
 		_trigger setTriggerTimeout [3, 3, 3, true];
 		_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;",_onActStatements,"[thisTrigger] spawn A3EAI_despawn_random;"];
-		_trigger enableSimulation true;
 		if (A3EAI_debugMarkersEnabled) then {
 			_markername = str(_trigger);
 			_marker = createMarker[_markername,_trigPos];

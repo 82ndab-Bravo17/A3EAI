@@ -21,7 +21,7 @@ A3EAIC_deathMessages = true;
 A3EAIC_killMessage0 = "%1 was killed"; //%1: AI corpse name
 
 //AI radio static message
-A3EAIC_radioMessage0 = "[RADIO] Your radio is picking up a signal nearby."; //Message displayed when radio sound transmitted without AI dialogue.
+A3EAIC_radioMessage0 = "[RADIO] Your radio is picking up a signal nearby.";	//Message displayed when radio sound transmitted without AI dialogue.
 
 //AI radio messages (AI-killer dialogue)
 A3EAIC_radioMessage1 = "[RADIO] %1: %2 is in this area. Stay on alert!"; //%1: AI leader name, %2: Target player name
@@ -46,3 +46,17 @@ A3EAIC_radioMessage32 = "[RADIO] %1: We've arrived at the location. Moving in on
 A3EAIC_radioMessage33 = "[RADIO] %1: Thats's the one we're looking for. Take him out."; //%1: AI leader name
 A3EAIC_radioMessage34 = "[RADIO] %1: Located the target. Let's take him out."; //%1: AI leader name
 A3EAIC_radioMessage35 = "[RADIO] %1: Priority target confirmed. Proceeding to engage."; //%1: AI leader name
+
+//UAV patrol dialogue. Displayed when player is detected.
+A3EAIC_radioMessage41 = "[RADIO] %1 %2: Targets detected. Relaying position data."; //%1: UAV Group, %2: UAV Type
+A3EAIC_radioMessage42 = "[RADIO] %1 %2: Targets found at destination coordinates."; //%1: UAV Group, %2: UAV Type
+A3EAIC_radioMessage43 = "[RADIO] %1 %2: Movement detected. Targets selected."; //%1: UAV Group, %2: UAV Type
+A3EAIC_radioMessage44 = "[RADIO] %1 %2: Heat signatures confirmed. Designating targets."; //%1: UAV Group, %2: UAV Type
+A3EAIC_radioMessage45 = "[RADIO] %1 %2: Priority target located. Redirecting armed forces to target location."; //%1: UAV Group, %2: UAV Type
+
+//UGV patrol dialogue. Displayed when player is detected.
+A3EAIC_radioMessage51 = "[RADIO] %1 %2: Targets detected. Relaying position data."; //%1: UGV Group, %2: UGV Type
+A3EAIC_radioMessage52 = "[RADIO] %1 %2: Targets found at destination coordinates."; //%1: UGV Group, %2: UGV Type
+A3EAIC_radioMessage53 = "[RADIO] %1 %2: Movement detected. Targets selected."; //%1: UGV Group, %2: UGV Type
+A3EAIC_radioMessage54 = "[RADIO] %1 %2: Heat signatures confirmed. Designating targets."; ///%1: UGV Group, %2: UGV Type
+A3EAIC_radioMessage55 = "[RADIO] %1 %2: Priority target located. Redirecting armed forces to target location."; //%1: UGV Group, %2: UGV Type

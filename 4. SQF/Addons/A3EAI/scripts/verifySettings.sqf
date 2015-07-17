@@ -11,7 +11,6 @@ _startTime = diag_tickTime;
 	["A3EAI_debugLevel",0],
 	["A3EAI_monitorRate",300],
 	["A3EAI_verifyClassnames",true],
-	["A3EAI_checkVehicleInit",true],
 	["A3EAI_cleanupDelay",900],
 	["A3EAI_dynamicUniformList",true],
 	["A3EAI_dynamicWeaponList",true],
@@ -48,7 +47,7 @@ _startTime = diag_tickTime;
 	["A3EAI_loadCustomFile",true],
 	["A3EAI_enableHC",false],
 	["A3EAI_waitForHC",false],
-	["A3EAI_autoGenerateStatic",true],
+	["A3EAI_enableStaticSpawns",true],
 	["A3EAI_minAI_capitalCity",2],
 	["A3EAI_addAI_capitalCity",1],
 	["A3EAI_unitLevel_capitalCity",1],
@@ -97,10 +96,14 @@ _startTime = diag_tickTime;
 		["B_Heli_Attack_01_F",2]
 	]],
 	["A3EAI_heliGunnerUnits",3],
-	["A3EAI_removeMissileWeapons",true],
-	["A3EAI_detectChance",0.70],
+	["A3EAI_removeExplosiveAmmo",true],
+	["A3EAI_airDetectChance",0.80],
+	["A3EAI_UAVDetectChance",0.80],
+	["A3EAI_UGVDetectChance",0.80],
 	["A3EAI_paraDropChance",0.50],
 	["A3EAI_paraDropCooldown",1800],
+	["A3EAI_UAVCallReinforceCooldown",1800],
+	["A3EAI_UGVCallReinforceCooldown",1800],
 	["A3EAI_paraDropAmount",3],
 	["A3EAI_maxLandPatrols",0],
 	["A3EAI_levelChancesLand",[0.00,0.50,0.35,0.15]],
@@ -183,10 +186,10 @@ _startTime = diag_tickTime;
 	["A3EAI_underbarrelChance1",0.25],
 	["A3EAI_underbarrelChance2",0.50],
 	["A3EAI_underbarrelChance3",0.75],
-	["A3EAI_kryptoAmount0",25],
-	["A3EAI_kryptoAmount1",50],
-	["A3EAI_kryptoAmount2",75],
-	["A3EAI_kryptoAmount3",100],
+	["A3EAI_kryptoAmount0",50],
+	["A3EAI_kryptoAmount1",75],
+	["A3EAI_kryptoAmount2",100],
+	["A3EAI_kryptoAmount3",150],
 	["A3EAI_foodLootCount",1],
 	["A3EAI_miscLootCount1",1],
 	["A3EAI_miscLootCount2",1],
@@ -248,7 +251,6 @@ if (A3EAI_verifySettings) then {
 	if !(A3EAI_minAI_wilderness in [0,1,2,3,4,5]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_minAI_remoteArea, resetting to default value."]; A3EAI_minAI_wilderness = 1};
 	if !(A3EAI_addAI_wilderness in [0,1,2,3,4,5]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_unitLevel_remoteArea, resetting to default value."]; A3EAI_addAI_wilderness = 1};
 	if !(A3EAI_unitLevel_wilderness in [0,1,2,3]) then {diag_log format ["[A3EAI] Error found in variable A3EAI_unitLevel_remoteArea, resetting to default value."]; A3EAI_unitLevel_wilderness = 2};
-	//if !((count A3EAI_promoteChances) isEqualTo 3) then {diag_log format ["[A3EAI] Error found in variable A3EAI_promoteChances, resetting to default value."]; A3EAI_promoteChances = [0.20,0.10,0.10]};
 	if !((count A3EAI_levelChancesAir) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_levelChancesAir, resetting to default value."]; A3EAI_levelChancesAir = [0.00,0.50,0.35,0.15]};
 	if !((count A3EAI_levelChancesLand) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_levelChancesLand, resetting to default value."]; A3EAI_levelChancesAir = [0.00,0.50,0.35,0.15]};
 	if !((count A3EAI_useWeaponChance0) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance0, resetting to default value."]; A3EAI_useWeaponChance0 = [0.20,0.80,0.00,0.00]};

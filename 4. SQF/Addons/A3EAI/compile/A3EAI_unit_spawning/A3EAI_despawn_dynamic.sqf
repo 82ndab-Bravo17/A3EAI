@@ -13,7 +13,7 @@ _isForceDespawn = if ((count _this) > 1) then {_this select 1} else {false};
 _triggerStatements = triggerStatements _trigger;
 _grpArray = _trigger getVariable ["GroupArray",[]];				//Find the groups spawned by the trigger. Or set an empty group array if none are found.
 
-if ((_trigger getVariable ["isCleaning",false]) && (!_isForceDespawn)) exitWith {if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Extended Debug: Despawn script is already running. Exiting despawn script.";};};
+if ((_trigger getVariable ["isCleaning",false]) && (!_isForceDespawn)) exitWith {if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: Despawn script is already running. Exiting despawn script.";};};
 
 _trigger setVariable["isCleaning",true];			//Mark the trigger as being in a cleanup state so that subsequent requests to despawn for the same trigger will not run.
 _deactStatements = _triggerStatements select 2;
@@ -24,10 +24,10 @@ _triggerExists = true;
 
 if (_isForceDespawn) then {
 	_trigger setTriggerStatements ["this","",""];
-	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: All units of dynamic AI group spawned by trigger %1 have been killed. Starting force despawn in 30 seconds.",triggerText _trigger];};
+	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: All units of dynamic AI group spawned by trigger %1 have been killed. Starting force despawn in 30 seconds.",triggerText _trigger];};
 	uiSleep 30;
 } else {
-	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Extended Debug: No players remain in %1. Deleting spawned AI in %2 seconds.",triggerText _trigger,A3EAI_dynDespawnWait];};
+	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: No players remain in %1. Deleting spawned AI in %2 seconds.",triggerText _trigger,A3EAI_dynDespawnWait];};
 	if (A3EAI_debugMarkersEnabled) then {
 		_nul = _trigger spawn {
 			_marker = str(_this);
@@ -50,7 +50,7 @@ if (_canDespawn) then {
 	_trigger setTriggerStatements ["this","",""]; //temporarily disable trigger from activating or deactivating while cleanup is performed
 	_grpArray = _grpArray - [grpNull];
 	{
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Deleting group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Deleting group %1 with %2 active units.",_x,(_x getVariable ["GroupSize",0])];};
 		//(A3EAI_numAIUnits - (_x getVariable ["GroupSize",0])) call A3EAI_updateUnitCount;
 		//_x call A3EAI_deleteGroup;
 		_x setVariable ["GroupSize",-1];
@@ -69,12 +69,12 @@ if (_canDespawn) then {
 	_triggerLocation setVariable ["deletetime",(diag_tickTime + A3EAI_tempBlacklistTime)];
 	A3EAI_areaBlacklists pushBack _triggerLocation;
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Removing expired dynamic trigger at %1.",mapGridPosition _trigger];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Removing expired dynamic trigger at %1.",mapGridPosition _trigger];};
 	deleteVehicle _trigger;
 	
 	true
 } else {
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];}; //Exit script if trigger has been reactivated since A3EAI_dynDespawnWait seconds has passed.
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];}; //Exit script if trigger has been reactivated since A3EAI_dynDespawnWait seconds has passed.
 	_trigger setVariable ["isCleaning",false];	//Allow next despawn request.
 	_triggerStatements set [2,_deactStatements];
 	_trigger setTriggerStatements _triggerStatements;

@@ -31,10 +31,10 @@ if !(_items isEqualTo []) then {
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 headgear classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_headgearTypes0: %1",A3EAI_headgearTypes0];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_headgearTypes1: %1",A3EAI_headgearTypes1];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_headgearTypes2: %1",A3EAI_headgearTypes2];
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_headgearTypes3: %1",A3EAI_headgearTypes3];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_headgearTypes0: %1",A3EAI_headgearTypes0];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_headgearTypes1: %1",A3EAI_headgearTypes1];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_headgearTypes2: %1",A3EAI_headgearTypes2];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_headgearTypes3: %1",A3EAI_headgearTypes3];
 		};
 	};
 } else {

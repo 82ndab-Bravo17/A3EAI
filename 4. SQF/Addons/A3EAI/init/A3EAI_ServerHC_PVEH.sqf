@@ -14,8 +14,11 @@
 "A3EAI_updateGroupSize_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateGroupSizeServer;diag_log format ["Debug: %1",_this];};
 "A3EAI_HCLogin_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_HCListener;diag_log format ["Debug: %1",_this];};
 "A3EAI_updateReinforcePlaces_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_updateReinforcePlaces;diag_log format ["Debug: %1",_this];};
-"A3EAI_setPermaDeleteSpawn_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["permadelete",true];diag_log format ["Debug: %1",_this];};
+"A3EAI_setPermaDeleteSpawn_PVS" addPublicVariableEventHandler {private ["_trigger"];_trigger = (_this select 1) getVariable ["trigger",objNull];_trigger setVariable ["permadelete",true];diag_log format ["Debug: %1",_this];};
 "A3EAI_deleteCustomSpawn_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_deleteCustomSpawn;diag_log format ["Debug: %1",_this];};
 "A3EAI_setDriverUnit_PVS" addPublicVariableEventHandler {(_this select 1) setVariable ["isDriver",true];diag_log format ["Debug: %1",_this];};
+"A3EAI_setVehicleRegrouped_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_setVehicleRegrouped;diag_log format ["Debug: %1",_this];};
+"A3EAI_spawnReinforcements_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_spawn_reinforcement;diag_log format ["Debug: %1",_this];};
+"A3EAI_setBehavior_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_setBehavior;diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] Serverside PVEHs loaded.";

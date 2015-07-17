@@ -37,7 +37,7 @@ if !(_items isEqualTo []) then {
 	A3EAI_weaponOpticsList = _items;
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 weapon optics classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
-			diag_log format ["A3EAI Extended Debug: Contents of A3EAI_weaponOpticsList: %1",A3EAI_weaponOpticsList];
+			diag_log format ["A3EAI Debug: Contents of A3EAI_weaponOpticsList: %1",A3EAI_weaponOpticsList];
 		};
 	};
 } else {

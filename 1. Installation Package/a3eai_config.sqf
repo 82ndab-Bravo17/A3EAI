@@ -22,9 +22,6 @@ A3EAI_monitorRate = 300;
 //If disabled, any invalid classnames will not be removed and clients may crash if AI bodies with invalid items are looted. Only disable if a previous scan shows no invalid classnames (Default: true).										
 A3EAI_verifyClassnames = true;
 
-//Enable filter against vehicles with init statements, which may cause BattlEye kicks. Enable if experiencing BattlEye kicks after adding new vehicle classnames (Default: false).
-A3EAI_checkVehicleInit = false;
-
 //Enables checking of all A3EAI config settings. (Default: true)
 A3EAI_verifySettings = true;
 
@@ -96,11 +93,11 @@ A3EAI_dynamicWeaponBlacklist = [];
 //Number of online players required for maximum (or minimum) AI spawn chance. Affects Static, Dynamic, Random AI spawns. (Default: 20)	
 A3EAI_playerCountThreshold = 20;
 
+//true: Spawn chance multiplier scales upwards from value defined by A3EAI_chanceScalingThreshold to 1.00. false: Spawn chance multiplier scales downwards from 1.00 to A3EAI_chanceScalingThreshold.
+A3EAI_upwardsChanceScaling = true;
+
 //If A3EAI_upwardsChanceScaling is true: Initial spawn chance multiplier. If A3EAI_upwardsChanceScaling is false: Final spawn chance multiplier. (Default: 0.50)
 A3EAI_chanceScalingThreshold = 0.50;
-
-//true: Spawn chance multiplier scales upwards from the above defined value to 1.00. false: Spawn chance multiplier scales downwards from 1.00 to the above defined value.
-A3EAI_upwardsChanceScaling = true;
 
 //(Static/Dynamic/Random Spawns) minAI: Minimum number of units. addAI: maximum number of additional units. unitLevel: Unit level (0-3)
 A3EAI_minAI_village = 1; //1
@@ -154,7 +151,12 @@ A3EAI_launcherTypes = ["launch_NLAW_F","launch_RPG32_F","launch_B_Titan_F","laun
 A3EAI_launchersPerGroup = 1;
 
 //Enable or disable AI self-healing. Level 0 AI cannot self-heal. (Default: true).
+//Affects: All AI infantry units
 A3EAI_enableHealing = true;
+
+//If enabled, A3EAI will remove all explosive ammo (missiles, rockets, bombs - but not HE rounds) from spawned AI air vehicles.  (Default: true)
+//Affects: All AI air vehicle types (patrols/custom/reinforcement). Does not affect UAV/UGVs.
+A3EAI_removeExplosiveAmmo = true;
 
 
 /*	A3EAI Client Addon features. These features require the A3EAI client addon to be installed in order to work.
@@ -167,12 +169,14 @@ A3EAI_radioMsgs = false;
 A3EAI_deathMessages = false;	
 
 
-/*	Static AI Spawning Settings
+/*	Static Infantry AI Spawning Settings
+
+	A3EAI will spawn an AI group at various named locations on the map if players are nearby. 
 --------------------------------------------------------------------------------------------------------------------*/	
 
 //Enable or disable static AI spawns. If enabled, AI spawn points will be generated in cities, towns, and other named areas.
 //Enabled: A3EAI automatically generates static spawns at named locations on map. Disabled: No static spawns will be generated. (Default: true)
-A3EAI_autoGenerateStatic = true;
+A3EAI_enableStaticSpawns = true;
 
 //Set minimum and maximum wait time in seconds to respawn an AI group after all units have been killed. Applies to both static AI and custom spawned AI (Default: Min 300, Max 600).									
 A3EAI_respawnTimeMin = 300;
@@ -191,7 +195,9 @@ A3EAI_respawnLimit_remoteArea = -1;
 A3EAI_staticBlacklistLocations = [];
 
 
-/*	Dynamic AI Spawning Settings. Probabilities should add up to 1.00	
+/*	Dynamic Infantry AI Spawning Settings. Probabilities should add up to 1.00	
+
+	A3EAI will create ambient threat in the area for each player by periodically spawning AI to create unexpected ambush encounters. These AI may occasionally seek out and hunt a player. 
 --------------------------------------------------------------------------------------------------------------------*/		
 
 //Upper limit of dynamic spawns on map at once. Set to 0 to disable dynamic spawns (Default: 15)
@@ -210,7 +216,9 @@ A3EAI_huntingChance = 0.60;
 A3EAI_dynDespawnWait = 120;
 
 
-/*	Random AI Spawning Settings (Feature in development)
+/*	Random Infantry AI Spawning Settings
+
+	A3EAI will create spawns that are randomly placed around the map and are periodically relocated. These spawns are preferentially created in named locations, but may be also created anywhere in the world. 
 --------------------------------------------------------------------------------------------------------------------*/		
 
 //Maximum number of placed random spawns on map. Set to -1 for A3EAI to automatically adjust spawn limit according to map size. Set to 0 to disable random spawns. (Default: -1)
@@ -223,7 +231,12 @@ A3EAI_randDespawnWait = 120;
 A3EAI_minRandSpawnDist = 0;
 
 
-/*	AI Air vehicle patrol settings. These AI vehicles will randomly travel between different cities and towns.
+/*	AI Air Vehicle patrol settings. 
+
+	IMPORTANT: UAVs (Unmanned aerial vehicles) are not supported by this function. UAV spawns can be configured in the "UAV Patrol Settings" section further below.
+
+	A3EAI will create AI vehicle patrols that will randomly travel between different cities and towns, and engage any players encountered.
+	Helicopters with available cargo space may also occasionally deploy an AI group by parachute. 
 --------------------------------------------------------------------------------------------------------------------*/		
 
 //Global maximum number of active AI air vehicle patrols. Set at 0 to disable (Default: 0).							
@@ -240,35 +253,35 @@ A3EAI_respawnAirMaxTime = 900;
 A3EAI_heliList = [
 	["B_Heli_Light_01_armed_F",5],
 	["B_Heli_Transport_01_F",5],
-	["I_Heli_light_03_F",5]
+	["B_Heli_Transport_03_F",2]
 ];
 
 //Maximum number of gunner units per air vehicle. Limited by actual number of available gunner positions. (Default: 2)
 //Affects: All AI air vehicle patrols, including custom and reinforcement.
 A3EAI_heliGunnerUnits = 2;
 
-//If enabled, A3EAI will remove all missile/rocket-type weaponry from spawned air vehicles. Affects all air vehicle types (patrols/custom/etc). (Default: true)
-//Affects: All AI air vehicle patrols, including custom and reinforcement.
-A3EAI_removeMissileWeapons = true;
-
 //Probability of AI helicopter sucessfully detecting player if there is line-of-sight. AI helicopters will conduct a visual sweep upon arriving at each waypoint and some distance after leaving. (Default: 0.80)
 //Affects: All AI air vehicle patrols, including custom and reinforcement.
-A3EAI_detectChance = 0.80;
+A3EAI_airDetectChance = 0.80;
 
-//Probability of AI to deploy units by parachute if players are nearby when helicopter is investigating a waypoint. (Default: 0.50)
+//Probability of AI to deploy infantry units by parachute if players are nearby when helicopter is investigating a waypoint. (Default: 0.50)
 //Affects: Air vehicle patrols.
 A3EAI_paraDropChance = 0.50;
 
-//Cooldown time for AI paradrop deployment in seconds. Note: Cooldown does not affect helicopter reinforcement for dynamic AI spawns. (Default: 1800).
+//Cooldown time for AI paradrop deployment in seconds. (Default: 1800).
 //Affects: Air vehicle patrols.
 A3EAI_paraDropCooldown = 1800;
 
-//Number of AI to paradrop if players are nearby when helicopter is investigating a waypoint, or if helicopter is reinforcing a dynamic AI spawn. Limited by number of cargo seats available in the vehicle. (Default: 3)
+//Number of infantry AI to paradrop if players are nearby when helicopter is investigating a waypoint, or if helicopter is reinforcing a dynamic AI spawn. Limited by number of cargo seats available in the vehicle. (Default: 3)
 //Affects: Air vehicle patrols, air reinforcements.
 A3EAI_paraDropAmount = 3;
 
 
-/*AI Land vehicle patrol settings. These AI vehicles will randomly travel between different cities and towns.
+/*	AI Land Vehicle patrol settings. These AI vehicles will randomly travel between different cities and towns.
+
+	IMPORTANT: UGVs (Unmanned ground vehicles) are not supported by this function. UGV spawns can be configured in the "UGV Patrol Settings" section further below.
+	
+	A3EAI will create AI vehicle patrols that will randomly travel between different cities and towns, and engage any players encountered.
 --------------------------------------------------------------------------------------------------------------------*/	
 
 //Global maximum number of active AI land vehicle patrols. Set at 0 to disable (Default: 0).	
@@ -308,6 +321,12 @@ A3EAI_vehCargoUnits = 3;
 
 
 /*	AI Air Reinforcement Settings
+
+	Allowed types of AI groups (defined by A3EAI_airReinforcementAllowedTypes) may call for temporary air reinforcements if a player kills one of their units.
+	Probability to summon reinforcements determined by A3EAI_airReinforcementSpawnChance<AI level>, where <AI level> is the level of the calling group.
+	Once summoned, armed reinforcement vehicles will remain in the area for a duration determined by A3EAI_airReinforcementDuration<AI level> and engage nearby players.
+	Unarmed reinforcement vehicles will deploy a paradrop group and exit the area.
+	
 --------------------------------------------------------------------------------------------------------------------*/
 
 //Maximum allowed number of simultaneous active reinforcements (Default: 5)
@@ -315,7 +334,10 @@ A3EAI_maxAirReinforcements = 5;
 
 //Air vehicles to use as reinforcement vehicles. Default: ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]
 //Armed air vehicles will detect and engage players within reinforcement area. Unarmed air vehicles will deploy an AI paradrop group.
-A3EAI_airReinforcementVehicles = ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]; 
+A3EAI_airReinforcementVehicles = [
+	"B_Heli_Transport_01_F",
+	"B_Heli_Light_01_armed_F"
+]; 
 
 //Probability to spawn reinforcements for each AI level.
 A3EAI_airReinforcementSpawnChance0 = 0.10; //Probability of reinforcing Level 0 AI (Default: 0.10)
@@ -334,7 +356,76 @@ A3EAI_airReinforcementDuration2 = 240; //Level 2 Default: 240
 A3EAI_airReinforcementDuration3 = 300; //Level 3 Default: 300
 
 
-/*	Shared AI Vehicle (Air & Land) Settings
+/*	UAV Patrol Settings
+
+	IMPORTANT: UAV patrols are a feature in testing, and may undergo significant changes or possible removal in future versions.
+
+	A3EAI can spawn UAVs that patrol between named locations, and deploy air reinforcements if players are found.
+	In order for air reinforcements to be deployed, A3EAI_maxAirReinforcements must be greater than zero and the current limit of air reinforcements has not been exceeded.
+--------------------------------------------------------------------------------------------------------------------*/
+
+//Global maximum number of active UAV patrols. Set at 0 to disable (Default: 0).	
+A3EAI_maxUAVPatrols = 0;
+
+//Classnames of UAV types to use, with the maximum amount of each type to spawn.
+A3EAI_UAVList = [
+	["I_UAV_02_CAS_F",5],
+	["I_UAV_02_F",5],
+	["B_UAV_02_CAS_F",5],
+	["B_UAV_02_F",5],
+	["O_UAV_02_CAS_F",5],
+	["O_UAV_02_F",5]
+];
+
+//Probability of spawning Level 0/1/2/3 UAV spawns. Probabilities should add up to 1.00	
+A3EAI_levelChancesUAV = [0.35,0.50,0.15,0.00];	
+
+//Set minimum and maximum wait time in seconds to respawn a UAV after vehicle is destroyed or disabled. (Default: Min 600, Max 900).
+A3EAI_respawnUAVMinTime = 600;
+A3EAI_respawnUAVMaxTime = 900;
+
+//Cooldown required in between air reinforcement summons when detecting players. Value in seconds. (Default: 1800)
+A3EAI_UAVCallReinforceCooldown = 1800;
+
+//Probability to successfully detect player if there is line-of-sight. If at least one player is detected, air reinforcements will be summoned to the area. (Default: 0.50)
+A3EAI_UAVDetectChance = 0.50;
+
+
+/*	UGV Patrol Settings
+
+	IMPORTANT: UGV patrols are a feature in testing, and may undergo significant changes or possible removal in future versions.
+
+	A3EAI can spawn UGVs that patrol between named locations, and deploy air reinforcements if players are found. Damaged UGVs repair themselves over time if not engaging enemes.
+	In order for air reinforcements to be deployed, A3EAI_maxAirReinforcements must be greater than zero and the current limit of air reinforcements has not been exceeded.
+--------------------------------------------------------------------------------------------------------------------*/
+
+//Global maximum number of active UGV patrols. Set at 0 to disable (Default: 0).	
+A3EAI_maxUGVPatrols = 0;
+
+//Classnames of UGV types to use, with the maximum amount of each type to spawn.
+A3EAI_UGVList = [
+	["I_UGV_01_rcws_F",5],
+	["B_UGV_01_rcws_F",5],
+	["O_UGV_01_rcws_F",5]
+];
+
+//Probability of spawning Level 0/1/2/3 AI UGV spawns. Probabilities should add up to 1.00	
+A3EAI_levelChancesUGV = [0.35,0.50,0.15,0.00];	
+
+//Set minimum and maximum wait time in seconds to respawn a UGV patrol after vehicle is destroyed or disabled. (Default: Min 600, Max 900).
+A3EAI_respawnUGVMinTime = 600;
+A3EAI_respawnUGVMaxTime = 900;
+
+//Cooldown required in between air reinforcement summons when detecting players. Value in seconds. (Default: 1800)
+A3EAI_UGVCallReinforceCooldown = 1800;
+
+//Probability to successfully detect player if there is line-of-sight. If at least one player is detected, air reinforcements will be summoned to the area. (Default: 0.50)
+A3EAI_UGVDetectChance = 0.50;
+
+
+/*	Shared AI Vehicle Settings
+
+	These settings affect the following AI vehicle patrol types: Air, Land, UAV, UGV
 --------------------------------------------------------------------------------------------------------------------*/
 
 //Add name of location as displayed on map prevent AI vehicle patrols from travelling to these locations. Location names are case-sensitive. (Example: ["Aggelochori","Panochori","Zaros"])
@@ -343,7 +434,10 @@ A3EAI_waypointBlacklist = [];
 
 
 /*
-	AI skill settings
+	AI skill settings. 
+	
+	These settings affect all AI units spawned by A3EAI.
+	
 	Skill Level: Description
 	0: Low-level AI found in villages
 	1: Medium-level AI found in cities and capital cities
@@ -449,10 +543,10 @@ A3EAI_underbarrelChance3 = 0.75;
 --------------------------------------------------------------------------------------------------------------------*/
 
 //Maximum amount of Krypto generated for level 0-3 AI. Actual amount will be randomized up to the specified amount.
-A3EAI_kryptoAmount0 = 25; 	//Default for level 0 AI: 25
-A3EAI_kryptoAmount1 = 50; 	//Default for level 1 AI: 50
-A3EAI_kryptoAmount2 = 75; 	//Default for level 2 AI: 75
-A3EAI_kryptoAmount3 = 100; 	//Default for level 3 AI: 100
+A3EAI_kryptoAmount0 = 50; 	//Default for level 0 AI: 50
+A3EAI_kryptoAmount1 = 75; 	//Default for level 1 AI: 75
+A3EAI_kryptoAmount2 = 100; 	//Default for level 2 AI: 100
+A3EAI_kryptoAmount3 = 150; 	//Default for level 3 AI: 150
 
 //Maximum number of food loot items found on AI. (Default: 1)								
 A3EAI_foodLootCount = 1;

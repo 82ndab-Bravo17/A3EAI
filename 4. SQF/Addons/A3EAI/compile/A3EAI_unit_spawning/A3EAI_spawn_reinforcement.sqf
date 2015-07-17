@@ -24,7 +24,7 @@ _unitType = "air_reinforce";
 _unitGroup = [_unitType] call A3EAI_createGroup;
 _driver = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
 
-_vehicleType = A3EAI_airReinforcementVehicles call BIS_fnc_selectRandom2;
+_vehicleType = A3EAI_airReinforcementVehicles call A3EAI_selectRandom;
 _vehicle = createVehicle [_vehicleType, _vehiclePosition, [], 0, "FLY"];
 _driver moveInDriver _vehicle;
 
@@ -61,7 +61,7 @@ _driver setVariable ["isDriver",true];
 _unitGroup selectLeader _driver;
 
 _gunnersAdded = [_unitGroup,_unitLevel,_vehicle,_maxGunnerUnits] call A3EAI_addVehicleGunners;
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Spawned %1 gunner units for %2 vehicle %3.",_gunnersAdded,_unitGroup,_vehicleType];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Spawned %1 gunner units for %2 vehicle %3.",_gunnersAdded,_unitGroup,_vehicleType];};
 
 _unitGroup setSpeedMode "NORMAL";
 _unitGroup allowFleeing 0;
@@ -69,18 +69,17 @@ _unitGroup allowFleeing 0;
 _unitGroup setVariable ["unitLevel",_unitLevel];
 _unitGroup setVariable ["assignedVehicle",_vehicle];
 _unitGroup setVariable ["ReinforcePos",_destPos];
-_vehicle setVariable ["ArmedVehicle",((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) > 0) || {({_x call A3EAI_checkIsWeapon} count (_vehicle weaponsTurret [-1])) isEqualTo 0} || {_gunnersAdded > 0})];
 (units _unitGroup) allowGetIn true;
 
 _vehicle flyInHeight 115;
 
-if (A3EAI_removeMissileWeapons) then {
-	_result = _vehicle call A3EAI_clearMissileWeapons; //Remove missile weaponry for air vehicles
+if (A3EAI_removeExplosiveAmmo) then {
+	_result = _vehicle call A3EAI_removeExplosive; //Remove missile weaponry for air vehicles
 };
 
 if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 	A3EAI_activeReinforcements pushBack _unitGroup;
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Extended Debug: Created AI air reinforcement group %1 is now active and patrolling.",_unitGroup];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Created AI air reinforcement group %1 is now active and patrolling.",_unitGroup];};
 };
 
 //Set initial waypoint and begin patrol

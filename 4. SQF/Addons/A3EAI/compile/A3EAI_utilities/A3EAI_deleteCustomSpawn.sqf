@@ -1,6 +1,16 @@
-private ["_trigger"];
+private ["_trigger","_triggerType"];
 
-_trigger = _this;
+_trigger = call {
+	_triggerType = (typeName _this);
+	if (_triggerType isEqualTo "OBJECT") exitWith {
+		_this
+	};
+	if (_triggerType isEqualTo "GROUP") exitWith {
+		_this getVariable ["trigger",objNull]
+	};
+	_this
+};
+
 if (A3EAI_debugMarkersEnabled) then {deleteMarker str(_trigger)};
 _trigger setTriggerStatements ["this","true","false"]; //Disable trigger from activating or deactivating while cleanup is performed
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting custom-defined AI spawn %1 at %2 in 30 seconds.",triggerText _trigger, mapGridPosition _trigger];};

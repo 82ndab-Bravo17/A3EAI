@@ -59,3 +59,62 @@ if (A3EAI_maxLandPatrols > 0) then {
 		};
 	};
 };
+
+if (A3EAI_maxUAVPatrols > 0) then {
+	_nul = [] spawn {
+		for "_i" from 0 to ((count A3EAI_UAVList) - 1) do {
+			_vehType = (A3EAI_UAVList select _i) select 0;
+			_amount = (A3EAI_UAVList select _i) select 1;
+			
+			if ([_vehType,"vehicle"] call A3EAI_checkClassname) then {
+				for "_j" from 1 to _amount do {
+					A3EAI_UAVTypesUsable pushBack _vehType;
+				};
+			} else {
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: %1 attempted to spawn invalid vehicle type %2.",__FILE__,_vehType];};
+			};
+		};
+		
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Assembled UAV list: %1",A3EAI_UAVTypesUsable];};
+		
+		_maxVehicles = (A3EAI_maxUAVPatrols min (count A3EAI_UAVTypesUsable));
+		for "_i" from 1 to _maxVehicles do {
+			_index = floor (random (count A3EAI_UAVTypesUsable));
+			_vehType = A3EAI_UAVTypesUsable select _index;
+			_vehicleClass = [configFile >> "CfgVehicles" >> _vehType,"vehicleClass",""] call BIS_fnc_returnConfigEntry;
+			_nul = _vehType spawn A3EAI_spawn_UV_patrol;
+			A3EAI_UAVTypesUsable set [_index,objNull];
+			A3EAI_UAVTypesUsable = A3EAI_UAVTypesUsable - [objNull];
+			if (_i < _maxVehicles) then {uiSleep 20};
+		};
+	};
+};
+
+if (A3EAI_maxUGVPatrols > 0) then {
+	_nul = [] spawn {
+		for "_i" from 0 to ((count A3EAI_UGVList) - 1) do {
+			_vehType = (A3EAI_UGVList select _i) select 0;
+			_amount = (A3EAI_UGVList select _i) select 1;
+			
+			if ([_vehType,"vehicle"] call A3EAI_checkClassname) then {
+				for "_j" from 1 to _amount do {
+					A3EAI_UGVTypesUsable pushBack _vehType;
+				};
+			} else {
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: %1 attempted to spawn invalid vehicle type %2.",__FILE__,_vehType];};
+			};
+		};
+		
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Assembled UGV list: %1",A3EAI_UGVTypesUsable];};
+		
+		_maxVehicles = (A3EAI_maxUGVPatrols min (count A3EAI_UGVTypesUsable));
+		for "_i" from 1 to _maxVehicles do {
+			_index = floor (random (count A3EAI_UGVTypesUsable));
+			_vehType = A3EAI_UGVTypesUsable select _index;
+			_nul = _vehType spawn A3EAI_spawn_UV_patrol;
+			A3EAI_UGVTypesUsable set [_index,objNull];
+			A3EAI_UGVTypesUsable = A3EAI_UGVTypesUsable - [objNull];
+			if (_i < _maxVehicles) then {uiSleep 20};
+		};
+	};
+};

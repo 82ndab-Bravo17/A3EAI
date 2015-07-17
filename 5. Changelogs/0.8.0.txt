@@ -1,0 +1,30 @@
+A3EAI 0.8.0
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+A3EAI Client Addon update required: Yes
+Headless Client Files/Keys update required: Yes
+
+[NEW] Added UAV/UGV patrols for testing purposes, see documentation in A3EAI_config.sqf for details. UAVs and UGVs scan for nearby players upon arriving at each waypoint, and may summon air reinforcements if players are detected. Note: UAV/UGVs are not currently available for custom spawns.
+[NEW] Added additional radio dialogue for UAV/UGV detection events.
+[NEW] AI infantry waypoints now modify themselves on-the-fly to include locations of nearby players and lootable objects for better patrol path variation.
+[NEW] AI air vehicles now have a 2-stage patrol behavior (Travel + Search). When in searching mode, AI air vehicles will slow down to Limited speed, fly at a lower altitude, and begin searching the area for players.
+[NEW] Added ability for A3EAI to cancel spawning AI infantry if player found too close to spawning position. Previously, AI were set to temporary peaceful status if players were somehow too close to spawning position.
+[FIXED] Regrouped status for AI land vehicle patrols is now properly communicated between dedicated server and headless client.
+[FIXED] Dedicated server will no longer transmit AI group data to headless client until group ownership has been transferred over to the HC to reduce amount of unnecessary network traffic.
+[FIXED] Fixed bug where transferring AI groups to HC would cause new underbarrel grenades (if unit has weapon with such attachment) to be added each time.
+[FIXED] Fixed bug where certain air vehicles were wrongly classified by A3EAI as unarmed.
+[FIXED] Initialization of A3EAI Client Addon no longer prevents mission-file addons from being started serverside.
+[CHANGED] Improved classname verification functions to include all item types defined in A3EAI_config.sqf. For example, A3EAI can check if a classname added as a food item is in fact a food item, or if a helmet is a helmet.
+[CHANGED] Static spawning triggers are now created as local objects on the server and headless client instead as global objects to reduce unnecessary synchronization between server and clients.
+[CHANGED] Anti-stuck functions will no longer trigger if AI group is currently aware or engaging enemies.
+[CHANGED] Reworked AI group management script for increased efficiency and modularity, and to allow for at-will transitions between AI types for AI groups in the future.
+[CHANGED] Changed the way AI land vehicle crew regrouped when crew is separated from their vehicle. If driver is alive, vehicle + crew will meet at a location in between their positions. If driver is killed, crew and replacement driver will travel to the vehicle.
+[CHANGED] Improved documentation in A3EAI_config.sqf.
+[CHANGED] Renamed several settings in A3EAI_config.sqf.
+[CHANGED] Slightly increased default Krypto rewards.
+[CHANGED] Improved formatting of A3EAI monitor output to RPT log.
+[CHANGED] Improvements to anti-stuck functions for AI groups (requires more testing).
+[CHANGED] Reduced blacklist area around spawning locations for new players from 900m to 750m. (May slightly increase number of static spawns generated).
+[REMOVED] Removed optional init checking for AI vehicles.

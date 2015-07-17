@@ -63,7 +63,7 @@ if (isNull _unitGroup) then {diag_log format ["A3EAI Error: Respawned group at %
 //if (_unitLevel != _unitLevelEffective) then {_trigger setVariable ["unitLevelEffective",_unitLevel]}; //Reset unitLevel after respawning promoted group
 if (_patrolDist > 1) then {
 	if ((count (waypoints _unitGroup)) > 1) then {
-		_unitGroup setCurrentWaypoint ((waypoints _unitGroup) call BIS_fnc_selectRandom2);
+		_unitGroup setCurrentWaypoint ((waypoints _unitGroup) call A3EAI_selectRandom);
 	} else {
 		_nul = [_unitGroup,(getPosATL _trigger),_patrolDist] spawn A3EAI_BIN_taskPatrol;
 	};

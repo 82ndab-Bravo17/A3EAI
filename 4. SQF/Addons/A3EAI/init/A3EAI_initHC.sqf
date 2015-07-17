@@ -76,7 +76,7 @@ _nul = [] spawn {
 	if ((!isNil "A3EAI_overrideEnabled") && {A3EAI_overrideEnabled}) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
 	
 	//Load internal use variables
-	#include "variables.txt"
+	call compile preprocessFileLineNumbers format ["%1\init\variables.sqf",A3EAI_directory];
 
 	//Load A3EAI functions and A3EAI HC functions
 	diag_log "[A3EAI] Compiling functions...";

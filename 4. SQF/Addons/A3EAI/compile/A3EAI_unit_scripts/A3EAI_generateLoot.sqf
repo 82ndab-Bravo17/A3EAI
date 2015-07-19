@@ -36,6 +36,9 @@ if(_kryptoAmount > 0) then {
 	if !(_kryptoPosEmpty isEqualTo []) then {
 		_kryptoDevice setPosATL _kryptoPosEmpty;
 	};
+	if (A3EAI_kryptoPickupAssist > 0) then {
+		_kryptoPickup = [_kryptoDevice,_kryptoPos] call A3EAI_generateKryptoPickup;
+	};
 };
 
 //Add tool items

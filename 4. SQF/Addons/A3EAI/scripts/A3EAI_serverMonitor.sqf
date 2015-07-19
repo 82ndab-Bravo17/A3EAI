@@ -131,10 +131,26 @@ while {true} do {
 			};
 			uiSleep 0.025;
 		} count A3EAI_monitoredObjects;
+		
+		{
+			if (!isNull _x) then {
+				private ["_kryptoGenTime"];
+				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+				if (!isNil "_kryptoGenTime") then {
+					if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) then {
+						deleteVehicle _x;
+					};
+				};
+			} else {
+				_nullObjects = _nullObjects + 1;
+			};
+			uiSleep 0.025;
+		} count A3EAI_kryptoAreas;
 
 		//Clean server object monitor
 		if (_nullObjects > 4) then {
 			A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];
+			A3EAI_kryptoAreas = A3EAI_kryptoAreas - [objNull];
 			diag_log format ["A3EAI Cleanup: Cleaned up %1 null objects from server object monitor.",_nullObjects];
 		};
 		if ((_bodiesCleaned + _vehiclesCleaned) > 0) then {diag_log format ["A3EAI Cleanup: Cleaned up %1 dead units and %2 destroyed vehicles.",_bodiesCleaned,_vehiclesCleaned]};
@@ -182,7 +198,7 @@ while {true} do {
 	};
 	
 	if ((_currentTime - _playerCountTime) > UPDATE_PLAYER_COUNT_FREQ) then {
-		_currentPlayerCount = ({isPlayer _x} count playableUnits);
+		_currentPlayerCount = ({alive _x} count allPlayers);
 		if (A3EAI_HCIsConnected) then {_currentPlayerCount = _currentPlayerCount - 1};
 		if !(_lastPlayerCount isEqualTo _currentPlayerCount) then {
 			A3EAI_spawnChanceMultiplier = linearConversion [1, _maxSpawnChancePlayers, _currentPlayerCount, _multiplierLowPlayers, _multiplierHighPlayers, true];

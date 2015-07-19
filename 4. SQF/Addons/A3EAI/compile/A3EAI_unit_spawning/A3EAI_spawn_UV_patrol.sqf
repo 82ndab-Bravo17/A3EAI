@@ -114,7 +114,7 @@ if (_isAirVehicle) then {
 	};
 };
 
-if ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) isEqualTo 0) && {({_x call A3EAI_checkIsWeapon} count (_vehicle weaponsTurret [-1])) isEqualTo 0} && {_gunnersAdded isEqualTo 0}) then {
+if ((({_x call A3EAI_checkIsWeapon} count (weapons _vehicle)) isEqualTo 0) && {({_x call A3EAI_checkIsWeapon} count (_vehicle weaponsTurret [-1])) isEqualTo 0}) then {
 	_unitGroup setBehaviour "CARELESS";
 	_unitGroup setCombatMode "BLUE";
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI group %1 UAV/UGV vehicle %2 set to Careless behavior mode",_unitGroup,_vehicleType];};

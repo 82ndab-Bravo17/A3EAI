@@ -79,7 +79,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 						_trigger setTriggerTimeout [5, 5, 5, true];
 						_trigger setTriggerText _placeName;
 						_statements = format ["0 = [%1,%2,%3,thisTrigger,[],%4] call A3EAI_createInfantryQueue;",_aiCount select 0,_aiCount select 1,_patrolRadius,_unitLevel];
-						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;", _statements, "0 = [thisTrigger] spawn A3EAI_despawn_static;"];
+						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList > 0;", _statements, "0 = [thisTrigger] spawn A3EAI_despawn_static;"];
 						_trigger setVariable ["respawnLimit",_respawnLimit];
 						_trigger setVariable ["respawnLimitOriginal",_respawnLimit];
 						0 = [0,_trigger,[],_patrolRadius,_unitLevel,_spawnPositions,_aiCount,_spawnChance] call A3EAI_initializeTrigger;

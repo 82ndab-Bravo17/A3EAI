@@ -8,4 +8,5 @@ Headless Client Files/Keys update required: No
 
 [NEW] Added Krypto-pickup assist system (disabled by default). Players can automatically pick up Krypto dropped by A3EAI units by staying within 5 meters of the device for 10 seconds. Availability of pickup assist is configurable.
 [FIXED] Fixed undefined variable error caused by spawning unarmed UAVs/UGVs.
+[FIXED] Added missing default settings to settings verification script.
 [ADDED] Added map center and map size data for all AiA maps, Esseker, Australia.

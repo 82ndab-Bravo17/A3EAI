@@ -11,6 +11,8 @@ _kryptoPickup setTriggerActivation ["ANY", "PRESENT", true];
 _kryptoPickup setTriggerTimeout [10, 10, 10, true];
 _kryptoPickup setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList > 0;","[thisList,thisTrigger] call A3EAI_activateKryptoPickup;",""];
 
+_kryptoPickup attachTo [_kryptoDevice,[0,0,0]];
+
 _kryptoPickup setVariable ["A3EAI_kryptoGenTime",diag_tickTime];
 _kryptoPickup setVariable ["A3EAI_kryptoObject",_kryptoDevice];
 

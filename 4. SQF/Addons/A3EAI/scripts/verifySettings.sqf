@@ -35,6 +35,32 @@ _startTime = diag_tickTime;
 	["A3EAI_airReinforcementDuration1",180],
 	["A3EAI_airReinforcementDuration2",240],
 	["A3EAI_airReinforcementDuration3",300],
+	["A3EAI_maxUAVPatrols",0],
+	["A3EAI_UAVList",[
+		["I_UAV_02_CAS_F",5],
+		["I_UAV_02_F",5],
+		["B_UAV_02_CAS_F",5],
+		["B_UAV_02_F",5],
+		["O_UAV_02_CAS_F",5],
+		["O_UAV_02_F",5]
+	]],
+	["A3EAI_levelChancesUAV",[0.35,0.50,0.15,0.00]],
+	["A3EAI_respawnUAVMinTime",600],
+	["A3EAI_respawnUAVMaxTime",900],
+	["A3EAI_UAVCallReinforceCooldown",1800],
+	["A3EAI_UAVDetectChance",0.50],
+	["A3EAI_maxUGVPatrols",0],
+	["A3EAI_UGVList",[
+		["I_UGV_01_rcws_F",5],
+		["B_UGV_01_rcws_F",5],
+		["O_UGV_01_rcws_F",5]
+	]],
+	
+	["A3EAI_levelChancesUGV",[0.35,0.50,0.15,0.00]],
+	["A3EAI_respawnUGVMinTime",600],
+	["A3EAI_respawnUGVMaxTime",900],
+	["A3EAI_UGVCallReinforceCooldown",1800],
+	["A3EAI_UGVDetectChance",0.50],
 	["A3EAI_findKiller",true],
 	["A3EAI_tempNVGs",false],
 	["A3EAI_GLRequirement",2],
@@ -190,6 +216,7 @@ _startTime = diag_tickTime;
 	["A3EAI_kryptoAmount1",75],
 	["A3EAI_kryptoAmount2",100],
 	["A3EAI_kryptoAmount3",150],
+	["A3EAI_kryptoPickupAssist",0],
 	["A3EAI_foodLootCount",1],
 	["A3EAI_miscLootCount1",1],
 	["A3EAI_miscLootCount2",1],
@@ -258,6 +285,8 @@ if (A3EAI_verifySettings) then {
 	if !((count A3EAI_useWeaponChance2) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance2, resetting to default value."]; A3EAI_useWeaponChance2 = [0.00,0.80,0.10,0.10]};
 	if !((count A3EAI_useWeaponChance3) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance3, resetting to default value."]; A3EAI_useWeaponChance3 = [0.00,0.70,0.15,0.15]};
 	if ("air_reinforce" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["air_reinforce"]};
+	if ("uav" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["uav"]};
+	if ("ugv" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["ugv"]};
 };
 
 diag_log format ["[A3EAI] Verified all A3EAI settings in %1 seconds.",(diag_tickTime - _startTime)];

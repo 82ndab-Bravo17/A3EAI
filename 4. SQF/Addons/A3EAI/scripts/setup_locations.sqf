@@ -60,7 +60,7 @@ if (isDedicated) then {
 
 //Auto-adjust random spawn limit
 if (isDedicated && {A3EAI_maxRandomSpawns isEqualTo -1}) then {
-	A3EAI_maxRandomSpawns = (round (0.10 * (count _allLocations)) min 15);
+	A3EAI_maxRandomSpawns = ((round (0.10 * (count _allLocations)) min 15) max 5);
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Adjusted random spawn limit to %1",A3EAI_maxRandomSpawns];};
 };
 

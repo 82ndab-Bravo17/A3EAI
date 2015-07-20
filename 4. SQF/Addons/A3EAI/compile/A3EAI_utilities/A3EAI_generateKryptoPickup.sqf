@@ -6,7 +6,7 @@ _kryptoPos = _this select 1;
 if (isNull _kryptoDevice) exitWith {};
 
 _kryptoPickup = createTrigger ["EmptyDetector",_kryptoPos,false];
-_kryptoPickup setTriggerArea [5, 5, 0, false];
+_kryptoPickup setTriggerArea [2, 2, 0, false];
 _kryptoPickup setTriggerActivation ["ANY", "PRESENT", true];
 _kryptoPickup setTriggerTimeout [10, 10, 10, true];
 _kryptoPickup setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList > 0;","[thisList,thisTrigger] call A3EAI_activateKryptoPickup;",""];

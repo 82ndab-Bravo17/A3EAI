@@ -20,8 +20,6 @@ _items = [];
 					_item = _itemInfo select 0;
 					if (([configFile >> "CfgMagazines" >> _item,"interactText",""] call BIS_fnc_returnConfigEntry) in ["EAT","DRINK","CONSUME"]) then {
 						_items pushBack _item;
-						//_dataArray = [configFile >> "CfgMagazines" >> _item,"interactAttributes",[0,0,0,0,0,0,0,0,0,0]] call BIS_fnc_returnConfigEntry;
-						//diag_log format ["ITEMDATA: Food %1: Hunger %2, Thirst %3, Toxicity %4, Stamina %5, Immunity %6, BP %7.",[configfile >> "CfgMagazines" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_dataArray select 1,_dataArray select 2,_dataArray select 6,_dataArray select 7,_dataArray select 5,_dataArray select 9];
 					};
 				};
 			} forEach _itemList;
@@ -30,8 +28,6 @@ _items = [];
 			_item = _itemClassInfo select 0;
 			if (([configFile >> "CfgMagazines" >> _item,"interactText",""] call BIS_fnc_returnConfigEntry) in ["EAT","DRINK"]) then {
 				_items pushBack _item;
-				// _dataArray = [configFile >> "CfgMagazines" >> _item,"interactAttributes",[0,0,0,0,0,0,0,0,0,0]] call BIS_fnc_returnConfigEntry;
-				// diag_log format ["ITEMDATA: Food %1: Hunger %2, Thirst %3, Toxicity %4, Stamina %5, Immunity %6, BP %7.",[configfile >> "CfgMagazines" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_dataArray select 1,_dataArray select 2,_dataArray select 6,_dataArray select 7,_dataArray select 5,_dataArray select 9];
 			};
 		};
 	};

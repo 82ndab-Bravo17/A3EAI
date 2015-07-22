@@ -27,11 +27,6 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 //Set up trader city blacklist areas
 if (isDedicated) then {
 	{
-		if ((nearestLocations [_x select 1,["Strategic"],30]) isEqualTo []) then {
-			_location = [_x select 1,600] call A3EAI_createBlackListArea;
-			_telePositions pushBack (_x select 1);
-			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created 600m radius blacklist area at %1 teleport source (%2).",_x select 0,_x select 1];};
-		};
 		if ((nearestLocations [_x select 3,["Strategic"],30]) isEqualTo []) then {
 			_location = [_x select 3,600] call A3EAI_createBlackListArea;
 			_telePositions pushBack (_x select 3);

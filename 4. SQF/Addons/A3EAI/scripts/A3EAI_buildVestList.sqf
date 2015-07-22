@@ -8,13 +8,24 @@ _items = [];
 	_itemInfo = _x select 0;
 	_itemBias = _x select 1;
 	_itemType = _itemInfo select 1;
-	if (_itemType isEqualTo "item") then {
-		_item = _itemInfo select 0;
-		_items pushBack _item;
-		//_armor = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","armor",""] call BIS_fnc_returnConfigEntry;
-		//_container = [configfile >> "CfgWeapons" >> _item >> "ItemInfo","containerClass",""] call BIS_fnc_returnConfigEntry;
-		//_maxload = [configfile >> "CfgVehicles" >> _container,"maximumLoad",""] call BIS_fnc_returnConfigEntry;
-		//diag_log format ["ITEMDATA: Vest %1: Armor %2, MaxLoad %3.",[configfile >> "CfgWeapons" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,_armor,_maxload];
+	call {
+		if (_itemType isEqualTo "item") exitWith {
+			_item = _itemInfo select 0;
+			_items pushBack _item;
+		};
+		if (_itemType isEqualTo "CfgLootTable") exitWith {
+			_itemSubClass = _itemInfo select 0;
+			_itemList = [configFile >> "CfgLootTable" >> _itemSubClass,"items",[]] call BIS_fnc_returnConfigEntry;
+			{
+				_itemSubInfo = _x select 0;
+				_itemSubBias = _x select 1;
+				_itemSubType = _itemSubInfo select 1;
+				if (_itemSubType isEqualTo "item") then {
+					_item = _itemSubInfo select 0;
+					_items pushBack _item;
+				};
+			} forEach _itemList;
+		};
 	};
 } forEach _vestList;
 

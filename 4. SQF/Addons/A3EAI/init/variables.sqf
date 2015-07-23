@@ -46,3 +46,4 @@ A3EAI_HCAllowedTypes = ["static", "dynamic", "random", "air", "land", "staticcus
 A3EAI_lastGroupTransfer = 0;
 A3EAI_automatedUnitTypes = ["uav","ugv"];
 A3EAI_kryptoAreas = [];
+A3EAI_kryptoObjects = [];

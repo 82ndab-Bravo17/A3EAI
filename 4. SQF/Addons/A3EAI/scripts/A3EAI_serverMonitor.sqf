@@ -44,9 +44,13 @@ A3EAI_playerCountThreshold = nil;
 _getUptime = {
 	private ["_currentSec","_outSec","_outMin","_outHour"];
 	_currentSec = diag_tickTime;
-	_outHour = str (floor (_currentSec/3600));
-	_outMin = str (floor ((_currentSec - (_outHour*3600))/60));
-	_outSec = str (floor (_currentSec - (_outHour*3600) - (_outMin*60)));
+	_outHour = (floor (_currentSec/3600));
+	_outMin = (floor ((_currentSec - (_outHour*3600))/60));
+	_outSec = (floor (_currentSec - (_outHour*3600) - (_outMin*60)));
+	
+	_outHour = str (_outHour);
+	_outMin = str (_outMin);
+	_outSec = str (_outSec);
 	
 	if ((count _outHour) isEqualTo 1) then {_outHour = format ["0%1",_outHour];};
 	if ((count _outMin) isEqualTo 1) then {_outMin = format ["0%1",_outMin];};

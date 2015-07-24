@@ -10,7 +10,7 @@ _canCall = true;
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection start.",_unitGroup,(typeOf (_vehicle))];};
 
 if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UAVCallReinforceCooldown])) > A3EAI_UAVCallReinforceCooldown) then {
-	_detectStartPos = waypointPosition [_unitGroup,1];
+	_detectStartPos = getPosATL _vehicle;
 	_vehicle flyInHeight (60 + (random 30));
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {

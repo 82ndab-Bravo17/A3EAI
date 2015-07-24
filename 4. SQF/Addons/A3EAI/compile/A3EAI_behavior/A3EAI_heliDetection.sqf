@@ -9,7 +9,7 @@ if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detec
 
 if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
-	_detectStartPos = waypointPosition [_unitGroup,0];
+	_detectStartPos = getPosATL _vehicle;
 	_canParaDrop = ((diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",-A3EAI_paraDropCooldown])) > A3EAI_paraDropCooldown);
 	_vehicle flyInHeight (60 + (random 30));
 	

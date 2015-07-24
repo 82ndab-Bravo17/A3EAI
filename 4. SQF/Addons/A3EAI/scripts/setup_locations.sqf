@@ -37,16 +37,19 @@ if (isDedicated) then {
 };
 
 {
-	_placeType = getText (_cfgWorldName >> _x >> "type");
-	if (_placeType in ["NameCityCapital","NameCity","NameVillage","NameLocal"]) then {
+	_placeType = toLower (getText (_cfgWorldName >> _x >> "type"));
+	if (_placeType in ["namecitycapital","namecity","namevillage","namelocal"]) then {
 		_placeName = getText (_cfgWorldName >> _x >> "name");
 		_placePos = [] + getArray (_cfgWorldName >> _x >> "position");
 		_isAllowedPos = (!((toLower _placeName) in A3EAI_waypointBlacklist) && {(_placePos distance (getMarkerPos "respawn_west")) > 600} && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
 		if (_isAllowedPos) then {
 			A3EAI_locations pushBack [_placeName,_placePos,_placeType];
-			if (_placeType != "NameLocal") then {
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added location %1 (type: %2) to location list.",_placeName,_placeType];};
+			if (_placeType != "namelocal") then {
 				A3EAI_locationsLand pushBack [_placeName,_placePos,_placeType];
 			};
+		} else {
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 not in allowed position. Blacklist: %2, respawn_west: %3, telepos: %4.",_placeName,!((toLower _placeName) in A3EAI_waypointBlacklist),(_placePos distance (getMarkerPos "respawn_west")) > 600,({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0];};
 		};
 		_allLocations pushBack [_placeName,_placePos,_placeType];
 	};
@@ -61,12 +64,12 @@ if (isDedicated && {A3EAI_maxRandomSpawns isEqualTo -1}) then {
 
 if (A3EAI_locations isEqualTo []) then {
 	A3EAI_locations = +_allLocations;
-	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locations is empty, using _allLocations array instead.";};
+	if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: A3EAI_locations is empty, using _allLocations array instead.";};
 };
 
 if (A3EAI_locationsLand isEqualTo []) then {
 	A3EAI_locationsLand = +_allLocations;
-	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locationsLand is empty, using _allLocations array instead.";};
+	if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: A3EAI_locationsLand is empty, using _allLocations array instead.";};
 };
 
 A3EAI_locations_ready = true;

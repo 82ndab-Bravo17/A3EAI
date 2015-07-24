@@ -138,7 +138,7 @@ _waypoint setWaypointCompletionRadius 150;
 _waypoint setWaypointStatements ["true",_patrolStatement];
 _waypoint setWaypointCombatMode _combatMode;
 _waypoint setWaypointBehaviour _behavior;
-	
+
 if (_isAirVehicle) then {
 	[_unitGroup,0] setWaypointSpeed "FULL";
 	[_unitGroup,1] setWaypointSpeed "LIMITED";

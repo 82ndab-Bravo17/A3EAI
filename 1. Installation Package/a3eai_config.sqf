@@ -448,56 +448,56 @@ A3EAI_waypointBlacklist = [];
 	Hint: For all skill types, higher number = better skill. For skill sub-type explanation, see: https://community.bistudio.com/wiki/AI_Sub-skills
 */
 
-//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.40
+//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.05-0.10, Others 0.30-0.50
 A3EAI_skill0 = [	
 	["aimingAccuracy",0.05,0.10],
-	["aimingShake",0.40,0.50],
-	["aimingSpeed",0.40,0.50],
-	["spotDistance",0.40,0.50],
-	["spotTime",0.40,0.50],
-	["courage",0.40,0.50],
-	["reloadSpeed",0.40,0.50],
-	["commanding",0.40,0.50],
-	["general",0.40,0.50]
+	["aimingShake",0.30,0.50],
+	["aimingSpeed",0.30,0.50],
+	["spotDistance",0.30,0.50],
+	["spotTime",0.30,0.50],
+	["courage",0.30,0.50],
+	["reloadSpeed",0.30,0.50],
+	["commanding",0.30,0.50],
+	["general",0.30,0.50]
 ];
 
-//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.50
+//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.10-0.15, Others 0.40-0.60
 A3EAI_skill1 = [	
 	["aimingAccuracy",0.10,0.15],
-	["aimingShake",0.50,0.60],
-	["aimingSpeed",0.50,0.60],
-	["spotDistance",0.50,0.60],
-	["spotTime",0.50,0.60],
-	["courage",0.50,0.60],
-	["reloadSpeed",0.50,0.60],
-	["commanding",0.50,0.60],
-	["general",0.50,0.60]
+	["aimingShake",0.40,0.60],
+	["aimingSpeed",0.40,0.60],
+	["spotDistance",0.40,0.60],
+	["spotTime",0.40,0.60],
+	["courage",0.40,0.60],
+	["reloadSpeed",0.40,0.60],
+	["commanding",0.40,0.60],
+	["general",0.40,0.60]
 ];
 
-//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.60
+//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.15-0.20, Others 0.50-0.70
 A3EAI_skill2 = [	
 	["aimingAccuracy",0.15,0.20],
-	["aimingShake",0.60,0.70],
-	["aimingSpeed",0.60,0.70],
-	["spotDistance",0.60,0.70],
-	["spotTime",0.60,0.70],
-	["courage",0.60,0.70],
-	["reloadSpeed",0.60,0.70],
-	["commanding",0.60,0.70],
-	["general",0.60,0.70]
+	["aimingShake",0.50,0.70],
+	["aimingSpeed",0.50,0.70],
+	["spotDistance",0.50,0.70],
+	["spotTime",0.50,0.70],
+	["courage",0.50,0.70],
+	["reloadSpeed",0.50,0.70],
+	["commanding",0.50,0.70],
+	["general",0.50,0.70]
 ];
 
-//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.70
+//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.20-0.25, Others 0.60-0.80
 A3EAI_skill3 = [	
 	["aimingAccuracy",0.20,0.25],
-	["aimingShake",0.70,0.80],
-	["aimingSpeed",0.70,0.80],
-	["spotDistance",0.70,0.80],
-	["spotTime",0.70,0.80],
-	["courage",0.70,0.80],
-	["reloadSpeed",0.70,0.80],
-	["commanding",0.70,0.80],
-	["general",0.70,0.80]
+	["aimingShake",0.60,0.80],
+	["aimingSpeed",0.60,0.80],
+	["spotDistance",0.60,0.80],
+	["spotTime",0.60,0.80],
+	["courage",0.60,0.80],
+	["reloadSpeed",0.60,0.80],
+	["commanding",0.60,0.80],
+	["general",0.60,0.80]
 ];
 
 

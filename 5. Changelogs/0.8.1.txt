@@ -10,8 +10,11 @@ Headless Client Files/Keys update required: Yes
 [FIXED] Fixed undefined variable error caused by spawning unarmed UAVs/UGVs.
 [FIXED] Added missing default settings to settings verification script.
 [FIXED] Fixed AI units being stuck upon spawning inside buildings.
+[FIXED] A3EAI now uses case-insensitive checks for location types to allow proper location detection for custom-made maps such as Australia (Before fix: 16 locations. After fix: 58 locations).
+[FIXED] Fixed bug where detection state for Air, UAV, UGV patrols immediately ended after starting.
 [ADDED] Added map center and map size data for all AiA maps, Esseker, Australia.
 [CHANGED] Added minimum of 5 random spawns to be generated if random spawn generation is left on automatic setting.
 [CHANGED] On-death AI loot is now generated server-side instead of on headless client.
 [CHANGED] Krypto now spawns 0.5m closer to AI dead bodies.
 [CHANGED] Improved server uptime formatting of A3EAI server monitor in RPT log.
+[CHANGED] Decreased minimum AI skills.

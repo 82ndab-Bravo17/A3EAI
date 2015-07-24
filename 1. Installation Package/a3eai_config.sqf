@@ -549,7 +549,7 @@ A3EAI_kryptoAmount1 = 75; 	//Default for level 1 AI: 75
 A3EAI_kryptoAmount2 = 100; 	//Default for level 2 AI: 100
 A3EAI_kryptoAmount3 = 150; 	//Default for level 3 AI: 150
 
-//Krypto pickup assist time window in seconds. Players must be within 2 meters of a Krypto device for 10 seconds to pick up Krypto automatically. 0: Disabled (Default: 0)
+//Krypto pickup assist time window in seconds. Players must be within 2 meters of a Krypto device for 5 seconds to pick up Krypto automatically. 0: Disabled (Default: 0)
 //After this time limit, players must manually pick up any dropped Krypto.
 A3EAI_kryptoPickupAssist = 0;
 

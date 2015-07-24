@@ -147,7 +147,8 @@ _startTime = diag_tickTime;
 	]],
 	["A3EAI_vehGunnerUnits",2],
 	["A3EAI_vehCargoUnits",3],
-	["A3EAI_waypointBlacklist",[]],
+	["A3EAI_waypointBlacklistAir",[]],
+	["A3EAI_waypointBlacklistLand",[]],
 	["A3EAI_skill0",[	
 		["aimingAccuracy",0.10,0.15],
 		["aimingShake",0.50,0.59],

@@ -71,7 +71,6 @@ while {true} do {
 	if ((_currentTime - _cleanDead) > CLEANDEAD_FREQ) then {
 		_bodiesCleaned = 0;
 		_vehiclesCleaned = 0;
-		_nullObjects = 0;
 		
 		//Body/vehicle cleanup loop
 		{
@@ -121,12 +120,9 @@ while {true} do {
 							_x call _purgeEH;
 							deleteVehicle _x;
 							_vehiclesCleaned = _vehiclesCleaned + 1;
-							_nullObjects = _nullObjects + 1;
 						};
 					};
 				};
-			} else {
-				_nullObjects = _nullObjects + 1;
 			};
 			uiSleep 0.025;
 		} count A3EAI_monitoredObjects;
@@ -145,8 +141,6 @@ while {true} do {
 						deleteVehicle _x;
 					};
 				};
-			} else {
-				_nullObjects = _nullObjects + 1;
 			};
 			uiSleep 0.025;
 		} forEach A3EAI_kryptoObjects;
@@ -155,13 +149,17 @@ while {true} do {
 			if (!isNull _x) then {
 				private ["_kryptoGenTime"];
 				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
-				if (!isNil "_kryptoGenTime") then {
-					if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) then {
-						deleteVehicle _x;
+				_kryptoObject = _x getVariable "A3EAI_kryptoObject";
+				if ((!isNil "_kryptoObject") && {!isNil "_kryptoGenTime"}) then {
+					call {
+						if (isNull _kryptoObject) exitWith {
+							deleteVehicle _x;
+						};
+						if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) exitWith {
+							deleteVehicle _x;
+						};
 					};
 				};
-			} else {
-				_nullObjects = _nullObjects + 1;
 			};
 			uiSleep 0.025;
 		} count A3EAI_kryptoAreas;

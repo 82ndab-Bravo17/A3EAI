@@ -47,7 +47,7 @@ if (isDedicated) then {
 	if (_placeType in ["namecitycapital","namecity","namevillage","namelocal"]) then {
 		_placeName = getText (_cfgWorldName >> _x >> "name");
 		_placePos = [] + getArray (_cfgWorldName >> _x >> "position");
-		_isAllowedPos = (!((toLower _placeName) in A3EAI_waypointBlacklist) && {(_placePos distance (getMarkerPos "respawn_west")) > 600} && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
+		_isAllowedPos = (((_placePos distance (getMarkerPos "respawn_west")) > 600) && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
 		if (_isAllowedPos) then {
 			A3EAI_locations pushBack [_placeName,_placePos,_placeType];
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added location %1 (type: %2) to location list.",_placeName,_placeType];};

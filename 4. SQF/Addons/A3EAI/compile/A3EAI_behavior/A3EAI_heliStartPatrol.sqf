@@ -7,7 +7,7 @@ _tooClose = true;
 _locationSelected = [0,0,0];
 
 while {_tooClose} do {
-	_locationSelected = (A3EAI_locations call A3EAI_selectRandom) select 1;
+	_locationSelected = (A3EAI_locationsAir call A3EAI_selectRandom) select 1;
 	if (((waypointPosition [_unitGroup,0]) distance _locationSelected) > 300) then {
 		_tooClose = false;
 	} else {

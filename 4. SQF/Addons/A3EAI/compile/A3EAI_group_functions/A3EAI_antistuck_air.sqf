@@ -12,7 +12,7 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 750) && {_checkPos
 	_tooClose = true;
 	_wpSelect = [];
 	while {_tooClose} do {
-		_wpSelect = (A3EAI_locations call A3EAI_selectRandom) select 1;
+		_wpSelect = (A3EAI_locationsAir call A3EAI_selectRandom) select 1;
 		if (((waypointPosition [_unitGroup,0]) distance _wpSelect) < 300) then {
 			_tooClose = false;
 		} else {

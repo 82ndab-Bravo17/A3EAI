@@ -17,6 +17,7 @@ A3EAI_respawnTimeVarLand = (abs (A3EAI_respawnLandMaxTime - A3EAI_respawnLandMax
 A3EAI_monitoredObjects = []; //used to cleanup AI vehicles that may not be destroyed.
 A3EAI_activeGroups = [];
 A3EAI_locations = [];
+A3EAI_locationsAir = [];
 A3EAI_locationsLand = [];
 A3EAI_heliTypesUsable = [];
 A3EAI_vehTypesUsable = [];

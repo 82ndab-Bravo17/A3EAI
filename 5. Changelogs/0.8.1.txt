@@ -18,3 +18,4 @@ Headless Client Files/Keys update required: Yes
 [CHANGED] Krypto now spawns 0.5m closer to AI dead bodies.
 [CHANGED] Improved server uptime formatting of A3EAI server monitor in RPT log.
 [CHANGED] Decreased minimum AI skills.
+[CHANGED] Tweaked sensitivity of static spawn generator. More static spawns should now be generated.

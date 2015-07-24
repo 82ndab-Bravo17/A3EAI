@@ -15,6 +15,7 @@ _kryptoPickup attachTo [_kryptoDevice,[0,0,0]];
 
 _kryptoPickup setVariable ["A3EAI_kryptoGenTime",diag_tickTime];
 _kryptoPickup setVariable ["A3EAI_kryptoObject",_kryptoDevice];
+_kryptoDevice setVariable ["A3EAI_kryptoArea",_kryptoPickup];
 
 A3EAI_kryptoAreas pushBack _kryptoPickup;
 

@@ -136,6 +136,26 @@ while {true} do {
 				private ["_kryptoGenTime"];
 				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
 				if (!isNil "_kryptoGenTime") then {
+					if ((_currentTime - _kryptoGenTime) > KRYPTO_CLEANUP_FREQ) then {
+						_kryptoArea = _x getVariable "A3EAI_kryptoArea";
+						if ((!isNil _kryptoArea) && {!(isNull _kryptoArea)}) then {
+							A3EAI_kryptoAreas = A3EAI_kryptoAreas - [_kryptoArea];
+							deleteVehicle _kryptoArea;
+						};
+						deleteVehicle _x;
+					};
+				};
+			} else {
+				_nullObjects = _nullObjects + 1;
+			};
+			uiSleep 0.025;
+		} forEach A3EAI_kryptoObjects;
+		
+		{
+			if (!isNull _x) then {
+				private ["_kryptoGenTime"];
+				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+				if (!isNil "_kryptoGenTime") then {
 					if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) then {
 						deleteVehicle _x;
 					};
@@ -148,6 +168,7 @@ while {true} do {
 
 		//Clean server object monitor
 		if (objNull in A3EAI_monitoredObjects) then {A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];};
+		if (objNull in A3EAI_kryptoObjects) then {A3EAI_kryptoObjects = A3EAI_kryptoObjects - [objNull];};
 		if (objNull in A3EAI_kryptoAreas) then {A3EAI_kryptoAreas = A3EAI_kryptoAreas - [objNull];};
 		if ((_bodiesCleaned + _vehiclesCleaned) > 0) then {diag_log format ["A3EAI Cleanup: Cleaned up %1 dead units and %2 destroyed vehicles.",_bodiesCleaned,_vehiclesCleaned]};
 		_cleanDead = _currentTime;

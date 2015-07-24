@@ -31,7 +31,9 @@ if(_kryptoAmount > 0) then {
 	_kryptoPos = getPosATL _unit;
 	_kryptoDevice = createVehicle ["Land_MPS_EPOCH",_kryptoPos,[],1.5,"CAN_COLLIDE"];
 	_kryptoDevice setVariable ["Crypto",_kryptoAmount,true];
-	_unit setVariable ["KryptoDevice",_kryptoDevice];
+	_kryptoDevice setVariable ["A3EAI_kryptoGenTime",diag_tickTime];
+	//_unit setVariable ["KryptoDevice",_kryptoDevice];
+	A3EAI_kryptoObjects pushBack _kryptoDevice;
 	_kryptoPosEmpty = _kryptoPos findEmptyPosition [0,0.5,"Land_MPS_EPOCH"];
 	if !(_kryptoPosEmpty isEqualTo []) then {
 		_kryptoDevice setPosATL _kryptoPosEmpty;

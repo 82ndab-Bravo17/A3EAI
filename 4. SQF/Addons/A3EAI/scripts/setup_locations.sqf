@@ -19,10 +19,16 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 
 //Add user-specified blacklist areas
 {
-	A3EAI_waypointBlacklist set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
+	A3EAI_waypointBlacklistAir set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle waypoint blacklist at %1.",_x];};
 	if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
-} forEach A3EAI_waypointBlacklist;
+} forEach A3EAI_waypointBlacklistAir;
+
+{
+	A3EAI_waypointBlacklistLand set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle waypoint blacklist at %1.",_x];};
+	if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
+} forEach A3EAI_waypointBlacklistLand;
 
 //Set up trader city blacklist areas
 if (isDedicated) then {

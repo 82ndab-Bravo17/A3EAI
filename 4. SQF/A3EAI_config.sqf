@@ -554,10 +554,10 @@ A3EAI_kryptoAmount3 = 150; 	//Default for level 3 AI: 150
 A3EAI_kryptoPickupAssist = 0;
 
 //Maximum number of food loot items found on AI. (Default: 1)								
-A3EAI_foodLootCount = 1;
+A3EAI_foodLootCount = 2;
 
 //Maximum number of items to select from A3EAI_MiscLoot1 (generic loot) table. (Default: 1)											
-A3EAI_miscLootCount1 = 1;						
+A3EAI_miscLootCount1 = 2;						
 
 //Maximum number of items to select from A3EAI_MiscLoot2 (large generic loot) table. (Default: 1)					
 A3EAI_miscLootCount2 = 1;	
@@ -566,8 +566,8 @@ A3EAI_miscLootCount2 = 1;
 /*	AI loot probability settings. AI loot is pre-generated into a pool for each unit and randomly pulled to units as time passes.
 --------------------------------------------------------------------------------------------------------------------*/
 
-//Chance to add a single First Aid Kit to group loot pool per unit (Default: 0.20)
-A3EAI_chanceFirstAidKit = 0.20;
+//Chance to add a single First Aid Kit to group loot pool per unit (Default: 0.25)
+A3EAI_chanceFirstAidKit = 0.25;
 
 //Chance to add each edible item to group loot pool per unit (Default: 0.40)								
 A3EAI_chanceFoodLoot = 0.40;
@@ -579,10 +579,10 @@ A3EAI_chanceMiscLoot1 = 0.40;
 A3EAI_chanceMiscLoot2 = 0.30;
 
 //Probability to successfully pull a random item from loot pool for level 0-3 AI. Influences the rate at which loot items are added to units.
-A3EAI_lootPullChance0 = 0.30; //Default for level 0 AI: 0.30
+A3EAI_lootPullChance0 = 0.20; //Default for level 0 AI: 0.20
 A3EAI_lootPullChance1 = 0.40; //Default for level 1 AI: 0.40
-A3EAI_lootPullChance2 = 0.50; //Default for level 2 AI: 0.50
-A3EAI_lootPullChance3 = 0.60; //Default for level 3 AI: 0.60
+A3EAI_lootPullChance2 = 0.60; //Default for level 2 AI: 0.60
+A3EAI_lootPullChance3 = 0.80; //Default for level 3 AI: 0.80
 
 
 /*

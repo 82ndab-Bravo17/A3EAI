@@ -28,7 +28,7 @@ A3EAI Features
 1. Automatically-generated static AI spawns: A3EAI will spawn an AI group at various named locations on the map if players are nearby.
 2. Dynamic AI spawns: A3EAI will create ambient threat in the area for each player by periodically spawning AI to create unexpected ambush encounters. These AI may occasionally seek out and hunt a player.
 3. Random AI spawns: A3EAI will create spawns that are randomly placed around the map and are periodically relocated. These spawns are preferentially created in named locations, but may be also created anywhere in the world.
-4. Air and land vehicle AI: AI patrol in vehicles around the map, looking for players to hunt down. Cars and trucks may roam the road, and helicopters (or jets) search the skies for players. Helicopters with available cargo space may also occasionally deploy an AI group by parachute. Dynamic AI may also sometimes summon an air vehicle to their location for support.
+4. Air and land vehicle AI: AI patrol in vehicles around the map, looking for players to hunt down. Cars and trucks may roam the road, and helicopters (or jets) search the skies for players. Helicopters with available cargo space may also occasionally deploy an AI group by parachute.
 5. Custom AI spawns: Users may also define custom infantry and vehicle AI spawns at specified locations.
 6. Adaptive classname system: A3EAI reads Epoch's loot tables to find items that AI can use, such as weapons and equipment. Users may also choose to manually specify classnames to use instead.
 7. Error-checking ability: A3EAI checks config files for errors upon startup. If errors are found, A3EAI will use backup settings and continue operating as normal.

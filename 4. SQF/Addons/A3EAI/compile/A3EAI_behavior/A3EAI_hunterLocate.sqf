@@ -59,7 +59,7 @@ if (
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Dynamic group %1 has located player %2.",_unitGroup,_targetPlayer];};
 } else {
-	[_unitGroup,0] setWaypointStatements ["true","if (local this) then {if ((random 1) < 0.50) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};};"];
+	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; if ((random 1) < 0.50) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};"];
 	0 = [_unitGroup,_triggerPos,150] spawn A3EAI_BIN_taskPatrol;
 	{_x enableFatigue true;} count (units _unitGroup);
 	_unitGroup setSpeedMode "NORMAL";

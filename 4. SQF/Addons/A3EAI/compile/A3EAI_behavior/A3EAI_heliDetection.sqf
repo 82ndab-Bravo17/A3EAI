@@ -4,8 +4,9 @@ _unitGroup = _this select 0;
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
-_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);
-if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength *2;};
+_searchLength = _unitGroup getVariable "SearchLength";
+if (isNil "_searchLength") then {_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);};
+if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength * 2;};
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
 

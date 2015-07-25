@@ -1,4 +1,4 @@
-private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_playerNear", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior"];
+private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_playerNear", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
 _vehicleType = _this;
 
@@ -96,8 +96,8 @@ _unitGroup setVariable ["assignedVehicle",_vehicle];
 (units _unitGroup) allowGetIn true;
 
 if (_isAirVehicle) then {
-	_detectionStatement = "if (local this) then {[(group this)] spawn A3EAI_UAVDetection;};";
-	_patrolStatement = "if (local this) then {[(group this)] spawn A3EAI_UAVStartPatrol;};";
+	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVDetection;";
+	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVStartPatrol;";
 	_vehicle flyInHeight 125;
 	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
@@ -105,8 +105,8 @@ if (_isAirVehicle) then {
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UAV group %1 is now active and patrolling.",_unitGroup];};
 	};
 } else {
-	_detectionStatement = "if (local this) then {[(group this)] spawn A3EAI_UGVDetection;};";
-	_patrolStatement = "if (local this) then {[(group this)] spawn A3EAI_UGVStartPatrol;};";
+	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVDetection;";
+	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVStartPatrol;";
 
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curUGVPatrols = A3EAI_curUGVPatrols + 1;
@@ -139,13 +139,18 @@ _waypoint setWaypointStatements ["true",_patrolStatement];
 _waypoint setWaypointCombatMode _combatMode;
 _waypoint setWaypointBehaviour _behavior;
 
+_waypointCycle = _unitGroup addWaypoint [_vehiclePosition, 0];
+_waypointCycle setWaypointType "CYCLE";
+_waypointCycle setWaypointCompletionRadius 150;
+	
 if (_isAirVehicle) then {
 	[_unitGroup,0] setWaypointSpeed "FULL";
 	[_unitGroup,1] setWaypointSpeed "LIMITED";
-	[_unitGroup] spawn A3EAI_UAVStartPatrol;
+	//[_unitGroup] spawn A3EAI_UAVStartPatrol;
 } else {
-	[_unitGroup] spawn A3EAI_UGVStartPatrol;
+	//[_unitGroup] spawn A3EAI_UGVStartPatrol;
 };
+_unitGroup setCurrentWaypoint [_unitGroup,0];
 
 _rearm = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager
 

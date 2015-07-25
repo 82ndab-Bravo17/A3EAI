@@ -12,6 +12,7 @@ Headless Client Files/Keys update required: Yes
 [FIXED] Fixed AI units being stuck upon spawning inside buildings.
 [FIXED] A3EAI now uses case-insensitive checks for location types to allow proper location detection for custom-made maps such as Australia (Before fix: 16 locations. After fix: 58 locations).
 [FIXED] Fixed bug where detection state for Air, UAV, UGV patrols immediately ended after starting.
+[FIXED] Fixed antistuck for custom air patrols.
 [ADDED] Added map center and map size data for all AiA maps, Esseker, Australia.
 [CHANGED] Added minimum of 5 random spawns to be generated if random spawn generation is left on automatic setting.
 [CHANGED] On-death AI loot is now generated server-side instead of on headless client.
@@ -22,3 +23,4 @@ Headless Client Files/Keys update required: Yes
 [CHANGED] Vehicle patrol waypoint blacklists now seperated into Air and Land categories.
 [CHANGED] Krypto cleanup is now independent of AI body cleanup.
 [CHANGED] Slightly increased default loot amounts/chances.
+[CHANGED] Search travel distance doubled for plane-type AI patrols and UAVs.

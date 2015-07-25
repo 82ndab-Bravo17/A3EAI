@@ -58,9 +58,9 @@ _randomizeChance = linearConversion [125,350,_max_dist,0.25,0.45,true];
 //diag_log format ["DEBUG: PatrolDist %1 has RandomizeChance %2",_max_dist,_randomizeChance];
 
 _wpStatements = call {
-	if (_searchLoot && {_max_dist > 100}) exitWith {format ["if (local this) then {if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [group this] spawn A3EAI_areaSearching;};};",_randomizeChance]};
-	if (_unitType isEqualTo "aircustom") exitWith {format ["if (local this) then {if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};};",_randomizeChance]};
-	format ["if (local this) then {if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint};};",_randomizeChance]
+	if (_searchLoot && {_max_dist > 100}) exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [group this] spawn A3EAI_areaSearching;};",_randomizeChance]};
+	if (_unitType isEqualTo "aircustom") exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};",_randomizeChance]};
+	format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint};",_randomizeChance]
 };
 
 _wpTimeouts = if (_max_dist >= 100) then {[0, 3, 5]} else {[3, 6, 9]};
@@ -214,7 +214,7 @@ if (_searchLoot) then {
 	_wp1 setWaypointCompletionRadius (_max_dist max 50);
 	_wp1 setWaypointCombatMode _combatMode;
 	_wp1 setWaypointBehaviour _behavior;
-	[_unitGroup,(count waypoints _unitGroup)] setWaypointStatements ["true", "if (local this) then {group this setCurrentWaypoint [(group this), (round (random 2) + 1)];};"];
+	[_unitGroup,(count waypoints _unitGroup)] setWaypointStatements ["true", "if !(local this) exitWith {}; group this setCurrentWaypoint [(group this), (round (random 2) + 1)];"];
 };
 
 // Cycle in case we reach the end

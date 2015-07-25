@@ -21,5 +21,10 @@ _detectionWaypoint = [_locationSelected,100+(random 700),_dir,1] call SHK_pos;
 
 _dir = [_vehicle,_locationSelected] call BIS_fnc_dirTo;
 _exitWaypoint = [_detectionWaypoint,600+(random 100),_dir,1] call SHK_pos;
-[_unitGroup,1] setWaypointPosition [_exitWaypoint,0];
-_unitGroup setCurrentWaypoint [_unitGroup,0];
+//[_unitGroup,1] setWaypointPosition [_exitWaypoint,0];
+//_unitGroup setCurrentWaypoint [_unitGroup,0];
+[_unitGroup,2] setWaypointPosition [_detectionWaypoint,0];
+
+_unitGroup setVariable ["SearchLength",(_detectionWaypoint distance _exitWaypoint)];
+
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 search length %2",_unitGroup,_unitGroup getVariable "SearchLength"];};

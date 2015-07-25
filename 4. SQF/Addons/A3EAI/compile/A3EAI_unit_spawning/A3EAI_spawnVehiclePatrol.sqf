@@ -1,4 +1,4 @@
-private ["_vehicleType", "_maxCargoUnits", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_playerNear", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_gunnersAdded", "_cargoSpots", "_cargo", "_waypoint", "_result", "_rearm","_combatMode","_behavior"];
+private ["_vehicleType", "_maxCargoUnits", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_playerNear", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_gunnersAdded", "_cargoSpots", "_cargo", "_waypoint", "_result", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
 _vehicleType = _this;
 
@@ -137,7 +137,7 @@ if (_isAirVehicle) then {
 	[_unitGroup,0] setWaypointType "MOVE";
 	[_unitGroup,0] setWaypointTimeout [0.5,0.5,0.5];
 	[_unitGroup,0] setWaypointCompletionRadius 200;
-	[_unitGroup,0] setWaypointStatements ["true","if (local this) then {[(group this)] spawn A3EAI_heliDetection;};"];
+	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; [(group this)] spawn A3EAI_heliDetection;"];
 	[_unitGroup,0] setWaypointCombatMode _combatMode;
 	[_unitGroup,0] setWaypointBehaviour _behavior;
 	[_unitGroup,0] setWaypointSpeed "FULL";
@@ -146,11 +146,15 @@ if (_isAirVehicle) then {
 	_waypoint setWaypointType "MOVE";
 	_waypoint setWaypointTimeout [3,6,9];
 	_waypoint setWaypointCompletionRadius 150;
-	_waypoint setWaypointStatements ["true","if (local this) then {[(group this)] spawn A3EAI_heliStartPatrol;};"];
+	_waypoint setWaypointStatements ["true","if !(local this) exitWith {}; [(group this)] spawn A3EAI_heliStartPatrol;"];
 	_waypoint setWaypointCombatMode _combatMode;
 	_waypoint setWaypointBehaviour _behavior;
 	_waypoint setWaypointSpeed "LIMITED";
 	
+	_waypointCycle = _unitGroup addWaypoint [_vehiclePosition, 0];
+	_waypointCycle setWaypointType "CYCLE";
+	_waypointCycle setWaypointCompletionRadius 150;
+
 	_unitGroup setVariable ["HeliLastParaDrop",diag_tickTime - A3EAI_paraDropCooldown];
 	_vehicle flyInHeight (125 + (random 25));
 	
@@ -163,7 +167,7 @@ if (_isAirVehicle) then {
 	[_unitGroup,0] setWaypointType "MOVE";
 	[_unitGroup,0] setWaypointTimeout [5,10,15];
 	[_unitGroup,0] setWaypointCompletionRadius 150;
-	[_unitGroup,0] setWaypointStatements ["true","if (local this) then {[(group this)] spawn A3EAI_vehStartPatrol;};"];
+	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; [(group this)] spawn A3EAI_vehStartPatrol;"];
 	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curLandPatrols = A3EAI_curLandPatrols + 1;
@@ -171,11 +175,14 @@ if (_isAirVehicle) then {
 	};
 };
 
+/*
 if (_isAirVehicle) then {
 	[_unitGroup] spawn A3EAI_heliStartPatrol;
 } else {
 	[_unitGroup] spawn A3EAI_vehStartPatrol;
 };
+*/
+_unitGroup setCurrentWaypoint [_unitGroup,0];
 
 _rearm = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager
 

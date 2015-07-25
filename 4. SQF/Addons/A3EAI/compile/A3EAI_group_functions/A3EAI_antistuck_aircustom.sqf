@@ -14,9 +14,11 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 750) && {_checkPos
 	_nextWP = _currentWP + 1;
 	if ((count _allWP) isEqualTo _nextWP) then {_nextWP = 1}; //Cycle back to first added waypoint if group is currently on last waypoint.
 	_unitGroup setCurrentWaypoint [_unitGroup,_nextWP];
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Antistuck triggered for AI air (custom) group %1. Forcing next waypoint.",_unitGroup];};
+	_unitGroup setVariable ["antistuckPos",(getWPPos [_unitGroup,(currentWaypoint _unitGroup)])];
 	_unitGroup setVariable ["antistuckTime",diag_tickTime + (_stuckCheckTime/2)];
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Antistuck triggered for AI air (custom) group %1. Forcing next waypoint.",_unitGroup];};
 } else {
+	_unitGroup setVariable ["antistuckPos",_checkPos];
 	_unitGroup setVariable ["antistuckTime",diag_tickTime];
 };
 

@@ -1,11 +1,13 @@
-private ["_unitGroup","_detectBase","_detectFactor","_vehicle","_canParaDrop","_detectStartPos"];
+private ["_unitGroup","_detectBase","_detectFactor","_vehicle","_canParaDrop","_detectStartPos","_searchLength"];
 _unitGroup = _this select 0;
 
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
+_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);
+if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength *2;};
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection start.",_unitGroup,(typeOf (_vehicle))];};
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
 
 if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
@@ -35,7 +37,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > 1500) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
+		if (((_vehicle distance _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
 		uiSleep 15;
 	};
 	

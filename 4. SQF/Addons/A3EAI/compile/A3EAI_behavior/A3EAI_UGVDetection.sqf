@@ -40,7 +40,7 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > 500) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
+		if (((_vehicle distance _detectStartPos) > 300) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
 		uiSleep 15;
 	};
 };

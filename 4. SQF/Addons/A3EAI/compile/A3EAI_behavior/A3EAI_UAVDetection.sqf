@@ -1,13 +1,13 @@
-private ["_unitGroup","_canCall","_vehicle","_detectStartPos"];
+private ["_unitGroup","_canCall","_vehicle","_detectStartPos","_searchLength"];
 _unitGroup = _this select 0;
 
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
-
 _canCall = true;
+_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection start.",_unitGroup,(typeOf (_vehicle))];};
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
 
 if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UAVCallReinforceCooldown])) > A3EAI_UAVCallReinforceCooldown) then {
 	_detectStartPos = getPosATL _vehicle;
@@ -39,7 +39,7 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UAVCallReinfor
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > 1000) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
+		if (((_vehicle distance _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
 		uiSleep 15;
 	};
 	

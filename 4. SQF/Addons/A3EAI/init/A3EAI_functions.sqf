@@ -60,7 +60,6 @@ A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compi
 
 //A3EAI_unit_spawning
 A3EAI_addRespawnQueue = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_addRespawnQueue.sqf",A3EAI_directory];
-A3EAI_addUVGunners = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_addUVGunners.sqf",A3EAI_directory];
 A3EAI_addVehicleGunners = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_addVehicleGunners.sqf",A3EAI_directory];
 A3EAI_cancelDynamicSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_cancelDynamicSpawn.sqf",A3EAI_directory];
 A3EAI_cancelRandomSpawn = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_cancelRandomSpawn.sqf",A3EAI_directory];
@@ -85,6 +84,7 @@ A3EAI_spawnVehicleCustom = compileFinal preprocessFileLineNumbers format ["%1\co
 A3EAI_spawnVehiclePatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_unit_spawning\A3EAI_spawnVehiclePatrol.sqf",A3EAI_directory];
 
 //A3EAI_utilities
+A3EAI_activateKryptoPickup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_activateKryptoPickup.sqf",A3EAI_directory];
 A3EAI_addItem = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addItem.sqf",A3EAI_directory];
 A3EAI_addLandVehEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addLandVehEH.sqf",A3EAI_directory];
 A3EAI_addMapMarker = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addMapMarker.sqf",A3EAI_directory];
@@ -117,6 +117,7 @@ A3EAI_deleteCustomSpawn = compileFinal preprocessFileLineNumbers format ["%1\com
 A3EAI_findSpawnPos = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_findSpawnPos.sqf",A3EAI_directory];
 A3EAI_fixStuckGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_fixStuckGroup.sqf",A3EAI_directory];
 A3EAI_forceBehavior = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_forceBehavior.sqf",A3EAI_directory];
+A3EAI_generateKryptoPickup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_generateKryptoPickup.sqf",A3EAI_directory];
 A3EAI_getSpawnParams = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getSpawnParams.sqf",A3EAI_directory];
 A3EAI_getUnitLevel = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getUnitLevel.sqf",A3EAI_directory];
 A3EAI_getWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getWeapon.sqf",A3EAI_directory];

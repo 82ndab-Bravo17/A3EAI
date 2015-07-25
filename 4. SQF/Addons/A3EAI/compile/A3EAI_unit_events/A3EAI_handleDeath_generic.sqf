@@ -9,7 +9,12 @@ _unitsAlive = if ((count _this) > 4) then {_this select 4} else {0};
 if (isPlayer _killer) then {
 	if !(_victim getVariable ["CollisionKilled",false]) then {
 		_unitLevel = _unitGroup getVariable ["unitLevel",1];
-		0 = [_victim,_unitLevel] spawn A3EAI_generateLoot;
+		if (isDedicated) then {
+			0 = [_victim,_unitLevel] spawn A3EAI_generateLoot;
+		} else {
+			A3EAI_generateLoot_PVS = [_victim,_unitLevel];
+			publicVariableServer "A3EAI_generateLoot_PVS";
+		};
 	} else {
 		_victim call A3EAI_purgeUnitGear;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: %1 AI unit %2 was killed by collision damage caused by %3. Unit gear cleared.",_unitType,_victim,_killer]};

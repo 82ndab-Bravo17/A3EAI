@@ -19,13 +19,13 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 		if !(surfaceIsWater _placePos) then {
 			private ["_nearbldgs"];
 			_nearbldgs = _placePos nearObjects ["HouseBase",250];
-			if (((count _nearbldgs) > 20) && {({if ((typeOf _x) isEqualTo "PlotPole_EPOCH") exitWith {1}} count _nearbldgs) isEqualTo 0}) then {
+			if (((count _nearbldgs) > 9) && {({if ((typeOf _x) isEqualTo "PlotPole_EPOCH") exitWith {1}} count _nearbldgs) isEqualTo 0}) then {
 				_spawnPositions = [];
 				_spawnPoints = 0;
 				{
 					scopeName "bldgloop";
 					_pos = getPosATL _x;
-					if (!(surfaceIsWater _pos) && {(sizeOf (typeOf _x)) > 19}) then {
+					if (!(surfaceIsWater _pos) && {(sizeOf (typeOf _x)) > 15}) then {
 						_spawnPositions pushBack _pos;
 						_spawnPoints = _spawnPoints + 1;
 					};
@@ -43,28 +43,28 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 					_spawnChance = 0.00;
 					_respawnLimit = -1;
 					call {
-						if (_placeType isEqualTo "NameCityCapital") exitWith {
+						if (_placeType isEqualTo "namecitycapital") exitWith {
 							_aiCount = [A3EAI_minAI_capitalCity,A3EAI_addAI_capitalCity];
 							_unitLevel = A3EAI_unitLevel_capitalCity;
 							_spawnChance = A3EAI_spawnChance_capitalCity;
 							_respawnLimit = A3EAI_respawnLimit_capitalCity;
 							//_patrolRadius = 200;
 						};
-						if (_placeType isEqualTo "NameCity") exitWith {
+						if (_placeType isEqualTo "namecity") exitWith {
 							_aiCount = [A3EAI_minAI_city,A3EAI_addAI_city];
 							_unitLevel = A3EAI_unitLevel_city;
 							_spawnChance = A3EAI_spawnChance_city;
 							_respawnLimit = A3EAI_respawnLimit_city;
 							//_patrolRadius = 175;
 						};
-						if (_placeType isEqualTo "NameVillage") exitWith {
+						if (_placeType isEqualTo "namevillage") exitWith {
 							_aiCount = [A3EAI_minAI_village,A3EAI_addAI_village];
 							_unitLevel = A3EAI_unitLevel_village;
 							_spawnChance = A3EAI_spawnChance_village;
 							_respawnLimit = A3EAI_respawnLimit_village;
 							//_patrolRadius = 125;
 						};
-						if (_placeType isEqualTo "NameLocal") exitWith {
+						if (_placeType isEqualTo "namelocal") exitWith {
 							_aiCount = [A3EAI_minAI_remoteArea,A3EAI_addAI_remoteArea];
 							_unitLevel = A3EAI_unitLevel_remoteArea;
 							_spawnChance = A3EAI_spawnChance_remoteArea;
@@ -79,13 +79,17 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 						_trigger setTriggerTimeout [5, 5, 5, true];
 						_trigger setTriggerText _placeName;
 						_statements = format ["0 = [%1,%2,%3,thisTrigger,[],%4] call A3EAI_createInfantryQueue;",_aiCount select 0,_aiCount select 1,_patrolRadius,_unitLevel];
-						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;", _statements, "0 = [thisTrigger] spawn A3EAI_despawn_static;"];
+						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList > 0;", _statements, "0 = [thisTrigger] spawn A3EAI_despawn_static;"];
 						_trigger setVariable ["respawnLimit",_respawnLimit];
 						_trigger setVariable ["respawnLimitOriginal",_respawnLimit];
 						0 = [0,_trigger,[],_patrolRadius,_unitLevel,_spawnPositions,_aiCount,_spawnChance] call A3EAI_initializeTrigger;
 						_spawnsCreated = _spawnsCreated + 1;
 					};
+				} else {
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Static spawn not created at %1. Spawn position count: %2",_placeName,(count _spawnPositions)];};
 				};
+			} else {
+				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Static spawn not created at %1. Building count: %2",_placeName,(count _nearbldgs)];};
 			};
 		};
 	};

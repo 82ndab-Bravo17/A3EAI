@@ -12,7 +12,7 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 750) && {_checkPos
 	_tooClose = true;
 	_wpSelect = [];
 	while {_tooClose} do {
-		_wpSelect = (A3EAI_locations call A3EAI_selectRandom) select 1;
+		_wpSelect = (A3EAI_locationsAir call A3EAI_selectRandom) select 1;
 		if (((waypointPosition [_unitGroup,0]) distance _wpSelect) < 300) then {
 			_tooClose = false;
 		} else {
@@ -22,6 +22,7 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 750) && {_checkPos
 	_wpSelect = [_wpSelect,50+(random 900),(random 360),1] call SHK_pos;
 	[_unitGroup,0] setWPPos _wpSelect;
 	[_unitGroup,1] setWPPos _wpSelect;
+	if ((count (waypoints _unitGroup)) > 2) then {[_unitGroup,2] setWPPos _wpSelect;};
 	[_unitGroup,"IgnoreEnemies"] call A3EAI_forceBehavior;
 	_unitGroup setVariable ["antistuckPos",_wpSelect];
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Antistuck triggered for UAV %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};

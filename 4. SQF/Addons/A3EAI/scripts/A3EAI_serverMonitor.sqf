@@ -6,6 +6,7 @@
 #define RANDSPAWN_EXPIRY_TIME 1080
 #define SIDECHECK_TIME 1200
 #define UPDATE_PLAYER_COUNT_FREQ 60
+#define KRYPTO_CLEANUP_FREQ 900
 
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Server Monitor will start in 60 seconds."};
 
@@ -43,9 +44,17 @@ A3EAI_playerCountThreshold = nil;
 _getUptime = {
 	private ["_currentSec","_outSec","_outMin","_outHour"];
 	_currentSec = diag_tickTime;
-	_outHour = floor (_currentSec/3600);
-	_outMin = floor ((_currentSec - (_outHour*3600))/60);
-	_outSec = floor (_currentSec - (_outHour*3600) - (_outMin*60));
+	_outHour = (floor (_currentSec/3600));
+	_outMin = (floor ((_currentSec - (_outHour*3600))/60));
+	_outSec = (floor (_currentSec - (_outHour*3600) - (_outMin*60)));
+	
+	_outHour = str (_outHour);
+	_outMin = str (_outMin);
+	_outSec = str (_outSec);
+	
+	if ((count _outHour) isEqualTo 1) then {_outHour = format ["0%1",_outHour];};
+	if ((count _outMin) isEqualTo 1) then {_outMin = format ["0%1",_outMin];};
+	if ((count _outSec) isEqualTo 1) then {_outSec = format ["0%1",_outSec];};
 	
 	[_outHour,_outMin,_outSec]
 };
@@ -62,33 +71,24 @@ while {true} do {
 	if ((_currentTime - _cleanDead) > CLEANDEAD_FREQ) then {
 		_bodiesCleaned = 0;
 		_vehiclesCleaned = 0;
-		_nullObjects = 0;
 		
 		//Body/vehicle cleanup loop
 		{
 			_deathTime = _x getVariable "A3EAI_deathTime";
-			/*
 			if (!isNil "_deathTime") then {
-				diag_log format ["A3EAI Cleanup Debug: Checking unit %1 (%2). diag_tickTime: %3. deathTime: %4.",_x,typeOf _x,diag_tickTime,_deathTime];
-				diag_log format ["A3EAI Cleanup Debug: is CAManBase: %1. Timer complete: %2. No players: %3.",(_x isKindOf "CAManBase"),((diag_tickTime - _deathTime) > A3EAI_cleanupDelay),(({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0)];
-			};*/
-			if (!isNil "_deathTime") then {
-				if (_x isKindOf "CAManBase") then {
-					//diag_log "A3EAI Cleanup Debug: Unit type is CAManBase";
-					if ((_currentTime - _deathTime) > A3EAI_cleanupDelay) then {
-						//diag_log "A3EAI Cleanup Debug: Timer complete, checking for nearby players";
-						if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0) then {
-							//diag_log "A3EAI Cleanup Debug: No nearby players. Deleting unit";
-							_kryptoDevice = _x getVariable ["KryptoDevice",objNull];
-							if !(isNull _kryptoDevice) then {deleteVehicle _kryptoDevice};	//Delete Krypto item if not already removed
-							_x call _purgeEH;
-							//diag_log format ["DEBUG :: Deleting object %1 (type: %2).",_x,typeOf _x];
-							deleteVehicle _x;
-							_bodiesCleaned = _bodiesCleaned + 1;
+				call {
+					if (_x isKindOf "CAManBase") exitWith {
+						if ((_currentTime - _deathTime) > A3EAI_cleanupDelay) then {
+							if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0) then {
+								//_kryptoDevice = _x getVariable ["KryptoDevice",objNull];
+								//if !(isNull _kryptoDevice) then {deleteVehicle _kryptoDevice};
+								_x call _purgeEH;
+								deleteVehicle _x;
+								_bodiesCleaned = _bodiesCleaned + 1;
+							};
 						};
 					};
-				} else {
-					if (_x isKindOf "AllVehicles") then {
+					if (_x isKindOf "AllVehicles") exitWith {
 						if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
 							if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],60])) isEqualTo 0) then {
 								if (_x in A3EAI_monitoredObjects) then {
@@ -97,10 +97,8 @@ while {true} do {
 											deleteVehicle _x;
 										};
 									} forEach (crew _x);
-									//diag_log format ["DEBUG :: Object %1 (type: %2) found in server object monitor.",_x,typeOf _x];
 								};
 								_x call _purgeEH;
-								//diag_log format ["DEBUG :: Deleting object %1 (type: %2).",_x,typeOf _x];
 								deleteVehicle _x;
 								_vehiclesCleaned = _vehiclesCleaned + 1;
 							};
@@ -122,21 +120,54 @@ while {true} do {
 							_x call _purgeEH;
 							deleteVehicle _x;
 							_vehiclesCleaned = _vehiclesCleaned + 1;
-							_nullObjects = _nullObjects + 1;
 						};
 					};
 				};
-			} else {
-				_nullObjects = _nullObjects + 1;
 			};
 			uiSleep 0.025;
 		} count A3EAI_monitoredObjects;
+		
+		{
+			if (!isNull _x) then {
+				private ["_kryptoGenTime"];
+				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+				if (!isNil "_kryptoGenTime") then {
+					if ((_currentTime - _kryptoGenTime) > KRYPTO_CLEANUP_FREQ) then {
+						_kryptoArea = _x getVariable "A3EAI_kryptoArea";
+						if ((!isNil _kryptoArea) && {!(isNull _kryptoArea)}) then {
+							A3EAI_kryptoAreas = A3EAI_kryptoAreas - [_kryptoArea];
+							deleteVehicle _kryptoArea;
+						};
+						deleteVehicle _x;
+					};
+				};
+			};
+			uiSleep 0.025;
+		} forEach A3EAI_kryptoObjects;
+		
+		{
+			if (!isNull _x) then {
+				private ["_kryptoGenTime"];
+				_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+				_kryptoObject = _x getVariable "A3EAI_kryptoObject";
+				if ((!isNil "_kryptoObject") && {!isNil "_kryptoGenTime"}) then {
+					call {
+						if (isNull _kryptoObject) exitWith {
+							deleteVehicle _x;
+						};
+						if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) exitWith {
+							deleteVehicle _x;
+						};
+					};
+				};
+			};
+			uiSleep 0.025;
+		} count A3EAI_kryptoAreas;
 
 		//Clean server object monitor
-		if (_nullObjects > 4) then {
-			A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];
-			diag_log format ["A3EAI Cleanup: Cleaned up %1 null objects from server object monitor.",_nullObjects];
-		};
+		if (objNull in A3EAI_monitoredObjects) then {A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];};
+		if (objNull in A3EAI_kryptoObjects) then {A3EAI_kryptoObjects = A3EAI_kryptoObjects - [objNull];};
+		if (objNull in A3EAI_kryptoAreas) then {A3EAI_kryptoAreas = A3EAI_kryptoAreas - [objNull];};
 		if ((_bodiesCleaned + _vehiclesCleaned) > 0) then {diag_log format ["A3EAI Cleanup: Cleaned up %1 dead units and %2 destroyed vehicles.",_bodiesCleaned,_vehiclesCleaned]};
 		_cleanDead = _currentTime;
 	};
@@ -182,7 +213,7 @@ while {true} do {
 	};
 	
 	if ((_currentTime - _playerCountTime) > UPDATE_PLAYER_COUNT_FREQ) then {
-		_currentPlayerCount = ({isPlayer _x} count playableUnits);
+		_currentPlayerCount = ({alive _x} count allPlayers);
 		if (A3EAI_HCIsConnected) then {_currentPlayerCount = _currentPlayerCount - 1};
 		if !(_lastPlayerCount isEqualTo _currentPlayerCount) then {
 			A3EAI_spawnChanceMultiplier = linearConversion [1, _maxSpawnChancePlayers, _currentPlayerCount, _multiplierLowPlayers, _multiplierHighPlayers, true];

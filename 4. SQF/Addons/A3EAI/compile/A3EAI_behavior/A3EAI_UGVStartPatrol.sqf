@@ -14,4 +14,5 @@ while {_tooClose} do {
 _wpSelect = [_wpSelect,random(300),random(360),0,[1,300]] call SHK_pos;
 [_unitGroup,0] setWPPos _wpSelect;
 [_unitGroup,1] setWPPos _wpSelect;
-_unitGroup setCurrentWaypoint [_unitGroup,0];
+//_unitGroup setCurrentWaypoint [_unitGroup,0];
+[_unitGroup,2] setWaypointPosition [_wpSelect,0];

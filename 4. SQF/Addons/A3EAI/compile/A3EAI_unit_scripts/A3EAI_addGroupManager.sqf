@@ -30,7 +30,7 @@ _fnc_antistuck = _fncArray select 4;
 _currentTime = diag_tickTime;
 _managerStartTime = _currentTime;
 _unitGroup setVariable ["lastRearmTime",_currentTime];
-_unitGroup setVariable ["antistuckTime",_currentTime + 900];
+_unitGroup setVariable ["antistuckTime",_currentTime];
 _unitGroup setVariable ["lootGenTime",_currentTime];
 
 //Setup loot variables

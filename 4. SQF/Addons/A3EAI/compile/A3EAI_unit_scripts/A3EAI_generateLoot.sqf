@@ -29,12 +29,17 @@ _kryptoAmountMax = missionNamespace getVariable ["A3EAI_kryptoAmount"+str(_unitL
 _kryptoAmount = floor (random (_kryptoAmountMax + 1));
 if(_kryptoAmount > 0) then {
 	_kryptoPos = getPosATL _unit;
-	_kryptoDevice = createVehicle ["Land_MPS_EPOCH",_kryptoPos,[],2.0,"CAN_COLLIDE"];
+	_kryptoDevice = createVehicle ["Land_MPS_EPOCH",_kryptoPos,[],1.5,"CAN_COLLIDE"];
 	_kryptoDevice setVariable ["Crypto",_kryptoAmount,true];
-	_unit setVariable ["KryptoDevice",_kryptoDevice];
+	_kryptoDevice setVariable ["A3EAI_kryptoGenTime",diag_tickTime];
+	//_unit setVariable ["KryptoDevice",_kryptoDevice];
+	A3EAI_kryptoObjects pushBack _kryptoDevice;
 	_kryptoPosEmpty = _kryptoPos findEmptyPosition [0,0.5,"Land_MPS_EPOCH"];
 	if !(_kryptoPosEmpty isEqualTo []) then {
 		_kryptoDevice setPosATL _kryptoPosEmpty;
+	};
+	if (A3EAI_kryptoPickupAssist > 0) then {
+		_kryptoPickup = [_kryptoDevice,_kryptoPos] call A3EAI_generateKryptoPickup;
 	};
 };
 

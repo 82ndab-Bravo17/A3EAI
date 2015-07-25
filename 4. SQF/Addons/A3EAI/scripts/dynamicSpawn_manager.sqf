@@ -19,7 +19,7 @@ _lastSpawned_DB = [];		//Database of timestamps for each corresponding playerUID
 _lastOnline_DB = [];		//Database of last online checks
 
 while {true} do {
-	if (({isPlayer _x} count playableUnits) > 0) then {
+	if (({alive _x} count allPlayers) > 0) then {
 		_allPlayers = [];		//Do not edit
 		_currentTime = diag_tickTime;
 		{
@@ -53,7 +53,7 @@ while {true} do {
 				};
 			};
 			uiSleep 0.05;
-		} forEach playableUnits;
+		} forEach allPlayers;
 		
 		_activeDynamicSpawns = (count A3EAI_dynTriggerArray);
 		_playerCount = (count _allPlayers);

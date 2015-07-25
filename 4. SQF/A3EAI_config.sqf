@@ -430,7 +430,8 @@ A3EAI_UGVDetectChance = 0.50;
 
 //Add name of location as displayed on map prevent AI vehicle patrols from travelling to these locations. Location names are case-sensitive. (Example: ["Aggelochori","Panochori","Zaros"])
 //Note: Vehicles may still pass through these areas but will not make stops unless enemies are encountered.
-A3EAI_waypointBlacklist = [];
+A3EAI_waypointBlacklistAir = []; //Affects Air vehicles (including UAVs)
+A3EAI_waypointBlacklistLand = [];  //Affects Air vehicles (including UGVs)
 
 
 /*
@@ -448,56 +449,56 @@ A3EAI_waypointBlacklist = [];
 	Hint: For all skill types, higher number = better skill. For skill sub-type explanation, see: https://community.bistudio.com/wiki/AI_Sub-skills
 */
 
-//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.40
+//AI skill settings level 0 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.05-0.10, Others 0.30-0.50
 A3EAI_skill0 = [	
 	["aimingAccuracy",0.05,0.10],
-	["aimingShake",0.40,0.50],
-	["aimingSpeed",0.40,0.50],
-	["spotDistance",0.40,0.50],
-	["spotTime",0.40,0.50],
-	["courage",0.40,0.50],
-	["reloadSpeed",0.40,0.50],
-	["commanding",0.40,0.50],
-	["general",0.40,0.50]
+	["aimingShake",0.30,0.50],
+	["aimingSpeed",0.30,0.50],
+	["spotDistance",0.30,0.50],
+	["spotTime",0.30,0.50],
+	["courage",0.30,0.50],
+	["reloadSpeed",0.30,0.50],
+	["commanding",0.30,0.50],
+	["general",0.30,0.50]
 ];
 
-//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.50
+//AI skill settings level 1 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.10-0.15, Others 0.40-0.60
 A3EAI_skill1 = [	
 	["aimingAccuracy",0.10,0.15],
-	["aimingShake",0.50,0.60],
-	["aimingSpeed",0.50,0.60],
-	["spotDistance",0.50,0.60],
-	["spotTime",0.50,0.60],
-	["courage",0.50,0.60],
-	["reloadSpeed",0.50,0.60],
-	["commanding",0.50,0.60],
-	["general",0.50,0.60]
+	["aimingShake",0.40,0.60],
+	["aimingSpeed",0.40,0.60],
+	["spotDistance",0.40,0.60],
+	["spotTime",0.40,0.60],
+	["courage",0.40,0.60],
+	["reloadSpeed",0.40,0.60],
+	["commanding",0.40,0.60],
+	["general",0.40,0.60]
 ];
 
-//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.60
+//AI skill settings level 2 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.15-0.20, Others 0.50-0.70
 A3EAI_skill2 = [	
 	["aimingAccuracy",0.15,0.20],
-	["aimingShake",0.60,0.70],
-	["aimingSpeed",0.60,0.70],
-	["spotDistance",0.60,0.70],
-	["spotTime",0.60,0.70],
-	["courage",0.60,0.70],
-	["reloadSpeed",0.60,0.70],
-	["commanding",0.60,0.70],
-	["general",0.60,0.70]
+	["aimingShake",0.50,0.70],
+	["aimingSpeed",0.50,0.70],
+	["spotDistance",0.50,0.70],
+	["spotTime",0.50,0.70],
+	["courage",0.50,0.70],
+	["reloadSpeed",0.50,0.70],
+	["commanding",0.50,0.70],
+	["general",0.50,0.70]
 ];
 
-//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Baseline skill level: 0.70
+//AI skill settings level 3 (Skill, Minimum skill, Maximum skill). Defaults: Accuracy 0.20-0.25, Others 0.60-0.80
 A3EAI_skill3 = [	
 	["aimingAccuracy",0.20,0.25],
-	["aimingShake",0.70,0.80],
-	["aimingSpeed",0.70,0.80],
-	["spotDistance",0.70,0.80],
-	["spotTime",0.70,0.80],
-	["courage",0.70,0.80],
-	["reloadSpeed",0.70,0.80],
-	["commanding",0.70,0.80],
-	["general",0.70,0.80]
+	["aimingShake",0.60,0.80],
+	["aimingSpeed",0.60,0.80],
+	["spotDistance",0.60,0.80],
+	["spotTime",0.60,0.80],
+	["courage",0.60,0.80],
+	["reloadSpeed",0.60,0.80],
+	["commanding",0.60,0.80],
+	["general",0.60,0.80]
 ];
 
 
@@ -548,11 +549,15 @@ A3EAI_kryptoAmount1 = 75; 	//Default for level 1 AI: 75
 A3EAI_kryptoAmount2 = 100; 	//Default for level 2 AI: 100
 A3EAI_kryptoAmount3 = 150; 	//Default for level 3 AI: 150
 
+//Krypto pickup assist time window in seconds. Players must be within 2 meters of a Krypto device for 5 seconds to pick up Krypto automatically. 0: Disabled (Default: 0)
+//After this time limit, players must manually pick up any dropped Krypto.
+A3EAI_kryptoPickupAssist = 0;
+
 //Maximum number of food loot items found on AI. (Default: 1)								
-A3EAI_foodLootCount = 1;
+A3EAI_foodLootCount = 2;
 
 //Maximum number of items to select from A3EAI_MiscLoot1 (generic loot) table. (Default: 1)											
-A3EAI_miscLootCount1 = 1;						
+A3EAI_miscLootCount1 = 2;						
 
 //Maximum number of items to select from A3EAI_MiscLoot2 (large generic loot) table. (Default: 1)					
 A3EAI_miscLootCount2 = 1;	
@@ -561,8 +566,8 @@ A3EAI_miscLootCount2 = 1;
 /*	AI loot probability settings. AI loot is pre-generated into a pool for each unit and randomly pulled to units as time passes.
 --------------------------------------------------------------------------------------------------------------------*/
 
-//Chance to add a single First Aid Kit to group loot pool per unit (Default: 0.20)
-A3EAI_chanceFirstAidKit = 0.20;
+//Chance to add a single First Aid Kit to group loot pool per unit (Default: 0.25)
+A3EAI_chanceFirstAidKit = 0.25;
 
 //Chance to add each edible item to group loot pool per unit (Default: 0.40)								
 A3EAI_chanceFoodLoot = 0.40;
@@ -574,10 +579,10 @@ A3EAI_chanceMiscLoot1 = 0.40;
 A3EAI_chanceMiscLoot2 = 0.30;
 
 //Probability to successfully pull a random item from loot pool for level 0-3 AI. Influences the rate at which loot items are added to units.
-A3EAI_lootPullChance0 = 0.30; //Default for level 0 AI: 0.30
+A3EAI_lootPullChance0 = 0.20; //Default for level 0 AI: 0.20
 A3EAI_lootPullChance1 = 0.40; //Default for level 1 AI: 0.40
-A3EAI_lootPullChance2 = 0.50; //Default for level 2 AI: 0.50
-A3EAI_lootPullChance3 = 0.60; //Default for level 3 AI: 0.60
+A3EAI_lootPullChance2 = 0.60; //Default for level 2 AI: 0.60
+A3EAI_lootPullChance3 = 0.80; //Default for level 3 AI: 0.80
 
 
 /*

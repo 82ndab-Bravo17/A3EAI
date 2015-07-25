@@ -1,15 +1,19 @@
-private ["_unitGroup","_detectBase","_detectFactor","_vehicle","_canParaDrop","_detectEndPos"];
+private ["_unitGroup","_detectBase","_detectFactor","_vehicle","_canParaDrop","_detectStartPos","_searchLength"];
 _unitGroup = _this select 0;
 
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
+_searchLength = _unitGroup getVariable "SearchLength";
+if (isNil "_searchLength") then {_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);};
+if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength * 2;};
+
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
 
 if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
-	_detectEndPos = waypointPosition [_unitGroup,1];
+	_detectStartPos = getPosATL _vehicle;
 	_canParaDrop = ((diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",-A3EAI_paraDropCooldown])) > A3EAI_paraDropCooldown);
-	
 	_vehicle flyInHeight (60 + (random 30));
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
@@ -34,9 +38,11 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectEndPos) > 600) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
+		if (((_vehicle distance _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
 		uiSleep 15;
 	};
 	
 	_vehicle flyInHeight (125 + (random 25));
 };
+
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

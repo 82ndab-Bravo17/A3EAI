@@ -19,19 +19,20 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 
 //Add user-specified blacklist areas
 {
-	A3EAI_waypointBlacklist set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
+	A3EAI_waypointBlacklistAir set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle waypoint blacklist at %1.",_x];};
 	if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
-} forEach A3EAI_waypointBlacklist;
+} forEach A3EAI_waypointBlacklistAir;
+
+{
+	A3EAI_waypointBlacklistLand set [_forEachIndex,(toLower _x)]; //Ensure case-insensitivity
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle waypoint blacklist at %1.",_x];};
+	if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
+} forEach A3EAI_waypointBlacklistLand;
 
 //Set up trader city blacklist areas
 if (isDedicated) then {
 	{
-		if ((nearestLocations [_x select 1,["Strategic"],30]) isEqualTo []) then {
-			_location = [_x select 1,600] call A3EAI_createBlackListArea;
-			_telePositions pushBack (_x select 1);
-			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created 600m radius blacklist area at %1 teleport source (%2).",_x select 0,_x select 1];};
-		};
 		if ((nearestLocations [_x select 3,["Strategic"],30]) isEqualTo []) then {
 			_location = [_x select 3,600] call A3EAI_createBlackListArea;
 			_telePositions pushBack (_x select 3);
@@ -42,16 +43,23 @@ if (isDedicated) then {
 };
 
 {
-	_placeType = getText (_cfgWorldName >> _x >> "type");
-	if (_placeType in ["NameCityCapital","NameCity","NameVillage","NameLocal"]) then {
+	_placeType = toLower (getText (_cfgWorldName >> _x >> "type"));
+	if (_placeType in ["namecitycapital","namecity","namevillage","namelocal"]) then {
 		_placeName = getText (_cfgWorldName >> _x >> "name");
 		_placePos = [] + getArray (_cfgWorldName >> _x >> "position");
-		_isAllowedPos = (!((toLower _placeName) in A3EAI_waypointBlacklist) && {(_placePos distance (getMarkerPos "respawn_west")) > 600} && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
+		_isAllowedPos = (((_placePos distance (getMarkerPos "respawn_west")) > 600) && {({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0});
 		if (_isAllowedPos) then {
 			A3EAI_locations pushBack [_placeName,_placePos,_placeType];
-			if (_placeType != "NameLocal") then {
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added location %1 (type: %2) to location list.",_placeName,_placeType];};
+			/*
+			if (_placeType != "namelocal") then {
 				A3EAI_locationsLand pushBack [_placeName,_placePos,_placeType];
 			};
+			*/
+			if !(_placeName in A3EAI_waypointBlacklistAir) then {A3EAI_locationsAir pushBack [_placeName,_placePos,_placeType];};
+			if !(_placeName in A3EAI_waypointBlacklistLand) then {A3EAI_locationsLand pushBack [_placeName,_placePos,_placeType];};
+		} else {
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 not in allowed position. Blacklist (Air): %2, Blacklist (Land): %3, respawn_west: %4, telepos: %5.",_placeName,!((toLower _placeName) in A3EAI_waypointBlacklistAir),!((toLower _placeName) in A3EAI_waypointBlacklistLand),(_placePos distance (getMarkerPos "respawn_west")) > 600,({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0];};
 		};
 		_allLocations pushBack [_placeName,_placePos,_placeType];
 	};
@@ -60,18 +68,18 @@ if (isDedicated) then {
 
 //Auto-adjust random spawn limit
 if (isDedicated && {A3EAI_maxRandomSpawns isEqualTo -1}) then {
-	A3EAI_maxRandomSpawns = (round (0.10 * (count _allLocations)) min 15);
+	A3EAI_maxRandomSpawns = ((round (0.10 * (count _allLocations)) min 15) max 5);
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Adjusted random spawn limit to %1",A3EAI_maxRandomSpawns];};
 };
 
 if (A3EAI_locations isEqualTo []) then {
 	A3EAI_locations = +_allLocations;
-	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locations is empty, using _allLocations array instead.";};
+	if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: A3EAI_locations is empty, using _allLocations array instead.";};
 };
 
 if (A3EAI_locationsLand isEqualTo []) then {
 	A3EAI_locationsLand = +_allLocations;
-	if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI_locationsLand is empty, using _allLocations array instead.";};
+	if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: A3EAI_locationsLand is empty, using _allLocations array instead.";};
 };
 
 A3EAI_locations_ready = true;

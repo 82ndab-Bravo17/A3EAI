@@ -11,7 +11,7 @@ _unit = _unitGroup createUnit ["i_survivor_F",_spawnPos,[],0,"FORM"];
 0 = [_unit, _unitLevel] call A3EAI_setSkills;										// Set AI skill
 
 if (_antistuck) then {
-	_unit setPos _spawnPos;
+	_unit setPosATL _spawnPos;
 	_unit setVelocity [0,0,0.5];
 };
 

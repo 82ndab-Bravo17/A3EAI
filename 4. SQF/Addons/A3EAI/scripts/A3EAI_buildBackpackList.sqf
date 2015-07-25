@@ -12,7 +12,6 @@ _items = [];
 		if (_itemClassType isEqualTo "backpack") exitWith {
 			_item = _itemClassInfo select 0;
 			_items pushBack _item;
-			// diag_log format ["ITEMDATA: Backpack %1: maximumLoad %2.",[configfile >> "CfgVehicles" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _item,"maximumLoad",-1] call BIS_fnc_returnConfigEntry];
 		};
 		if (_itemClassType isEqualTo "CfgLootTable") exitWith {
 			_itemClass = _itemClassInfo select 0;
@@ -24,7 +23,6 @@ _items = [];
 				if (_itemType isEqualTo "backpack") then {
 					_item = _itemInfo select 0;
 					_items pushBack _item;
-					// diag_log format ["ITEMDATA: Backpack %1: maximumLoad %2.",[configfile >> "CfgVehicles" >> _item,"displayName",""] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _item,"maximumLoad",-1] call BIS_fnc_returnConfigEntry];
 				};
 			} forEach _itemList;
 		};

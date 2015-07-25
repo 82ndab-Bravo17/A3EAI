@@ -1,4 +1,4 @@
-private ["_unitGroup","_vehicle","_loadWP","_loadWPCond","_unit","_regroupPos"];
+private ["_unitGroup","_vehicle","_loadWP","_loadWPCond","_unit","_regroupPos","_waypointCycle"];
 
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
@@ -26,8 +26,12 @@ _regroupPos = if (isNull (driver _vehicle)) then {
 _loadWP = _unitGroup addWaypoint [_regroupPos,0];
 _loadWP setWaypointType "LOAD";
 _loadWPCond = "_vehicle = (group this) getVariable ['assignedVehicle',objNull]; ({_x isEqualTo (vehicle _x)} count (assignedCargo _vehicle)) isEqualTo 0";
-//_loadWP setWaypointStatements [_loadWPCond,(format ["if (local this) then {_unitGroup = (group this); deleteWaypoint [_unitGroup,%1]; _unitGroup call A3EAI_setVehicleRegrouped; _unitGroup setCurrentWaypoint [_unitGroup,0];};",(_loadWP select 1)])];
-_loadWP setWaypointStatements [_loadWPCond,"if (local this) then {(group this) spawn A3EAI_vehCrewRegroupComplete;};"];
+_loadWP setWaypointStatements [_loadWPCond,"if !(local this) exitWith {}; (group this) spawn A3EAI_vehCrewRegroupComplete;"];
+
+_waypointCycle = _unitGroup addWaypoint [_regroupPos, 0];
+_waypointCycle setWaypointType "CYCLE";
+_waypointCycle setWaypointStatements ["true","if !(local this) exitWith {}; _unitGroup = (group this); deleteWaypoint [_unitGroup,(currentWaypoint _unitGroup)];"];
+_waypointCycle setWaypointCompletionRadius 150;
 
 _loadWP setWaypointCompletionRadius 10;
 _unitGroup setCurrentWaypoint _loadWP;

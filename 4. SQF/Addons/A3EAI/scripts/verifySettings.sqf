@@ -35,6 +35,32 @@ _startTime = diag_tickTime;
 	["A3EAI_airReinforcementDuration1",180],
 	["A3EAI_airReinforcementDuration2",240],
 	["A3EAI_airReinforcementDuration3",300],
+	["A3EAI_maxUAVPatrols",0],
+	["A3EAI_UAVList",[
+		["I_UAV_02_CAS_F",5],
+		["I_UAV_02_F",5],
+		["B_UAV_02_CAS_F",5],
+		["B_UAV_02_F",5],
+		["O_UAV_02_CAS_F",5],
+		["O_UAV_02_F",5]
+	]],
+	["A3EAI_levelChancesUAV",[0.35,0.50,0.15,0.00]],
+	["A3EAI_respawnUAVMinTime",600],
+	["A3EAI_respawnUAVMaxTime",900],
+	["A3EAI_UAVCallReinforceCooldown",1800],
+	["A3EAI_UAVDetectChance",0.50],
+	["A3EAI_maxUGVPatrols",0],
+	["A3EAI_UGVList",[
+		["I_UGV_01_rcws_F",5],
+		["B_UGV_01_rcws_F",5],
+		["O_UGV_01_rcws_F",5]
+	]],
+	
+	["A3EAI_levelChancesUGV",[0.35,0.50,0.15,0.00]],
+	["A3EAI_respawnUGVMinTime",600],
+	["A3EAI_respawnUGVMaxTime",900],
+	["A3EAI_UGVCallReinforceCooldown",1800],
+	["A3EAI_UGVDetectChance",0.50],
 	["A3EAI_findKiller",true],
 	["A3EAI_tempNVGs",false],
 	["A3EAI_GLRequirement",2],
@@ -121,7 +147,8 @@ _startTime = diag_tickTime;
 	]],
 	["A3EAI_vehGunnerUnits",2],
 	["A3EAI_vehCargoUnits",3],
-	["A3EAI_waypointBlacklist",[]],
+	["A3EAI_waypointBlacklistAir",[]],
+	["A3EAI_waypointBlacklistLand",[]],
 	["A3EAI_skill0",[	
 		["aimingAccuracy",0.10,0.15],
 		["aimingShake",0.50,0.59],
@@ -190,17 +217,18 @@ _startTime = diag_tickTime;
 	["A3EAI_kryptoAmount1",75],
 	["A3EAI_kryptoAmount2",100],
 	["A3EAI_kryptoAmount3",150],
-	["A3EAI_foodLootCount",1],
-	["A3EAI_miscLootCount1",1],
+	["A3EAI_kryptoPickupAssist",0],
+	["A3EAI_foodLootCount",2],
+	["A3EAI_miscLootCount1",2],
 	["A3EAI_miscLootCount2",1],
-	["A3EAI_chanceFirstAidKit",0.20],
+	["A3EAI_chanceFirstAidKit",0.25],
 	["A3EAI_chanceFoodLoot",0.40],
 	["A3EAI_chanceMiscLoot1",0.40],
 	["A3EAI_chanceMiscLoot2",0.30],
-	["A3EAI_lootPullChance0",0.30],
+	["A3EAI_lootPullChance0",0.20],
 	["A3EAI_lootPullChance1",0.40],
-	["A3EAI_lootPullChance2",0.50],
-	["A3EAI_lootPullChance3",0.60],
+	["A3EAI_lootPullChance2",0.60],
+	["A3EAI_lootPullChance3",0.80],
 	["A3EAI_uniformTypes0",["U_O_CombatUniform_ocamo", "U_O_GhillieSuit", "U_O_PilotCoveralls", "U_O_Wetsuit", "U_OG_Guerilla1_1", "U_OG_Guerilla2_1", "U_OG_Guerilla2_3", "U_OG_Guerilla3_1", "U_OG_Guerilla3_2", "U_OG_leader", "U_C_Poloshirt_stripped", "U_C_Poloshirt_blue", "U_C_Poloshirt_burgundy", "U_C_Poloshirt_tricolour", "U_C_Poloshirt_salmon", "U_C_Poloshirt_redwhite", "U_C_Poor_1", "U_C_WorkerCoveralls", "U_C_Journalist", "U_C_Scientist", "U_OrestesBody", "U_Wetsuit_uniform", "U_Wetsuit_White", "U_Wetsuit_Blue", "U_Wetsuit_Purp", "U_Wetsuit_Camo", "U_CamoRed_uniform", "U_CamoBrn_uniform", "U_CamoBlue_uniform", "U_Camo_uniform", "U_ghillie1_uniform", "U_ghillie2_uniform", "U_ghillie3_uniform", "U_C_Driver_1", "U_C_Driver_2", "U_C_Driver_3", "U_C_Driver_4", "U_C_Driver_1_black", "U_C_Driver_1_blue", "U_C_Driver_1_green", "U_C_Driver_1_red", "U_C_Driver_1_white", "U_C_Driver_1_yellow", "U_C_Driver_1_orange", "U_C_Driver_1_red"]],
 	["A3EAI_uniformTypes1",["U_O_CombatUniform_ocamo", "U_O_GhillieSuit", "U_O_PilotCoveralls", "U_O_Wetsuit", "U_OG_Guerilla1_1", "U_OG_Guerilla2_1", "U_OG_Guerilla2_3", "U_OG_Guerilla3_1", "U_OG_Guerilla3_2", "U_OG_leader", "U_C_Poloshirt_stripped", "U_C_Poloshirt_blue", "U_C_Poloshirt_burgundy", "U_C_Poloshirt_tricolour", "U_C_Poloshirt_salmon", "U_C_Poloshirt_redwhite", "U_C_Poor_1", "U_C_WorkerCoveralls", "U_C_Journalist", "U_C_Scientist", "U_OrestesBody", "U_Wetsuit_uniform", "U_Wetsuit_White", "U_Wetsuit_Blue", "U_Wetsuit_Purp", "U_Wetsuit_Camo", "U_CamoRed_uniform", "U_CamoBrn_uniform", "U_CamoBlue_uniform", "U_Camo_uniform", "U_ghillie1_uniform", "U_ghillie2_uniform", "U_ghillie3_uniform", "U_C_Driver_1", "U_C_Driver_2", "U_C_Driver_3", "U_C_Driver_4", "U_C_Driver_1_black", "U_C_Driver_1_blue", "U_C_Driver_1_green", "U_C_Driver_1_red", "U_C_Driver_1_white", "U_C_Driver_1_yellow", "U_C_Driver_1_orange", "U_C_Driver_1_red"]],
 	["A3EAI_uniformTypes2",["U_O_CombatUniform_ocamo", "U_O_GhillieSuit", "U_O_PilotCoveralls", "U_O_Wetsuit", "U_OG_Guerilla1_1", "U_OG_Guerilla2_1", "U_OG_Guerilla2_3", "U_OG_Guerilla3_1", "U_OG_Guerilla3_2", "U_OG_leader", "U_C_Poloshirt_stripped", "U_C_Poloshirt_blue", "U_C_Poloshirt_burgundy", "U_C_Poloshirt_tricolour", "U_C_Poloshirt_salmon", "U_C_Poloshirt_redwhite", "U_C_Poor_1", "U_C_WorkerCoveralls", "U_C_Journalist", "U_C_Scientist", "U_OrestesBody", "U_Wetsuit_uniform", "U_Wetsuit_White", "U_Wetsuit_Blue", "U_Wetsuit_Purp", "U_Wetsuit_Camo", "U_CamoRed_uniform", "U_CamoBrn_uniform", "U_CamoBlue_uniform", "U_Camo_uniform", "U_ghillie1_uniform", "U_ghillie2_uniform", "U_ghillie3_uniform", "U_C_Driver_1", "U_C_Driver_2", "U_C_Driver_3", "U_C_Driver_4", "U_C_Driver_1_black", "U_C_Driver_1_blue", "U_C_Driver_1_green", "U_C_Driver_1_red", "U_C_Driver_1_white", "U_C_Driver_1_yellow", "U_C_Driver_1_orange", "U_C_Driver_1_red"]],
@@ -258,6 +286,8 @@ if (A3EAI_verifySettings) then {
 	if !((count A3EAI_useWeaponChance2) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance2, resetting to default value."]; A3EAI_useWeaponChance2 = [0.00,0.80,0.10,0.10]};
 	if !((count A3EAI_useWeaponChance3) isEqualTo 4) then {diag_log format ["[A3EAI] Error found in variable A3EAI_useWeaponChance3, resetting to default value."]; A3EAI_useWeaponChance3 = [0.00,0.70,0.15,0.15]};
 	if ("air_reinforce" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["air_reinforce"]};
+	if ("uav" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["uav"]};
+	if ("ugv" in A3EAI_airReinforcementAllowedTypes) then {A3EAI_airReinforcementAllowedTypes = A3EAI_airReinforcementAllowedTypes - ["ugv"]};
 };
 
 diag_log format ["[A3EAI] Verified all A3EAI settings in %1 seconds.",(diag_tickTime - _startTime)];

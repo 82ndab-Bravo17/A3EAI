@@ -1,4 +1,4 @@
-A3EAI 0.8.1 Experimental
+A3EAI 0.8.1
 
 Files changed:
 A3EAI.pbo update required: Yes

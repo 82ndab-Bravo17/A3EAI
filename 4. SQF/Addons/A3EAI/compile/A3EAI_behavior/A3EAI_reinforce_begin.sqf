@@ -26,7 +26,7 @@ if (_vehicleArmed) then {
 	
 	_reinforceTime = missionNamespace getVariable [format ["A3EAI_airReinforcementDuration%1",_unitGroup getVariable ["unitLevel",0]],0];
 	
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,_reinforceTime];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 is now reinforcing for %2 seconds.",_unitGroup,_reinforceTime];};
 
 	_unitGroup setSpeedMode "LIMITED";
 	_endTime = diag_tickTime + _reinforceTime;
@@ -49,7 +49,7 @@ if (_vehicleArmed) then {
 	};
 	_unitGroup setSpeedMode "NORMAL";
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 reinforcement timer complete.",_unitGroup];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 reinforcement timer complete.",_unitGroup];};
 } else {
 	_paraDrop = [_unitGroup,_vehicle,objNull] spawn A3EAI_heliParaDrop;
 	waitUntil {uiSleep 0.1; scriptDone _paraDrop};

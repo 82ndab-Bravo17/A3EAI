@@ -10,7 +10,7 @@ if (_unitGroup getVariable ["seekActive",false]) exitWith {};
 //If group is already pursuing player and target player has killed another group member, then extend pursuit time.
 if (((_unitGroup getVariable ["pursuitTime",0]) > 0) && {((_unitGroup getVariable ["targetKiller",""]) isEqualTo (name _targetPlayer))}) exitWith {
 	_unitGroup setVariable ["pursuitTime",((_unitGroup getVariable ["pursuitTime",0]) + 20)];
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Pursuit time +20 sec for Group %1 (Target: %2) to %3 seconds (fn_findKiller).",_unitGroup,name _targetPlayer,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime]};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Pursuit time +20 sec for Group %1 (Target: %2) to %3 seconds (fn_findKiller).",_unitGroup,name _targetPlayer,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime]};
 };
 
 _enableHCReady = false;

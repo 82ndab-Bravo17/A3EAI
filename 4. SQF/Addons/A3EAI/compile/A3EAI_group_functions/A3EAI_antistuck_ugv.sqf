@@ -11,19 +11,9 @@ _leader = (leader _unitGroup);
 if (((_leader distance (_leader findNearestEnemy _vehicle)) > 500) && {((_unitGroup getVariable ["antistuckPos",[0,0,0]]) distance _checkPos) < 100}) then {
 	if (canMove _vehicle) then {
 		[_unitGroup] call A3EAI_fixStuckGroup;
-		_tooClose = true;
-		_wpSelect = [];
-		while {_tooClose} do {
-			_wpSelect = (A3EAI_locationsLand call A3EAI_selectRandom) select 1;
-			if (((waypointPosition [_unitGroup,0]) distance _wpSelect) < 300) then {
-				_tooClose = false;
-			} else {
-				uiSleep 0.1;
-			};
-		};
-		_wpSelect = [_wpSelect,random(300),random(360),0,[1,300]] call SHK_pos;
-		[_unitGroup,0] setWPPos _wpSelect;
-		[_unitGroup,1] setWPPos _wpSelect;
+		[_unitGroup,0] setWaypointPosition [_checkPos,0];
+		[_unitGroup,1] setWaypointPosition [_checkPos,0];
+		_unitGroup setCurrentWaypoint [_unitGroup,1];
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Antistuck triggered for UGV %1 (Group: %2). Forcing next waypoint.",(typeOf _vehicle),_unitGroup];};
 		_unitGroup setVariable ["antistuckPos",_checkPos];
 		_unitGroup setVariable ["antistuckTime",diag_tickTime + (_stuckCheckTime/2)];

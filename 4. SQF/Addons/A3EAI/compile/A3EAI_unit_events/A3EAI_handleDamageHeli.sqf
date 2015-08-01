@@ -45,7 +45,7 @@ if (_ammo != "") then {
 				_vehicle setHitPointDamage ["tail_rotor_hit",1];	//Knock out helicopter tail rotor when sufficiently damaged
 				_vehicle setVariable ["tailRotorFunctional",false];
 				0 = [_vehicle] call A3EAI_heliEvacuated; 
-				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Air vehicle %1 (%2) tail rotor disabled at %3.",(typeOf _vehicle),(group _vehicle),(mapGridPosition _vehicle)];};
+				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Tail rotor disabled for AI air vehicle %1 (%2) at %3.",(typeOf _vehicle),(group _vehicle),(mapGridPosition _vehicle)];};
 			};
 		};
 		if (_hit isEqualTo "fuel_hit") exitWith {_damage = 0};

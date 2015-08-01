@@ -8,7 +8,7 @@ _searchLength = _unitGroup getVariable "SearchLength";
 if (isNil "_searchLength") then {_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);};
 if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength * 2;};
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
 
 if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
@@ -45,4 +45,4 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_vehicle flyInHeight (125 + (random 25));
 };
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

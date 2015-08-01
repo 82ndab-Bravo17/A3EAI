@@ -3,7 +3,7 @@ private ["_playerList","_player", "_kryptoTrigger", "_cIndex", "_kryptoStored", 
 _playerList = _this select 0;
 _kryptoTrigger = _this select 1;
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Krypto pickup assist activated at %1.",(getPosATL _kryptoTrigger)];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Krypto pickup assist activated at %1.",(getPosATL _kryptoTrigger)];};
 
 _player = objNull;
 {

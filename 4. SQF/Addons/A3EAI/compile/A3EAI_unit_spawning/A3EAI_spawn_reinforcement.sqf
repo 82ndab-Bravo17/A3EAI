@@ -79,7 +79,7 @@ if (A3EAI_removeExplosiveAmmo) then {
 
 if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 	A3EAI_activeReinforcements pushBack _unitGroup;
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Created AI air reinforcement group %1 is now active and patrolling.",_unitGroup];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI air reinforcement group %1 is now active and patrolling.",_unitGroup];};
 };
 
 //Set initial waypoint and begin patrol

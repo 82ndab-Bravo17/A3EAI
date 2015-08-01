@@ -1,0 +1,16 @@
+A3EAI 0.8.2
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: No
+A3EAI Client Addon update required: No
+Headless Client Files/Keys update required: Yes
+
+[INFO] Debug level 1 option now outputs simple debug info, Debug level 2 will contain more "technical" information. When asking for A3EAI support, it is recommended to include debug output with debug level 2 enabled. Note: Debug level 2 tends to be more "spammy" of the RPT log.
+[FIXED] Water positions are now prevented from being used for AI land vehicle waypoints.
+[FIXED] Fixes for land vehicle antistuck.
+[FIXED] Fixes for double-activation of air vehicle/UAV/UGV detection behavior.
+[FIXED] A3EAI will now wait until killed unit becomes local to dedicated server before attempting to generate loot (relevant only to servers with headless client setups)
+[FIXED] Fixed bug with krypto pickup assist feature that caused entire A3EAI cleanup loop to crash. Added preventative fixes to prevent errors from causing cleanup loop to crash.
+[CHANGED] Land vehicle antistuck will now attempt to relocate stuck vehicle group to any other location on the map, as long as there are no players or plot poles near the target location.
+[CHANGED] A3EAI will now use building positions directly as static spawn positions instead of pre-calculating positions on server start (no more 150 spawn position limit).

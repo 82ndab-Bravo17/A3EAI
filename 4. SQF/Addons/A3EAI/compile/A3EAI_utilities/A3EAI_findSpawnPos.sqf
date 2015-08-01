@@ -8,7 +8,7 @@ _spawnpool = +_this;
 _maxAttempts = ((count _spawnpool) min 3); //3: Maximum number of attempts
 while {_continue && {(_attempts < _maxAttempts)}} do {
 	_index = floor (random (count _spawnpool));
-	_spawnPosSelected = (_spawnpool select _index) findEmptyPosition [0.5,30,"Land_Coil_F"];
+	_spawnPosSelected = (getPosATL (_spawnpool select _index)) findEmptyPosition [0.5,30,"Land_Coil_F"];
 	if !(_spawnPosSelected isEqualTo []) then {
 		_spawnPosSelected = _spawnPosSelected isFlatEmpty [0,0,0.75,5,0,false,objNull];
 	}; 

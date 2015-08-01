@@ -7,7 +7,7 @@ _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
 
 _canCall = true;
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection start.",_unitGroup,(typeOf (_vehicle))];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection start.",_unitGroup,(typeOf (_vehicle))];};
 
 if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinforceCooldown])) > A3EAI_UGVCallReinforceCooldown) then {
 	_detectStartPos = getPosATL _vehicle;
@@ -45,4 +45,4 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 	};
 };
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

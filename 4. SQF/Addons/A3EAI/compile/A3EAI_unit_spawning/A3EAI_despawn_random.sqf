@@ -18,10 +18,10 @@ _triggerExists = true;
 
 if (_isForceDespawn) then {
 	_trigger setTriggerStatements ["this","",""];
-	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: All units of random AI group spawned by trigger %1 have been killed. Starting force despawn in 30 seconds.",triggerText _trigger];};
+	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: All units of random AI group spawned by trigger %1 have been killed. Starting force despawn in 30 seconds.",triggerText _trigger];};
 	uiSleep 30;
 } else {
-	if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: No players remain in %1. Deleting spawned AI in %2 seconds.",triggerText _trigger,A3EAI_randDespawnWait];};
+	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: No players remain in %1. Deleting spawned AI in %2 seconds.",triggerText _trigger,A3EAI_randDespawnWait];};
 	if (A3EAI_debugMarkersEnabled) then {
 		_nul = _trigger spawn {
 			_marker = str(_this);
@@ -61,12 +61,12 @@ if (_canDespawn) then {
 	_triggerLocation setVariable ["deletetime",(diag_tickTime + A3EAI_tempBlacklistTime)];
 	A3EAI_areaBlacklists pushBack _triggerLocation;
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Removing expired random trigger at %1.",mapGridPosition _trigger];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Removing expired random trigger at %1.",mapGridPosition _trigger];};
 	deleteVehicle _trigger;
 	
 	true
 } else {
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];}; //Exit script if trigger has been reactivated since A3EAI_randDespawnWait seconds has passed.
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];}; //Exit script if trigger has been reactivated since A3EAI_randDespawnWait seconds has passed.
 	_trigger setVariable ["isCleaning",false];	//Allow next despawn request.
 	_triggerStatements set [2,_deactStatements];
 	_trigger setTriggerStatements _triggerStatements;

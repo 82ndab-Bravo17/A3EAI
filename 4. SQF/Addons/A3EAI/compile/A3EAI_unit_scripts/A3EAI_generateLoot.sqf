@@ -6,6 +6,10 @@ _unitLevel = _this select 1;
 if (_unit getVariable ["LootGenerated",false]) exitWith {};
 _unit setVariable ["LootGenerated",true];
 
+if !(local _unit) then {
+	waitUntil {uiSleep 1; local _unit};
+};
+
 if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Generating loot for AI unit with unitLevel %2.",_unit,_unitLevel];};
 
 _weaponLoot = [];
@@ -32,12 +36,12 @@ if(_kryptoAmount > 0) then {
 	_kryptoDevice = createVehicle ["Land_MPS_EPOCH",_kryptoPos,[],1.5,"CAN_COLLIDE"];
 	_kryptoDevice setVariable ["Crypto",_kryptoAmount,true];
 	_kryptoDevice setVariable ["A3EAI_kryptoGenTime",diag_tickTime];
-	//_unit setVariable ["KryptoDevice",_kryptoDevice];
 	A3EAI_kryptoObjects pushBack _kryptoDevice;
 	_kryptoPosEmpty = _kryptoPos findEmptyPosition [0,0.5,"Land_MPS_EPOCH"];
 	if !(_kryptoPosEmpty isEqualTo []) then {
 		_kryptoDevice setPosATL _kryptoPosEmpty;
 	};
+	_kryptoDevice setVelocity [0,0,0.25];
 	if (A3EAI_kryptoPickupAssist > 0) then {
 		_kryptoPickup = [_kryptoDevice,_kryptoPos] call A3EAI_generateKryptoPickup;
 	};

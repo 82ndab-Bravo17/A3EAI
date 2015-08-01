@@ -7,6 +7,6 @@ _waypoint setWaypointType "MOVE";
 _waypoint setWaypointCompletionRadius 30;
 _waypoint setWaypointStatements ["true","if !(local this) exitWith {}; _unitGroup = (group this); deleteWaypoint [_unitGroup,(currentWaypoint _unitGroup)]; _unitGroup setCurrentWaypoint ((waypoints _unitGroup) call BIS_fnc_selectRandom);"];
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 assigned temporary waypoint at %2.",_unitGroup,_pos];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 assigned temporary waypoint at %2.",_unitGroup,_pos];};
 
 _waypoint

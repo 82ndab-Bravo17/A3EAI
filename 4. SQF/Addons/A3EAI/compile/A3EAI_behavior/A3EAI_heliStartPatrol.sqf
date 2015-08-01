@@ -27,4 +27,4 @@ _exitWaypoint = [_detectionWaypoint,600+(random 100),_dir,1] call SHK_pos;
 
 _unitGroup setVariable ["SearchLength",(_detectionWaypoint distance _exitWaypoint)];
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 search length %2",_unitGroup,_unitGroup getVariable "SearchLength"];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 search length %2, waypoint position %3.",_unitGroup,_unitGroup getVariable "SearchLength",_locationSelected];};

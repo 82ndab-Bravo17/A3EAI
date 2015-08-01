@@ -30,7 +30,7 @@ if (_unitsAlive > 0) then {
 		};
 	} forEach (units _unitGroup);
 	(units _unitGroup) allowGetIn false;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to vehiclecrew type.",_unitGroup];};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to vehiclecrew type.",_unitGroup];};
 } else {
 	_unitGroup setVariable ["GroupSize",-1];
 	if !(isDedicated) then {

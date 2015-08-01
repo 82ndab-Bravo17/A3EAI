@@ -21,7 +21,7 @@ _locationArray = _trigger getVariable ["locationArray",[]];
 _totalSpawned = 0;
 
 //Spawn groups
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Trigger %1 is spawning units...",triggerText _trigger]};
+if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Trigger %1 is spawning units...",triggerText _trigger]};
 for "_j" from 1 to (_numGroups - _groupsActive) do {
 	private ["_unitGroup","_spawnPos","_totalAI"];
 	_totalAI = 0;

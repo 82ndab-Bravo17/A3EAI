@@ -1,4 +1,4 @@
-private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_playerNear", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior","_waypointCycle"];
+private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
 _vehicleType = _this;
 
@@ -25,12 +25,11 @@ call {
 		while {_keepLooking} do {
 			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
 			if ((count _vehiclePosition) > 1) then {
-				_playerNear = ({isPlayer _x} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"], 300]) > 0);
-				if(!_playerNear) then {
+				if ({isPlayer _x} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"], 300]) isEqualTo 0) then {
 					_keepLooking = false;	//Found road position, stop searching
 				};
 			} else {
-				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Unable to find road position to spawn AI %1. Retrying in 30 seconds.",_vehicleType]};
+				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Unable to find road position to spawn AI %1. Retrying in 30 seconds.",_vehicleType]};
 				uiSleep 30; //Couldnt find road, search again in 30 seconds.
 			};
 		};
@@ -102,7 +101,7 @@ if (_isAirVehicle) then {
 	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curUAVPatrols = A3EAI_curUAVPatrols + 1;
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UAV group %1 is now active and patrolling.",_unitGroup];};
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: UAV group %1 is now active and patrolling.",_unitGroup];};
 	};
 } else {
 	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVDetection;";
@@ -110,7 +109,7 @@ if (_isAirVehicle) then {
 
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curUGVPatrols = A3EAI_curUGVPatrols + 1;
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UGV group %1 is now active and patrolling.",_unitGroup];};
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: UGV group %1 is now active and patrolling.",_unitGroup];};
 	};
 };
 
@@ -150,6 +149,8 @@ if (_isAirVehicle) then {
 } else {
 	//[_unitGroup] spawn A3EAI_UGVStartPatrol;
 };
+
+[_unitGroup,0] setWaypointPosition [_vehiclePosition,0];
 _unitGroup setCurrentWaypoint [_unitGroup,0];
 
 _rearm = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager
@@ -158,6 +159,6 @@ if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
 	_unitGroup setVariable ["HC_Ready",true];
 };
 
-if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created AI vehicle patrol at %1 with vehicle type %2 with %3 crew units.",_vehiclePosition,_vehicleType,(count (units _unitGroup))]};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Created AI vehicle patrol at %1 with vehicle type %2 with %3 crew units.",_vehiclePosition,_vehicleType,(count (units _unitGroup))]};
 
 true

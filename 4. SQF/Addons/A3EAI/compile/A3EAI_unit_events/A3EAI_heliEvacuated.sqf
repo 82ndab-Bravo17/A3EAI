@@ -15,8 +15,6 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	_unitLevel = _unitGroup getVariable ["unitLevel",1];
 	_units = (units _unitGroup);
 	if (!(surfaceIsWater _vehiclePos) && {(_vehiclePos select 2) > 50}) then {
-		//_driver = (driver _vehicle);
-		//if (alive _driver) then {_nul = [_driver,objNull] call A3EAI_handleDeathEvent;};
 		_unitsAlive = {
 			if (alive _x) then {
 				unassignVehicle _x;
@@ -60,7 +58,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 		A3EAI_updateGroupSize_PVS = [_unitGroup,-1];
 		publicVariableServer "A3EAI_updateGroupSize_PVS";
 	};
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI %1 group %2 is now empty.",(typeOf _vehicle),_unitGroup];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: %1 executed on empty AI %2 group %3.",__FILE__,(typeOf _vehicle),_unitGroup];};
 };
 
 true

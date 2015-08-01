@@ -149,7 +149,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 		_fnc_antistuck = _fncArray select 4;
 		_stuckCheckTime = _unitType call A3EAI_getAntistuckTime;
 		
-		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Reassigned group %1 type from %2 to %3.",_unitGroup,_unitTypeRef,_unitType];};
+		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Reassigned group %1 type from %2 to %3.",_unitGroup,_unitTypeRef,_unitType];};
 		
 		_unitTypeRef = _unitType;
 	};
@@ -186,7 +186,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 				_unitGroup setVariable ["antistuckTime",_currentTime];
 				_unitGroup setVariable ["lootGenTime",_currentTime];
 			};
-			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: %1 group %2 ownership was returned to server.",(_unitGroup getVariable ["unitType",_unitType]),_unitGroup];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 group %2 ownership was returned to server.",(_unitGroup getVariable ["unitType",_unitType]),_unitGroup];};
 		} else {
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Waiting to transfer %1 group %2 ownership to headless client (ID: %3).",_unitType,_unitGroup,A3EAI_HCObjectOwnerID];};
 		};

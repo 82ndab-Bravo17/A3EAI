@@ -15,6 +15,6 @@ if (_antistuck) then {
 	_unit setVelocity [0,0,0.5];
 };
 
-if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Spawned AI %1 with unitLevel %2 for group %3.",_unit,_unitLevel,_unitGroup];};
+if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: Spawned AI %1 with unitLevel %2 for group %3.",_unit,_unitLevel,_unitGroup];};
 
 _unit

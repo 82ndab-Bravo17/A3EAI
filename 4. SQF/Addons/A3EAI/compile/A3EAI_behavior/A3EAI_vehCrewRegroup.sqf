@@ -30,7 +30,7 @@ _loadWP setWaypointStatements [_loadWPCond,"if !(local this) exitWith {}; (group
 
 _waypointCycle = _unitGroup addWaypoint [_regroupPos, 0];
 _waypointCycle setWaypointType "CYCLE";
-_waypointCycle setWaypointStatements ["true","if !(local this) exitWith {}; _unitGroup = (group this); deleteWaypoint [_unitGroup,(currentWaypoint _unitGroup)];"];
+_waypointCycle setWaypointStatements ["true","if !(local this) exitWith {}; _unitGroup = (group this); deleteWaypoint [_unitGroup,2]; deleteWaypoint [_unitGroup,1];"];
 _waypointCycle setWaypointCompletionRadius 150;
 
 _loadWP setWaypointCompletionRadius 10;

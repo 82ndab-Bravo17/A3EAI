@@ -34,12 +34,4 @@ for "_j" from 1 to _groupSize do {
 //Update local group loot pool
 _this setVariable ["LootPool",_lootPool];
 
-//If HC connected, update loot pool remotely too
-/*
-if (A3EAI_HCIsConnected) then {
-	A3EAI_updateGroupLoot_PVC = [_this,_lootPool];
-	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupLoot_PVC";
-};
-*/
-
 true

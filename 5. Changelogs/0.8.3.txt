@@ -1,0 +1,10 @@
+A3EAI 0.8.3
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: No
+A3EAI Client Addon update required: No
+Headless Client Files/Keys update required: Yes
+
+[FIXED] A3EAI will now check if AI inventory is able to contain launcher ammo before assigning launcher weapon, and will continue searching through all units of the group until all launchers have been assigned, or no units can hold the ammo.
+[FIXED] Fixed waypoint-related bugs for AI groups that have abandoned their vehicles.

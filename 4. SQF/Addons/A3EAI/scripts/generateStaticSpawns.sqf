@@ -36,7 +36,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 				_radiusA = getNumber (_cfgWorldName >> (_x select 0) >> "radiusA");
 				_radiusB = getNumber (_cfgWorldName >> (_x select 0) >> "radiusB");
 				_patrolRadius = ((_radiusA min _radiusB) max 125);
-				_spawnChance = 0.00;
+				_spawnChance = 0;
 				_respawnLimit = -1;
 				call {
 					if (_placeType isEqualTo "namecitycapital") exitWith {
@@ -81,7 +81,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Static spawn not created at %1. Spawn position count: %2",_placeName,(count _nearbldgs)];};
 			};
 		} else {
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Static spawn not created at %1 due to water position.",_placeName];};
+			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Static spawn not created at %1 due to water position.",_placeName];};
 		};
 	} else {
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Static spawn not created for blacklisted location %1.",_placeName];};

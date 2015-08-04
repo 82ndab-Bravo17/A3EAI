@@ -112,7 +112,7 @@ while {true} do {
 							diag_log format ["DEBUG: Player not in blacklisted area: %1",(({_playerPos in _x} count (nearestLocations [_playerPos,["Strategic"],1000])) isEqualTo 0)];
 							diag_log format ["DEBUG: Player not in water: %1",!(surfaceIsWater _playerPos)];
 							diag_log format ["DEBUG: Player not in debug area: %1",((_playerPos distance getMarkerpos "respawn_west") > 2000)];
-							diag_log format ["DEBUG: Player not near modular buildables: %1",((_playerPos nearObjects ["PlotPole_EPOCH",125]) isEqualTo [])];
+							//diag_log format ["DEBUG: Player not near modular buildables: %1",((_playerPos nearObjects ["PlotPole_EPOCH",125]) isEqualTo [])];
 						};
 					};
 				} else {

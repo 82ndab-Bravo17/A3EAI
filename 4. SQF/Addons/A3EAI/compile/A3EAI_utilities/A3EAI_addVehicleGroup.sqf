@@ -16,12 +16,9 @@ if (_unitsAlive isEqualTo 0) exitWith {diag_log format ["A3EAI Error: %1 cannot 
 	};
 } count (units _unitGroup);
 
-/*
 for "_i" from ((count (waypoints _unitGroup)) - 1) to 0 step -1 do {
 	deleteWaypoint [_unitGroup,_i];
 };
-*/
-deleteWaypoint [_unitGroup,all];
 
 _unitGroup setCombatMode "YELLOW";
 _unitGroup setBehaviour "AWARE";

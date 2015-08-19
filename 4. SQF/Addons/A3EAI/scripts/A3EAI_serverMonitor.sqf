@@ -154,22 +154,26 @@ while {true} do {
 			
 			{
 				if (!isNull _x) then {
-					private ["_kryptoGenTime"];
-					_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+					private ["_kryptoObject"];
 					_kryptoObject = _x getVariable "A3EAI_kryptoObject";
-					if ((!isNil "_kryptoObject") && {!isNil "_kryptoGenTime"}) then {
+					if (!isNil "_kryptoObject") then {
 						call {
+							private ["_kryptoGenTime","_arrowObject"];
 							if (isNull _kryptoObject) exitWith {
+								deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
 								deleteVehicle _x;
 							};
-							if ((_currentTime - _kryptoGenTime) > A3EAI_kryptoPickupAssist) exitWith {
+							if ((_currentTime - (_x getVariable ["A3EAI_kryptoGenTime",0])) > A3EAI_kryptoPickupAssist) exitWith {
+								deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
 								deleteVehicle _x;
 							};
 						};
+					} else {
+						A3EAI_kryptoAreas set [_forEachIndex,objNull];
 					};
 				};
 				uiSleep 0.025;
-			} count A3EAI_kryptoAreas;
+			} forEach A3EAI_kryptoAreas;
 
 			//Clean server object monitor
 			if (objNull in A3EAI_monitoredObjects) then {A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];};

@@ -1,0 +1,15 @@
+A3EAI 0.8.4
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+A3EAI Client Addon update required: No
+Headless Client Files/Keys update required: Yes
+
+[NEW] Added "detect only" behavior modes for UAVs and UGVs. If set to "detect only", UAVs/UVGs will not directly engage detected targets, but may still call air reinforcements to the area.
+[NEW] If Krypto pickup assist feature is enabled, marker arrows will be created above dropped Krypto device.
+[FIXED] Frequency Jammers now properly prevent A3EAI from generating static spawns within 300m on server start up. Note: Frequency Jammers placed after server start will only have this effect after next server start.
+[FIXED] Backpacks for air patrol AI are no longer replaced with parachutes to allow launcher weapons to be carried. Instead, parachutes will be spawned when ejection events are triggered.
+[CHANGED] AI air patrols, UAVs, UGVs will not detect players if the vehicle is passing through a blacklisted area. Note: This does not affect default Arma 3 AI behaviors.
+[CHANGED] Air reinforcement probabilities changed from 10%/20%/30%/40% for level 0/1/2/3 AI to 0%/10%/20%/30%.
+[CHANGED] Increased spawning distance for air reinforcements by 50%.

@@ -46,13 +46,6 @@ _paraGroup setVariable ["trigger",_trigger];
 0 = [_paraGroup,_startPos,100] spawn A3EAI_BIN_taskPatrol;
 _rearm = [_paraGroup,_unitLevel] spawn A3EAI_addGroupManager;
 
-/*
-if (A3EAI_HCIsConnected) then {
-	A3EAI_sendGroupTriggerVars_PVC = [_paraGroup,[_paraGroup],75,1,1,[_unitsAlive,0],0,"vehiclecrew",false,true];
-	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_sendGroupTriggerVars_PVC";
-};
-*/
-
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Paradrop group %1 with %2 units deployed at %3 by %4 group %5.",_paraGroup,_cargoAvailable,_startPos,typeOf _vehicle,_unitGroup];};
 
 true

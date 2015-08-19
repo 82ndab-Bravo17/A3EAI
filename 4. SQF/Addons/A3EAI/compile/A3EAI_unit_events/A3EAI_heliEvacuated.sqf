@@ -17,8 +17,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	if (!(surfaceIsWater _vehiclePos) && {(_vehiclePos select 2) > 50}) then {
 		_unitsAlive = {
 			if (alive _x) then {
-				unassignVehicle _x;
-				_x action ["eject",_vehicle];
+				_x call A3EAI_ejectParachute;
 				true
 			} else {
 				0 = [_x,_unitLevel] spawn A3EAI_generateLoot;

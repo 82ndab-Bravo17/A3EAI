@@ -21,6 +21,7 @@ call {
 		_spawnMode = "FLY";
 	};
 	if (_vehicleType isKindOf "StaticWeapon") exitWith {_error = true};
+	if (_vehicleType isKindOf "Ship") exitWith {_error = true};
 	if (_vehicleType isKindOf "LandVehicle") exitWith {
 		_maxGunnerUnits = A3EAI_vehGunnerUnits;
 		_maxCargoUnits = A3EAI_vehCargoUnits;

@@ -1,4 +1,5 @@
 _action = (_this select 1);
+
 if (_action isEqualTo "IgnoreEnemies") exitWith {
 	_unitGroup = _this select 0;
 	_unitGroup setBehaviour "CARELESS";
@@ -14,3 +15,5 @@ if (_action isEqualTo "Behavior_Reset") exitWith {
 
 	true
 };
+
+false

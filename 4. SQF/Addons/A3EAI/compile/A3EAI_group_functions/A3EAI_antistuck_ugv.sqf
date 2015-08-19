@@ -20,7 +20,8 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 500) && {((_unitGr
 	} else {
 		if (!(_vehicle getVariable ["vehicle_disabled",false])) then {
 			[_vehicle] call A3EAI_UGV_destroyed;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UGV %1 (Group: %2) is immobilized. Respawning UGV group.",(typeOf _vehicle),_unitGroup];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UGV %1 (Group: %2) is immobilized. Respawning UGV group. Damage: %3. WaterPos: %4.",(typeOf _vehicle),_unitGroup,(damage _vehicle),(surfaceIsWater _checkPos)];};
+			if (A3EAI_debugMarkersEnabled) then {_checkPos call A3EAI_debugMarkerLocation;};
 		};
 	};
 } else {

@@ -17,7 +17,7 @@ A3EAI_reinforcedPositions pushBack _destPos;
 
 _error = false;
 _maxGunnerUnits = A3EAI_heliGunnerUnits;
-_vehiclePosition = [_destPos,1200 + (random(600)),random(360),1] call SHK_pos;
+_vehiclePosition = [_destPos,1800 + (random(900)),random(360),1] call SHK_pos;
 _vehiclePosition set [2,200];
 
 _unitType = "air_reinforce";

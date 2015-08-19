@@ -340,10 +340,10 @@ A3EAI_airReinforcementVehicles = [
 ]; 
 
 //Probability to spawn reinforcements for each AI level.
-A3EAI_airReinforcementSpawnChance0 = 0.10; //Probability of reinforcing Level 0 AI (Default: 0.10)
-A3EAI_airReinforcementSpawnChance1 = 0.20; //Probability of reinforcing Level 1 AI (Default: 0.20)
-A3EAI_airReinforcementSpawnChance2 = 0.30; //Probability of reinforcing Level 2 AI (Default: 0.30)
-A3EAI_airReinforcementSpawnChance3 = 0.40; //Probability of reinforcing Level 3 AI (Default: 0.40)
+A3EAI_airReinforcementSpawnChance0 = 0.00; //Probability of reinforcing Level 0 AI (Default: 0.00)
+A3EAI_airReinforcementSpawnChance1 = 0.10; //Probability of reinforcing Level 1 AI (Default: 0.10)
+A3EAI_airReinforcementSpawnChance2 = 0.20; //Probability of reinforcing Level 2 AI (Default: 0.20)
+A3EAI_airReinforcementSpawnChance3 = 0.30; //Probability of reinforcing Level 3 AI (Default: 0.30)
 
 //AI types permitted to summon reinforcements. Default: ["static","dynamic","random"]
 //Usable AI types: "static", "dynamic", "random", "air", "land", "staticcustom", "aircustom", "landcustom", "vehiclecrew"
@@ -384,6 +384,9 @@ A3EAI_levelChancesUAV = [0.35,0.50,0.15,0.00];
 A3EAI_respawnUAVMinTime = 600;
 A3EAI_respawnUAVMaxTime = 900;
 
+//Set to 'true' to set detection-only behavior (UAV will not directly engage enemies). (Default: false)
+A3EAI_UAVDetectOnly = false;
+
 //Cooldown required in between air reinforcement summons when detecting players. Value in seconds. (Default: 1800)
 A3EAI_UAVCallReinforceCooldown = 1800;
 
@@ -415,6 +418,9 @@ A3EAI_levelChancesUGV = [0.35,0.50,0.15,0.00];
 //Set minimum and maximum wait time in seconds to respawn a UGV patrol after vehicle is destroyed or disabled. (Default: Min 600, Max 900).
 A3EAI_respawnUGVMinTime = 600;
 A3EAI_respawnUGVMaxTime = 900;
+
+//Set to 'true' to set detection-only behavior (UGV will not directly engage enemies). (Default: false)
+A3EAI_UGVDetectOnly = false;
 
 //Cooldown required in between air reinforcement summons when detecting players. Value in seconds. (Default: 1800)
 A3EAI_UGVCallReinforceCooldown = 1800;

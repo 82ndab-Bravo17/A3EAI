@@ -45,7 +45,7 @@ if (_spawnChance call A3EAI_chance) then {
 	};
 };
 
-if ((_totalAI isEqualTo 0) or {_spawnPos isEqualTo []}) exitWith {
+if ((_totalAI < 1) or {_spawnPos isEqualTo []}) exitWith {
 	//_unitGroup setVariable ["GroupSize",0];
 	[0,_trigger,_unitGroup,true] call A3EAI_addRespawnQueue;
 	false

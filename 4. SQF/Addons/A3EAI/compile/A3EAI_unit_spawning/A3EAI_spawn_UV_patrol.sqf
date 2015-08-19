@@ -99,6 +99,11 @@ if (_isAirVehicle) then {
 	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVStartPatrol;";
 	_vehicle flyInHeight 125;
 	
+	if (A3EAI_UAVDetectOnly) then {
+		_unitGroup setBehaviour "CARELESS";
+		_unitGroup setCombatMode "BLUE";
+	};
+	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curUAVPatrols = A3EAI_curUAVPatrols + 1;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: UAV group %1 is now active and patrolling.",_unitGroup];};
@@ -107,6 +112,11 @@ if (_isAirVehicle) then {
 	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVDetection;";
 	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVStartPatrol;";
 
+	if (A3EAI_UGVDetectOnly) then {
+		_unitGroup setBehaviour "CARELESS";
+		_unitGroup setCombatMode "BLUE";
+	};
+	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curUGVPatrols = A3EAI_curUGVPatrols + 1;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: UGV group %1 is now active and patrolling.",_unitGroup];};

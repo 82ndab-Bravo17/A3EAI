@@ -15,7 +15,8 @@ if !(surfaceIsWater (getPosASL _vehicle)) then {
 	_unitGroup setVariable ["unitType","aircrashed"];	//Recategorize group as "aircrashed" to prevent AI inventory from being cleared since death is considered suicide.
 	{
 		if (alive _x) then {
-			_x action ["eject",_vehicle];
+			//_x action ["eject",_vehicle];
+			_x call A3EAI_ejectParachute;
 			_nul = [_x,objNull] call A3EAI_handleDeathEvent;
 			0 = [_x,_unitLevel] spawn A3EAI_generateLoot;
 		};

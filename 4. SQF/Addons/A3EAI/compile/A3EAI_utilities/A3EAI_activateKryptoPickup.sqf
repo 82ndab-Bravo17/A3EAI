@@ -1,4 +1,4 @@
-private ["_playerList","_player", "_kryptoTrigger", "_cIndex", "_kryptoStored", "_kryptoObject", "_vars", "_kryptoToSend"];
+private ["_playerList","_player", "_kryptoTrigger", "_cIndex", "_kryptoStored", "_kryptoObject", "_vars", "_kryptoToSend","_arrowObject"];
 
 _playerList = _this select 0;
 _kryptoTrigger = _this select 1;
@@ -16,6 +16,7 @@ if (isPlayer _player) then {
 	if !(isNull _kryptoTrigger) then {
 		_cIndex = EPOCH_customVars find "Crypto";
 		_kryptoObject = _kryptoTrigger getVariable ["A3EAI_kryptoObject",objNull];
+		_arrowObject = _kryptoTrigger getVariable ["A3EAI_arrowObject",objNull];
 		_kryptoStored = _kryptoObject getVariable ["Crypto",0];
 
 		if (_kryptoStored > 0) then {
@@ -28,6 +29,7 @@ if (isPlayer _player) then {
 		};
 		
 		deleteVehicle _kryptoObject;
+		deleteVehicle _arrowObject;
 	};
 };
 deleteVehicle _kryptoTrigger;

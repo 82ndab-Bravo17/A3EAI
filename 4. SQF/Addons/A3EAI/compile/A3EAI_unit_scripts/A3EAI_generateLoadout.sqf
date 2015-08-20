@@ -28,7 +28,7 @@ if !(_uniforms isEqualTo []) then {
 	_unit forceAddUniform _uniforms;
 };
 if !(_backpacks isEqualTo []) then {
-	_backpackItem = _uniforms call A3EAI_selectRandom;
+	_backpackItem = _backpacks call A3EAI_selectRandom;
 	_unit addBackpack _backpackItem; 
 	clearAllItemsFromBackpack _unit;
 };

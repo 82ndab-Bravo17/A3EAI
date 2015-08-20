@@ -25,7 +25,7 @@ _magazine = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "magazine
 
 if !(_uniforms isEqualTo []) then {
 	_uniformItem = _uniforms call A3EAI_selectRandom;
-	_unit forceAddUniform _uniforms;
+	_unit forceAddUniform _uniformItem;
 };
 if !(_backpacks isEqualTo []) then {
 	_backpackItem = _backpacks call A3EAI_selectRandom;

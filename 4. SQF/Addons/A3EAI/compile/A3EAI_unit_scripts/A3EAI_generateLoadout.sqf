@@ -1,5 +1,5 @@
-private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_uniform", "_backpack", "_vest", "_headgear", "_magazine", "_useGL", "_weaponMuzzles", "_GLWeapon", 
-"_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];
+private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_unitLevelString", "_uniforms", "_backpacks", "_vests", "_headgears", "_magazine", "_uniformItem", "_backpackItem", "_vestItem", "_headgear", 
+"_useGL", "_weaponMuzzles", "_GLWeapon", "_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];
 
 _unit = _this select 0;
 _unitLevel = _this select 1;
@@ -16,16 +16,31 @@ _unit call A3EAI_purgeUnitGear;	//Clear unwanted gear from unit first.
 
 _loadout = [[],[]];
 _weaponSelected = _unitLevel call A3EAI_getWeapon;
-_uniform = (missionNamespace getVariable ["A3EAI_uniformTypes"+str(_unitLevel),A3EAI_uniformTypes3]) call A3EAI_selectRandom;
-_backpack = (missionNamespace getVariable ["A3EAI_backpackTypes"+str(_unitLevel),A3EAI_backpackTypes3]) call A3EAI_selectRandom;
-_vest = (missionNamespace getVariable ["A3EAI_vestTypes"+str(_unitLevel),A3EAI_vestTypes3]) call A3EAI_selectRandom;
-_headgear = (missionNamespace getVariable ["A3EAI_headgearTypes"+str(_unitLevel),A3EAI_headgearTypes3]) call A3EAI_selectRandom;
+_unitLevelString = str (_unitLevel);
+_uniforms = missionNamespace getVariable ["A3EAI_uniformsTypes"+_unitLevelString,[]];
+_backpacks = missionNamespace getVariable ["A3EAI_backpacksTypes"+_unitLevelString,[]];
+_vests = missionNamespace getVariable ["A3EAI_vestsTypes"+_unitLevelString,[]];
+_headgears = missionNamespace getVariable ["A3EAI_headgearsTypes"+_unitLevelString,[]];
 _magazine = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "magazines") select 0;
 
-if ((!isNil "_uniform") && {!(_uniform isEqualTo "")}) then {_unit forceAddUniform _uniform;};
-if ((!isNil "_backpack") && {!(_backpack isEqualTo "")}) then {_unit addBackpack _backpack; clearAllItemsFromBackpack _unit;};
-if ((!isNil "_vest") && {!(_vest isEqualTo "")}) then {_unit addVest _vest;};
-if ((!isNil "_headgear") && {!(_headgear isEqualTo "")}) then {_unit addHeadgear _headgear;};
+if !(_uniforms isEqualTo []) then {
+	_uniformItem = _uniforms call A3EAI_selectRandom;
+	_unit forceAddUniform _uniforms;
+};
+if !(_backpacks isEqualTo []) then {
+	_backpackItem = _uniforms call A3EAI_selectRandom;
+	_unit addBackpack _backpacks; 
+	clearAllItemsFromBackpack _unit;
+};
+if !(_vests isEqualTo []) then {
+	_vestItem = _vests call A3EAI_selectRandom;
+	_unit addVest _vests;
+};
+if !(_headgears isEqualTo []) then {
+	_headgear = _headgears call A3EAI_selectRandom;
+	_unit addHeadgear _headgears;
+};
+
 _unit addMagazine _magazine;
 _unit addWeapon _weaponSelected;
 _unit selectWeapon _weaponSelected;
@@ -61,7 +76,7 @@ if (_useGL) then {
 
 //Select weapon optics
 _isRifle = ((getNumber (configFile >> "CfgWeapons" >> _weaponSelected >> "type")) isEqualTo 1);
-if ((missionNamespace getVariable [("A3EAI_opticsChance"+str(_unitLevel)),3]) call A3EAI_chance) then {
+if ((missionNamespace getVariable [("A3EAI_opticsChance"+_unitLevelString),3]) call A3EAI_chance) then {
 	_opticsList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "CowsSlot" >> "compatibleItems");
 	if !(_opticsList isEqualTo []) then {
 		_opticsType = A3EAI_weaponOpticsList call A3EAI_selectRandom;
@@ -72,7 +87,7 @@ if ((missionNamespace getVariable [("A3EAI_opticsChance"+str(_unitLevel)),3]) ca
 };
 
 //Select weapon pointer
-if ((missionNamespace getVariable [("A3EAI_pointerChance"+str(_unitLevel)),3]) call A3EAI_chance) then {
+if ((missionNamespace getVariable [("A3EAI_pointerChance"+_unitLevelString),3]) call A3EAI_chance) then {
 	_pointersList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "PointerSlot" >> "compatibleItems");
 	if !(_pointersList isEqualTo []) then {
 		_pointerType = _pointersList call A3EAI_selectRandom;
@@ -82,7 +97,7 @@ if ((missionNamespace getVariable [("A3EAI_pointerChance"+str(_unitLevel)),3]) c
 };
 
 //Select weapon muzzle
-if ((missionNamespace getVariable [("A3EAI_muzzleChance"+str(_unitLevel)),3]) call A3EAI_chance) then {
+if ((missionNamespace getVariable [("A3EAI_muzzleChance"+_unitLevelString),3]) call A3EAI_chance) then {
 	_muzzlesList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
 	if !(_muzzlesList isEqualTo []) then {
 		_muzzleType = _muzzlesList call A3EAI_selectRandom;
@@ -92,7 +107,7 @@ if ((missionNamespace getVariable [("A3EAI_muzzleChance"+str(_unitLevel)),3]) ca
 };
 
 //Select weapon muzzle
-if ((missionNamespace getVariable [("A3EAI_underbarrelChance"+str(_unitLevel)),3]) call A3EAI_chance) then {
+if ((missionNamespace getVariable [("A3EAI_underbarrelChance"+_unitLevelString),3]) call A3EAI_chance) then {
 	_underbarrelList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "UnderBarrelSlot" >> "compatibleItems");
 	if !(_underbarrelList isEqualTo []) then {
 		_underbarrelType = _underbarrelList call A3EAI_selectRandom;
@@ -101,7 +116,7 @@ if ((missionNamespace getVariable [("A3EAI_underbarrelChance"+str(_unitLevel)),3
 	};
 };
 
-_gadgetsArray = missionNamespace getVariable ["A3EAI_gadgets"+str(_unitLevel),[]];
+_gadgetsArray = missionNamespace getVariable ["A3EAI_gadgets"+_unitLevelString,[]];
 for "_i" from 0 to ((count _gadgetsArray) - 1) do {
 	if (((_gadgetsArray select _i) select 1) call A3EAI_chance) then {
 		_gadget = ((_gadgetsArray select _i) select 0);

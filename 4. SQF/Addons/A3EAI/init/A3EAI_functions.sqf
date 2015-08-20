@@ -147,6 +147,7 @@ A3EAI_UGVSelfRepair = compileFinal preprocessFileLineNumbers format ["%1\compile
 A3EAI_selectRandomWaypoint = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_selectRandomWaypoint.sqf",A3EAI_directory];
 A3EAI_getPosBetween = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getPosBetween.sqf",A3EAI_directory];
 A3EAI_ejectParachute = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_ejectParachute.sqf",A3EAI_directory];
+A3EAI_debugMarkerLocation = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_debugMarkerLocation.sqf",A3EAI_directory];
 
 //Group functions
 A3EAI_getLocalFunctions = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_getLocalFunctions.sqf",A3EAI_directory];

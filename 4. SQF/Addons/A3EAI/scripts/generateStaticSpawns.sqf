@@ -1,7 +1,7 @@
 private ["_expireTime", "_spawnsCreated", "_startTime", "_cfgWorldName"];
 
 _expireTime = diag_tickTime + 300;
-waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready" && {(EPOCH_BuildingSlotCount isEqualTo ({_x isEqualTo 0} count EPOCH_BuildingSlots)) or {diag_tickTime > _expireTime}}};
+waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready" && {(!isNil "EPOCH_BuildingSlotCount") or {diag_tickTime > _expireTime}}};
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: A3EAI is generating static spawns."];};
 

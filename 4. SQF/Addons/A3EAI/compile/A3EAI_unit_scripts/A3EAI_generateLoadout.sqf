@@ -1,4 +1,4 @@
-private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_unitLevelString", "_uniforms", "_backpacks", "_vests", "_headgears", "_magazine", "_uniformItem", "_backpackItem", "_vestItem", "_headgear", 
+private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_unitLevelString", "_uniforms", "_backpacks", "_vests", "_headgears", "_magazine", "_uniformItem", "_backpackItem", "_vestItem", "_headgearItem", 
 "_useGL", "_weaponMuzzles", "_GLWeapon", "_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];
 
 _unit = _this select 0;
@@ -29,16 +29,16 @@ if !(_uniforms isEqualTo []) then {
 };
 if !(_backpacks isEqualTo []) then {
 	_backpackItem = _uniforms call A3EAI_selectRandom;
-	_unit addBackpack _backpacks; 
+	_unit addBackpack _backpackItem; 
 	clearAllItemsFromBackpack _unit;
 };
 if !(_vests isEqualTo []) then {
 	_vestItem = _vests call A3EAI_selectRandom;
-	_unit addVest _vests;
+	_unit addVest _vestItem;
 };
 if !(_headgears isEqualTo []) then {
-	_headgear = _headgears call A3EAI_selectRandom;
-	_unit addHeadgear _headgears;
+	_headgearItem = _headgears call A3EAI_selectRandom;
+	_unit addHeadgear _headgearItem;
 };
 
 _unit addMagazine _magazine;

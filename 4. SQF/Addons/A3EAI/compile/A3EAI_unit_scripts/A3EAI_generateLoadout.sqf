@@ -17,28 +17,33 @@ _unit call A3EAI_purgeUnitGear;	//Clear unwanted gear from unit first.
 _loadout = [[],[]];
 _weaponSelected = _unitLevel call A3EAI_getWeapon;
 _unitLevelString = str (_unitLevel);
-_uniforms = missionNamespace getVariable ["A3EAI_uniformsTypes"+_unitLevelString,[]];
-_backpacks = missionNamespace getVariable ["A3EAI_backpacksTypes"+_unitLevelString,[]];
-_vests = missionNamespace getVariable ["A3EAI_vestsTypes"+_unitLevelString,[]];
-_headgears = missionNamespace getVariable ["A3EAI_headgearsTypes"+_unitLevelString,[]];
+_uniforms = missionNamespace getVariable ["A3EAI_uniformTypes"+_unitLevelString,[]];
+_backpacks = missionNamespace getVariable ["A3EAI_backpackTypes"+_unitLevelString,[]];
+_vests = missionNamespace getVariable ["A3EAI_vestTypes"+_unitLevelString,[]];
+_headgears = missionNamespace getVariable ["A3EAI_headgearTypes"+_unitLevelString,[]];
+//diag_log format ["%1 %2 %3 %4",_uniforms,_backpacks,_vests,_headgears];
 _magazine = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "magazines") select 0;
 
 if !(_uniforms isEqualTo []) then {
 	_uniformItem = _uniforms call A3EAI_selectRandom;
 	_unit forceAddUniform _uniformItem;
+	//diag_log format ["%1",_uniformItem];
 };
 if !(_backpacks isEqualTo []) then {
 	_backpackItem = _backpacks call A3EAI_selectRandom;
 	_unit addBackpack _backpackItem; 
 	clearAllItemsFromBackpack _unit;
+	//diag_log format ["%1",_backpackItem];
 };
 if !(_vests isEqualTo []) then {
 	_vestItem = _vests call A3EAI_selectRandom;
 	_unit addVest _vestItem;
+	//diag_log format ["%1",_vestItem];
 };
 if !(_headgears isEqualTo []) then {
 	_headgearItem = _headgears call A3EAI_selectRandom;
 	_unit addHeadgear _headgearItem;
+	//diag_log format ["%1",_headgearItem];
 };
 
 _unit addMagazine _magazine;

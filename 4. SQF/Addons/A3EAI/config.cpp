@@ -3,7 +3,7 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "0.8.4c";
+		A3EAIVersion = "0.8.4d";
 		A3EAICompatibleHCVersions[] = {"10","11","12"};
 		requiredAddons[] = {"a3_epoch_code"};
 	};

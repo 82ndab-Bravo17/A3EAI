@@ -10,7 +10,7 @@ _ammo = 		_this select 4;				//Classname of the projectile that caused inflicted
 
 if (isPlayer _source) then {	
 	if ((_damage > 0.9) && {_part isEqualTo ""}) then {	//Check fatal damage only by players
-		_unit setVariable ["CollisionKilled",(_ammo isEqualTo "")];
+		_unit setVariable ["CollisionKilled",A3EAI_roadKillPenalty && {_ammo isEqualTo ""}];
 	};
 } else {
 	_damage = 0; //Non-players cause no damage to unit

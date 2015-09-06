@@ -7,7 +7,7 @@ _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
 _vehicle allowDamage false;
 _vehicle enableSimulationGlobal false;
 _vehicle hideObjectGlobal true;
-{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
+{_vehicle removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired","Local","Hit"];
 {_x enableSimulationGlobal false;} forEach (units _unitGroup);
 _unitGroup setVariable ["GroupSize",-1];
 if (A3EAI_HCIsConnected) then {

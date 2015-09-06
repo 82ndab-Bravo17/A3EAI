@@ -1,7 +1,10 @@
+#define PLOTPOLE_OBJECT "PlotPole_EPOCH"
+#define SERVER_STARTED_INDICATOR "EPOCH_BuildingSlotCount"
+
 private ["_expireTime", "_spawnsCreated", "_startTime", "_cfgWorldName"];
 
 _expireTime = diag_tickTime + 300;
-waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready" && {(!isNil "EPOCH_BuildingSlotCount") or {diag_tickTime > _expireTime}}};
+waitUntil {uiSleep 3; !isNil "A3EAI_locations_ready" && {(!isNil SERVER_STARTED_INDICATOR) or {diag_tickTime > _expireTime}}};
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: A3EAI is generating static spawns."];};
 
@@ -18,7 +21,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 	if !((toLower _placeName) in A3EAI_staticBlacklistLocations) then {
 		if !(surfaceIsWater _placePos) then {
 			private ["_nearbldgs"];
-			if ((_placePos nearObjects ["PlotPole_EPOCH",300]) isEqualTo []) then {
+			if ((_placePos nearObjects [PLOTPOLE_OBJECT,300]) isEqualTo []) then {
 				_nearbldgs = _placePos nearObjects ["HouseBase",250];
 				_spawnPoints = 0;
 				{
@@ -65,8 +68,8 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 						};
 					};
 					if ((_spawnChance > 0) && {!(_aiCount isEqualTo [0,0])}) then {
-						_trigger = createTrigger ["EmptyDetector", _placePos,false];
-						_trigger setTriggerArea [600, 600, 0, false];
+						_trigger = createTrigger ["A3EAI_EmptyDetector", _placePos,false];
+						_trigger setTriggerArea [650, 650, 0, false];
 						_trigger setTriggerActivation ["ANY", "PRESENT", true];
 						_trigger setTriggerTimeout [5, 5, 5, true];
 						_trigger setTriggerText _placeName;

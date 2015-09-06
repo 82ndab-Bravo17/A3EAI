@@ -1,3 +1,6 @@
+#define FIRST_AID_ITEM_AI "FirstAidKit"
+#define NVG_AI "NVGoggles"
+#define DEFAULT_UNIT_CLASSNAME "i_survivor_F"
 
 private["_victim","_killer","_unitGroup","_unitType","_launchWeapon","_launchAmmo","_groupIsEmpty","_unitsAlive","_vehicle","_groupSize","_newGroupSize","_fnc_deathHandler","_unitLevel","_bodyPos","_bodyPosEmpty"];
 
@@ -10,7 +13,7 @@ _victim setVariable ["deathhandled",true];
 _vehicle = (vehicle _victim);
 _unitGroup = (group _victim);
 
-{_victim removeAllEventHandlers _x} count ["Killed","HandleDamage","Local"];
+{_victim removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired","Local","Hit"];
 _victim setDamage 1;
 
 //Check number of units alive, preserve group immediately if empty.
@@ -58,7 +61,7 @@ if !(isNull _victim) then {
 						deleteVehicle _x;
 						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Deleted WeaponHolderSimulated containing launcher %1.",_launcherItem];};
 					};
-				} forEach ((getPosATL _victim) nearObjects ["WeaponHolderSimulated",5]);
+				} forEach ((getPosATL _victim) nearObjects ["WeaponHolderSimulated",10]);
 			};
 		};
 	} forEach ((_victim getVariable ["loadout",[[],[]]]) select 0);
@@ -69,12 +72,12 @@ if !(isNull _victim) then {
 		};
 	} forEach ((_victim getVariable ["loadout",[[],[]]]) select 1);
 
-	_victim removeItems "FirstAidKit";
-	_victim removeWeapon "NVGoggles";
+	_victim removeItems FIRST_AID_ITEM_AI;
+	_victim removeWeapon NVG_AI;
 	
 	if (_vehicle isEqualTo (_unitGroup getVariable ["assignedVehicle",objNull])) then {
 		_bodyPos = (getPosATL _victim);
-		_bodyPosEmpty = _bodyPos findEmptyPosition [0.5,1.5,"i_survivor_F"];
+		_bodyPosEmpty = _bodyPos findEmptyPosition [0,1.5,DEFAULT_UNIT_CLASSNAME];
 		if (_bodyPosEmpty isEqualTo []) then {
 			_victim setPosATL _bodyPos;
 		} else {

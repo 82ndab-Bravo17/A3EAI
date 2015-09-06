@@ -1,3 +1,8 @@
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#define SPACE_FOR_OBJECT "Land_Coil_F"
+#define SPACE_FOR_UNIT "i_survivor_F"
+#define PLOTPOLE_OBJECT "PlotPole_EPOCH"
+
 private ["_unitGroup", "_vehicle", "_isInfantry", "_nearPlayers", "_leaderPos", "_newPosEmpty","_unitType","_vehicleType","_leader"];
 
 _unitGroup = _this select 0;
@@ -9,14 +14,14 @@ _unitType = _unitGroup getVariable ["unitType",""];
 _leaderPos = getPosATL (leader _unitGroup);
 
 if (_isInfantry) then {
-	_newPosEmpty = _leaderPos findEmptyPosition [0.5,30,"Land_Coil_F"];
+	_newPosEmpty = _leaderPos findEmptyPosition [0.5,30,SPACE_FOR_OBJECT];
 
 	if !(_newPosEmpty isEqualTo []) then {
 		_newPosEmpty = _newPosEmpty isFlatEmpty [0,0,0.75,5,0,false,objNull];
 	};
 
 	if (_newPosEmpty isEqualTo []) then {
-		_newPosEmpty = [_leaderPos,10 + random(25),random(360),0,[0,0],[25,"Land_Coil_F"]] call SHK_pos;
+		_newPosEmpty = [_leaderPos,10 + random(25),random(360),0,[0,0],[25,SPACE_FOR_OBJECT]] call SHK_pos;
 	};
 
 	_newPosEmpty set [2,0];
@@ -33,7 +38,7 @@ if (_isInfantry) then {
 		while {_keepLooking} do {
 			_newPosEmpty = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
 			if ((count _newPosEmpty) > 1) then {
-				if (({isPlayer _x} count (_newPosEmpty nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"], 300]) isEqualTo 0) && {((_newPosEmpty nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}) then {
+				if (({isPlayer _x} count (_newPosEmpty nearEntities [[PLAYER_UNITS,"AllVehicles"], 300]) isEqualTo 0) && {((_newPosEmpty nearObjects [PLOTPOLE_OBJECT,300]) isEqualTo [])}) then {
 					_keepLooking = false;
 				};
 			} else {
@@ -50,7 +55,7 @@ if (_isInfantry) then {
 		_vehicle setVelocity [0,0,0.25];
 		{
 			if (((vehicle _x) isEqualTo _x) && {(_x distance _vehicle) > 100}) then {
-				_newUnitPos = [_vehicle,25,random(360),0,[0,0],[25,"i_survivor_F"]] call SHK_pos;
+				_newUnitPos = [_vehicle,25,random(360),0,[0,0],[25,SPACE_FOR_UNIT]] call SHK_pos;
 				_x setPosATL _newUnitPos;
 				_x setVelocity [0,0,0.25];
 			};

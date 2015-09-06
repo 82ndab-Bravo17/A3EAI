@@ -4,15 +4,6 @@ _startTime = diag_tickTime;
 
 _verified = [];
 
-/*
-_index = 4;
-while {(typeName (missionNamespace getVariable ("A3EAI_Rifles"+str(_index)))) isEqualTo "ARRAY"} do {
-	A3EAI_tableChecklist set [count A3EAI_tableChecklist,("A3EAI_Rifles"+str(_index))];
-	_index = _index + 1;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Found custom weapon array %1.",("A3EAI_Rifles"+str(_index))]};
-};
-*/
-
 {
 	_array = missionNamespace getVariable [_x,[]];
 	_errorFound = false;

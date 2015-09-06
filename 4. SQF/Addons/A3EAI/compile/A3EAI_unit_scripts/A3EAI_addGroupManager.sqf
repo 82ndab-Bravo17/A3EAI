@@ -35,8 +35,7 @@ _unitGroup setVariable ["lootGenTime",_currentTime];
 
 //Setup loot variables
 _updateServerLoot = (A3EAI_enableHC && {!isDedicated});
-_pullRate = 60;
-if (_unitType in ["dynamic","random"]) then {_pullRate = ((_pullRate/2) max 30)};
+_pullRate = 30;
 
 if (isDedicated) then {
 	[_unitGroup,_unitType,_unitLevel] call A3EAI_setLoadoutVariables;

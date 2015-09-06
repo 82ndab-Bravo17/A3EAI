@@ -1,0 +1,27 @@
+A3EAI 0.9.0
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+Headless Client Files/Keys update required: Yes
+A3EAI Client Addon update required: Yes/Recommended
+
+[Added] Dynamic classname feature can now be enabled/disabled for each AI level.
+[Added] AI inventory gear purge on collision kill can now be enabled or disabled.
+[Added] Admins can now set probability of successfully adding uniform/backpack/vest/headgear per AI level. If probability check fails for uniform and/or vest, default fresh spawn clothing and/or side pack will be added instead.
+[Added] Added "defensive aggression" behavior for AI UAVs/UGVs if detect-only behavior is enabled. If UAVs/UGVs in detect-only mode are fired on, they will become hostile to nearby targets for a limited time.
+[Added] A 750m radius blacklist area is now automatically added around HC player object.
+[Added] Hostility is now temporarily disabled for manned/unmanned AI vehicles while they pass through player spawning areas and blacklisted waypoints.
+[Added] Added settings verification for client-side addon.
+[Fixed] Spawn chance was unintentionally applied to custom infantry AI spawns.
+[Fixed] Fixed issue where players already detected by helicopters could not trigger a helicopter paradrop event.
+[Fixed] AI air vehicles, UAVs/UGVs in non-hostile state will no longer detect players.
+[Changed] Changed default maximum spawn chance threshold to 10 online players (reduced from 20).
+[Changed] Changed default weapon attachment (optics, pointer, suppressor, underbarrel launcher) probabilities for level 0/1/2/3 AI from 25%/50%/75% to 30%/60%/90%.
+[Changed] Fatigue now disabled for AI units.
+[Changed] Loot for dynamic AI is now generated at once rather than gradually over time.
+[Changed] Loot generation rate for all AI (other than dynamic) is now fixed at one attempt per 30 seconds instead of 60 seconds.
+[Changed] Delay between radio messages changed from 5 to 10 seconds. (Air reinforcement notifications are exempt)
+[Changed] Players in trader areas and fresh-spawn areas now immune from triggering AI helicopter detection and paradrop events.
+[Changed] Radio messages now display for players if at least one group member has a Radio (Instead of at least one vehicle crew member)
+[Changed] Default detection probability for UAVs/UGVs increased from 50% to 80%.

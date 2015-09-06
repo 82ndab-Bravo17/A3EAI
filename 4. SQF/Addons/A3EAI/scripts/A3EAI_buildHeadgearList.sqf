@@ -31,10 +31,10 @@ _items = [];
 } forEach _headgearList;
 
 if !(_items isEqualTo []) then {
-	A3EAI_headgearTypes0 = _items;
-	A3EAI_headgearTypes1 = +_items;
-	A3EAI_headgearTypes2 = +_items;
-	A3EAI_headgearTypes3 = +_items;
+	if (0 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes0 = _items;};
+	if (1 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes1 = _items;};
+	if (2 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes2 = _items;};
+	if (3 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes3 = _items;};
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 headgear classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {

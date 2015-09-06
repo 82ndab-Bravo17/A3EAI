@@ -1,5 +1,5 @@
 //Function frequency definitions
-#define CLEANDEAD_FREQ 600
+#define CLEANDEAD_FREQ 300
 #define VEHICLE_CLEANUP_FREQ 60
 #define LOCATION_CLEANUP_FREQ 360
 #define RANDSPAWN_CHECK_FREQ 360
@@ -7,6 +7,7 @@
 #define SIDECHECK_TIME 1200
 #define UPDATE_PLAYER_COUNT_FREQ 60
 #define KRYPTO_CLEANUP_FREQ 900
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
 
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Server Monitor will start in 60 seconds."};
 
@@ -16,7 +17,7 @@ _cleanDead = _currentTime;
 _monitorReport = _currentTime;
 _deleteObjects = _currentTime;
 _dynLocations = _currentTime;
-_checkRandomSpawns = _currentTime - (RANDSPAWN_CHECK_FREQ/2);
+_checkRandomSpawns = _currentTime - RANDSPAWN_CHECK_FREQ;
 _sideCheck = _currentTime;
 _playerCountTime = _currentTime - UPDATE_PLAYER_COUNT_FREQ;
 
@@ -34,11 +35,6 @@ if (A3EAI_upwardsChanceScaling) then {
 	_multiplierLowPlayers = 1;
 	_multiplierHighPlayers = A3EAI_chanceScalingThreshold;
 };
-
-//Cleanup global variables
-A3EAI_chanceScalingThreshold = nil;
-A3EAI_upwardsChanceScaling = nil;
-A3EAI_playerCountThreshold = nil;
 
 //Local functions
 _getUptime = {
@@ -59,8 +55,13 @@ _getUptime = {
 	[_outHour,_outMin,_outSec]
 };
 
-_purgeEH = {
-	{_this removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired","Local"];
+_fnc_purgeAndDelete = {
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Purging a %1 from A3EAI_monitoredObjects.",(typeOf _this)];};
+	{_this removeAllEventHandlers _x} count ["Killed","HandleDamage","GetIn","GetOut","Fired","Local","Hit"];
+	_index = A3EAI_monitoredObjects find _this;
+	if (_index > -1) then {A3EAI_monitoredObjects deleteAt _index;};
+	deleteVehicle _this;
+	true
 };
 
 //Script handles
@@ -68,163 +69,184 @@ _cleanupMain = scriptNull;
 _cleanupLocations = scriptNull;
 _cleanupRandomSpawns = scriptNull;
 
+_canKillCleanupMain = false;
+_canKillCleanupLocations = false;
+_canKillRandomSpawns = false;
+
 uiSleep 60;
 
 while {true} do {
 	//Main cleanup loop
 	_currentTime = diag_tickTime;
 	if ((_currentTime - _cleanDead) > CLEANDEAD_FREQ) then {
-		if !(scriptDone _cleanupMain) then {terminate _cleanupMain; diag_log "A3EAI terminated previous cleanupMain loop.";};
-		_cleanupMain = [_currentTime,_purgeEH] spawn {
-			_currentTime = _this select 0;
-			_purgeEH = _this select 1;
-			_bodiesCleaned = 0;
-			_vehiclesCleaned = 0;
-			
-			//Body/vehicle cleanup loop
-			{
-				_deathTime = _x getVariable "A3EAI_deathTime";
-				if (!isNil "_deathTime") then {
+		if (scriptDone _cleanupMain) then {
+			if (_canKillCleanupMain) then {_canKillCleanupMain = false;};
+			_cleanupMain = [_currentTime,_fnc_purgeAndDelete] spawn {
+				_currentTime = _this select 0;
+				_fnc_purgeAndDelete = _this select 1;
+
+				//Clean abandoned AI vehicles
+				{	
 					call {
-						if (_x isKindOf "CAManBase") exitWith {
-							if ((_currentTime - _deathTime) > A3EAI_cleanupDelay) then {
-								if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],30])) isEqualTo 0) then {
-									_x call _purgeEH;
-									deleteVehicle _x;
-									_bodiesCleaned = _bodiesCleaned + 1;
+						if (_x isKindOf "i_survivor_F") exitWith {
+							if !(alive _x) then {
+								_deathTime = _x getVariable "A3EAI_deathTime";
+								if (!isNil "_deathTime") then {
+									if ((_currentTime - _deathTime) > A3EAI_cleanupDelay) then {
+										if (({isPlayer _x} count (_x nearEntities [[PLAYER_UNITS,"Air","LandVehicle"],30])) isEqualTo 0) then {
+											_x call _fnc_purgeAndDelete;
+										};
+									};
+								} else {
+									_x setVariable ["A3EAI_deathTime",_currentTime];
 								};
+							};
+						};
+						if (_x isKindOf "I_UAV_AI") exitWith {
+							if !(alive _x) then {
+								_x call _fnc_purgeAndDelete;
 							};
 						};
 						if (_x isKindOf "AllVehicles") exitWith {
-							if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
-								if (({isPlayer _x} count (_x nearEntities [["Epoch_Male_F","Epoch_Female_F","Air","LandVehicle"],60])) isEqualTo 0) then {
-									if (_x in A3EAI_monitoredObjects) then {
-										{
-											if (!(alive _x)) then {
-												deleteVehicle _x;
-											};
-										} forEach (crew _x);
+							_deathTime = _x getVariable "A3EAI_deathTime";
+							if (!isNil "_deathTime") then {
+								if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
+									if (({isPlayer _x} count (_x nearEntities [[PLAYER_UNITS,"Air","LandVehicle"],60])) isEqualTo 0) then {
+										if (({alive _x} count (crew _x)) isEqualTo 0) then {
+											{
+												if !(alive _x) then {
+													_x call _fnc_purgeAndDelete;
+												};
+											} forEach (crew _x);
+											_x call _fnc_purgeAndDelete;
+										};
 									};
-									_x call _purgeEH;
-									deleteVehicle _x;
-									_vehiclesCleaned = _vehiclesCleaned + 1;
+								};
+							} else {
+								if !(alive _x) then {
+									_x setVariable ["A3EAI_deathTime",_currentTime];
 								};
 							};
 						};
 					};
-				};
-				uiSleep 0.025;
-			} count allDead;
-			
-			//Clean abandoned AI vehicles
-			{	
-				if (!isNull _x) then {
-					private ["_deathTime"];
-					_deathTime = _x getVariable "A3EAI_deathTime";
-					if (!isNil "_deathTime") then {
-						if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
-							if (({alive _x} count (crew _x)) isEqualTo 0) then {
-								_x call _purgeEH;
+					uiSleep 0.025;
+				} count A3EAI_monitoredObjects;
+				
+				{
+					if (!isNull _x) then {
+						private ["_kryptoGenTime"];
+						_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
+						if (!isNil "_kryptoGenTime") then {
+							if ((_currentTime - _kryptoGenTime) > KRYPTO_CLEANUP_FREQ) then {
+								_kryptoArea = _x getVariable ["A3EAI_kryptoArea",objNull];
+								if !(isNull _kryptoArea) then {
+									_index = A3EAI_kryptoAreas find _kryptoArea;
+									if (_index > -1) then {A3EAI_kryptoAreas deleteAt _index;};
+									deleteVehicle _kryptoArea;
+								};
 								deleteVehicle _x;
-								_vehiclesCleaned = _vehiclesCleaned + 1;
+								A3EAI_kryptoObjects deleteAt _forEachIndex;
 							};
 						};
 					};
-				};
-				uiSleep 0.025;
-			} count A3EAI_monitoredObjects;
-			
-			{
-				if (!isNull _x) then {
-					private ["_kryptoGenTime"];
-					_kryptoGenTime = _x getVariable "A3EAI_kryptoGenTime";
-					if (!isNil "_kryptoGenTime") then {
-						if ((_currentTime - _kryptoGenTime) > KRYPTO_CLEANUP_FREQ) then {
-							_kryptoArea = _x getVariable ["A3EAI_kryptoArea",objNull];
-							if !(isNull _kryptoArea) then {
-								A3EAI_kryptoAreas = A3EAI_kryptoAreas - [_kryptoArea];
-								deleteVehicle _kryptoArea;
+					uiSleep 0.025;
+				} forEach A3EAI_kryptoObjects;
+				
+				{
+					if (!isNull _x) then {
+						private ["_kryptoObject"];
+						_kryptoObject = _x getVariable "A3EAI_kryptoObject";
+						if (!isNil "_kryptoObject") then {
+							call {
+								private ["_kryptoGenTime","_arrowObject"];
+								if (isNull _kryptoObject) exitWith {
+									deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
+									deleteVehicle _x;
+									A3EAI_kryptoAreas deleteAt _forEachIndex;
+								};
+								if ((_currentTime - (_x getVariable ["A3EAI_kryptoGenTime",0])) > A3EAI_kryptoPickupAssist) exitWith {
+									deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
+									deleteVehicle _x;
+									A3EAI_kryptoAreas deleteAt _forEachIndex;
+								};
 							};
-							deleteVehicle _x;
+						} else {
+							A3EAI_kryptoAreas deleteAt _forEachIndex;
 						};
 					};
-				};
-				uiSleep 0.025;
-			} forEach A3EAI_kryptoObjects;
-			
-			{
-				if (!isNull _x) then {
-					private ["_kryptoObject"];
-					_kryptoObject = _x getVariable "A3EAI_kryptoObject";
-					if (!isNil "_kryptoObject") then {
-						call {
-							private ["_kryptoGenTime","_arrowObject"];
-							if (isNull _kryptoObject) exitWith {
-								deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
-								deleteVehicle _x;
-							};
-							if ((_currentTime - (_x getVariable ["A3EAI_kryptoGenTime",0])) > A3EAI_kryptoPickupAssist) exitWith {
-								deleteVehicle (_x getVariable ["A3EAI_arrowObject",objNull]);
-								deleteVehicle _x;
-							};
-						};
-					} else {
-						A3EAI_kryptoAreas set [_forEachIndex,objNull];
-					};
-				};
-				uiSleep 0.025;
-			} forEach A3EAI_kryptoAreas;
-
-			//Clean server object monitor
-			if (objNull in A3EAI_monitoredObjects) then {A3EAI_monitoredObjects = A3EAI_monitoredObjects - [objNull];};
-			if (objNull in A3EAI_kryptoObjects) then {A3EAI_kryptoObjects = A3EAI_kryptoObjects - [objNull];};
-			if (objNull in A3EAI_kryptoAreas) then {A3EAI_kryptoAreas = A3EAI_kryptoAreas - [objNull];};
-			if ((_bodiesCleaned + _vehiclesCleaned) > 0) then {diag_log format ["A3EAI Cleanup: Cleaned up %1 dead units and %2 destroyed vehicles.",_bodiesCleaned,_vehiclesCleaned]};
+					uiSleep 0.025;
+				} forEach A3EAI_kryptoAreas;
+			};
+		} else {
+			if (_canKillCleanupMain) then {
+				terminate _cleanupMain; 
+				diag_log "A3EAI terminated previous cleanupMain thread.";
+			} else {
+				_canKillCleanupMain = true;
+				diag_log "A3EAI marked current cleanupMain thread for termination.";
+			};
 		};
 		_cleanDead = _currentTime;
 	};
 
 	//Main location cleanup loop
 	if ((_currentTime - _dynLocations) > LOCATION_CLEANUP_FREQ) then {
-		if !(scriptDone _cleanupLocations) then {terminate _cleanupLocations; diag_log "A3EAI terminated previous cleanupLocations loop.";};
-		_cleanupLocations  = [_currentTime] spawn {
-			_currentTime = _this select 0;
-			_locationsDeleted = 0;
-			A3EAI_areaBlacklists = A3EAI_areaBlacklists - [locationNull];
-			{
-				_deletetime = _x getVariable "deletetime"; 
-				if (isNil "_deleteTime") then {_deleteTime = _currentTime}; //since _x getVariable ["deletetime",_currentTime] gives an error...
-				//diag_log format ["DEBUG: CurrentTime: %1. Delete Time: %2",_currentTime,_deletetime];
-				if (_currentTime > _deletetime) then {
-					deleteLocation _x;
-					_locationsDeleted = _locationsDeleted + 1;
-				};
-				uiSleep 0.025;
-			} count A3EAI_areaBlacklists;
-			A3EAI_areaBlacklists = A3EAI_areaBlacklists - [locationNull];
-			if (_locationsDeleted > 0) then {diag_log format ["A3EAI Cleanup: Cleaned up %1 expired temporary blacklist areas.",_locationsDeleted]};
+		if (scriptDone _cleanupLocations) then {
+			if (_canKillCleanupLocations) then {_canKillCleanupLocations = false;};
+			_cleanupLocations  = [_currentTime] spawn {
+				_currentTime = _this select 0;
+				A3EAI_areaBlacklists = A3EAI_areaBlacklists - [locationNull];
+				{
+					_deletetime = _x getVariable "deletetime"; 
+					if (isNil "_deleteTime") then {_deleteTime = _currentTime}; //since _x getVariable ["deletetime",_currentTime] gives an error...
+					//diag_log format ["DEBUG: CurrentTime: %1. Delete Time: %2",_currentTime,_deletetime];
+					if (_currentTime > _deletetime) then {
+						deleteLocation _x;
+						A3EAI_areaBlacklists deleteAt _forEachIndex;
+					};
+					uiSleep 0.025;
+				} forEach A3EAI_areaBlacklists;
+			};
+		} else {
+			if (_canKillCleanupLocations) then {
+				terminate _cleanupLocations; 
+				diag_log "A3EAI terminated previous cleanupLocations thread.";
+			} else {
+				_canKillCleanupLocations = true;
+				diag_log "A3EAI marked current cleanupLocations thread for termination.";
+			};
 		};
 		_dynLocations = _currentTime;
 	};
 
 	if ((_currentTime - _checkRandomSpawns) > RANDSPAWN_CHECK_FREQ) then {
-		if !(scriptDone _cleanupRandomSpawns) then {terminate _cleanupRandomSpawns; diag_log "A3EAI terminated previous cleanupRandomSpawns loop.";};
-		_cleanupRandomSpawns = [_currentTime] spawn {
-			_currentTime = _this select 0;
-			A3EAI_randTriggerArray = A3EAI_randTriggerArray - [objNull];
-			{
-				if ((((triggerStatements _x) select 1) != "") && {(_currentTime - (_x getVariable ["timestamp",_currentTime])) > RANDSPAWN_EXPIRY_TIME}) then {
-					_triggerLocation = _x getVariable ["triggerLocation",locationNull];
-					deleteLocation _triggerLocation;
-					if (A3EAI_debugMarkersEnabled) then {deleteMarker (str _x)};	
-					deleteVehicle _x;
+		if (scriptDone _cleanupRandomSpawns) then {
+			if (_canKillRandomSpawns) then {_canKillRandomSpawns = false;};
+			_cleanupRandomSpawns = [_currentTime] spawn {
+				_currentTime = _this select 0;
+				A3EAI_randTriggerArray = A3EAI_randTriggerArray - [objNull];
+				{
+					if ((((triggerStatements _x) select 1) != "") && {(_currentTime - (_x getVariable ["timestamp",_currentTime])) > RANDSPAWN_EXPIRY_TIME}) then {
+						_triggerLocation = _x getVariable ["triggerLocation",locationNull];
+						deleteLocation _triggerLocation;
+						if (A3EAI_debugMarkersEnabled) then {deleteMarker (str _x)};	
+						deleteVehicle _x;
+						A3EAI_randTriggerArray deleteAt _forEachIndex;
+					};
+					if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
+				} forEach A3EAI_randTriggerArray;
+				_spawnsAvailable = A3EAI_maxRandomSpawns - (count A3EAI_randTriggerArray);
+				if (_spawnsAvailable > 0) then {
+					_nul = _spawnsAvailable spawn A3EAI_setup_randomspawns;
 				};
-				if ((_forEachIndex % 3) isEqualTo 0) then {uiSleep 0.05};
-			} forEach A3EAI_randTriggerArray;
-			A3EAI_randTriggerArray = A3EAI_randTriggerArray - [objNull];
-			_spawnsAvailable = A3EAI_maxRandomSpawns - (count A3EAI_randTriggerArray);
-			if (_spawnsAvailable > 0) then {
-				_nul = _spawnsAvailable spawn A3EAI_setup_randomspawns;
+			};
+		} else {
+			if (_canKillRandomSpawns) then {
+				terminate _cleanupRandomSpawns; 
+				diag_log "A3EAI terminated previous cleanupRandomSpawns thread.";
+			} else {
+				_canKillRandomSpawns = true;
+				diag_log "A3EAI marked current cleanupRandomSpawns thread for termination.";
 			};
 		};
 		_checkRandomSpawns = _currentTime;

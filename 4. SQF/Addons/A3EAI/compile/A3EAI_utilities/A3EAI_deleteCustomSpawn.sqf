@@ -22,7 +22,7 @@ uiSleep 30;
 		A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupSize_PVC";
 	};
 } forEach (_trigger getVariable ["GroupArray",[]]);
-deleteMarker (_trigger getVariable ["spawnmarker",""]);
+//deleteMarker (_trigger getVariable ["spawnmarker",""]);
 [_trigger,"A3EAI_staticTriggerArray"] call A3EAI_updateSpawnCount;
 
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting custom-defined AI spawn %1 at %2.",triggerText _trigger, mapGridPosition _trigger];};

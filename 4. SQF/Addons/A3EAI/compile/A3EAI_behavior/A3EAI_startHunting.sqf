@@ -1,5 +1,7 @@
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player (target player will also recieve messages)
 #define SEEK_RANGE 450 //distance to chase player from initial group spawn location
+#define RADIO_ITEM "EpochRadio0"
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
 
 private ["_unitGroup", "_triggerPos", "_targetPlayer", "_nearbyUnits", "_waypoint", "_patrolDist"];
 
@@ -12,11 +14,11 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	if (A3EAI_radioMsgs) then {
 		//diag_log "DEBUG: Sending radio static";
 		if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {
-			_nearbyUnits = _targetPlayer nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+			_nearbyUnits = _targetPlayer nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE];
 			if ((count _nearbyUnits) > 10) then {_nearbyUnits resize 10;};
 			{
 				if (isPlayer _x) then {
-					if (({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0) then {
+					if (({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0) then {
 						[_x,[0,[]]] call A3EAI_radioSend;
 					};
 				}
@@ -25,7 +27,6 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	};
 	
 	_unitGroup setSpeedMode "FULL";
-	{_x enableFatigue false;} count (units _unitGroup);
 	
 	_waypoint = [_unitGroup,0];	//Group will move to waypoint index 0 (first waypoint).
 	_waypoint setWaypointType "MOVE";

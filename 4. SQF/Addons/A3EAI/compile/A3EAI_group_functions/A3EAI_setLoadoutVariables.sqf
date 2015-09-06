@@ -12,18 +12,6 @@ if !(_unitType in ["uav","ugv"]) then {
 	_unitGroup setVariable ["LootPool",[]];
 	_unitGroup spawn A3EAI_generateLootPool;
 
-	//Air units only: Replace backpack with parachute
-	/*
-	if (_unitType in ["air","aircustom"]) then {
-		{
-			if !((backpack _x) isEqualTo "B_Parachute") then {
-				_x addBackpack "B_Parachute";
-			};
-		} forEach (units _unitGroup);
-		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Unit backpacks replaced with B_Parachute for %1 group %2.",_unitType,_unitGroup]};
-	};
-	*/
-	
 	//Set up individual group units
 	{
 		_loadout = _x getVariable "loadout";

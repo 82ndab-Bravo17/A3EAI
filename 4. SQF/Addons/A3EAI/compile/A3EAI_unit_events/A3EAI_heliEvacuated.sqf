@@ -5,7 +5,7 @@ _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 
 if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {};
 
-{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed"];
+{_vehicle removeAllEventHandlers _x} count ["Killed","HandleDamage","GetOut","Fired","Local","Hit"];
 _vehicle setVariable ["vehicle_disabled",true];
 if !((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {_vehicle call A3EAI_respawnAIVehicle;};
 _vehiclePos = getPosATL _vehicle;

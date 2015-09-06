@@ -1,3 +1,6 @@
+#define GRENADE_AMMO_3RND "3Rnd_HE_Grenade_shell"
+#define GRENADE_AMMO_1RND "1Rnd_HE_Grenade_shell"
+
 private ["_unitType", "_unitGroup", "_loadout", "_weapon", "_magazine", "_useLaunchers", "_maxLaunchers", "_unitLevel", "_launchWeapon", "_launchAmmo", "_useGL"];
 
 _unitGroup = _this select 0;
@@ -38,14 +41,14 @@ if !(_unitType in ["uav","ugv"]) then {
 			if ((count _weaponMuzzles) > 1) then {
 				_GLWeapon = _weaponMuzzles select 1;
 				_GLMagazines = (getArray (configFile >> "CfgWeapons" >> ((_loadout select 0) select 0) >> _GLWeapon >> "magazines"));
-				if ("3Rnd_HE_Grenade_shell" in _GLMagazines) then {
+				if (GRENADE_AMMO_3RND in _GLMagazines) then {
 					(_loadout select 0) pushBack _GLWeapon;
-					(_loadout select 1) pushBack "3Rnd_HE_Grenade_shell";
+					(_loadout select 1) pushBack GRENADE_AMMO_3RND;
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
 				} else {
-					if ("1Rnd_HE_Grenade_shell" in _GLMagazines) then {
+					if (GRENADE_AMMO_1RND in _GLMagazines) then {
 						(_loadout select 0) pushBack _GLWeapon;
-						(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+						(_loadout select 1) pushBack GRENADE_AMMO_1RND;
 						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Modified unit %1 loadout to %2.",_x,_loadout];};
 					}
 				};

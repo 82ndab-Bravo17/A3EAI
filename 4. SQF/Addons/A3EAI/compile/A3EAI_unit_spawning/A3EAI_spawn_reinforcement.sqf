@@ -1,3 +1,5 @@
+#define RADIO_ITEM "EpochRadio0"
+
 private ["_destPos", "_unitLevel", "_maxGunnerUnits", "_vehiclePosition", "_error", "_unitGroup", "_driver", "_vehicleType", "_vehicle", "_direction", "_velocity", "_nvg", "_gunnersAdded", "_cargoSpots", "_cargo", "_result", "_rearm","_targetPlayer","_unitType","_vehicleDescription"];
 
 A3EAI_activeReinforcements = A3EAI_activeReinforcements - [grpNull];
@@ -102,7 +104,7 @@ if (A3EAI_radioMsgs && {!((owner _targetPlayer) isEqualTo 0)}) then {
 	private ["_targetPlayerVehicleCrew","_radioText"];
 	if ((_targetPlayer distance _destPos) < 300) then {
 		_targetPlayerVehicleCrew = (crew (vehicle _targetPlayer));
-		if (({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count _targetPlayerVehicleCrew) > 0) then {
+		if (({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count _targetPlayerVehicleCrew) > 0) then {
 			_vehicleDescription = format ["%1 %2",[configFile >> "CfgVehicles" >> _vehicleType,"displayName","patrol"] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _vehicleType,"textSingular","helicopter"] call BIS_fnc_returnConfigEntry];
 			_radioText = [20,[_vehicleDescription]];
 			{

@@ -1,3 +1,5 @@
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+
 private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
 _vehicleType = _this;
@@ -25,7 +27,7 @@ call {
 		while {_keepLooking} do {
 			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
 			if ((count _vehiclePosition) > 1) then {
-				if ({isPlayer _x} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"], 300]) isEqualTo 0) then {
+				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], 300]) isEqualTo 0) then {
 					_keepLooking = false;	//Found road position, stop searching
 				};
 			} else {
@@ -44,6 +46,7 @@ _unitType = if (_isAirVehicle) then {"uav"} else {"ugv"};
 _vehicle = createVehicle [_vehicleType, _vehiclePosition, [], 0, _spawnMode];
 createVehicleCrew _vehicle;
 _vehicle setAutonomous true;
+_vehicle lockDriver true;
 _unitGroup = [(group ((crew _vehicle) select 0)),_unitType] call A3EAI_initUVGroup;
 
 _vehicle call A3EAI_protectObject;

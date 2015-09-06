@@ -1,17 +1,11 @@
-/*
-	A3EAI Dynamic Spawn Manager
-	
-	
-*/
+#define SLEEP_DELAY 300
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#define PLOTPOLE_OBJECT "PlotPole_EPOCH"
 
 if (A3EAI_debugLevel > 0) then {diag_log "Starting A3EAI Dynamic Spawn Manager in 2 minutes.";};
 uiSleep 120;
 //uiSleep 30; //FOR DEBUGGING
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI V3 Dynamic Spawn Manager started.";};
-
-//Frequency of each cycle
-#define SLEEP_DELAY 300
-//#define SLEEP_DELAY 60 //FOR DEBUGGING
 
 //Spawn manager database variables
 _playerUID_DB = [];			//Database of all collected playerUIDs
@@ -23,7 +17,7 @@ while {true} do {
 		_allPlayers = [];		//Do not edit
 		_currentTime = diag_tickTime;
 		{
-			if ((isPlayer _x) && {((typeOf _x) in ["Epoch_Male_F","Epoch_Female_F"])}) then {
+			if ((isPlayer _x) && {((typeOf _x) in [PLAYER_UNITS])}) then {
 				_playerUID = getPlayerUID _x;
 				if !((_playerUID select [0,2]) isEqualTo "HC") then {
 					_playerIndex = _playerUID_DB find _playerUID;
@@ -74,14 +68,14 @@ while {true} do {
 				if (_spawnChance call A3EAI_chance) then {
 					if (
 						!((vehicle _player) isKindOf "Air") &&												//Player must not be in air vehicle
-						{({if (_playerPos in _x) exitWith {1}} count (nearestLocations [_playerPos,["Strategic"],1500])) isEqualTo 0} && //Player must not be in blacklisted areas
+						{({if (_playerPos in _x) exitWith {1}} count (nearestLocations [_playerPos,["A3EAI_BlacklistedArea","A3EAI_DynamicSpawnArea"],1500])) isEqualTo 0} && //Player must not be in blacklisted areas
 						{(!(surfaceIsWater _playerPos))} && 											//Player must not be on water position
 						{((_playerPos distance getMarkerPos "respawn_west") > 2000)} &&					//Player must not be in debug area
-						{((_playerPos nearObjects ["PlotPole_EPOCH",300]) isEqualTo [])}					//Player must not be near Epoch buildables
+						{((_playerPos nearObjects [PLOTPOLE_OBJECT,300]) isEqualTo [])}					//Player must not be near Epoch buildables
 					) then {
 						_lastSpawned_DB set [_index,diag_tickTime];
-						_trigger = createTrigger ["EmptyDetector",_playerPos,false];
-						_location = [_playerPos,600] call A3EAI_createBlackListArea;
+						_trigger = createTrigger ["A3EAI_EmptyDetector",_playerPos,false];
+						_location = [_playerPos,600] call A3EAI_createBlackListAreaDynamic;
 						_trigger setVariable ["triggerLocation",_location];
 						_trigger setTriggerArea [600, 600, 0, false];
 						_trigger setTriggerActivation ["ANY", "PRESENT", true];
@@ -109,10 +103,10 @@ while {true} do {
 						if (A3EAI_debugLevel > 1) then {
 							diag_log format ["A3EAI Debug: Dynamic spawn conditions failed for player %1:",_playername];
 							diag_log format ["DEBUG: Player is not air: %1",!((vehicle _player) isKindOf "Air")];
-							diag_log format ["DEBUG: Player not in blacklisted area: %1",(({_playerPos in _x} count (nearestLocations [_playerPos,["Strategic"],1000])) isEqualTo 0)];
+							diag_log format ["DEBUG: Player not in blacklisted area: %1",(({_playerPos in _x} count (nearestLocations [_playerPos,["A3EAI_BlacklistedArea"],1000])) isEqualTo 0)];
 							diag_log format ["DEBUG: Player not in water: %1",!(surfaceIsWater _playerPos)];
 							diag_log format ["DEBUG: Player not in debug area: %1",((_playerPos distance getMarkerpos "respawn_west") > 2000)];
-							//diag_log format ["DEBUG: Player not near modular buildables: %1",((_playerPos nearObjects ["PlotPole_EPOCH",125]) isEqualTo [])];
+							//diag_log format ["DEBUG: Player not near modular buildables: %1",((_playerPos nearObjects [PLOTPOLE_OBJECT,125]) isEqualTo [])];
 						};
 					};
 				} else {

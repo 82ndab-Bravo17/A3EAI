@@ -1,5 +1,7 @@
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player (target player will also recieve messages)
 #define SEEK_RANGE 450 //distance to chase player from initial group spawn location
+#define RADIO_ITEM "EpochRadio0"
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
 
 private ["_unitGroup", "_targetPlayer", "_waypoint", "_leader", "_nearbyUnits", "_index", "_radioSpeech", "_searchPos","_triggerPos"];
 
@@ -12,6 +14,7 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Hunter group %1 h
 
 if (
 	(isPlayer _targetPlayer) && 
+	{alive _targetPlayer} &&
 	{(vehicle _targetPlayer) isKindOf "Land"} &&
 	{(_targetPlayer distance _triggerPos) < SEEK_RANGE}
 ) then {
@@ -30,7 +33,7 @@ if (
 	if (A3EAI_radioMsgs) then {
 		_leader = (leader _unitGroup);
 		if ((_leader distance _targetPlayer) < 250) then {
-			_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+			_nearbyUnits = (getPosATL _targetPlayer) nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE];
 			if !(_nearbyUnits isEqualTo []) then {
 				if ((count _nearbyUnits) > 10) then {_nearbyUnits resize 10;};
 				if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {
@@ -43,13 +46,13 @@ if (
 						[0,[]]
 					};
 					{
-						if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+						if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 							[_x,_radioSpeech] call A3EAI_radioSend;
 						};
 					} count _nearbyUnits;
 				} else {
 					{
-						if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+						if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 							[_x,[0,[]]] call A3EAI_radioSend;
 						};
 					} count _nearbyUnits;
@@ -61,7 +64,6 @@ if (
 } else {
 	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; if ((random 1) < 0.50) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};"];
 	0 = [_unitGroup,_triggerPos,150] spawn A3EAI_BIN_taskPatrol;
-	{_x enableFatigue true;} count (units _unitGroup);
 	_unitGroup setSpeedMode "NORMAL";
 	if (A3EAI_enableHC && {isDedicated}) then {_unitGroup setVariable ["MiscData",nil];};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Dynamic group %1 is patrolling area.",_unitGroup];};

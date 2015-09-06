@@ -16,14 +16,15 @@ if ((typeName _this) isEqualTo "ARRAY") then {
 
 	if !(surfaceIsWater _spawnPos) then {
 		_trigStatements = format ["0 = [%1,0,%2,thisTrigger,%3,%4] call A3EAI_createCustomInfantrySpawnQueue;",_totalAI,_patrolDist,_unitLevel,_respawnTime];
-		_trigger = createTrigger ["EmptyDetector",_spawnPos,false];
-		_trigger setTriggerArea [600, 600, 0, false];
+		_trigger = createTrigger ["A3EAI_EmptyDetector",_spawnPos,false];
+		_trigger setTriggerArea [650, 650, 0, false];
 		_trigger setTriggerActivation ["ANY", "PRESENT", true];
 		_trigger setTriggerTimeout [5, 5, 5, true];
 		_trigger setTriggerText _spawnName;
 		_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;",_trigStatements,"0 = [thisTrigger] spawn A3EAI_despawn_static;"];
 		_trigger setVariable ["respawn",_respawn];
-		_trigger setVariable ["spawnmarker",_spawnName];
+		//_trigger setVariable ["spawnmarker",_spawnName];
+		_trigger setVariable ["isCustom",true];
 		if (_respawnTime > 0) then {_trigger setVariable ["respawnTime",_respawnTime];};
 
 		0 = [3,_trigger,[],_patrolDist,_unitLevel,[],[_totalAI,0]] call A3EAI_initializeTrigger;

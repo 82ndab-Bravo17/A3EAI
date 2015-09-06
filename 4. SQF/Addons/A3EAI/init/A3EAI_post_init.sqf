@@ -17,7 +17,7 @@ if (A3EAI_enableHC) then {
 
 //Create default trigger object if AI is spawned without trigger object specified (ie: for custom vehicle AI groups)
 _nul = [] spawn {
-	A3EAI_defaultTrigger = createTrigger ["EmptyDetector",[configFile >> "CfgWorlds" >> worldName,"centerPosition",[0,0,0]] call BIS_fnc_returnConfigEntry,false];
+	A3EAI_defaultTrigger = createTrigger ["A3EAI_EmptyDetector",[configFile >> "CfgWorlds" >> worldName,"centerPosition",[0,0,0]] call BIS_fnc_returnConfigEntry,false];
 	A3EAI_defaultTrigger enableSimulation false;
 	A3EAI_defaultTrigger setVariable ["isCleaning",true];
 	A3EAI_defaultTrigger setVariable ["patrolDist",100];
@@ -81,12 +81,9 @@ if (A3EAI_dynamicFoodList) then {
 if (A3EAI_dynamicLootList) then {
 	_lootlist = [] execVM format ['%1\scripts\A3EAI_buildLootList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _lootlist};
-};
-
-//Build generic loot classname tables (2)
-if (A3EAI_dynamicLootLargeList) then {
-	_lootlistlarge = [] execVM format ['%1\scripts\A3EAI_buildLootLargeList.sqf',A3EAI_directory];
-	waitUntil {uiSleep 0.05; scriptDone _lootlistlarge};
+	
+	_lootlist2 = [] execVM format ['%1\scripts\A3EAI_buildLootLargeList.sqf',A3EAI_directory];
+	waitUntil {uiSleep 0.05; scriptDone _lootlist2};
 };
 
 if (A3EAI_dynamicOpticsList) then {

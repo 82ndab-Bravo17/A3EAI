@@ -26,7 +26,7 @@ call {
 		_fnc_antistuck = A3EAI_antistuck_generic;
 	};
 	if (_unitType isEqualTo "air") exitWith {
-		_fnc_execEveryLoop = {};
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_air;
 		_fnc_checkUnits = {};
 		_fnc_generateLoot = A3EAI_generateGroupLoot;
 		_fnc_vehicleAmmoFuelCheck = A3EAI_checkAmmoFuel;
@@ -40,7 +40,7 @@ call {
 		_fnc_antistuck = A3EAI_antistuck_land;
 	};
 	if (_unitType isEqualTo "uav") exitWith {
-		_fnc_execEveryLoop = {};
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_uav;
 		_fnc_checkUnits = {};
 		_fnc_generateLoot = {};
 		_fnc_vehicleAmmoFuelCheck = A3EAI_checkAmmoFuel;

@@ -21,7 +21,7 @@ if (isPlayer _killer) then {
 	};
 	if (_unitsAlive > 0) then {
 		_unitGroup setFormDir ([(leader _unitGroup),_killer] call BIS_fnc_dirTo);
-		if (A3EAI_findKiller) then {
+		if ((A3EAI_findKiller) && {(combatMode _unitGroup) isEqualTo "YELLOW"})  then {
 			0 = [_killer,_unitGroup] spawn A3EAI_huntKiller;
 			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Killer-searching mode triggered for AI group %1.",_unitGroup];};
 		};		

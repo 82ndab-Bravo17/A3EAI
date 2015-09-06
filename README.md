@@ -1,4 +1,4 @@
-A3EAI - Current Version: 0.8.4
+A3EAI - Current Version: 0.9.0
 =====
 
 ---

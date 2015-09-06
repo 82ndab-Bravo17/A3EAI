@@ -1,3 +1,5 @@
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+
 private ["_vehicleType", "_maxCargoUnits", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_gunnersAdded", "_cargoSpots", "_cargo", "_waypoint", "_result", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
 _vehicleType = _this;
@@ -29,7 +31,7 @@ call {
 		while {_keepLooking} do {
 			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
 			if ((count _vehiclePosition) > 1) then {
-				if ({isPlayer _x} count (_vehiclePosition nearEntities [["Epoch_Male_F","Epoch_Female_F","AllVehicles"], 300]) isEqualTo 0) then {
+				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], 300]) isEqualTo 0) then {
 					_keepLooking = false;	//Found road position, stop searching
 				};
 			} else {
@@ -119,6 +121,9 @@ _unitGroup setVariable ["unitLevel",_unitLevel];
 _unitGroup setVariable ["assignedVehicle",_vehicle];
 (units _unitGroup) allowGetIn true;
 
+_combatMode = (combatMode _unitGroup);
+_behavior = (behaviour (leader _unitGroup));
+
 if (_isAirVehicle) then {
 	if (A3EAI_removeExplosiveAmmo) then {
 		_result = _vehicle call A3EAI_removeExplosive; //Remove missile weaponry for air vehicles
@@ -130,9 +135,6 @@ if (_isAirVehicle) then {
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI group %1 air vehicle %2 set to Careless behavior mode",_unitGroup,_vehicleType];};
 	};
 	
-	_combatMode = (combatMode _unitGroup);
-	_behavior = (behaviour (leader _unitGroup));
-
 	[_unitGroup,0] setWPPos _vehiclePosition;
 	[_unitGroup,0] setWaypointType "MOVE";
 	[_unitGroup,0] setWaypointTimeout [0.5,0.5,0.5];
@@ -168,6 +170,8 @@ if (_isAirVehicle) then {
 	[_unitGroup,0] setWaypointTimeout [5,10,15];
 	[_unitGroup,0] setWaypointCompletionRadius 150;
 	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; [(group this)] spawn A3EAI_vehStartPatrol;"];
+	[_unitGroup,0] setWaypointCombatMode _combatMode;
+	[_unitGroup,0] setWaypointBehaviour _behavior;
 	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curLandPatrols = A3EAI_curLandPatrols + 1;

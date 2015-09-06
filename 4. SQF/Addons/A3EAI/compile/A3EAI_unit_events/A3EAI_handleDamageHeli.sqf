@@ -28,7 +28,7 @@ if (_ammo != "") then {
 					_this setFuel 0;
 					_this setDamage 1;
 				};
-				{_vehicle removeAllEventHandlers _x} forEach ["HandleDamage","GetOut","Killed"];
+				{_vehicle removeAllEventHandlers _x} forEach ["Killed","HandleDamage","GetIn","GetOut","Fired","Local","Hit"];
 			};
 		};
 		if (_hit isEqualTo "engine_hit") exitWith {

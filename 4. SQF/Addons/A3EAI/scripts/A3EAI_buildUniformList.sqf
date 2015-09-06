@@ -39,10 +39,10 @@ _items = [];
 } forEach _uniformTypes;
 
 if !(_items isEqualTo []) then {
-	A3EAI_uniformTypes0 = _items;
-	A3EAI_uniformTypes1 = +_items;
-	A3EAI_uniformTypes2 = +_items;
-	A3EAI_uniformTypes3 = +_items;
+	if (0 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes0 = _items;};
+	if (1 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes1 = _items;};
+	if (2 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes2 = _items;};
+	if (3 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes3 = _items;};
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 uniform classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {

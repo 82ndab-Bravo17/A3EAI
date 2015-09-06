@@ -1,3 +1,6 @@
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#define SPACE_FOR_OBJECT "Land_Coil_F"
+
 //Finds a position that does not have a player within a certain distance.
 private ["_spawnPos","_attempts","_continue","_spawnpool","_maxAttempts"];
 
@@ -8,14 +11,14 @@ _spawnpool = +_this;
 _maxAttempts = ((count _spawnpool) min 3); //3: Maximum number of attempts
 while {_continue && {(_attempts < _maxAttempts)}} do {
 	_index = floor (random (count _spawnpool));
-	_spawnPosSelected = (getPosATL (_spawnpool select _index)) findEmptyPosition [0.5,30,"Land_Coil_F"];
+	_spawnPosSelected = (getPosATL (_spawnpool select _index)) findEmptyPosition [0,30,SPACE_FOR_OBJECT];
 	if !(_spawnPosSelected isEqualTo []) then {
 		_spawnPosSelected = _spawnPosSelected isFlatEmpty [0,0,0.75,5,0,false,objNull];
 	}; 
 	if (
 		!(_spawnPosSelected isEqualTo []) && 
 		//{!(_spawnPosSelected call A3EAI_posInBuilding)} && 
-		{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelected select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 125)}) exitWith {1}} count (_spawnPosSelected nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],200])) isEqualTo 0}
+		{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelected select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 125)}) exitWith {1}} count (_spawnPosSelected nearEntities [[PLAYER_UNITS,"LandVehicle"],200])) isEqualTo 0}
 	) then {
 		_spawnPos = _spawnPosSelected;
 		_spawnPos set [2,0];

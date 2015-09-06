@@ -1,4 +1,4 @@
-private ["_unitGroup", "_vehicle", "_unitsAlive", "_unitLevel", "_trigger", "_rearm" ,"_pos"];
+private ["_unitGroup", "_vehicle", "_unitsAlive", "_unitLevel", "_trigger", "_rearm" ,"_pos","_nearNoAggroAreas"];
 	
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
@@ -8,6 +8,21 @@ _pos set [2,0];
 _unitsAlive = {alive _x} count (units _unitGroup);
 
 if (_unitsAlive isEqualTo 0) exitWith {diag_log format ["A3EAI Error: %1 cannot create trigger area for empty group %2.",__FILE__,_unitGroup];};
+
+/*_nearNoAggroAreas = nearestLocations [_pos,["A3EAI_NoAggroArea"],1500];
+if (({if (_pos in _x) exitWith {1}} count _nearNoAggroAreas) isEqualTo 0) then {
+	
+} else {
+	_unitGroup setVariable ["GroupSize",-1];
+	if !(local _unitGroup) then {
+		A3EAI_updateGroupSize_PVC = [_unitGroup,-1];
+		A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_updateGroupSize_PVC";
+	};
+	if (A3EAI_debugLevel > 0) then {
+		diag_log format ["A3EAI Debug: Vehicle group %1 inside no-aggro area. Deleting group.",_unitGroup];
+	};
+};
+*/
 
 {
 	if (alive _x) then {
@@ -27,7 +42,7 @@ _unitGroup setBehaviour "AWARE";
 	
 _unitLevel = _unitGroup getVariable ["unitLevel",1];
 
-_trigger = createTrigger ["EmptyDetector",_pos,false];
+_trigger = createTrigger ["A3EAI_EmptyDetector",_pos,false];
 _trigger setTriggerArea [600, 600, 0, false];
 _trigger setTriggerActivation ["ANY", "PRESENT", true];
 _trigger setTriggerTimeout [5, 5, 5, true];

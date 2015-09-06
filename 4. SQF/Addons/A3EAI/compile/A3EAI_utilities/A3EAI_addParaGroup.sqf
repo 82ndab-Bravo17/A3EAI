@@ -1,3 +1,5 @@
+#define PARACHUTE_OBJECT "Steerable_Parachute_F"
+
 private ["_targetPlayer", "_vehicle", "_startPos", "_unitLevel", "_unitGroup", "_paraGroup", "_cargoAvailable", "_unit", "_vehiclePos", "_parachute", "_unitsAlive", "_trigger", "_rearm", "_cargoAvailable"];
 	
 _vehicle = _this select 0;
@@ -15,13 +17,13 @@ _paraGroup = ["vehiclecrew"] call A3EAI_createGroup;
 for "_i" from 1 to _cargoAvailable do {
 	_unit = [_paraGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
 	_vehiclePos = (getPosATL _vehicle);
-	_parachute = createVehicle ["Steerable_Parachute_F", [_vehiclePos select 0, _vehiclePos select 1, (_vehiclePos select 2)], [], (-10 + (random 10)), "FLY"];
+	_parachute = createVehicle [PARACHUTE_OBJECT, [_vehiclePos select 0, _vehiclePos select 1, (_vehiclePos select 2)], [], (-10 + (random 10)), "FLY"];
 	_unit moveInDriver _parachute;
 	_unit call A3EAI_addTempNVG;
 };
 
 _unitsAlive = {alive _x} count (units _paraGroup);
-_trigger = createTrigger ["EmptyDetector",_startPos,false];
+_trigger = createTrigger ["A3EAI_EmptyDetector",_startPos,false];
 _trigger setTriggerArea [600, 600, 0, false];
 _trigger setTriggerActivation ["ANY", "PRESENT", true];
 _trigger setTriggerTimeout [5, 5, 5, true];

@@ -1,3 +1,5 @@
+#define RADIO_ITEM "EpochRadio0"
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
 
 private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_enableHCReady"];
 
@@ -28,10 +30,7 @@ _chaseDistance = _unitGroup getVariable ["patrolDist",250];
 if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	private ["_targetPlayerPos","_leader","_ableToChase","_marker"];
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 has entered pursuit state for 180 seconds. Target: %2. (fn_findKiller)",_unitGroup,_targetPlayer];};
-	
-	//_unitGroup lockWP true;
-	{_x enableFatigue false} count (units _unitGroup);
-	
+
 	//Set pursuit timer
 	_unitGroup setVariable ["pursuitTime",diag_tickTime+180];
 	_unitGroup setVariable ["targetKiller",name _targetPlayer];
@@ -52,6 +51,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	while { 
 		_ableToChase &&
 		{isPlayer _targetPlayer} && 
+		{alive _targetPlayer} &&
 		{((_startPos distance _targetPlayer) < _chaseDistance)} &&
 		{(vehicle _targetPlayer) isKindOf "Land"}
 	} do {
@@ -64,7 +64,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 		if ((A3EAI_radioMsgs) && {0.6 call A3EAI_chance}) then {
 			_leader = (leader _unitGroup);
 			if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST}) then {
-				_nearbyUnits = _targetPlayerPos nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],TRANSMIT_RANGE];
+				_nearbyUnits = _targetPlayerPos nearEntities [[PLAYER_UNITS,"LandVehicle"],TRANSMIT_RANGE];
 				if !(_nearbyUnits isEqualTo []) then {	//Have at least 1 player to send a message to
 					if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {	//Have at least 1 AI unit to send a message from
 						_speechIndex = (floor (random 3));
@@ -81,13 +81,13 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 							[0,[]] 
 						};
 						{
-							if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+							if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 								[_x,_radioSpeech] call A3EAI_radioSend;
 							};
 						} count _nearbyUnits;
 					} else {
 						{
-							if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+							if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 								[_x,[0,[]]] call A3EAI_radioSend;
 							};
 						} count _nearbyUnits;
@@ -119,9 +119,9 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 				if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST} && {((_unitGroup getVariable ["GroupSize",0]) > 1)} && {isPlayer _targetPlayer}) then {
 					_radioText = if (alive _targetPlayer) then {4} else {5};
 					_radioSpeech = [_radioText,[name (leader _unitGroup)]];
-					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle","Epoch_Male_F","Epoch_Female_F"],TRANSMIT_RANGE];
+					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE];
 					{
-						if ((isPlayer _x) && {({if ("EpochRadio0" in (assignedItems _x)) exitWith {1}} count (crew (vehicle _x))) > 0}) then {
+						if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 							[_x,_radioSpeech] call A3EAI_radioSend;
 						};
 					} count _nearbyUnits;

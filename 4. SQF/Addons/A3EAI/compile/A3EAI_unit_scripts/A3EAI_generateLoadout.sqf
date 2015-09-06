@@ -1,3 +1,10 @@
+#define DEFAULT_UNIFORM_ITEM "U_Test1_uniform"
+#define DEFAULT_VEST_ITEM_MALE "V_41_EPOCH"
+#define DEFAULT_VEST_ITEM_FEMALE "V_F41_EPOCH"
+#define GRENADE_AMMO_3RND "3Rnd_HE_Grenade_shell"
+#define GRENADE_AMMO_1RND "1Rnd_HE_Grenade_shell"
+#define FIRST_AID_ITEM_AI "FirstAidKit"
+
 private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_unitLevelString", "_uniforms", "_backpacks", "_vests", "_headgears", "_magazine", "_uniformItem", "_backpackItem", "_vestItem", "_headgearItem", 
 "_useGL", "_weaponMuzzles", "_GLWeapon", "_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];
 
@@ -17,34 +24,63 @@ _unit call A3EAI_purgeUnitGear;	//Clear unwanted gear from unit first.
 _loadout = [[],[]];
 _weaponSelected = _unitLevel call A3EAI_getWeapon;
 _unitLevelString = str (_unitLevel);
-_uniforms = missionNamespace getVariable ["A3EAI_uniformTypes"+_unitLevelString,[]];
-_backpacks = missionNamespace getVariable ["A3EAI_backpackTypes"+_unitLevelString,[]];
-_vests = missionNamespace getVariable ["A3EAI_vestTypes"+_unitLevelString,[]];
-_headgears = missionNamespace getVariable ["A3EAI_headgearTypes"+_unitLevelString,[]];
-//diag_log format ["%1 %2 %3 %4",_uniforms,_backpacks,_vests,_headgears];
-_magazine = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "magazines") select 0;
 
-if !(_uniforms isEqualTo []) then {
-	_uniformItem = _uniforms call A3EAI_selectRandom;
-	_unit forceAddUniform _uniformItem;
-	//diag_log format ["%1",_uniformItem];
+_uniformChance = missionNamespace getVariable ["A3EAI_addUniformChance"+_unitLevelString,1.00];
+_uniformItem = DEFAULT_UNIFORM_ITEM;
+if (_uniformChance call A3EAI_chance) then {
+	_uniforms = missionNamespace getVariable ["A3EAI_uniformTypes"+_unitLevelString,[]];
+	if !(_uniforms isEqualTo []) then {
+		_uniformItem = _uniforms call A3EAI_selectRandom;
+		_unit forceAddUniform _uniformItem;
+		//diag_log format ["DEBUG: %1",_uniformItem];
+	};
+} else {
+	_unit forceAddUniform DEFAULT_UNIFORM_ITEM;
+	//diag_log format ["DEBUG: %1",DEFAULT_UNIFORM_ITEM];
 };
-if !(_backpacks isEqualTo []) then {
-	_backpackItem = _backpacks call A3EAI_selectRandom;
-	_unit addBackpack _backpackItem; 
-	clearAllItemsFromBackpack _unit;
-	//diag_log format ["%1",_backpackItem];
+
+_backpackChance = missionNamespace getVariable ["A3EAI_addBackpackChance"+_unitLevelString,1.00];
+if (_backpackChance call A3EAI_chance) then {
+	_backpacks = missionNamespace getVariable ["A3EAI_backpackTypes"+_unitLevelString,[]];
+	if !(_backpacks isEqualTo []) then {
+		_backpackItem = _backpacks call A3EAI_selectRandom;
+		_unit addBackpack _backpackItem; 
+		clearAllItemsFromBackpack _unit;
+		//diag_log format ["DEBUG: %1",_backpackItem];
+	};
 };
-if !(_vests isEqualTo []) then {
-	_vestItem = _vests call A3EAI_selectRandom;
+
+_vestChance = missionNamespace getVariable ["A3EAI_addVestChance"+_unitLevelString,1.00];
+if (_vestChance call A3EAI_chance) then {
+	_vests = missionNamespace getVariable ["A3EAI_vestTypes"+_unitLevelString,[]];
+	if !(_vests isEqualTo []) then {
+		_vestItem = _vests call A3EAI_selectRandom;
+		_unit addVest _vestItem;
+		//diag_log format ["DEBUG: %1",_vestItem];
+	};
+} else {
+	_uniformClass = configName (configFile >> "CfgWeapons" >> _uniformItem >> "ItemInfo" >> "uniformClass");
+	_isWoman = [configFile >> "CfgVehicles" >> _uniformClass,"woman",0] call BIS_fnc_returnConfigEntry; 
+	_vestItem = if (_isWoman isEqualTo 0) then {
+		DEFAULT_VEST_ITEM_MALE
+	} else {
+		DEFAULT_VEST_ITEM_FEMALE
+	};
 	_unit addVest _vestItem;
-	//diag_log format ["%1",_vestItem];
+	//diag_log format ["DEBUG: %1",_vestItem];
 };
-if !(_headgears isEqualTo []) then {
-	_headgearItem = _headgears call A3EAI_selectRandom;
-	_unit addHeadgear _headgearItem;
-	//diag_log format ["%1",_headgearItem];
+
+_headgearChance = missionNamespace getVariable ["A3EAI_addHeadgearChance"+_unitLevelString,1.00];
+if (_headgearChance call A3EAI_chance) then {
+	_headgears = missionNamespace getVariable ["A3EAI_headgearTypes"+_unitLevelString,[]];
+	if !(_headgears isEqualTo []) then {
+		_headgearItem = _headgears call A3EAI_selectRandom;
+		_unit addHeadgear _headgearItem;
+		//diag_log format ["DEBUG: %1",_headgearItem];
+	};
 };
+
+_magazine = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "magazines") select 0;
 
 _unit addMagazine _magazine;
 _unit addWeapon _weaponSelected;
@@ -63,16 +99,16 @@ if (_useGL) then {
 	if ((count _weaponMuzzles) > 1) then {
 		_GLWeapon = _weaponMuzzles select 1;
 		_GLMagazines = (getArray (configFile >> "CfgWeapons" >> _weaponSelected >> _GLWeapon >> "magazines"));
-		if ("3Rnd_HE_Grenade_shell" in _GLMagazines) then {
-			_unit addMagazine "3Rnd_HE_Grenade_shell";
+		if (GRENADE_AMMO_3RND in _GLMagazines) then {
+			_unit addMagazine GRENADE_AMMO_3RND;
 			(_loadout select 0) pushBack _GLWeapon;
-			(_loadout select 1) pushBack "3Rnd_HE_Grenade_shell";
+			(_loadout select 1) pushBack GRENADE_AMMO_3RND;
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Modified unit %1 loadout to %2.",_unit,_loadout];};
 		} else {
-			if ("1Rnd_HE_Grenade_shell" in _GLMagazines) then {
-				_unit addMagazine "1Rnd_HE_Grenade_shell";
+			if (GRENADE_AMMO_1RND in _GLMagazines) then {
+				_unit addMagazine GRENADE_AMMO_1RND;
 				(_loadout select 0) pushBack _GLWeapon;
-				(_loadout select 1) pushBack "1Rnd_HE_Grenade_shell";
+				(_loadout select 1) pushBack GRENADE_AMMO_1RND;
 				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Modified unit %1 loadout to %2.",_unit,_loadout];};
 			}
 		};
@@ -137,7 +173,7 @@ if (A3EAI_tempNVGs && {sunOrMoon < 1}) then {
 //Give unit temporary first aid kits to allow self-healing (unit level 1+)
 if (A3EAI_enableHealing) then {
 	for "_i" from 1 to (_unitLevel min 3) do {
-		[_unit,"FirstAidKit"] call A3EAI_addItem;
+		[_unit,FIRST_AID_ITEM_AI] call A3EAI_addItem;
 	};
 };
 

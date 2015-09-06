@@ -3,4 +3,4 @@
 */
 
 #define A3EAI_CLIENT_TYPE "A3EAI Client Addon"
-#define A3EAI_CLIENT_VERSION "1.1.1"
+#define A3EAI_CLIENT_VERSION "1.2.0"

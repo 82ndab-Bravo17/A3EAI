@@ -1,3 +1,5 @@
+#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+
 private ["_unitGroup","_searchRange","_searchType","_searchPoints"];
 _unitGroup = _this select 0;
 
@@ -10,7 +12,7 @@ _searchPoints = call {
 		(leader _unitGroup) nearObjects ["WH_Loot",75]
 	};
 	if (_searchType isEqualTo 1) exitWith {
-		(leader _unitGroup) nearEntities [["Epoch_Male_F","Epoch_Female_F","LandVehicle"],100]
+		(leader _unitGroup) nearEntities [[PLAYER_UNITS,"LandVehicle"],100]
 	};
 	[]
 };

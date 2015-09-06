@@ -16,7 +16,6 @@ while {_tooClose} do {
 _locationSelected = [_locationSelected,random(300),random(360),0,[1,300]] call SHK_pos;
 [_unitGroup,0] setWPPos _locationSelected;
 [_unitGroup,1] setWPPos _locationSelected;
-//_unitGroup setCurrentWaypoint [_unitGroup,0];
 [_unitGroup,2] setWaypointPosition [_locationSelected,0];
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Set %1 waypoint position to %2.",_unitGroup,_locationSelected];};

@@ -77,7 +77,7 @@ if !(_permDelete) then {
 	_trigger setVariable ["GroupArray",_grpArray - [grpNull]];
 	_trigger setVariable ["isCleaning",false];
 	_trigger setVariable ["unitLevelEffective",(_trigger getVariable ["unitLevel",1])];
-	_trigger setTriggerArea [600,600,0,false];
+	_trigger setTriggerArea [650,650,0,false];
 	_trigger setTriggerStatements (_trigger getVariable "triggerStatements"); //restore original trigger statements
 	if !((_trigger getVariable ["respawnLimitOriginal",-1]) isEqualTo -1) then {_trigger setVariable ["respawnLimit",_trigger getVariable ["respawnLimitOriginal",-1]];};
 	if (A3EAI_debugMarkersEnabled) then {

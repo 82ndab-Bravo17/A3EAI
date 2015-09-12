@@ -8,6 +8,9 @@
 #define UPDATE_PLAYER_COUNT_FREQ 60
 #define KRYPTO_CLEANUP_FREQ 900
 #define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#define AI_GROUP_SIDE resistance
+#define PLAYER_GROUP_SIDE1 west
+#define PLAYER_GROUP_SIDE2 east
 
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Server Monitor will start in 60 seconds."};
 
@@ -265,11 +268,11 @@ while {true} do {
 	
 	//Check for unwanted side modifications
 	if ((_currentTime - _sideCheck) > SIDECHECK_TIME) then {
-		if !((resistance getFriend west) isEqualTo 0) then {resistance setFriend [west, 0]};
-		if !((resistance getFriend east) isEqualTo 0) then {resistance setFriend [east, 0]};
-		if !((east getFriend resistance) isEqualTo 0) then {east setFriend [resistance, 0]};
-		if !((west getFriend resistance) isEqualTo 0) then {west setFriend [resistance, 0]};
-		if !((resistance getFriend resistance) isEqualTo 1) then {resistance setFriend [resistance, 1]};
+		if !((AI_GROUP_SIDE getFriend PLAYER_GROUP_SIDE1) isEqualTo 0) then {AI_GROUP_SIDE setFriend [PLAYER_GROUP_SIDE1, 0]};
+		if !((AI_GROUP_SIDE getFriend PLAYER_GROUP_SIDE2) isEqualTo 0) then {AI_GROUP_SIDE setFriend [PLAYER_GROUP_SIDE2, 0]};
+		if !((PLAYER_GROUP_SIDE2 getFriend AI_GROUP_SIDE) isEqualTo 0) then {PLAYER_GROUP_SIDE2 setFriend [AI_GROUP_SIDE, 0]};
+		if !((PLAYER_GROUP_SIDE1 getFriend AI_GROUP_SIDE) isEqualTo 0) then {PLAYER_GROUP_SIDE1 setFriend [AI_GROUP_SIDE, 0]};
+		if !((AI_GROUP_SIDE getFriend AI_GROUP_SIDE) isEqualTo 1) then {AI_GROUP_SIDE setFriend [AI_GROUP_SIDE, 1]};
 		_sideCheck = _currentTime;
 	};
 	

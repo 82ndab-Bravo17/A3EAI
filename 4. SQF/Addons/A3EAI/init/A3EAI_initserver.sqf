@@ -1,3 +1,7 @@
+#define AI_GROUP_SIDE resistance
+#define PLAYER_GROUP_SIDE1 west
+#define PLAYER_GROUP_SIDE2 east
+
 /*
 	A3EAI Server Initialization File
 	
@@ -92,13 +96,13 @@ _centerMarker setMarkerSizeLocal [_markerInfo select 1,_markerInfo select 1];
 
 //Set side relations only if needed
 _allUnits = +allUnits;
-if (({if ((side _x) isEqualTo east) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter east};
-if (({if ((side _x) isEqualTo west) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter west};
-if (({if ((side _x) isEqualTo resistance) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter resistance};
-if ((resistance getFriend west) > 0) then {resistance setFriend [west, 0]};
-if ((resistance getFriend east) > 0) then {resistance setFriend [east, 0]};
-if ((east getFriend resistance) > 0) then {east setFriend [resistance, 0]};
-if ((west getFriend resistance) > 0) then {west setFriend [resistance, 0]};
+if (({if ((side _x) isEqualTo PLAYER_GROUP_SIDE2) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter PLAYER_GROUP_SIDE2};
+if (({if ((side _x) isEqualTo PLAYER_GROUP_SIDE1) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter PLAYER_GROUP_SIDE1};
+if (({if ((side _x) isEqualTo AI_GROUP_SIDE) exitWith {1}} count _allUnits) isEqualTo 0) then {createCenter AI_GROUP_SIDE};
+if ((AI_GROUP_SIDE getFriend PLAYER_GROUP_SIDE1) > 0) then {AI_GROUP_SIDE setFriend [PLAYER_GROUP_SIDE1, 0]};
+if ((AI_GROUP_SIDE getFriend PLAYER_GROUP_SIDE2) > 0) then {AI_GROUP_SIDE setFriend [PLAYER_GROUP_SIDE2, 0]};
+if ((PLAYER_GROUP_SIDE2 getFriend AI_GROUP_SIDE) > 0) then {PLAYER_GROUP_SIDE2 setFriend [AI_GROUP_SIDE, 0]};
+if ((PLAYER_GROUP_SIDE1 getFriend AI_GROUP_SIDE) > 0) then {PLAYER_GROUP_SIDE1 setFriend [AI_GROUP_SIDE, 0]};
 
 //Continue loading required A3EAI script files
 [] execVM format ['%1\init\A3EAI_post_init.sqf',A3EAI_directory];

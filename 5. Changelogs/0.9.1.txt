@@ -1,0 +1,16 @@
+A3EAI 0.9.1
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+Headless Client Files/Keys update required: No
+A3EAI Client Addon update required: No
+
+Note: The above requirements assume you are upgrading between each released version. If you have skipped any versions, it is highly recommended to update all installed parts.
+
+[Added] Added option to disable collision damage to AI units caused by player vehicles.
+[Fixed] Reduced nearest enemy check distance to allow anti-stuck routines for vehicle AI to work as intended.
+[Fixed] Issue introduced in Arma 3 1.50 that caused some legitimate AI kills to be incorrectly detected as collision kills.
+[Changed] AI units in non-hostile mode now revert to hostile mode once a group member is killed.
+[Changed] Only AI units in hostile mode are now able to use killer-finder behavior.
+[Changed] Vehicle waypoint blacklists no longer cause vehicle AI to become non-hostile.

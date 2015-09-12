@@ -129,6 +129,7 @@ _startTime = diag_tickTime;
 	["A3EAI_heliGunnerUnits",3],
 	["A3EAI_removeExplosiveAmmo",true],
 	["A3EAI_roadKillPenalty",true],
+	["A3EAI_noCollisionDamage",false],
 	["A3EAI_airDetectChance",0.80],
 	["A3EAI_paraDropChance",0.50],
 	["A3EAI_paraDropCooldown",1800],

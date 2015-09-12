@@ -55,10 +55,10 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added location %1 (type: %2, pos: %3) to location list.",_placeName,_placeType,_placePos];};
 			if !(_placeName in A3EAI_waypointBlacklistAir) then {A3EAI_locationsAir pushBack [_placeName,_placePos,_placeType];};
 			if !((_placeName in A3EAI_waypointBlacklistLand) && {!(surfaceIsWater _placePos)}) then {A3EAI_locationsLand pushBack [_placeName,_placePos,_placeType];};
-			if ((_placeName in A3EAI_waypointBlacklistAir) or {_placeName in A3EAI_waypointBlacklistLand}) then {
+			/*if ((_placeName in A3EAI_waypointBlacklistAir) or {_placeName in A3EAI_waypointBlacklistLand}) then {
 				_location = [_x,700] call A3EAI_createNoAggroArea;
 				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created 700m radius no-aggro area at %1.",_placeName];};
-			};
+			};*/
 		} else {
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 not in allowed position. Blacklist (Air): %2, Blacklist (Land): %3, respawn_west: %4, telepos: %5.",_placeName,!((toLower _placeName) in A3EAI_waypointBlacklistAir),!((toLower _placeName) in A3EAI_waypointBlacklistLand),(_placePos distance (getMarkerPos "respawn_west")) > 600,({(_x distance _placePos) < 750} count _telePositions) isEqualTo 0];};
 		};

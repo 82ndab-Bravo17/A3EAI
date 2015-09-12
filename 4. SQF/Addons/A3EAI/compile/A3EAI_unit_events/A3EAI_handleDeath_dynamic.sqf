@@ -13,6 +13,11 @@ if (_groupIsEmpty) then {
 		A3EAI_despawnDynamicGroup_PVS = _unitGroup;
 		publicVariableServer "A3EAI_despawnDynamicGroup_PVS";
 	};
+} else {
+	if ((A3EAI_findKiller) && {(combatMode _unitGroup) isEqualTo "YELLOW"})  then {
+		0 = [_killer,_unitGroup] spawn A3EAI_huntKiller;
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Killer-searching mode triggered for AI group %1.",_unitGroup];};
+	};	
 };
 
 true

@@ -85,7 +85,7 @@ A3EAI_dynamicHeadgearLevels = [0,1,2,3];
 A3EAI_dynamicFoodList = true;
 
 //true: Generate AI generic loot types from Epoch loot tables (Default)
-//false: Loot defined by A3EAI_MiscLoot1 and A3EAI_MiscLoot2
+//false: Loot defined by A3EAI_miscLoot1 and A3EAI_miscLoot2
 A3EAI_dynamicLootList = true;
 
 //Classnames of weapons to ignore from Epoch loot tables
@@ -175,6 +175,9 @@ A3EAI_removeExplosiveAmmo = true;
 
 //If enabled, AI killed by vehicle collisions will have their gear removed (Default: true)
 A3EAI_roadKillPenalty = true;
+
+//if enabled, AI units suffer no damage from vehicle collisions. (Default: false)
+A3EAI_noCollisionDamage = false;
 
 
 /*	Static Infantry AI Spawning Settings
@@ -590,10 +593,10 @@ A3EAI_kryptoPickupAssist = 0;
 //Maximum number of food loot items found on AI. (Default: 1)								
 A3EAI_foodLootCount = 2;
 
-//Maximum number of items to select from A3EAI_MiscLoot1 (generic loot) table. (Default: 1)											
+//Maximum number of items to select from A3EAI_miscLoot1 (generic loot) table. (Default: 1)											
 A3EAI_miscLootCount1 = 2;						
 
-//Maximum number of items to select from A3EAI_MiscLoot2 (large generic loot) table. (Default: 1)					
+//Maximum number of items to select from A3EAI_miscLoot2 (large generic loot) table. (Default: 1)					
 A3EAI_miscLootCount2 = 1;	
 
 
@@ -608,10 +611,10 @@ A3EAI_chanceFirstAidKit = 0.25;
 A3EAI_chanceFoodLoot = 0.40;
 
 //Chance to add each generic loot item to group loot pool per unit (Default: 0.40)									
-A3EAI_chanceMiscLoot1 = 0.40;
+A3EAI_chancemiscLoot1 = 0.40;
 
 //Chance to add each large generic loot item to group loot pool per unit (Default: 0.30)								
-A3EAI_chanceMiscLoot2 = 0.30;
+A3EAI_chancemiscLoot2 = 0.30;
 
 //Probability to successfully pull a random item from loot pool for level 0-3 AI. Influences the rate at which loot items are added to units.
 A3EAI_lootPullChance0 = 0.20; //Default for level 0 AI: 0.20
@@ -672,12 +675,12 @@ A3EAI_headgearTypes3 = ["H_1_EPOCH","H_2_EPOCH","H_3_EPOCH","H_4_EPOCH","H_5_EPO
 
 //AI Food/Loot item types. 
 // Note: A3EAI_foodLoot will not be read if A3EAI_dynamicFoodList is enabled.
-// Note: A3EAI_MiscLoot1 will not be read if A3EAI_dynamicLootList is enabled.
-// Note: A3EAI_MiscLoot2 will not be read if A3EAI_dynamicLootLargeList is enabled.
+// Note: A3EAI_miscLoot1 will not be read if A3EAI_dynamicLootList is enabled.
+// Note: A3EAI_miscLoot2 will not be read if A3EAI_dynamicLootLargeList is enabled.
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 A3EAI_foodLoot = ["FoodSnooter","FoodWalkNSons","FoodBioMeat","ItemSodaOrangeSherbet","ItemSodaPurple","ItemSodaMocha","ItemSodaBurst","ItemSodaRbull","honey_epoch","emptyjar_epoch","sardines_epoch","meatballs_epoch","scam_epoch","sweetcorn_epoch","WhiskeyNoodle","ItemCoolerE"];
-A3EAI_MiscLoot1 = ["PaintCanClear","PaintCanBlk","PaintCanBlu","PaintCanBrn","PaintCanGrn","PaintCanOra","PaintCanPur","PaintCanRed","PaintCanTeal","PaintCanYel","ItemDocument","ItemMixOil","emptyjar_epoch","emptyjar_epoch","FoodBioMeat","ItemSodaOrangeSherbet","ItemSodaPurple","ItemSodaMocha","ItemSodaBurst","ItemSodaRbull","sardines_epoch","meatballs_epoch","scam_epoch","sweetcorn_epoch","Towelette","Towelette","Towelette","Towelette","Towelette","HeatPack","HeatPack","HeatPack","ColdPack","ColdPack","VehicleRepair","CircuitParts","ItemCoolerE","ItemScraps","ItemScraps"];
-A3EAI_MiscLoot2 = ["MortarBucket","MortarBucket","ItemCorrugated","CinderBlocks","jerrycan_epoch","jerrycan_epoch","VehicleRepair","VehicleRepair","CircuitParts"];
+A3EAI_miscLoot1 = ["PaintCanClear","PaintCanBlk","PaintCanBlu","PaintCanBrn","PaintCanGrn","PaintCanOra","PaintCanPur","PaintCanRed","PaintCanTeal","PaintCanYel","ItemDocument","ItemMixOil","emptyjar_epoch","emptyjar_epoch","FoodBioMeat","ItemSodaOrangeSherbet","ItemSodaPurple","ItemSodaMocha","ItemSodaBurst","ItemSodaRbull","sardines_epoch","meatballs_epoch","scam_epoch","sweetcorn_epoch","Towelette","Towelette","Towelette","Towelette","Towelette","HeatPack","HeatPack","HeatPack","ColdPack","ColdPack","VehicleRepair","CircuitParts","ItemCoolerE","ItemScraps","ItemScraps"];
+A3EAI_miscLoot2 = ["MortarBucket","MortarBucket","ItemCorrugated","CinderBlocks","jerrycan_epoch","jerrycan_epoch","VehicleRepair","VehicleRepair","CircuitParts"];
 
 
 //AI toolbelt item types. Toolbelt items are added to AI inventory upon death. Format: [item classname, item probability]

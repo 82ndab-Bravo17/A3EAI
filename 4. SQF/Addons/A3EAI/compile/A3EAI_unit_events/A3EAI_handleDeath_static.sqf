@@ -29,6 +29,10 @@ if (_groupIsEmpty) then {
 		};
 	};
 } else {
+	if ((A3EAI_findKiller) && {(combatMode _unitGroup) isEqualTo "YELLOW"})  then {
+		0 = [_killer,_unitGroup] spawn A3EAI_huntKiller;
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Killer-searching mode triggered for AI group %1.",_unitGroup];};
+	};	
 	if (!(_trigger getVariable ["respawn",true])) then {
 		_maxUnits = _trigger getVariable ["maxUnits",[0,0]]; //Reduce maximum AI for spawn trigger for each AI killed for non-respawning spawns.
 		_maxUnits set [0,(_maxUnits select 0) - 1];

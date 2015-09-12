@@ -33,7 +33,17 @@ _nul = [] spawn {
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Default trigger check result: %1",[!(isNull A3EAI_defaultTrigger),(typeOf A3EAI_defaultTrigger),(getPosASL A3EAI_defaultTrigger)]]};
 };
 
-[] call compile preprocessFileLineNumbers format ["%1\scripts\buildWeightedTables.sqf",A3EAI_directory];
+[
+	//Input variable - Gradechances array, Output variable - Gradeindices array
+	["A3EAI_levelChancesAir","A3EAI_levelIndicesAir"],
+	["A3EAI_levelChancesLand","A3EAI_levelIndicesLand"],
+	["A3EAI_levelChancesUAV","A3EAI_levelIndicesUAV"],
+	["A3EAI_levelChancesUGV","A3EAI_levelIndicesUGV"],
+	["A3EAI_useWeaponChance0","A3EAI_weaponTypeIndices0"],
+	["A3EAI_useWeaponChance1","A3EAI_weaponTypeIndices1"],
+	["A3EAI_useWeaponChance2","A3EAI_weaponTypeIndices2"],
+	["A3EAI_useWeaponChance3","A3EAI_weaponTypeIndices3"]
+] call compile preprocessFileLineNumbers format ["%1\scripts\buildWeightedTables.sqf",A3EAI_directory];
 
 if (A3EAI_verifyClassnames) then {
 	A3EAI_tableChecklist = ["A3EAI_pistolList","A3EAI_rifleList","A3EAI_machinegunList","A3EAI_sniperList","A3EAI_headgearTypes0","A3EAI_headgearTypes1","A3EAI_headgearTypes2","A3EAI_headgearTypes3",

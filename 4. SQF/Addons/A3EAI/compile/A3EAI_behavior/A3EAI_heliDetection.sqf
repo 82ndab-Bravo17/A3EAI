@@ -35,7 +35,7 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 					_nul = [_unitGroup,_vehicle,_x] spawn A3EAI_heliParaDrop;
 				};
 				if (_canReveal && {(_unitGroup knowsAbout _x) < 2}) then {
-					if (((lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []) && {A3XAI_airDetectChance call A3XAI_chance}) then {
+					if (((lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []) && {A3EAI_airDetectChance call A3EAI_chance}) then {
 						_unitGroup reveal [_x,2.5]; 
 						if (({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0) then {
 							[_x,[31+(floor (random 5)),[name (leader _unitGroup)]]] call A3EAI_radioSend;

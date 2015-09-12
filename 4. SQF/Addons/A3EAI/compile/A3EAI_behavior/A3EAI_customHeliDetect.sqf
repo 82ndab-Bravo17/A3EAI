@@ -20,7 +20,7 @@ if (!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariab
 		if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 2}) then {
 			_heliAimPos = aimPos _vehicle;
 			_playerAimPos = aimPos _x;
-			if (((lineIntersectsSurfaces [_heliAimPos,_playerEyePos,_vehicle,_x,true,1]) isEqualTo []) && {A3XAI_airDetectChance call A3XAI_chance}) then {
+			if (((lineIntersectsSurfaces [_heliAimPos,_playerEyePos,_vehicle,_x,true,1]) isEqualTo []) && {A3EAI_airDetectChance call A3EAI_chance}) then {
 			//if (!(terrainIntersectASL [_heliAimPos,_playerAimPos]) && {!(lineIntersects [_heliAimPos,_playerAimPos,_vehicle,_x])} && {A3EAI_airDetectChance call A3EAI_chance}) then { //if no intersection of terrain and objects between helicopter and player, then reveal player
 				_unitGroup reveal [_x,2.5];
 				if (({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0) then {

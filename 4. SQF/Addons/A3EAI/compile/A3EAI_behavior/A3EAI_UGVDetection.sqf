@@ -26,7 +26,7 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 		{
 			_playerPos = getPosATL _x;
 			if ((isPlayer _x) && {({if (_playerPos in _x) exitWith {1}} count _nearNoAggroAreas) isEqualTo 0}) then {
-				if (((lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []) && {A3XAI_UGVDetectChance call A3XAI_chance}) then {
+				if (((lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []) && {A3EAI_UGVDetectChance call A3EAI_chance}) then {
 					if (_canCall) then {
 						if (isDedicated) then {
 							_nul = [_playerPos,_x,_unitGroup getVariable ["unitLevel",0]] spawn A3EAI_spawn_reinforcement;

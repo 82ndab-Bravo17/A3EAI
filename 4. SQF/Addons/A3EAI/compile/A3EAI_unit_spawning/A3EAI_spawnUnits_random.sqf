@@ -107,7 +107,7 @@ try {
 	};
 } catch {
 	_nul = _trigger call A3EAI_cancelRandomSpawn;
-	if (A3XAI_debugLevel > 0) then {
+	if (A3EAI_debugLevel > 0) then {
 		diag_log _exception;
 	};
 };

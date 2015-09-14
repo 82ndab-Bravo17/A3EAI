@@ -44,7 +44,7 @@ if (_unitType != "dynamic") then {
 		//Add first aid kit to loot list
 		if (A3EAI_chanceFirstAidKit call A3EAI_chance) then {
 			_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
-			[_lootUnit,A3EAI_chanceFirstAidKit] call A3EAI_addItem;
+			[_lootUnit,FIRST_AID_ITEM_PLAYER] call A3EAI_addItem;
 		};
 
 		//Add food to loot list

@@ -1,7 +1,7 @@
 #define RADIO_ITEM "EpochRadio0"
 #define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
 
-private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_enableHCReady"];
+private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_enableHCReady","_nearBlacklistedAreas"];
 
 _targetPlayer = _this select 0;
 _unitGroup = _this select 1;
@@ -12,7 +12,7 @@ if (_unitGroup getVariable ["seekActive",false]) exitWith {};
 //If group is already pursuing player and target player has killed another group member, then extend pursuit time.
 if (((_unitGroup getVariable ["pursuitTime",0]) > 0) && {((_unitGroup getVariable ["targetKiller",""]) isEqualTo (name _targetPlayer))}) exitWith {
 	_unitGroup setVariable ["pursuitTime",((_unitGroup getVariable ["pursuitTime",0]) + 20)];
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Pursuit time +20 sec for Group %1 (Target: %2) to %3 seconds (fn_findKiller).",_unitGroup,name _targetPlayer,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime]};
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Pursuit time +20 sec for Group %1 (Target: %2) to %3 seconds.",_unitGroup,name _targetPlayer,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime]};
 };
 
 _enableHCReady = false;
@@ -23,6 +23,7 @@ if (_unitGroup getVariable ["HC_Ready",false]) then { //If HC mode enabled and A
 
 _startPos = _unitGroup getVariable ["trigger",(getPosASL (leader _unitGroup))];
 _chaseDistance = _unitGroup getVariable ["patrolDist",250];
+_nearBlacklistedAreas = nearestLocations [_targetPlayer,["A3EAI_BlacklistedArea"],1500];
 
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player
 #define RECEIVE_DIST 200 //distance requirement to receive message from AI group leader
@@ -31,7 +32,7 @@ _unitGroup setFormDir ([(leader _unitGroup),_targetPlayer] call BIS_fnc_dirTo);
 
 if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	private ["_targetPlayerPos","_leader","_ableToChase","_marker"];
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 has entered pursuit state for 180 seconds. Target: %2. (fn_findKiller)",_unitGroup,_targetPlayer];};
+	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 has entered pursuit state for 180 seconds. Target: %2.",_unitGroup,_targetPlayer];};
 
 	//Set pursuit timer
 	_unitGroup setVariable ["pursuitTime",diag_tickTime+180];
@@ -52,18 +53,20 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	_ableToChase = true;
 	while { 
 		_ableToChase &&
-		{isPlayer _targetPlayer} && 
 		{alive _targetPlayer} &&
+		{isPlayer _targetPlayer} && 
 		{((_startPos distance _targetPlayer) < _chaseDistance)} &&
 		{(vehicle _targetPlayer) isKindOf "Land"}
 	} do {
 		_targetPlayerPos = getPosATL _targetPlayer;
-		if ((_unitGroup knowsAbout _targetPlayer) < 4) then {_unitGroup reveal [_targetPlayer,4]};
-		(units _unitGroup) doMove _targetPlayerPos;
-
+		if (({_targetPlayerPos in _x} count _nearBlacklistedAreas) isEqualTo 0) then {
+			if ((_unitGroup knowsAbout _targetPlayer) < 4) then {_unitGroup reveal [_targetPlayer,4]};
+			(units _unitGroup) doMove _targetPlayerPos;
+		};
+		
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI group %1 in pursuit state. Pursuit time remaining: %2 seconds.",_unitGroup,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime];};
 		
-		if ((A3EAI_radioMsgs) && {0.6 call A3EAI_chance}) then {
+		if ((A3EAI_radioMsgs) && {0.7 call A3EAI_chance}) then {
 			_leader = (leader _unitGroup);
 			if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST}) then {
 				_nearbyUnits = _targetPlayerPos nearEntities [[PLAYER_UNITS,"LandVehicle"],TRANSMIT_RANGE];

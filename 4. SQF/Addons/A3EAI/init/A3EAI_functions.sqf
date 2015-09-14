@@ -98,6 +98,7 @@ A3EAI_addUVUnitEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A
 A3EAI_addVehAirEH = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addVehAirEH.sqf",A3EAI_directory];
 A3EAI_addVehicleGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addVehicleGroup.sqf",A3EAI_directory];
 A3EAI_addParaGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_addParaGroup.sqf",A3EAI_directory];
+A3EAI_avoidNoAggroArea = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_avoidNoAggroArea.sqf",A3EAI_directory]; 
 A3EAI_chance = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_chance.sqf",A3EAI_directory];
 A3EAI_checkClassname = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_checkClassname.sqf",A3EAI_directory];
 A3EAI_checkIsWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_checkIsWeapon.sqf",A3EAI_directory];

@@ -1,0 +1,19 @@
+A3EAI 0.9.2
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: Yes
+Headless Client Files/Keys update required: Yes
+A3EAI Client Addon update required: No
+
+Note: The above requirements assume you are upgrading between each released version. If you have skipped any versions, it is highly recommended to update all installed parts.
+
+[Changed] Collision damage against AI units is now disabled by default.
+[Changed] Loot-searching and player-searching behavior of AI infantry units is now limited to area within their patrol radius.
+[Changed] AI will be ordered to return to their spawn center if they cross into areas designated as "no aggro" (player spawn areas).
+[Changed] Patrol radius for auto-generated static spawns limited to 300m (previously unlimited, depending on location size).
+[Changed] Reduced radius for blacklist areas around player spawn areas.
+[Fixed] Reworked air vehicle damage handler to work as intended. Tip: Ghost Hawk helicopter remains as tough to take down as ever.
+[Fixed] Fixed collision damage immunity for AI units.
+[Fixed] Ejection for dead AI units of air vehicles.
+[Fixed] Loot generation for dynamic-spawn AI units.

@@ -5,7 +5,7 @@ _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 
 if (_vehicle getVariable ["vehicle_disabled",false]) exitWith {};
 
-{_vehicle removeAllEventHandlers _x} count ["Killed","HandleDamage","GetOut","Fired","Local","Hit"];
+{_vehicle removeAllEventHandlers _x} count ["HandleDamage","GetOut","Killed","Hit"];
 _vehicle setVariable ["vehicle_disabled",true];
 if !((_unitGroup getVariable ["unitType",""]) isEqualTo "air_reinforce") then {_vehicle call A3EAI_respawnAIVehicle;};
 _vehiclePos = getPosATL _vehicle;
@@ -40,7 +40,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	} else {
 		_unitGroup setVariable ["unitType","aircrashed"];
 		{
-			_x action ["eject",_vehicle];
+			_x call A3EAI_ejectParachute;
 			_nul = [_x,objNull] call A3EAI_handleDeathEvent;
 			0 = [_x,_unitLevel] spawn A3EAI_generateLoot;
 		} forEach _units;

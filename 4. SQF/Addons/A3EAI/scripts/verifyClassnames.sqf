@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private["_verified","_errorFound","_startTime"];
 
 _startTime = diag_tickTime;

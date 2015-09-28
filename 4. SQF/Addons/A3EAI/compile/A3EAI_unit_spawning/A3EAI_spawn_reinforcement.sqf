@@ -1,4 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_destPos", "_unitLevel", "_maxGunnerUnits", "_vehiclePosition", "_error", "_unitGroup", "_driver", "_vehicleType", "_vehicle", "_direction", "_velocity", "_nvg", "_gunnersAdded", "_cargoSpots", "_cargo", "_result", "_rearm","_targetPlayer","_unitType","_vehicleDescription"];
 
@@ -11,7 +11,7 @@ _destPos = _this select 0;
 _targetPlayer = _this select 1;
 _unitLevel = _this select 2;
 
-if (({(_destPos distance _x) < 1000} count A3EAI_reinforcedPositions) > 0) exitWith {
+if (({(_destPos distance _x) < AIR_REINFORCE_DIST_BETWEEN_LOCATIONS} count A3EAI_reinforcedPositions) > 0) exitWith {
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Another AI reinforcement is active within 1000m of location %1, reinforce request cancelled.",_destPos];};
 };
 
@@ -19,7 +19,7 @@ A3EAI_reinforcedPositions pushBack _destPos;
 
 _error = false;
 _maxGunnerUnits = A3EAI_heliGunnerUnits;
-_vehiclePosition = [_destPos,1800 + (random(900)),random(360),1] call SHK_pos;
+_vehiclePosition = [_destPos,AIR_REINFORCE_SPAWN_DIST_BASE + (random(AIR_REINFORCE_SPAWN_DIST_VARIANCE)),random(360),1] call A3EAI_SHK_pos;
 _vehiclePosition set [2,200];
 
 _unitType = "air_reinforce";
@@ -73,7 +73,7 @@ _unitGroup setVariable ["assignedVehicle",_vehicle];
 _unitGroup setVariable ["ReinforcePos",_destPos];
 (units _unitGroup) allowGetIn true;
 
-_vehicle flyInHeight 115;
+_vehicle flyInHeight FLYINHEIGHT_AIR_REINFORCE;
 
 if (A3EAI_removeExplosiveAmmo) then {
 	_result = _vehicle call A3EAI_removeExplosive; //Remove missile weaponry for air vehicles
@@ -102,7 +102,7 @@ if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
 
 if (A3EAI_radioMsgs && {!((owner _targetPlayer) isEqualTo 0)}) then {
 	private ["_targetPlayerVehicleCrew","_radioText"];
-	if ((_targetPlayer distance _destPos) < 300) then {
+	if ((_targetPlayer distance _destPos) < AIR_REINFORCE_RADIO_DIST) then {
 		_targetPlayerVehicleCrew = (crew (vehicle _targetPlayer));
 		if (({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count _targetPlayerVehicleCrew) > 0) then {
 			_vehicleDescription = format ["%1 %2",[configFile >> "CfgVehicles" >> _vehicleType,"displayName","patrol"] call BIS_fnc_returnConfigEntry,[configFile >> "CfgVehicles" >> _vehicleType,"textSingular","helicopter"] call BIS_fnc_returnConfigEntry];

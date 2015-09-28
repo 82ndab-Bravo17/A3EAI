@@ -1,4 +1,4 @@
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_startTime", "_totalAI", "_patrolDist", "_trigger", "_unitLevel", "_grpArray", "_triggerPos", "_maxUnits", "_attempts", "_continue", "_spawnPos", "_spawnPosSelected", "_unitGroup", "_triggerStatements","_spawnRadius"];
 
@@ -13,7 +13,7 @@ _unitLevel = _this select 4;
 _grpArray = _trigger getVariable ["GroupArray",[]];	
 if !(_grpArray isEqualTo []) exitWith {if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Active groups found at custom spawn %1. Exiting spawn script.",(triggerText _trigger)];};};						
 
-_trigger setTriggerArea [750,750,0,false];
+_trigger setTriggerArea [TRIGGER_SIZE_EXPANDED,TRIGGER_SIZE_EXPANDED,0,false];
 _triggerPos = getPosATL _trigger;
 
 _startTime = diag_tickTime;
@@ -28,12 +28,12 @@ _continue = true;
 _spawnPos = [];
 _spawnRadius = _patrolDist;
 while {_continue && {(_attempts < 3)}} do {
-	_spawnPosSelected = [_triggerPos,random (_patrolDist),random(360),0] call SHK_pos;
+	_spawnPosSelected = [_triggerPos,random (_patrolDist),random(360),0] call A3EAI_SHK_pos;
 	_spawnPosSelASL = ATLToASL _spawnPosSelected;
 	if ((count _spawnPosSelected) isEqualTo 2) then {_spawnPosSelected set [2,0];};
 	if (
 		!(_spawnPosSelASL call A3EAI_posInBuilding) && 
-		{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < 30)}) exitWith {1}} count (_spawnPosSelected nearEntities [[PLAYER_UNITS,"LandVehicle"],200])) isEqualTo 0}
+		{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelASL select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < PLAYER_DISTANCE_NO_LOS_STATIC_CUSTOM)}) exitWith {1}} count (_spawnPosSelected nearEntities [[PLAYER_UNITS,"LandVehicle"],PLAYER_DISTANCE_WITH_LOS_STATIC_CUSTOM])) isEqualTo 0}
 	) then {
 		_spawnPos = _spawnPosSelected;
 		_continue = false;
@@ -57,7 +57,7 @@ if !(_spawnPos isEqualTo []) then {
 } else {
 	_unitGroup = ["staticcustom",true] call A3EAI_createGroup;
 	_unitGroup setVariable ["trigger",_trigger];
-	_unitGroup setVariable ["GroupSize",-1];
+	_unitGroup setVariable ["GroupSize",0];
 	[0,_trigger,_unitGroup,true] call A3EAI_addRespawnQueue;
 	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: Unable to find suitable spawn position at custom spawn %1.",(triggerText _trigger)];};
 };

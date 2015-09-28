@@ -1,4 +1,4 @@
-#define AI_GROUP_SIDE resistance
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_UAVGroup", "_unitType", "_unitGroup"];
 

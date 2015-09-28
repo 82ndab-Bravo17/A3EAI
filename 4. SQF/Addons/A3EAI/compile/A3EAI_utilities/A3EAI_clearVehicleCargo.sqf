@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_vehicle"];
 _vehicle = _this;
 

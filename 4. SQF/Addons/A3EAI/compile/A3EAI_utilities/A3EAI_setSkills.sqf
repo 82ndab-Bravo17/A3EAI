@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private["_unit","_unitLevel","_skillSeed","_skillArray","_skillTypeArray"];
 _unit = _this select 0;
 _unitLevel = _this select 1;

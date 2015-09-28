@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_HCObject","_versionHC","_compatibleVersions","_positionHC"];
 _HCObject = _this select 0;
 _versionHC = _this select 1;
@@ -27,8 +29,8 @@ if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "Headl
 		A3EAI_HCIsConnected = true;
 		A3EAI_HC_serverResponse = true;
 		_positionHC = getPosATL A3EAI_HCObject;
-		if (({if (_positionHC in _x) exitWith {1}} count (nearestLocations [_positionHC,["A3EAI_BlacklistedArea"],750])) isEqualTo 0) then {
-			[_positionHC,750] call A3EAI_createBlackListArea;
+		if (({if (_positionHC in _x) exitWith {1}} count (nearestLocations [_positionHC,[BLACKLIST_OBJECT_GENERAL],BLACKLIST_AREA_HC_SIZE])) isEqualTo 0) then {
+			[_positionHC,TEMP_BLACKLIST_AREA_HC_SIZE] call A3EAI_createBlackListArea;
 			diag_log format ["[A3EAI] Created 750m radius blacklist area at HC position %1",_positionHC];
 		};
 		diag_log format ["[A3EAI] Headless client %1 (owner: %2) logged in successfully.",A3EAI_HCObject,A3EAI_HCObjectOwnerID];

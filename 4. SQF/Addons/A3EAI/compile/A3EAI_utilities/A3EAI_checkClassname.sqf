@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_classname","_checkType","_result","_config","_banString","_check","_configIndex"];
 
 _classname = _this select 0;

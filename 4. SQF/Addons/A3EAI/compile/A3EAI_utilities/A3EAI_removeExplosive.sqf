@@ -1,8 +1,8 @@
+#include "\A3EAI\globaldefines.hpp"
+
 if ((typeName _this) != "OBJECT") exitWith {};
 
 private ["_vehicleWeapons","_cursorAim","_missileMags","_vehicleMags","_vehicleTurrets"];
-
-#define EXPLOSIVELIMIT 0.9
 
 _vehicleWeapons = +(weapons _this);
 _vehicleMags = +(magazines _this);
@@ -13,7 +13,7 @@ if !([-1] in _vehicleTurrets) then {_vehicleTurrets pushBack [-1];};
 	private ["_ammo","_explosiveRating"];
 	_ammo = [configFile >> "CfgMagazines" >> _x,"ammo",""] call BIS_fnc_returnConfigEntry;
 	_explosiveRating = [configFile >> "CfgAmmo" >> _ammo,"explosive",0] call BIS_fnc_returnConfigEntry;
-	if (_explosiveRating > EXPLOSIVELIMIT) then {
+	if (_explosiveRating > AI_VEHICLEWEAPON_EXPLOSIVERATING_LIMIT) then {
 		_this removeMagazines _x;
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Removed explosive magazine %1 from vehicle %2.",_x,(typeOf _this)];};
 	};
@@ -32,7 +32,7 @@ if !([-1] in _vehicleTurrets) then {_vehicleTurrets pushBack [-1];};
 			private ["_ammo","_explosiveRating"];
 			_ammo = [configFile >> "CfgMagazines" >> _x,"ammo",""] call BIS_fnc_returnConfigEntry;
 			_explosiveRating = [configFile >> "CfgAmmo" >> _ammo,"explosive",0] call BIS_fnc_returnConfigEntry;
-			if (_explosiveRating > EXPLOSIVELIMIT) then {
+			if (_explosiveRating > AI_VEHICLEWEAPON_EXPLOSIVERATING_LIMIT) then {
 				_this removeMagazinesTurret [_x,_currentTurret];
 				if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Removed explosive magazine %1 from vehicle %2.",_x,(typeOf _this)];};
 			};

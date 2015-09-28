@@ -3,7 +3,7 @@ private ["_dialogueType", "_dialogueParams", "_paramCount", "_dialogueTextTempla
 _dialogueType = _this select 0;
 _dialogueParams = _this select 1;
 
-if ((diag_tickTime - A3EAI_client_lastRadioMessage) > 10 or {_dialogueType in [20,30,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55]}) then {
+if (((diag_tickTime - (missionNamespace getVariable ["A3EAI_client_lastRadioMessage",-10])) > 10) or {_dialogueType in [20,30,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55]}) then {
 	_paramCount = (count _dialogueParams);
 	_dialogueTextTemplate = missionNamespace getVariable [format ["A3EAI_client_radioMessage%1",_dialogueType],""];
 	_dialogueTextFormat = call {

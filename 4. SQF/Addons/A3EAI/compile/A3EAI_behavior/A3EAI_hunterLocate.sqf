@@ -1,7 +1,4 @@
-#define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player (target player will also recieve messages)
-#define SEEK_RANGE 450 //distance to chase player from initial group spawn location
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup", "_targetPlayer", "_waypoint", "_leader", "_nearbyUnits", "_index", "_radioSpeech", "_searchPos","_triggerPos","_nearBlacklistedAreas","_targetPos"];
 
@@ -9,7 +6,7 @@ _unitGroup = _this;
 
 _triggerPos = getPosATL (_unitGroup getVariable ["trigger",objNull]);
 _targetPlayer = _unitGroup getVariable ["targetplayer",objNull];
-_nearBlacklistedAreas = nearestLocations [_targetPlayer,["A3EAI_BlacklistedArea"],1500];
+_nearBlacklistedAreas = nearestLocations [_targetPlayer,[BLACKLIST_OBJECT_GENERAL],1500];
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Hunter group %1 has target player %2 and anchor pos %3.",_unitGroup,_targetPlayer,_triggerPos];};
 
@@ -17,7 +14,7 @@ if (
 	(isPlayer _targetPlayer) && 
 	{alive _targetPlayer} &&
 	{(vehicle _targetPlayer) isKindOf "Land"} &&
-	{(_targetPlayer distance _triggerPos) < SEEK_RANGE}
+	{(_targetPlayer distance _triggerPos) < SEEK_RANGE_HUNTER}
 ) then {
 	_waypoint = [_unitGroup,0];
 	_targetPos = getPosATL _targetPlayer;
@@ -26,7 +23,7 @@ if (
 			_waypoint setWPPos _targetPos;
 			//diag_log format ["Debug: Hunter group %1 is seeking player %2 (position: %3).",_unitGroup,_targetPlayer,(getPosATL _targetPlayer)];
 		} else {
-			_searchPos = [(getWPPos _waypoint),50+(random 50),(random 360),0] call SHK_pos;
+			_searchPos = [(getWPPos _waypoint),20+(random 20),(random 360),0] call A3EAI_SHK_pos;
 			_waypoint setWPPos _searchPos;
 		};
 	};
@@ -36,8 +33,8 @@ if (
 	
 	if (A3EAI_radioMsgs) then {
 		_leader = (leader _unitGroup);
-		if ((_leader distance _targetPlayer) < 250) then {
-			_nearbyUnits = _targetPos nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE];
+		if ((_leader distance _targetPlayer) < RADIO_RECEPTION_RANGE) then {
+			_nearbyUnits = _targetPos nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE_RADIO_HUNTER];
 			if !(_nearbyUnits isEqualTo []) then {
 				if ((count _nearbyUnits) > 10) then {_nearbyUnits resize 10;};
 				if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {
@@ -67,7 +64,7 @@ if (
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Dynamic group %1 has located player %2.",_unitGroup,_targetPlayer];};
 } else {
 	[_unitGroup,0] setWaypointStatements ["true","if !(local this) exitWith {}; if ((random 1) < 0.50) then { group this setCurrentWaypoint [(group this), (floor (random (count (waypoints (group this)))))];};"];
-	0 = [_unitGroup,_triggerPos,150] spawn A3EAI_BIN_taskPatrol;
+	0 = [_unitGroup,_triggerPos,PATROL_DIST_DYNAMIC] spawn A3EAI_BIN_taskPatrol;
 	_unitGroup setSpeedMode "NORMAL";
 	if (A3EAI_enableHC && {isDedicated}) then {_unitGroup setVariable ["MiscData",nil];};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Dynamic group %1 is patrolling area.",_unitGroup];};

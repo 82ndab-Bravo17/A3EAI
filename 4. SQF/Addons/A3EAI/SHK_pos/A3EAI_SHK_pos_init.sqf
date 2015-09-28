@@ -56,47 +56,47 @@
     
   Usage:
     Preprocess the file in init.sqf:
-      call compile preprocessfile "SHK_pos\shk_pos_init.sqf";
+      call compile preprocessfile "SHK_pos\A3EAI_SHK_pos_init.sqf";
     
     Actually getting the position:
-      pos = [parameters] call SHK_pos;
+      pos = [parameters] call A3EAI_SHK_pos;
 */
 // Functions
-SHK_pos_getPos = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_getpos.sqf",A3EAI_directory];
-SHK_pos_getPosMarker = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_getposmarker.sqf",A3EAI_directory];
+A3EAI_SHK_pos_getPos = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_getpos.sqf",A3EAI_directory];
+A3EAI_SHK_pos_getPosMarker = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_getposmarker.sqf",A3EAI_directory];
 
 // Sub functions
-SHK_pos_fnc_findClosestPosition = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_findclosestposition.sqf",A3EAI_directory];
-SHK_pos_fnc_getMarkerCorners = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getmarkercorners.sqf",A3EAI_directory];
-SHK_pos_fnc_getMarkerShape = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getmarkershape.sqf",A3EAI_directory];
-SHK_pos_fnc_getPos = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getpos.sqf",A3EAI_directory];
-SHK_pos_fnc_getPosFromCircle = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getposfromcircle.sqf",A3EAI_directory];
-SHK_pos_fnc_getPosFromEllipse = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getposfromellipse.sqf",A3EAI_directory];
-SHK_pos_fnc_getPosFromRectangle = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getposfromrectangle.sqf",A3EAI_directory];
-SHK_pos_fnc_getPosFromSquare = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_getposfromsquare.sqf",A3EAI_directory];
-SHK_pos_fnc_isBlacklisted = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_isblacklisted.sqf",A3EAI_directory];
-SHK_pos_fnc_isInCircle = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_isincircle.sqf",A3EAI_directory];
-SHK_pos_fnc_isInEllipse = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_isinellipse.sqf",A3EAI_directory];
-SHK_pos_fnc_isInRectangle = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_isinrectangle.sqf",A3EAI_directory];
-SHK_pos_fnc_isSamePosition = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_issameposition.sqf",A3EAI_directory];
-SHK_pos_fnc_rotatePosition = compile preprocessFileLineNumbers format ["%1\compile\shk_pos\shk_pos_fnc_rotateposition.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_findClosestPosition = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_findclosestposition.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getMarkerCorners = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getmarkercorners.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getMarkerShape = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getmarkershape.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getPos = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getpos.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getPosFromCircle = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getposfromcircle.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getPosFromEllipse = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getposfromellipse.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getPosFromRectangle = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getposfromrectangle.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_getPosFromSquare = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_getposfromsquare.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_isBlacklisted = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_isblacklisted.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_isInCircle = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_isincircle.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_isInEllipse = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_isinellipse.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_isInRectangle = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_isinrectangle.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_isSamePosition = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_issameposition.sqf",A3EAI_directory];
+A3EAI_SHK_pos_fnc_rotatePosition = compileFinal preprocessFileLineNumbers format ["%1\shk_pos\A3EAI_SHK_pos_fnc_rotateposition.sqf",A3EAI_directory];
 
 // Wrapper function
 // Decide which function to call based on parameters.
-SHK_pos = {
+A3EAI_SHK_pos = {
   private ["_pos"];
   _pos = [];
 
   // Only marker is given as parameter
   if (typename _this isEqualTo "STRING") then {
-    _pos = [_this] call SHK_pos_getPosMarker;
+    _pos = [_this] call A3EAI_SHK_pos_getPosMarker;
 
   // Parameter array
   } else {
     if (typename (_this select 0) isEqualTo "STRING") then {
-      _pos = _this call SHK_pos_getPosMarker;
+      _pos = _this call A3EAI_SHK_pos_getPosMarker;
     } else {
-      _pos = _this call SHK_pos_getPos;
+      _pos = _this call A3EAI_SHK_pos_getPos;
     };
   };
 

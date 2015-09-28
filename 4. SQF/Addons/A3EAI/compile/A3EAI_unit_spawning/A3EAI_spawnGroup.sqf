@@ -1,5 +1,5 @@
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
-#define SPACE_FOR_OBJECT "Land_Coil_F"
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_totalAI","_spawnPos","_unitGroup","_trigger","_attempts","_baseDist","_dummy","_unitLevel","_checkPos"];
 
 	
@@ -36,13 +36,8 @@ if (_checkPos) then {	//If provided position requires checking...
 
 _spawnPos set [2,0];
 
-if (({if (isPlayer _x) exitWith {1}} count (_spawnPos nearEntities [[PLAYER_UNITS],100])) isEqualTo 1) exitWith {
-	if (isNull _unitGroup) then {_unitGroup = [_unitType,true] call A3EAI_createGroup;};
-	_unitGroup setVariable ["GroupSize",0];
-	_unitGroup setVariable ["trigger",_trigger];
-	0 = [0,_trigger,_unitGroup] call A3EAI_addRespawnQueue;
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Spawn at %1 cancelled due to player(s) within 100m. Added group %2 to respawn queue.",_spawnPos,_unitGroup];};
-	_unitGroup
+if (({if (isPlayer _x) exitWith {1}} count (_spawnPos nearEntities [[PLAYER_UNITS,"LandVehicle"],PLAYER_DISTANCE_SPAWN_AIGROUP])) isEqualTo 1) exitWith {
+	grpNull
 };
 
 if (isNull _unitGroup) then {

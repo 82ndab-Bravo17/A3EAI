@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup","_isNewGroup"];
 _unitGroup = _this select 0;
 _isNewGroup = _this select 1;

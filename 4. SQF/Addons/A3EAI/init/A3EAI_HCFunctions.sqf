@@ -18,58 +18,9 @@ A3EAI_airReinforcementDetection = compileFinal preprocessFileLineNumbers format 
 A3EAI_cleanupReinforcementHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_cleanupReinforcementHC.sqf",A3EAI_directory]; 
 A3EAI_setLoadoutVariables_HC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_setLoadoutVariables_HC.sqf",A3EAI_directory];
 A3EAI_createGroupTriggerObject = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_createGroupTriggerObject.sqf",A3EAI_directory];
-
-A3EAI_requestGroupVars = compileFinal '
-	A3EAI_getGroupTriggerVars_PVS = _this;
-	publicVariableServer "A3EAI_getGroupTriggerVars_PVS";
-	true
-';
-
-A3EAI_updateServerLoot = compileFinal '
-	A3EAI_updateGroupLoot_PVS = _this;
-	publicVariableServer "A3EAI_updateGroupLoot_PVS";
-	true
-';
-
-A3EAI_updateGroupLootPoolHC = compileFinal '
-	private ["_unitGroup","_lootPool"];
-	_unitGroup = _this select 0;
-	_lootPool = _this select 1;
-	
-	_unitGroup setVariable ["LootPool",_lootPool];
-	
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Updated group %1 loot pool to %2.",_unitGroup,_lootPool];};
-	
-	true
-';
-
-A3EAI_setCurrentWaypointHC = compileFinal '
-	private ["_unitGroup","_waypointIndex"];
-	_unitGroup = _this select 0;
-	_waypointIndex = _this select 1;
-	_unitGroup setCurrentWaypoint [_unitGroup,_waypointIndex];
-	true
-';
-
-A3EAI_setBehaviorHC = compileFinal '
-	private ["_unitGroup","_mode"];
-	_unitGroup = _this select 0;
-	_mode = _this select 1;
-	
-	call {
-		if (_mode isEqualTo 0) exitWith {
-			_unitGroup setBehaviour "CARELESS";
-			{_x doWatch objNull} forEach (units _unitGroup);
-			_unitGroup setVariable ["EnemiesIgnored",true];
-			true
-		};
-		if (_mode isEqualTo 1) exitWith {
-			_unitGroup setBehaviour "AWARE";
-			_unitGroup setVariable ["EnemiesIgnored",false];
-			true
-		};
-		false
-	};
-';
+A3EAI_requestGroupVars = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_requestGroupVars.sqf",A3EAI_directory];
+A3EAI_updateServerLoot = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_updateServerLoot.sqf",A3EAI_directory];
+A3EAI_updateGroupLootPoolHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_updateGroupLootPoolHC.sqf",A3EAI_directory];
+A3EAI_setBehaviorHC = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient\A3EAI_setBehaviorHC.sqf",A3EAI_directory];
 
 diag_log "[A3EAI] A3EAI HC functions loaded.";

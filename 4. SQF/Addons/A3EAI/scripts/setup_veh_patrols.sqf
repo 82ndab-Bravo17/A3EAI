@@ -1,3 +1,4 @@
+#include "\A3EAI\globaldefines.hpp"
 
 waitUntil {uiSleep 0.3; (!isNil "A3EAI_locations_ready" && {!isNil "A3EAI_classnamesVerified"} && {!(isNil "EPOCH_server_setVToken")})};
 

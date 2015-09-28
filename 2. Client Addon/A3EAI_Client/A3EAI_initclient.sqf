@@ -4,9 +4,7 @@ if (hasInterface) then {
 	call compile preprocessFileLineNumbers "A3EAI_Client\A3EAI_client_config.sqf";
 	call compile preprocessFileLineNumbers "A3EAI_Client\A3EAI_client_verifySettings.sqf";
 	call compile preprocessFileLineNumbers "A3EAI_Client\A3EAI_client_functions.sqf";
-	
-	A3EAI_client_lastRadioMessage = 0;
-	
+		
 	if (A3EAI_client_radio) then {
 		"A3EAI_SMS" addPublicVariableEventHandler {(_this select 1) call A3EAI_client_radioMessage; diag_log _this;};
 	};

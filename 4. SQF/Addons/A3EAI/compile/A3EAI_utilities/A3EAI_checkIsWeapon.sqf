@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_magazineTypes","_ammo","_ammoMaxRange","_ammoHit"];
 
 if ((typeName _this) != "STRING") exitWith {false};

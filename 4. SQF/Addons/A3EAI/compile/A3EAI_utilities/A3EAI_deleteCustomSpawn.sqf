@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_trigger","_triggerType"];
 
 _trigger = call {
@@ -11,7 +13,7 @@ _trigger = call {
 	_this
 };
 
-if (A3EAI_debugMarkersEnabled) then {deleteMarker str(_trigger)};
+if (A3EAI_enableDebugMarkers) then {deleteMarker str(_trigger)};
 _trigger setTriggerStatements ["this","true","false"]; //Disable trigger from activating or deactivating while cleanup is performed
 if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting custom-defined AI spawn %1 at %2 in 30 seconds.",triggerText _trigger, mapGridPosition _trigger];};
 uiSleep 30;

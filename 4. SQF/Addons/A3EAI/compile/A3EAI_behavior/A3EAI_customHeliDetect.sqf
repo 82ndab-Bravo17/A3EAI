@@ -1,5 +1,4 @@
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
-#define RADIO_ITEM "EpochRadio0"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_detectOrigin", "_vehicle", "_detected", "_unitGroup", "_heliAimPos", "_playerAimPos"];
 
@@ -12,9 +11,9 @@ _unitGroup setVariable ["IsDetecting",true];
 uiSleep (round (random 20));
 
 if (!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}) then{
-	_detectOrigin = [getPosATL _vehicle,0,getDir _vehicle,1] call SHK_pos;
+	_detectOrigin = [getPosATL _vehicle,0,getDir _vehicle,1] call A3EAI_SHK_pos;
 	_detectOrigin set [2,0];
-	_detected = _detectOrigin nearEntities [[PLAYER_UNITS],500];
+	_detected = _detectOrigin nearEntities [[PLAYER_UNITS],DETECT_RANGE_AIR_CUSTOM];
 	if ((count _detected) > 5) then {_detected resize 5};
 	{
 		if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 2}) then {

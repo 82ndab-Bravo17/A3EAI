@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup","_tooClose","_detectionWaypoint","_exitWaypoint","_vehicle","_dirPosToVehicle","_locationSelected"];
 _unitGroup = _this select 0;
 
@@ -8,7 +10,7 @@ _locationSelected = [0,0,0];
 
 while {_tooClose} do {
 	_locationSelected = (A3EAI_locationsAir call A3EAI_selectRandom) select 1;
-	if (((waypointPosition [_unitGroup,0]) distance _locationSelected) > 300) then {
+	if (((waypointPosition [_unitGroup,0]) distance _locationSelected) > NEXT_WP_DIST_UAV) then {
 		_tooClose = false;
 	} else {
 		uiSleep 0.1;
@@ -16,11 +18,11 @@ while {_tooClose} do {
 };
 
 _dirPosToVehicle = [_locationSelected,_vehicle] call BIS_fnc_dirTo;
-_detectionWaypoint = [_locationSelected,100+(random 350),_dirPosToVehicle,1] call SHK_pos;
+_detectionWaypoint = [_locationSelected,WP_POS_INGRESS_BASE_UAV+(random WP_POS_INGRESS_VARIANCE_UAV),_dirPosToVehicle,1] call A3EAI_SHK_pos;
 [_unitGroup,0] setWaypointPosition [_detectionWaypoint,0]; 
 
 _dirPosToVehicle = [_vehicle,_locationSelected] call BIS_fnc_dirTo;
-_exitWaypoint = [_detectionWaypoint,300+(random 100),_dirPosToVehicle,1] call SHK_pos;
+_exitWaypoint = [_detectionWaypoint,WP_POS_EGRESS_BASE_UAV+(random WP_POS_EGRESS_VARIANCE_UAV),_dirPosToVehicle,1] call A3EAI_SHK_pos;
 [_unitGroup,2] setWaypointPosition [_detectionWaypoint,0];
 
 _unitGroup setVariable ["SearchLength",(_detectionWaypoint distance _exitWaypoint)];

@@ -1,16 +1,4 @@
-//Function frequency definitions
-#define CLEANDEAD_FREQ 300
-#define VEHICLE_CLEANUP_FREQ 60
-#define LOCATION_CLEANUP_FREQ 360
-#define RANDSPAWN_CHECK_FREQ 360
-#define RANDSPAWN_EXPIRY_TIME 1080
-#define SIDECHECK_TIME 1200
-#define UPDATE_PLAYER_COUNT_FREQ 60
-#define KRYPTO_CLEANUP_FREQ 900
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
-#define AI_GROUP_SIDE resistance
-#define PLAYER_GROUP_SIDE1 west
-#define PLAYER_GROUP_SIDE2 east
+#include "\A3EAI\globaldefines.hpp"
 
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Server Monitor will start in 60 seconds."};
 
@@ -20,9 +8,9 @@ _cleanDead = _currentTime;
 _monitorReport = _currentTime;
 _deleteObjects = _currentTime;
 _dynLocations = _currentTime;
-_checkRandomSpawns = _currentTime - RANDSPAWN_CHECK_FREQ;
+_checkRandomSpawns = _currentTime - MONITOR_CHECK_RANDSPAWN_FREQ;
 _sideCheck = _currentTime;
-_playerCountTime = _currentTime - UPDATE_PLAYER_COUNT_FREQ;
+_playerCountTime = _currentTime - MONITOR_UPDATE_PLAYER_COUNT_FREQ;
 
 //Setup variables
 _currentPlayerCount = 0;
@@ -81,7 +69,7 @@ uiSleep 60;
 while {true} do {
 	//Main cleanup loop
 	_currentTime = diag_tickTime;
-	if ((_currentTime - _cleanDead) > CLEANDEAD_FREQ) then {
+	if ((_currentTime - _cleanDead) > MONITOR_CLEANDEAD_FREQ) then {
 		if (scriptDone _cleanupMain) then {
 			if (_canKillCleanupMain) then {_canKillCleanupMain = false;};
 			_cleanupMain = [_currentTime,_fnc_purgeAndDelete] spawn {
@@ -113,7 +101,7 @@ while {true} do {
 						if (_x isKindOf "AllVehicles") exitWith {
 							_deathTime = _x getVariable "A3EAI_deathTime";
 							if (!isNil "_deathTime") then {
-								if ((_currentTime - _deathTime) > VEHICLE_CLEANUP_FREQ) then {
+								if ((_currentTime - _deathTime) > MONITOR_VEHICLECLEANUP_FREQ) then {
 									if (({isPlayer _x} count (_x nearEntities [[PLAYER_UNITS,"Air","LandVehicle"],60])) isEqualTo 0) then {
 										if (({alive _x} count (crew _x)) isEqualTo 0) then {
 											{
@@ -193,7 +181,7 @@ while {true} do {
 	};
 
 	//Main location cleanup loop
-	if ((_currentTime - _dynLocations) > LOCATION_CLEANUP_FREQ) then {
+	if ((_currentTime - _dynLocations) > MONITOR_LOCATIONCLEANUP_FREQ) then {
 		if (scriptDone _cleanupLocations) then {
 			if (_canKillCleanupLocations) then {_canKillCleanupLocations = false;};
 			_cleanupLocations  = [_currentTime] spawn {
@@ -222,7 +210,7 @@ while {true} do {
 		_dynLocations = _currentTime;
 	};
 
-	if ((_currentTime - _checkRandomSpawns) > RANDSPAWN_CHECK_FREQ) then {
+	if ((_currentTime - _checkRandomSpawns) > MONITOR_CHECK_RANDSPAWN_FREQ) then {
 		if (scriptDone _cleanupRandomSpawns) then {
 			if (_canKillRandomSpawns) then {_canKillRandomSpawns = false;};
 			_cleanupRandomSpawns = [_currentTime] spawn {
@@ -232,7 +220,7 @@ while {true} do {
 					if ((((triggerStatements _x) select 1) != "") && {(_currentTime - (_x getVariable ["timestamp",_currentTime])) > RANDSPAWN_EXPIRY_TIME}) then {
 						_triggerLocation = _x getVariable ["triggerLocation",locationNull];
 						deleteLocation _triggerLocation;
-						if (A3EAI_debugMarkersEnabled) then {deleteMarker (str _x)};	
+						if (A3EAI_enableDebugMarkers) then {deleteMarker (str _x)};	
 						deleteVehicle _x;
 						A3EAI_randTriggerArray deleteAt _forEachIndex;
 					};
@@ -255,7 +243,7 @@ while {true} do {
 		_checkRandomSpawns = _currentTime;
 	};
 	
-	if ((_currentTime - _playerCountTime) > UPDATE_PLAYER_COUNT_FREQ) then {
+	if ((_currentTime - _playerCountTime) > MONITOR_UPDATE_PLAYER_COUNT_FREQ) then {
 		_currentPlayerCount = ({alive _x} count allPlayers);
 		if (A3EAI_HCIsConnected) then {_currentPlayerCount = _currentPlayerCount - 1};
 		if !(_lastPlayerCount isEqualTo _currentPlayerCount) then {
@@ -276,7 +264,7 @@ while {true} do {
 		_sideCheck = _currentTime;
 	};
 	
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		{
 			if (_x in allMapMarkers) then {
 				_x setMarkerPos (getMarkerPos _x);

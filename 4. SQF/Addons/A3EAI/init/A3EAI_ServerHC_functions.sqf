@@ -7,34 +7,7 @@ A3EAI_updateGroupLootPool = compileFinal preprocessFileLineNumbers format ["%1\c
 A3EAI_HCListener = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_server\A3EAI_HCListener.sqf",A3EAI_directory];
 A3EAI_updateGroupSizeServer = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_server\A3EAI_updateGroupSizeServer.sqf",A3EAI_directory];
 A3EAI_registerDeath = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_server\A3EAI_registerDeath.sqf",A3EAI_directory];
-
-A3EAI_protectRemoteGroup = compileFinal '
-	private ["_unitGroup","_dummy"];
-	_unitGroup = _this select 0;
-	_dummy = _this select 1;
-	_unitGroup setVariable ["dummyUnit",_dummy];
-	true
-';
-
-A3EAI_setBehavior = compileFinal '
-	private ["_unitGroup","_mode"];
-	_unitGroup = _this select 0;
-	_mode = _this select 1;
-	
-	call {
-		if (_mode isEqualTo 0) exitWith {
-			_unitGroup setBehaviour "CARELESS";
-			{_x doWatch objNull} forEach (units _unitGroup);
-			_unitGroup setVariable ["EnemiesIgnored",true];
-			true
-		};
-		if (_mode isEqualTo 1) exitWith {
-			_unitGroup setBehaviour "AWARE";
-			_unitGroup setVariable ["EnemiesIgnored",false];
-			true
-		};
-		false
-	};
-';
+A3EAI_protectRemoteGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_server\A3EAI_protectRemoteGroup.sqf",A3EAI_directory];
+A3EAI_setBehavior = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_server\A3EAI_setBehavior.sqf",A3EAI_directory];
 
 diag_log "[A3EAI] A3EAI HC functions compiled.";

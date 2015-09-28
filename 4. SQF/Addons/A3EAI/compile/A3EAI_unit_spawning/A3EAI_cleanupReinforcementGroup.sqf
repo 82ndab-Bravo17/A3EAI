@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 _unitGroup = _this;
 
 if (!((typeName _unitGroup) isEqualTo "GROUP") || {isNull _unitGroup}) exitWith {diag_log format ["A3EAI Error: Invalid group %1 provided to %2.",_unitGroup,__FILE__];};

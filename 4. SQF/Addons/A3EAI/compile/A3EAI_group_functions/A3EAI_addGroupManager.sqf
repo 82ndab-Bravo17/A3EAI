@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup", "_unitLevel", "_unitType", "_unitTypeRef", "_vehicle", "_stuckCheckTime", "_groupLeadMarker", "_groupWPMarker", "_fncArray", "_fnc_execEveryLoop", "_fnc_checkUnits", "_fnc_generateLoot", "_fnc_vehicleAmmoFuelCheck", "_fnc_antistuck", "_currentTime", "_managerStartTime", "_updateServerLoot", "_pullRate", "_markname", "_mark", "_markername", "_unitPos", "_unitMarker", "_lootPool", "_result", "_debugStartTime"];
 
 _unitGroup = _this select 0;
@@ -40,7 +42,7 @@ _pullRate = 30;
 if (isDedicated) then {
 	[_unitGroup,_unitType,_unitLevel] call A3EAI_setLoadoutVariables;
 	
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		_groupLeadMarker = format ["%1_Lead",_unitGroup];
 		if (_groupLeadMarker in allMapMarkers) then {deleteMarker _groupLeadMarker; uiSleep 0.5};	//Delete the previous marker if it wasn't deleted for some reason.
 		_groupLeadMarker = createMarker [_groupLeadMarker,getPosATL (leader _unitGroup)];
@@ -102,7 +104,7 @@ if (isDedicated) then {
 	waitUntil {uiSleep 0.25; (local _unitGroup)};
 	[_unitGroup,_unitType,_unitLevel] call A3EAI_setLoadoutVariables_HC;
 	
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		{
 			_nul = _x spawn {
 				waitUntil {sleep 5; ((local _this) or {!(alive _this)})};
@@ -209,7 +211,7 @@ if !(isNull _vehicle) then {
 	if (isNil {_vehicle getVariable "A3EAI_deathTime"}) then {_vehicle setVariable ["A3EAI_deathTime",diag_tickTime];};
 };
 
-if (A3EAI_debugMarkersEnabled) then {
+if (A3EAI_enableDebugMarkers) then {
 	deleteMarker _groupLeadMarker;
 	deleteMarker _groupWPMarker;
 };

@@ -1,9 +1,4 @@
-/*
-	despawnBandits_dynamic
-
-	Last updated: 10:57 PM 3/10/2014
-	
-*/
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_trigger","_triggerLocation","_isForceDespawn","_grpArray","_canDespawn","_triggerExists","_triggerStatements","_deactStatements"];
 
@@ -28,7 +23,7 @@ if (_isForceDespawn) then {
 	uiSleep 30;
 } else {
 	if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: No players remain in %1. Deleting spawned AI in %2 seconds.",triggerText _trigger,A3EAI_dynDespawnWait];};
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		_nul = _trigger spawn {
 			_marker = str(_this);
 			_marker setMarkerColor "ColorGreen";
@@ -60,7 +55,7 @@ if (_canDespawn) then {
 	
 	//Remove dynamic trigger from global dyn trigger array and clean up trigger
 	[_trigger,"A3EAI_dynTriggerArray"] call A3EAI_updateSpawnCount;
-	if (A3EAI_debugMarkersEnabled) then {deleteMarker str(_trigger)};
+	if (A3EAI_enableDebugMarkers) then {deleteMarker str(_trigger)};
 
 	//Begin deletion timer for temporary blacklist area and add it to global dyn location array to allow deletion
 	_triggerLocation = _trigger getVariable "triggerLocation";
@@ -76,7 +71,7 @@ if (_canDespawn) then {
 	_trigger setVariable ["isCleaning",false];	//Allow next despawn request.
 	_triggerStatements set [2,_deactStatements];
 	_trigger setTriggerStatements _triggerStatements;
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		_nul = _trigger spawn {
 			_marker = str(_this);
 			_marker setMarkerColor "ColorOrange";

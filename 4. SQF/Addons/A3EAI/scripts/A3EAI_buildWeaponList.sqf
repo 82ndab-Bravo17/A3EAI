@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_startTime", "_checkWeapon", "_magazineTypes", "_cursorAim", "_ammo", "_ammoHit", "_buildWeaponList", "_pistolList", "_rifleList", "_machinegunList", "_sniperList"];
 
 _startTime = diag_tickTime;

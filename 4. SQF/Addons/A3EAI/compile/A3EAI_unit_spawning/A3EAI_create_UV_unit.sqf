@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unit", "_unitGroup", "_spawnPos", "_unitLevel", "_type"];
 _unitGroup = _this select 0;
 _unitLevel = _this select 1;

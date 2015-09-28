@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_killer","_victim"];
 _killer = _this select 0;
 _victim = _this select 1;

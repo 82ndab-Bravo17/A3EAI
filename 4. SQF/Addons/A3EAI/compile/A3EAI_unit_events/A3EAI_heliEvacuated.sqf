@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_vehicle","_vehiclePos","_unitGroup","_driver"];
 
 _vehicle = (_this select 0);
@@ -14,7 +16,7 @@ if (isNil {_unitGroup getVariable "dummyUnit"}) then {
 	private ["_unitsAlive","_trigger","_unitLevel","_units","_waypointCount"];
 	_unitLevel = _unitGroup getVariable ["unitLevel",1];
 	_units = (units _unitGroup);
-	if (!(surfaceIsWater _vehiclePos) && {(_vehiclePos select 2) > 50}) then {
+	if (!(surfaceIsWater _vehiclePos) && {(_vehiclePos select 2) > PARACHUTE_HEIGHT_REQUIRED}) then {
 		_unitsAlive = {
 			if (alive _x) then {
 				_x call A3EAI_ejectParachute;

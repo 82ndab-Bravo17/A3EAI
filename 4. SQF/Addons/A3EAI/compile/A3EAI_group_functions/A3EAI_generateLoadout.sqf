@@ -1,9 +1,4 @@
-#define DEFAULT_UNIFORM_ITEM "U_Test1_uniform"
-#define DEFAULT_VEST_ITEM_MALE "V_41_EPOCH"
-#define DEFAULT_VEST_ITEM_FEMALE "V_F41_EPOCH"
-#define GRENADE_AMMO_3RND "3Rnd_HE_Grenade_shell"
-#define GRENADE_AMMO_1RND "1Rnd_HE_Grenade_shell"
-#define FIRST_AID_ITEM_AI "FirstAidKit"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unit", "_unitLevel", "_unitLevelInvalid", "_loadout", "_weaponSelected", "_unitLevelString", "_uniforms", "_backpacks", "_vests", "_headgears", "_magazine", "_uniformItem", "_backpackItem", "_vestItem", "_headgearItem", 
 "_useGL", "_weaponMuzzles", "_GLWeapon", "_GLMagazines", "_isRifle", "_opticsList", "_opticsType", "_pointersList", "_pointerType", "_muzzlesList", "_muzzleType", "_underbarrelList", "_underbarrelType", "_gadgetsArray", "_gadget"];

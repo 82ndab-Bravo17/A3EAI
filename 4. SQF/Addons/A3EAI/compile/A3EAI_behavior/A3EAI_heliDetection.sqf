@@ -1,5 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup","_detectBase","_vehicle","_canParaDrop","_detectStartPos","_searchLength"];
 _unitGroup = _this select 0;
@@ -8,7 +7,7 @@ if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
 _searchLength = _unitGroup getVariable "SearchLength";
-if (isNil "_searchLength") then {_searchLength = (waypointPosition [_unitGroup,0]) distance (waypointPosition [_unitGroup,1]);};
+if (isNil "_searchLength") then {_searchLength = (waypointPosition [_unitGroup,0]) distance2D (waypointPosition [_unitGroup,1]);};
 if (_vehicle isKindOf "Plane") then {_searchLength = _searchLength * 2;};
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection started with search length %3.",_unitGroup,(typeOf (_vehicle)),_searchLength];};
@@ -17,18 +16,18 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 	_unitGroup setVariable ["HeliDetectReady",false];
 	_detectStartPos = getPosATL _vehicle;
 	_canParaDrop = ((diag_tickTime - (_unitGroup getVariable ["HeliLastParaDrop",-A3EAI_paraDropCooldown])) > A3EAI_paraDropCooldown);
-	_vehicle flyInHeight (60 + (random 30));
+	_vehicle flyInHeight (FLYINHEIGHT_AIR_SEARCHING_BASE + (random FLYINHEIGHT_AIR_SEARCHING_VARIANCE));
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
-		private ["_detected","_vehPos","_nearNoAggroAreas","_playerPos","_canReveal"];
+		private ["_detected","_vehPos","_nearBlacklistAreas","_playerPos","_canReveal"];
 		_vehPos = getPosATL _vehicle;
 		_canReveal = !((combatMode _unitGroup) isEqualTo "BLUE");
-		_detected = _vehPos nearEntities [[PLAYER_UNITS,"LandVehicle"],500];
+		_detected = _vehPos nearEntities [[PLAYER_UNITS,"LandVehicle"],DETECT_RANGE_AIR];
 		if ((count _detected) > 5) then {_detected resize 5};
-		_nearNoAggroAreas = if (_detected isEqualTo []) then {[]} else {nearestLocations [_vehPos,["A3EAI_NoAggroArea"],1500]};
+		_nearBlacklistAreas = if (_detected isEqualTo []) then {[]} else {nearestLocations [_vehPos,[BLACKLIST_OBJECT_GENERAL],1500]};
 		{
 			_playerPos = getPosATL _x;
-			if ((isPlayer _x) && {({if (_playerPos in _x) exitWith {1}} count _nearNoAggroAreas) isEqualTo 0}) then {
+			if ((isPlayer _x) && {({if (_playerPos in _x) exitWith {1}} count _nearBlacklistAreas) isEqualTo 0}) then {
 				if (_canParaDrop) then {
 					_canParaDrop = false;
 					_unitGroup setVariable ["HeliLastParaDrop",diag_tickTime];
@@ -45,11 +44,11 @@ if (_unitGroup getVariable ["HeliDetectReady",true]) then {
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
+		if (((_vehicle distance2D _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {_unitGroup setVariable ["HeliDetectReady",true]};
 		uiSleep 15;
 	};
 	
-	_vehicle flyInHeight (125 + (random 25));
+	_vehicle flyInHeight (FLYINHEIGHT_AIR_PATROLLING_BASE + (random FLYINHEIGHT_AIR_PATROLLING_VARIANCE));
 };
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

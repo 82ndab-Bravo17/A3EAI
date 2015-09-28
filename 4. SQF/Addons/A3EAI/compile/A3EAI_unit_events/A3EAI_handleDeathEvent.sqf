@@ -1,6 +1,4 @@
-#define FIRST_AID_ITEM_AI "FirstAidKit"
-#define NVG_AI "NVGoggles"
-#define DEFAULT_UNIT_CLASSNAME "i_survivor_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private["_victim","_killer","_unitGroup","_unitType","_launchWeapon","_launchAmmo","_groupIsEmpty","_unitsAlive","_vehicle","_groupSize","_newGroupSize","_fnc_deathHandler","_unitLevel","_bodyPos","_bodyPosEmpty"];
 
@@ -73,7 +71,7 @@ if !(isNull _victim) then {
 	} forEach ((_victim getVariable ["loadout",[[],[]]]) select 1);
 
 	_victim removeItems FIRST_AID_ITEM_AI;
-	_victim removeWeapon NVG_AI;
+	_victim removeWeapon NVG_ITEM_AI;
 	
 	if (_vehicle isEqualTo (_unitGroup getVariable ["assignedVehicle",objNull])) then {
 		_bodyPos = (getPosATL _victim);
@@ -91,7 +89,7 @@ if !(isNull _victim) then {
 	};
 	
 	if (isDedicated) then {
-		if ((_unitGroup getVariable ["ReinforceAvailable",false]) && {isPlayer _killer} && {(missionNamespace getVariable [format ["A3EAI_airReinforcementSpawnChance%1",_unitLevel],0]) call A3EAI_chance}) then {
+		if ((isPlayer _killer) && {_unitGroup getVariable ["ReinforceAvailable",false]} && {(missionNamespace getVariable [format ["A3EAI_airReinforcementSpawnChance%1",_unitLevel],0]) call A3EAI_chance}) then {
 			_unitGroup setVariable ["ReinforceAvailable",false];
 			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 (Level %2) is calling reinforcements.",_unitGroup,_unitLevel];};
 			_nul = [(getPosATL _victim),_killer,_unitLevel] spawn A3EAI_spawn_reinforcement;

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_victim","_killer","_vehicle","_unitGroup","_groupIsEmpty"];
 
 _victim = _this select 0;
@@ -23,10 +25,6 @@ if (_groupIsEmpty) then {
 	private ["_groupUnits","_newDriver","_unit"];
 	_groupUnits = (units _unitGroup) - [_victim,gunner _vehicle];
 	_groupSize = _unitGroup getVariable ["GroupSize",(count _groupUnits)];
-	if ((combatMode _unitGroup) isEqualTo "BLUE") then {
-		[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior;
-		_unitGroup setVariable ["TimeLastUnitKilled",diag_tickTime];
-	};
 	if (_groupSize > 1) then {
 		if (_victim getVariable ["isDriver",false]) then {
 			_newDriver = _groupUnits call A3EAI_selectRandom;	//Find another unit to serve as driver (besides the gunner)

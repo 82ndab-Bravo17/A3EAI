@@ -1,4 +1,4 @@
-#define DEFAULT_UNIT_CLASSNAME "i_survivor_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unit", "_unitGroup", "_spawnPos", "_unitLevel", "_type"];
 _unitGroup = _this select 0;

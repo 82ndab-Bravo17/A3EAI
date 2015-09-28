@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_vehicle","_unitsAlive","_unitGroup","_vehiclePos"];
 
 _vehicle = (_this select 0);

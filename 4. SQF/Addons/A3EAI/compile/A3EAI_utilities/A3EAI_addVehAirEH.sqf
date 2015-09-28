@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 if (isNull _this) exitWith {};
 
 if (isNil {_this getVariable "durability"}) then {_this setVariable ["durability",[0,0,0,0]];};

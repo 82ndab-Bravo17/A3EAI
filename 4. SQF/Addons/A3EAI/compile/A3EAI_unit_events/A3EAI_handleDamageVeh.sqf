@@ -1,18 +1,24 @@
-private["_vehicle","_hit","_damage","_source","_ammo"];
+#include "\A3EAI\globaldefines.hpp"
 
-_vehicle = 		_this select 0;				//Object the event handler is assigned to. (the unit taking damage)
+private["_object","_hit","_damage","_source","_ammo","_hitPoint"];
+
+_object = 		_this select 0;				//Object the event handler is assigned to. (the unit taking damage)
 _hit = 			_this select 1;				//Name of the selection where the unit was damaged. "" for over-all structural damage, "?" for unknown selections. 
 _damage = 		_this select 2;				//Resulting level of damage for the selection. (Received damage)
 _source = 		_this select 3;				//The source unit that caused the damage. 
-_ammo = 		_this select 4;				//Classname of the projectile that caused inflicted the damage. ("" for unknown, such as falling damage.) 
+//_ammo = 		_this select 4;				//Classname of the projectile that caused inflicted the damage. ("" for unknown, such as falling damage.) 
+_hitPartIndex = _this select 5;				//Hit part index of the hit point, -1 otherwise.
 
-if (isPlayer _source) then {
-	if (!((_hit find "wheel") isEqualTo -1) && {_damage > 0.8} && {!(_vehicle getVariable ["vehicle_disabled",false])}) then {
-		[_vehicle] call A3EAI_vehDestroyed;
-		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI vehicle %1 (%2) is immobilized. Respawning vehicle patrol group.",_vehicle,(typeOf _vehicle)];};
+_hitPoint = (_object getHitIndex _hitPartIndex);
+if (_damage > _hitPoint) then {
+	call {
+		if ((group _object) call A3EAI_getNoAggroStatus) exitWith {_damage = _hitPoint;};
+		if ((side _source) isEqualTo AI_GROUP_SIDE) exitWith {_damage = _hitPoint;};
+		if (((_hit find "wheel") > -1) && {_damage > 0.8} && {!(_object getVariable ["vehicle_disabled",false])}) exitWith {
+			[_object] call A3EAI_vehDestroyed;
+			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI vehicle %1 (%2) is immobilized. Respawning vehicle patrol group.",_object,(typeOf _object)];};
+		};
 	};
-} else {
-	_damage = 0;
 };
 
 _damage

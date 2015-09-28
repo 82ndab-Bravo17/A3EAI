@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_arrayData", "_unitGroup", "_trigger"];
 _arrayData = _this;
 _unitGroup = _arrayData select 0;
@@ -30,4 +32,4 @@ _arrayData deleteAt 0;
 	"permadelete"
 ];
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Set group trigger variables for group %1. Success check: %2.",_unitGroup,_trigger isKindOf "A3EAI_EmptyDetector"];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Set group trigger variables for group %1. Success check: %2.",_unitGroup,_trigger isKindOf TRIGGER_OBJECT];};

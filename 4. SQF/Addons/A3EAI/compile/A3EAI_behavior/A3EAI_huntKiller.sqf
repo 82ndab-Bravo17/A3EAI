@@ -1,5 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup","_targetPlayer","_startPos","_chaseDistance","_enableHCReady","_nearBlacklistedAreas"];
 
@@ -23,7 +22,7 @@ if (_unitGroup getVariable ["HC_Ready",false]) then { //If HC mode enabled and A
 
 _startPos = _unitGroup getVariable ["trigger",(getPosASL (leader _unitGroup))];
 _chaseDistance = _unitGroup getVariable ["patrolDist",250];
-_nearBlacklistedAreas = nearestLocations [_targetPlayer,["A3EAI_BlacklistedArea"],1500];
+_nearBlacklistedAreas = nearestLocations [_targetPlayer,[BLACKLIST_OBJECT_GENERAL],1500];
 
 #define TRANSMIT_RANGE 50 //distance to broadcast radio text around target player
 #define RECEIVE_DIST 200 //distance requirement to receive message from AI group leader
@@ -39,7 +38,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 	_unitGroup setVariable ["targetKiller",name _targetPlayer];
 	
 	
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		_markername = format ["%1 Target",_unitGroup];
 		if (_markername in allMapMarkers) then {deleteMarker _markername; uiSleep 0.5;};
 		_marker = createMarker [_markername,getPosASL _targetPlayer];
@@ -100,7 +99,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 				};
 			};
 		};
-		if (A3EAI_debugMarkersEnabled) then {
+		if (A3EAI_enableDebugMarkers) then {
 			_marker setMarkerPos (getPosASL _targetPlayer);
 		};
 		_ableToChase = ((!isNull _unitGroup) && {diag_tickTime < (_unitGroup getVariable ["pursuitTime",0])} && {(_unitGroup getVariable ["GroupSize",0]) > 0});
@@ -139,7 +138,7 @@ if ((_startPos distance _targetPlayer) < _chaseDistance) then {
 		};
 	};
 	
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		deleteMarker _marker;
 	};
 };

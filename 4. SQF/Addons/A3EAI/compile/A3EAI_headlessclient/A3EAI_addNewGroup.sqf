@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup", "_unitLevel", "_anchor", "_unitType", "_groupSize", "_functionCall", "_check", "_lootPool","_miscData1","_miscData2","_anchorType"];
 	
 _unitGroup = _this select 0;
@@ -12,7 +14,7 @@ _miscData2 = if ((count _this) > 7) then {_this select 7};
 call {
 	_anchorType = (typeName _anchor);
 	if (_anchorType isEqualTo "ARRAY") exitWith {
-		_anchor = createTrigger ["A3EAI_EmptyDetector",_anchor,false];
+		_anchor = createTrigger [TRIGGER_OBJECT,_anchor,false];
 		_unitGroup setVariable ["trigger",_anchor];
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Created group trigger for %1 group %2.",_unitType,_unitGroup];};
 	};

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_startTime","_getWeightedIndices"];
 
 _startTime = diag_tickTime;

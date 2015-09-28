@@ -1,5 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup", "_unitLevel", "_unitType", "_groupSize", "_vehicle"];
 

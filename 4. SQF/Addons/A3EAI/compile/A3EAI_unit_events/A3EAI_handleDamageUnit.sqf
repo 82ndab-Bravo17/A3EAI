@@ -1,21 +1,26 @@
-private["_unit","_part","_damage","_source","_ammo","_hitPartIndex"];
+#include "\A3EAI\globaldefines.hpp"
 
-_unit = 		_this select 0;				//Object the event handler is assigned to. (the unit taking damage)
-_part = 		_this select 1;				//Name of the selection where the unit was damaged. "" for over-all structural damage, "?" for unknown selections. 
+private["_object","_hit","_damage","_source","_ammo","_hitPartIndex","_hitPoint"];
+
+_object = 		_this select 0;				//Object the event handler is assigned to. (the unit taking damage)
+_hit = 			_this select 1;				//Name of the selection where the unit was damaged. "" for over-all structural damage, "?" for unknown selections. 
 _damage = 		_this select 2;				//Resulting level of damage for the selection. (Received damage)
 _source = 		_this select 3;				//The source unit that caused the damage. 
 _ammo = 		_this select 4;				//Classname of the projectile that caused inflicted the damage. ("" for unknown, such as falling damage.) 
 _hitPartIndex = _this select 5;				//Hit part index of the hit point, -1 otherwise.
 
-if (isPlayer _source) then {	
-	if (_ammo isEqualTo "") then {
-		call {
-			if (A3EAI_noCollisionDamage) exitWith {_damage = 0;};
-			if ((_damage >= 0.9) && {_part in ["","body","head"]} && {_hitPartIndex > -1}) exitWith {_unit setVariable ["CollisionKilled",A3EAI_roadKillPenalty];};
+_hitPoint = (_object getHitIndex _hitPartIndex);
+if (_damage > _hitPoint) then {
+	call {
+		if ((group _object) call A3EAI_getNoAggroStatus) exitWith {_damage = _hitPoint;}; 	//No damage from any source when non-hostile
+		if ((side _source) isEqualTo AI_GROUP_SIDE) exitWith {_damage = _hitPoint;}; 		//No damage from units on same side
+		if ((!isNull (objectParent _source)) && {_ammo isEqualTo ""}) then {				//No damage if source is a vehicle and damage has no ammo (vehicle collision)
+			call {
+				if (A3EAI_noCollisionDamage) exitWith {_damage = _hitPoint;};
+				if ((_damage >= 0.9) && {_hit in ["","body","head"]} && {_hitPartIndex > -1}) exitWith {_object setVariable ["CollisionKilled",A3EAI_roadKillPenalty];};
+			};
 		};
 	};
-} else {
-	_damage = 0; //Non-players cause no damage to unit
 };
 
 _damage

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_vehicle", "_vehicleType", "_spawnParams"];
 
 _vehicle = _this;

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup","_lootPool","_lootIndex"];
 _unitGroup = _this select 0;
 _lootIndex = _this select 1;

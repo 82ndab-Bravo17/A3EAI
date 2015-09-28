@@ -1,6 +1,4 @@
-#define SLEEP_DELAY 300
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
-#define PLOTPOLE_OBJECT "PlotPole_EPOCH"
+#include "\A3EAI\globaldefines.hpp"
 
 if (A3EAI_debugLevel > 0) then {diag_log "Starting A3EAI Dynamic Spawn Manager in 2 minutes.";};
 uiSleep 120;
@@ -39,9 +37,9 @@ while {true} do {
 						};
 					} else {
 						_playerUID_DB pushBack _playerUID;
-						_lastSpawned_DB pushBack _currentTime - SLEEP_DELAY;
+						_lastSpawned_DB pushBack _currentTime - DYNSPAWNMGR_SLEEP_DELAY;
 						_lastOnline_DB pushBack _currentTime;
-						//diag_log format ["DEBUG: Player %1 added to dynamic spawn playerUID database.",_x];
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug:: Player %1 added to dynamic spawn playerUID database.",_x];};
 					};
 					//diag_log format ["DEBUG: Found a player at %1 (%2).",mapGridPosition _x,name _x];
 				};
@@ -64,51 +62,64 @@ while {true} do {
 				_index = _playerUID_DB find _playerUID;
 				_playerPos = getPosATL _player;
 				_spawnParams = _playerPos call A3EAI_getSpawnParams;
-				_spawnChance = ((missionNamespace getVariable ["A3EAI_spawnChance"+str(_spawnParams select 2),1]) * A3EAI_spawnChanceMultiplier);
+				_spawnChance = _spawnParams select 3;
+				_chanceModifier = 1.00;
+				call {
+					if (_spawnChance isEqualTo 0) exitWith {};
+					if ((vehicle _player) isKindOf "Air") exitWith {
+						_spawnChance = 0;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is in Air vehicle. Dynamic spawn chance set to 0.",_player];};
+					};
+					if (({if (_playerPos in _x) exitWith {1}} count (nearestLocations [_playerPos,[BLACKLIST_OBJECT_GENERAL,BLACKLIST_OBJECT_DYNAMIC],1500])) > 0) exitWith {
+						_spawnChance = 0;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is in blacklisted area. Dynamic spawn chance set to 0.",_player];};
+					};
+					if !((_playerPos nearObjects [PLOTPOLE_OBJECT,PLOTPOLE_RADIUS]) isEqualTo []) exitWith {
+						_spawnChance = 0;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is near pole object. Dynamic spawn chance set to 0.",_player];};
+					};
+					if (currentWeapon _player isEqualTo "") then {
+						_chanceModifier = _chanceModifier + DYNAMIC_CHANCE_ADJUST_UNARMED;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is unarmed. Probability modifier set to %2.",_player,_chanceModifier];};
+					};
+					if ((damage _player) > DYNAMIC_WEAK_PLAYER_HEALTH) then {
+						_chanceModifier = _chanceModifier + DYNAMIC_CHANCE_ADJUST_WEAKENED;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is weakened. Probability modifier set to %2.",_player,_chanceModifier];};
+					};
+					if !((_playerPos nearObjects [LOOT_HOLDER_CLASS,DYNAMIC_LOOTING_DISTANCE]) isEqualTo []) then {
+						_chanceModifier = _chanceModifier + DYNAMIC_CHANCE_ADJUST_LOOTING;
+						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is looting. Probability modifier set to %2.",_player,_chanceModifier];};
+					};
+					if (_chanceModifier < 0) then {_chanceModifier = 0;};
+					_spawnChance = (_spawnChance * _chanceModifier * A3EAI_spawnChanceMultiplier);
+					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn probabilities for %1: Base: %2, Modifier: %3, A3EAI_spawnChanceMultiplier: %4",_player,_spawnChance,_chanceModifier,A3EAI_spawnChanceMultiplier];};
+				};
 				if (_spawnChance call A3EAI_chance) then {
-					if (
-						!((vehicle _player) isKindOf "Air") &&												//Player must not be in air vehicle
-						{({if (_playerPos in _x) exitWith {1}} count (nearestLocations [_playerPos,["A3EAI_BlacklistedArea","A3EAI_DynamicSpawnArea"],1500])) isEqualTo 0} && //Player must not be in blacklisted areas
-						{(!(surfaceIsWater _playerPos))} && 											//Player must not be on water position
-						{((_playerPos distance getMarkerPos "respawn_west") > 2000)} &&					//Player must not be in debug area
-						{((_playerPos nearObjects [PLOTPOLE_OBJECT,300]) isEqualTo [])}					//Player must not be near Epoch buildables
-					) then {
-						_lastSpawned_DB set [_index,diag_tickTime];
-						_trigger = createTrigger ["A3EAI_EmptyDetector",_playerPos,false];
-						_location = [_playerPos,600] call A3EAI_createBlackListAreaDynamic;
-						_trigger setVariable ["triggerLocation",_location];
-						_trigger setTriggerArea [600, 600, 0, false];
-						_trigger setTriggerActivation ["ANY", "PRESENT", true];
-						_trigger setTriggerTimeout [3, 3, 3, true];
-						_trigger setTriggerText (format ["Dynamic Spawn (Triggered by: %1)",_playername]);
-						_trigger setVariable ["targetplayer",_player];
-						_trigger setVariable ["targetplayerUID",_playerUID];
-						//_trigActStatements = format ["0 = [150,thisTrigger,%1,%2,%3] call A3EAI_spawnUnits_dynamic;",_spawnParams select 0,_spawnParams select 1,_spawnParams select 2];
-						_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;","", "[thisTrigger] spawn A3EAI_despawn_dynamic;"];
-						if (A3EAI_debugMarkersEnabled) then {
-							_nul = _trigger spawn {
-								_marker = str(_this);
-								if (_marker in allMapMarkers) then {deleteMarker _marker};
-								_marker = createMarker[_marker,(getPosASL _this)];
-								_marker setMarkerShape "ELLIPSE";
-								_marker setMarkerType "Flag";
-								_marker setMarkerBrush "SOLID";
-								_marker setMarkerSize [600, 600];
-								_marker setMarkerAlpha 0;
-							};
-						};
-						0 = [150,_trigger,_spawnParams select 0,_spawnParams select 1,_spawnParams select 2] call A3EAI_spawnUnits_dynamic;
-						if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created dynamic trigger at %1 with params %2. Triggered by player: %3.",(mapGridPosition _trigger),_spawnParams,_playername];};
-					} else {
-						if (A3EAI_debugLevel > 1) then {
-							diag_log format ["A3EAI Debug: Dynamic spawn conditions failed for player %1:",_playername];
-							diag_log format ["DEBUG: Player is not air: %1",!((vehicle _player) isKindOf "Air")];
-							diag_log format ["DEBUG: Player not in blacklisted area: %1",(({_playerPos in _x} count (nearestLocations [_playerPos,["A3EAI_BlacklistedArea"],1000])) isEqualTo 0)];
-							diag_log format ["DEBUG: Player not in water: %1",!(surfaceIsWater _playerPos)];
-							diag_log format ["DEBUG: Player not in debug area: %1",((_playerPos distance getMarkerpos "respawn_west") > 2000)];
-							//diag_log format ["DEBUG: Player not near modular buildables: %1",((_playerPos nearObjects [PLOTPOLE_OBJECT,125]) isEqualTo [])];
+					_lastSpawned_DB set [_index,diag_tickTime];
+					_trigger = createTrigger [TRIGGER_OBJECT,_playerPos,false];
+					_location = [_playerPos,TEMP_BLACKLIST_AREA_DYNAMIC_SIZE] call A3EAI_createBlackListAreaDynamic;
+					_trigger setVariable ["triggerLocation",_location];
+					_trigger setTriggerArea [TRIGGER_SIZE_SMALL,TRIGGER_SIZE_SMALL,0,false];
+					_trigger setTriggerActivation ["ANY", "PRESENT", true];
+					_trigger setTriggerTimeout [TRIGGER_TIMEOUT_DYNAMIC, true];
+					_trigger setTriggerText (format ["Dynamic Spawn (Triggered by: %1)",_playername]);
+					_trigger setVariable ["targetplayer",_player];
+					_trigger setVariable ["targetplayerUID",_playerUID];
+					_trigger setTriggerStatements ["{if (isPlayer _x) exitWith {1}} count thisList != 0;","", "[thisTrigger] spawn A3EAI_despawn_dynamic;"];
+					if (A3EAI_enableDebugMarkers) then {
+						_nul = _trigger spawn {
+							_marker = str(_this);
+							if (_marker in allMapMarkers) then {deleteMarker _marker};
+							_marker = createMarker[_marker,(getPosASL _this)];
+							_marker setMarkerShape "ELLIPSE";
+							_marker setMarkerType "Flag";
+							_marker setMarkerBrush "SOLID";
+							_marker setMarkerSize [600, 600];
+							_marker setMarkerAlpha 0;
 						};
 					};
+					0 = [PATROL_DIST_DYNAMIC,_trigger,_spawnParams select 0,_spawnParams select 1,_spawnParams select 2] call A3EAI_spawnUnits_dynamic;
+					if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created dynamic trigger at %1 with params %2. Triggered by player: %3.",(mapGridPosition _trigger),_spawnParams,_playername];};
 				} else {
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn probability check failed for player %1 (Probability: %2).",_playername,_spawnChance];};
 				};
@@ -124,6 +135,6 @@ while {true} do {
 		if (A3EAI_debugLevel > 1) then {diag_log "A3EAI Debug: No players online. Dynamic spawn manager is entering waiting state.";};
 	};
 
-	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn manager is sleeping for %1 seconds.",SLEEP_DELAY];};
-	uiSleep SLEEP_DELAY;
+	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn manager is sleeping for %1 seconds.",DYNSPAWNMGR_SLEEP_DELAY];};
+	uiSleep DYNSPAWNMGR_SLEEP_DELAY;
 };

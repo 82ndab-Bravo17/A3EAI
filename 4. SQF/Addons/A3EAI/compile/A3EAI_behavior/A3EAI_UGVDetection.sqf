@@ -1,5 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup","_vehicle","_canCall"];
 _unitGroup = _this select 0;
@@ -15,17 +14,17 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 	_detectStartPos = getPosATL _vehicle;
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
-		private ["_detected","_detectOrigin","_startPos","_vehPos","_nearNoAggroAreas","_playerPos","_canReveal"];
+		private ["_detected","_detectOrigin","_startPos","_vehPos","_nearBlacklistAreas","_playerPos","_canReveal"];
 		_vehPos = getPosATL _vehicle;
 		_startPos = getPosATL _vehicle;
 		_canReveal = !((combatMode _unitGroup) isEqualTo "BLUE");
-		_detectOrigin = [_startPos,0,getDir _vehicle,1] call SHK_pos;
-		_detected = _detectOrigin nearEntities [[PLAYER_UNITS,"LandVehicle"],250];
+		_detectOrigin = [_startPos,0,getDir _vehicle,1] call A3EAI_SHK_pos;
+		_detected = _detectOrigin nearEntities [[PLAYER_UNITS,"LandVehicle"],DETECT_RANGE_UGV];
 		if ((count _detected) > 5) then {_detected resize 5};
-		_nearNoAggroAreas = if (_detected isEqualTo []) then {[]} else {nearestLocations [_vehPos,["A3EAI_NoAggroArea"],1500]};
+		_nearBlacklistAreas = if (_detected isEqualTo []) then {[]} else {nearestLocations [_vehPos,[BLACKLIST_OBJECT_GENERAL],1500]};
 		{
 			_playerPos = getPosATL _x;
-			if ((isPlayer _x) && {({if (_playerPos in _x) exitWith {1}} count _nearNoAggroAreas) isEqualTo 0}) then {
+			if ((isPlayer _x) && {({if (_playerPos in _x) exitWith {1}} count _nearBlacklistAreas) isEqualTo 0}) then {
 				if (((lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []) && {A3EAI_UGVDetectChance call A3EAI_chance}) then {
 					if (_canCall) then {
 						if (isDedicated) then {
@@ -47,7 +46,7 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 			};
 			uiSleep 0.1;
 		} forEach _detected;
-		if (((_vehicle distance _detectStartPos) > 300) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
+		if (((_vehicle distance2D _detectStartPos) > DETECT_LENGTH_UGV_2D) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
 		uiSleep 15;
 	};
 };

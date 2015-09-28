@@ -1,4 +1,6 @@
-private ["_unitGroup","_unitLevel","_vehicle","_maxGunners","_fnc_addGunner","_gunnersAdded"];
+#include "\A3EAI\globaldefines.hpp"
+
+private ["_unitGroup", "_unitLevel", "_vehicle", "_maxGunners", "_vehicleTurrets", "_maxGunnersAssigned", "_gunnersAdded", "_turretWeapons", "_turretMagazines", "_gunner"];
 
 _unitGroup = _this select 0;
 _unitLevel = _this select 1;
@@ -6,35 +8,23 @@ _vehicle = _this select 2;
 _maxGunners = _this select 3;
 
 _vehicleTurrets = allTurrets [_vehicle,false];
+_maxGunnersAssigned = (_maxGunners min (count _vehicleTurrets));
 _gunnersAdded = 0;
 
-_fnc_addGunner = {
-	private ["_gunner","_vehicle","_unitGroup","_turretPosition","_unitLevel"];
-	_vehicle = _this select 0;
-	_turretPosition = _this select 1;
-	_unitGroup = _this select 2;
-	_unitLevel = _this select 3;
-	
-	_gunner = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
-	_nvg = _gunner call A3EAI_addTempNVG;
-	_gunner assignAsTurret [_vehicle,_turretPosition];
-	_gunner moveInTurret [_vehicle,_turretPosition];
-	
-	_gunner
-};
-
 {
-	private ["_turretWeapons","_turretMagazines"];
+	if (_gunnersAdded isEqualTo _maxGunnersAssigned) exitWith {};
 	_turretWeapons = _vehicle weaponsTurret _x;
 	if !(_turretWeapons isEqualTo []) then {
 		_turretMagazines = _vehicle magazinesTurret _x;
 		if !(_turretMagazines isEqualTo []) then {
-			[_vehicle,_x,_unitGroup,_unitLevel] call _fnc_addGunner;
+			_gunner = [_unitGroup,_unitLevel,[0,0,0]] call A3EAI_createUnit;
+			_gunner call A3EAI_addTempNVG;
+			_gunner assignAsTurret [_vehicle,_x];
+			_gunner moveInTurret [_vehicle,_x];
 			_gunnersAdded = _gunnersAdded + 1;
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added gunner unit %1 to %2 %3 with weapon %4.",_gunnersAdded,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0)];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added gunner unit %1 to %2 %3 with weapon %4 (%5 of %6).",_gunner,_unitGroup,(typeOf _vehicle),(_turretWeapons select 0),_gunnersAdded,_maxGunnersAssigned];};
 		};
 	};
-	if (_gunnersAdded isEqualTo _maxGunners) exitWith {};
-} forEach _vehicleTurrets;
+} count _vehicleTurrets;
 
 _gunnersAdded

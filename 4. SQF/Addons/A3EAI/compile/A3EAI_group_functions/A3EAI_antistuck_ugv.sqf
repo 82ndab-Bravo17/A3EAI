@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup", "_vehicle", "_stuckCheckTime", "_checkPos", "_tooClose", "_wpSelect"];
 
 _unitGroup = _this select 0;
@@ -8,7 +10,7 @@ if (isNull _vehicle) exitWith {};
 
 _checkPos = (getPosATL _vehicle);
 _leader = (leader _unitGroup);
-if (((_leader distance (_leader findNearestEnemy _vehicle)) > 300) && {((_unitGroup getVariable ["antistuckPos",[0,0,0]]) distance _checkPos) < 100}) then {
+if ((((_leader distance (_leader findNearestEnemy _vehicle)) > NEAREST_ENEMY_LAND) or {_checkPos call A3EAI_checkInNoAggroArea}) && {((_unitGroup getVariable ["antistuckPos",[0,0,0]]) distance _checkPos) < ANTISTUCK_MIN_TRAVEL_DIST_LAND}) then {
 	if (canMove _vehicle) then {
 		[_unitGroup] call A3EAI_fixStuckGroup;
 		[_unitGroup,0] setWaypointPosition [_checkPos,0];
@@ -21,7 +23,7 @@ if (((_leader distance (_leader findNearestEnemy _vehicle)) > 300) && {((_unitGr
 		if (!(_vehicle getVariable ["vehicle_disabled",false])) then {
 			[_vehicle] call A3EAI_UGV_destroyed;
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: UGV %1 (Group: %2) is immobilized. Respawning UGV group. Damage: %3. WaterPos: %4.",(typeOf _vehicle),_unitGroup,(damage _vehicle),(surfaceIsWater _checkPos)];};
-			if (A3EAI_debugMarkersEnabled) then {_checkPos call A3EAI_debugMarkerLocation;};
+			if (A3EAI_enableDebugMarkers) then {_checkPos call A3EAI_debugMarkerLocation;};
 		};
 	};
 } else {

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_init","_vehicleType"];
 
 if !(_this isKindOf "AllVehicles") exitWith {false};

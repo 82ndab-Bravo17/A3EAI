@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_currentTime", "_monitorReport", "_getUptime", "_currentSec", "_outHour", "_outMin", "_outSec", "_uptime"];
 
 _currentTime = diag_tickTime;

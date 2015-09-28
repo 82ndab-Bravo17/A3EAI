@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_mapMarkerArray","_objectString"];
 _mapMarkerArray = missionNamespace getVariable ["A3EAI_mapMarkerArray",[]];
 _objectString = str (_this);
@@ -11,7 +13,7 @@ if !(_objectString in _mapMarkerArray) then {	//Determine if marker is new
 	_mapMarkerArray pushBack _objectString;
 	missionNamespace setVariable ["A3EAI_mapMarkerArray",_mapMarkerArray];
 };
-if (_this isKindOf "A3EAI_EmptyDetector") then {	//Set marker as active
+if (_this isKindOf TRIGGER_OBJECT) then {	//Set marker as active
 	_objectString setMarkerText "STATIC TRIGGER (ACTIVE)";
 	_objectString setMarkerColor "ColorRed";
 };

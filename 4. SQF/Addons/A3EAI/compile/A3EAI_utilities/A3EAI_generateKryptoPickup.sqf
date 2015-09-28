@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_kryptoDevice","_kryptoPos","_kryptoPickup","_arrowObject"];
 
 _kryptoDevice = _this select 0;
@@ -8,7 +10,7 @@ if (isNull _kryptoDevice) exitWith {};
 _arrowObject = createVehicle ["Sign_Arrow_F",_kryptoPos,[],0,"CAN_COLLIDE"];
 _arrowObject attachTo [_kryptoDevice,[0,0,2]];
 
-_kryptoPickup = createTrigger ["A3EAI_EmptyDetector",_kryptoPos,false];
+_kryptoPickup = createTrigger [TRIGGER_OBJECT,_kryptoPos,false];
 _kryptoPickup setTriggerArea [1, 1, 0, false];
 _kryptoPickup setTriggerActivation ["ANY", "PRESENT", true];
 _kryptoPickup setTriggerTimeout [5, 5, 5, true];

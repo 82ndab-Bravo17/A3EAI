@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_trigger", "_infantryQueue","_triggerStatements"];
 if !((typeName _this) isEqualTo "ARRAY") exitWith {diag_log format ["Error: Wrong arguments sent to %1.",__FILE__]};
 
@@ -18,7 +20,7 @@ if ((_trigger getVariable ["GroupArray",[]]) isEqualTo []) then {
 					_triggerStatements set [1,""];
 					_trigger setTriggerStatements _triggerStatements;
 					0 = _args call A3EAI_spawnUnits_random;
-					if (A3EAI_debugMarkersEnabled) then {
+					if (A3EAI_enableDebugMarkers) then {
 						_marker = str(_trigger);
 						_marker setMarkerColor "ColorOrange";
 						_marker setMarkerAlpha 0.9;

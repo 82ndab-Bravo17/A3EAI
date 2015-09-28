@@ -1,13 +1,5 @@
-/*
-	despawnBandits
-	
-	Description: Deletes all AI units spawned by a trigger once all players leave the trigger area.
-	
-	Usage: Called by a static trigger when all players have left the trigger area.
-	
-	Last updated: 10:16 PM 5/26/2014
-	
-*/
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_trigger","_grpArray","_isCleaning","_grpCount","_triggerStatements","_deactStatements","_permDelete"];
 
 _trigger = _this select 0;							//Get the trigger object
@@ -28,7 +20,7 @@ _trigger setTriggerStatements _triggerStatements;
 
 if (A3EAI_debugLevel > 0) then {diag_log format["A3EAI Debug: No players remain in trigger area at %3. Deleting %1 AI groups in %2 seconds.",_grpCount, A3EAI_despawnWait,(triggerText _trigger)];};
 
-if (A3EAI_debugMarkersEnabled) then {
+if (A3EAI_enableDebugMarkers) then {
 	_nul = _trigger spawn {
 		_tMarker = str (_this);
 		_tMarker setMarkerText "STATIC TRIGGER (DESPAWNING)";
@@ -45,7 +37,7 @@ if ((triggerActivated _trigger) && {({isNull _x} count _grpArray) < _grpCount}) 
 	_triggerStatements set [2,_deactStatements];
 	_trigger setTriggerStatements _triggerStatements;
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: A player has entered the trigger area at %1. Cancelling despawn script.",(triggerText _trigger)];};
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		_nul = _trigger spawn {
 			_tMarker = str (_this);
 			_tMarker setMarkerText "STATIC TRIGGER (ACTIVE)";
@@ -77,10 +69,10 @@ if !(_permDelete) then {
 	_trigger setVariable ["GroupArray",_grpArray - [grpNull]];
 	_trigger setVariable ["isCleaning",false];
 	_trigger setVariable ["unitLevelEffective",(_trigger getVariable ["unitLevel",1])];
-	_trigger setTriggerArea [650,650,0,false];
+	_trigger setTriggerArea [TRIGGER_SIZE_NORMAL,TRIGGER_SIZE_NORMAL,0,false];
 	_trigger setTriggerStatements (_trigger getVariable "triggerStatements"); //restore original trigger statements
 	if !((_trigger getVariable ["respawnLimitOriginal",-1]) isEqualTo -1) then {_trigger setVariable ["respawnLimit",_trigger getVariable ["respawnLimitOriginal",-1]];};
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 			_nul = _trigger spawn {
 			_tMarker = str (_this);
 			_tMarker setMarkerText "STATIC TRIGGER (INACTIVE)";
@@ -89,7 +81,7 @@ if !(_permDelete) then {
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Despawned AI units at %1. Reset trigger's group array to: %2.",(triggerText _trigger),_trigger getVariable "GroupArray"];};
 } else {
-	if (A3EAI_debugMarkersEnabled) then {
+	if (A3EAI_enableDebugMarkers) then {
 		deleteMarker (str (_trigger));
 	};
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Permanently deleting a static spawn at %1.",triggerText _trigger]};

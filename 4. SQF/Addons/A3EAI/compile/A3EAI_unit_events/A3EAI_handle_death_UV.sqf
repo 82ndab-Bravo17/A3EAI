@@ -1,3 +1,4 @@
+#include "\A3EAI\globaldefines.hpp"
 
 private["_victim","_killer","_unitGroup","_unitType","_launchWeapon","_launchAmmo","_groupIsEmpty","_unitsAlive","_vehicle","_groupSize","_newGroupSize","_fnc_deathHandler","_unitLevel","_bodyPos","_bodyPosEmpty"];
 

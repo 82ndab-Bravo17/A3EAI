@@ -1,3 +1,4 @@
+#include "\A3EAI\globaldefines.hpp"
 
 if (isDedicated) then {
 	private ["_respawnSleep","_nextRespawnTime","_mode","_unitLevelEffective","_promoteChance","_trigger"];
@@ -14,7 +15,7 @@ if (isDedicated) then {
 			
 			if (isNull _trigger) then {_trigger = _unitGroup getVariable ["trigger",objNull];};
 			_respawnSleep = _trigger getVariable ["respawnTime",(A3EAI_respawnTimeMin + (random A3EAI_respawnTimeVariance))];	//Calculate wait time for respawn. Respawn time may be individually defined for custom spawns.
-			if (_fastMode) then {_respawnSleep = (_respawnSleep/4) max 30};
+			if (_fastMode) then {_respawnSleep = ADD_RESPAWN_FAST_TIME;};
 			_nextRespawnTime = (diag_tickTime + _respawnSleep);	//Determine time of next respawn
 			A3EAI_respawnQueue pushBack [diag_tickTime + _respawnSleep,_mode,_trigger,_unitGroup];
 			_respawnLimit = _trigger getVariable ["respawnLimit",-1];

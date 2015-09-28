@@ -1,4 +1,4 @@
-#define FIRST_AID_ITEM_PLAYER "FAK"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_lootPool", "_groupSize", "_unitType", "_lootUnit", "_unitGroup", "_lootItem"];
 
@@ -17,23 +17,17 @@ if (_unitType != "dynamic") then {
 
 		//Add food to loot list
 		for "_i" from 1 to A3EAI_foodLootCount do {
-			if (A3EAI_chanceFoodLoot call A3EAI_chance) then {
-				_lootPool pushBack (A3EAI_foodLoot call A3EAI_selectRandom);
-			};
+			_lootPool pushBack (A3EAI_foodLoot call A3EAI_selectRandom);
 		};
 
 		//Add items to loot list
 		for "_i" from 1 to A3EAI_miscLootCount1 do {
-			if (A3EAI_chanceMiscLoot1 call A3EAI_chance) then {
-				_lootPool pushBack (A3EAI_MiscLoot1 call A3EAI_selectRandom);
-			};
+			_lootPool pushBack (A3EAI_MiscLoot1 call A3EAI_selectRandom);
 		};
 
 		//Add items to loot list
 		for "_i" from 1 to A3EAI_miscLootCount2 do {
-			if (A3EAI_chanceMiscLoot2 call A3EAI_chance) then {
-				_lootPool pushBack (A3EAI_MiscLoot2 call A3EAI_selectRandom);
-			};
+			_lootPool pushBack (A3EAI_MiscLoot2 call A3EAI_selectRandom);
 		};
 		
 		sleep 0.5;
@@ -49,29 +43,23 @@ if (_unitType != "dynamic") then {
 
 		//Add food to loot list
 		for "_i" from 1 to A3EAI_foodLootCount do {
-			if (A3EAI_chanceFoodLoot call A3EAI_chance) then {
-				_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
-				_lootItem = (A3EAI_foodLoot call A3EAI_selectRandom);
-				[_lootUnit,_lootItem] call A3EAI_addItem;
-			};
+			_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
+			_lootItem = (A3EAI_foodLoot call A3EAI_selectRandom);
+			[_lootUnit,_lootItem] call A3EAI_addItem;
 		};
 
 		//Add items to loot list
 		for "_i" from 1 to A3EAI_miscLootCount1 do {
-			if (A3EAI_chanceMiscLoot1 call A3EAI_chance) then {
-				_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
-				_lootItem = (A3EAI_MiscLoot1 call A3EAI_selectRandom);
-				[_lootUnit,_lootItem] call A3EAI_addItem;
-			};
+			_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
+			_lootItem = (A3EAI_MiscLoot1 call A3EAI_selectRandom);
+			[_lootUnit,_lootItem] call A3EAI_addItem;
 		};
 
 		//Add items to loot list
 		for "_i" from 1 to A3EAI_miscLootCount2 do {
-			if (A3EAI_chanceMiscLoot2 call A3EAI_chance) then {
-				_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
-				_lootItem = (A3EAI_MiscLoot2 call A3EAI_selectRandom);
-				[_lootUnit,_lootItem] call A3EAI_addItem;
-			};
+			_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
+			_lootItem = (A3EAI_MiscLoot2 call A3EAI_selectRandom);
+			[_lootUnit,_lootItem] call A3EAI_addItem;
 		};
 		
 		sleep 0.5;

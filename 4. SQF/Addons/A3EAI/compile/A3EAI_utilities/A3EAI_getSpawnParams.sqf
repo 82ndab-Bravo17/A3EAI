@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_nearestLocations", "_nearestLocationType", "_spawnParams"];
 
 _nearestLocations = nearestLocations [_this,["NameCityCapital","NameCity","NameVillage","NameLocal"],1000];

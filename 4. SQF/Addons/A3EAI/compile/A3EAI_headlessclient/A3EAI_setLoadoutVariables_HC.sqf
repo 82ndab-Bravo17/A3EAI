@@ -1,5 +1,4 @@
-#define GRENADE_AMMO_3RND "3Rnd_HE_Grenade_shell"
-#define GRENADE_AMMO_1RND "1Rnd_HE_Grenade_shell"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitType", "_unitGroup", "_loadout", "_weapon", "_magazine", "_useLaunchers", "_maxLaunchers", "_unitLevel", "_launchWeapon", "_launchAmmo", "_useGL"];
 

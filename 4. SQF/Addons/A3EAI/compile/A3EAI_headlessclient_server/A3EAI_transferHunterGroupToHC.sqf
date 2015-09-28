@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup","_targetPlayer"];
 
 _unitGroup = _this select 0;

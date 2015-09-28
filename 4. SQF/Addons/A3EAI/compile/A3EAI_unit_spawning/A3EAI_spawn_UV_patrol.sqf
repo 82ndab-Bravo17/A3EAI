@@ -1,4 +1,4 @@
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_vehicleType", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_detectionStatement", "_patrolStatement", "_gunnersAdded", "_waypoint", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
@@ -17,7 +17,7 @@ call {
 	if (_vehicleType isKindOf "Air") exitWith {
 		//Note: no cargo units for air vehicles
 		_unitLevel = "uav" call A3EAI_getUnitLevel;
-		_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + (random((getMarkerSize "A3EAI_centerMarker") select 0)),random(360),1] call SHK_pos;
+		_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + (random((getMarkerSize "A3EAI_centerMarker") select 0)),random(360),1] call A3EAI_SHK_pos;
 		_vehiclePosition set [2,200];
 		_spawnMode = "FLY";
 	};
@@ -25,9 +25,9 @@ call {
 	if (_vehicleType isKindOf "LandVehicle") exitWith {
 		_unitLevel = "ugv" call A3EAI_getUnitLevel;
 		while {_keepLooking} do {
-			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
+			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call A3EAI_SHK_pos;
 			if ((count _vehiclePosition) > 1) then {
-				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], 300]) isEqualTo 0) then {
+				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], PLAYER_DISTANCE_SPAWN_AUTONOMOUS]) isEqualTo 0) then {
 					_keepLooking = false;	//Found road position, stop searching
 				};
 			} else {
@@ -100,7 +100,7 @@ _unitGroup setVariable ["assignedVehicle",_vehicle];
 if (_isAirVehicle) then {
 	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVDetection;";
 	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVStartPatrol;";
-	_vehicle flyInHeight 125;
+	_vehicle flyInHeight (FLYINHEIGHT_UAV_PATROLLING_BASE + random (FLYINHEIGHT_UAV_PATROLLING_VARIANCE));
 	
 	if (A3EAI_UAVDetectOnly) then {
 		_unitGroup setBehaviour "CARELESS";

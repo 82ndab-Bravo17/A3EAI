@@ -1,4 +1,4 @@
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_vehicleType", "_maxCargoUnits", "_maxGunnerUnits", "_unitLevel", "_isAirVehicle", "_vehiclePosition", "_spawnMode", "_keepLooking", "_error", "_unitType", "_unitGroup", "_driver", "_vehicle", "_direction", "_velocity", "_nearRoads", "_nextRoads", "_gunnersAdded", "_cargoSpots", "_cargo", "_waypoint", "_result", "_rearm","_combatMode","_behavior","_waypointCycle"];
 
@@ -18,7 +18,7 @@ call {
 		//Note: no cargo units for air vehicles
 		_maxGunnerUnits = A3EAI_heliGunnerUnits;
 		_unitLevel = "airvehicle" call A3EAI_getUnitLevel;
-		_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + (random((getMarkerSize "A3EAI_centerMarker") select 0)),random(360),1] call SHK_pos;
+		_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + (random((getMarkerSize "A3EAI_centerMarker") select 0)),random(360),1] call A3EAI_SHK_pos;
 		_vehiclePosition set [2,200];
 		_spawnMode = "FLY";
 	};
@@ -29,9 +29,9 @@ call {
 		_maxCargoUnits = A3EAI_vehCargoUnits;
 		_unitLevel = "landvehicle" call A3EAI_getUnitLevel;
 		while {_keepLooking} do {
-			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call SHK_pos;
+			_vehiclePosition = [(getMarkerPos "A3EAI_centerMarker"),300 + random((getMarkerSize "A3EAI_centerMarker") select 0),random(360),0,[2,750],[25,_vehicleType]] call A3EAI_SHK_pos;
 			if ((count _vehiclePosition) > 1) then {
-				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], 300]) isEqualTo 0) then {
+				if ({isPlayer _x} count (_vehiclePosition nearEntities [[PLAYER_UNITS,"AllVehicles"], PLAYER_DISTANCE_SPAWN_AIVEHICLE]) isEqualTo 0) then {
 					_keepLooking = false;	//Found road position, stop searching
 				};
 			} else {
@@ -158,7 +158,7 @@ if (_isAirVehicle) then {
 	_waypointCycle setWaypointCompletionRadius 150;
 
 	_unitGroup setVariable ["HeliLastParaDrop",diag_tickTime - A3EAI_paraDropCooldown];
-	_vehicle flyInHeight (125 + (random 25));
+	_vehicle flyInHeight (FLYINHEIGHT_AIR_PATROLLING_BASE + (random FLYINHEIGHT_AIR_PATROLLING_VARIANCE));
 	
 	if ((!isNull _vehicle) && {!isNull _unitGroup}) then {
 		A3EAI_curHeliPatrols = A3EAI_curHeliPatrols + 1;
@@ -178,14 +178,6 @@ if (_isAirVehicle) then {
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: AI land vehicle crew group %1 is now active and patrolling.",_unitGroup];};
 	};
 };
-
-/*
-if (_isAirVehicle) then {
-	[_unitGroup] spawn A3EAI_heliStartPatrol;
-} else {
-	[_unitGroup] spawn A3EAI_vehStartPatrol;
-};
-*/
 
 [_unitGroup,0] setWaypointPosition [_vehiclePosition,0];
 _unitGroup setCurrentWaypoint [_unitGroup,0];

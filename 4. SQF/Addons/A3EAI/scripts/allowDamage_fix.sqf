@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 if (!isNil "A3EAI_allowDamageFix_active") exitWith {};
 A3EAI_allowDamageFix_active = true;
 

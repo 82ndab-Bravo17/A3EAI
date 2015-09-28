@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup","_vehicle","_loadWP","_loadWPCond","_unit","_regroupPos","_waypointCycle"];
 
 _unitGroup = _this select 0;
@@ -12,7 +14,7 @@ if ((count (waypoints _unitGroup)) > 1) exitWith {
 
 _unit = objNull;
 {
-	if ((vehicle _x) isEqualTo _x) exitWith {_unit = _x};
+	if (isNull (objectParent _x)) exitWith {_unit = _x};
 } forEach (units _unitGroup);
 
 if (isNull _unit) exitWith {_unitGroup call A3EAI_setVehicleRegrouped}; //If no units outside of vehicle, consider crew regrouped and exit script
@@ -20,7 +22,7 @@ if (isNull _unit) exitWith {_unitGroup call A3EAI_setVehicleRegrouped}; //If no 
 _regroupPos = if (isNull (driver _vehicle)) then {
 	(getPosATL _vehicle)
 } else {
-	([_vehicle,_unit] call A3EAI_getPosBetween)
+	([_vehicle,_unit,(_unit distance _vehicle)/2] call A3EAI_getPosBetween)
 };
 
 _loadWP = _unitGroup addWaypoint [_regroupPos,0];

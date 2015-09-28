@@ -1,5 +1,4 @@
-#define RADIO_ITEM "EpochRadio0"
-#define PLAYER_UNITS "Epoch_Male_F","Epoch_Female_F"
+#include "\A3EAI\globaldefines.hpp"
 
 private ["_unitGroup", "_waypoint", "_vehicle", "_endTime", "_vehiclePos", "_nearUnits", "_vehPos", "_despawnPos", "_reinforcePos","_vehicleArmed","_paraDrop","_reinforceTime"];
 
@@ -37,7 +36,7 @@ if (_vehicleArmed) then {
 		if (local _unitGroup) then {
 			_vehiclePos = getPosATL _vehicle;
 			_vehiclePos set [2,0];
-			_nearUnits = _vehiclePos nearEntities [[PLAYER_UNITS,"LandVehicle"],300];
+			_nearUnits = _vehiclePos nearEntities [[PLAYER_UNITS,"LandVehicle"],DETECT_RANGE_AIR_REINFORCE];
 			if ((count _nearUnits) > 5) then {_nearUnits resize 5};
 			{
 				if ((isPlayer _x) && {(_unitGroup knowsAbout _x) < 3} && {(lineIntersectsSurfaces [(aimPos _vehicle),(eyePos _x),_vehicle,_x,true,1]) isEqualTo []}) then {
@@ -63,7 +62,7 @@ if (((_unitGroup getVariable ["GroupSize",-1]) < 1) or {!((_unitGroup getVariabl
 };
 
 _vehPos = (getPosATL _vehicle);
-_despawnPos = [_vehPos,2000,random(360),1] call SHK_pos;
+_despawnPos = [_vehPos,AIR_REINFORCE_DESPAWN_DIST,random(360),1] call A3EAI_SHK_pos;
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 Vehicle %2 (pos %3) assigned despawn pos %4.",_unitGroup,(typeOf _vehicle),_vehPos,_despawnPos];};
 
@@ -78,7 +77,7 @@ if (local _unitGroup) then {
 	A3EAI_HCObjectOwnerID publicVariableClient "A3EAI_setCurrentWaypoint_PVC";
 };
 
-waitUntil {uiSleep 15; (((getPosATL _vehicle) distance _vehPos) > 1200) or {!(alive _vehicle)}};
+waitUntil {uiSleep 15; (((getPosATL _vehicle) distance2D _vehPos) > 1200) or {!(alive _vehicle)}};
 
 _unitGroup call A3EAI_cleanupReinforcementGroup;
 A3EAI_reinforcedPositions = A3EAI_reinforcedPositions - _reinforcePos;

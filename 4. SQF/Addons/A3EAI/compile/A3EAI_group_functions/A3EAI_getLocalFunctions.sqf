@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_unitGroup", "_unitType", "_fnc_execEveryLoop", "_fnc_checkUnits", "_fnc_generateLoot", "_fnc_vehicleAmmoFuelCheck", "_fnc_antistuck"];
 
 _unitGroup = _this select 0;
@@ -5,21 +7,21 @@ _unitType = _this select 1;
 
 call {
 	if (_unitType isEqualTo "static") exitWith {
-		_fnc_execEveryLoop = A3EAI_avoidNoAggroArea;
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_infantry;
 		_fnc_checkUnits = A3EAI_checkGroupUnits;
 		_fnc_generateLoot = A3EAI_generateGroupLoot;
 		_fnc_vehicleAmmoFuelCheck = {};
 		_fnc_antistuck = A3EAI_antistuck_generic;
 	};
 	if (_unitType isEqualTo "random") exitWith {
-		_fnc_execEveryLoop = A3EAI_avoidNoAggroArea;
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_infantry;
 		_fnc_checkUnits = A3EAI_checkGroupUnits;
 		_fnc_generateLoot = A3EAI_generateGroupLoot;
 		_fnc_vehicleAmmoFuelCheck = {};
 		_fnc_antistuck = A3EAI_antistuck_generic;
 	};
 	if (_unitType isEqualTo "dynamic") exitWith {
-		_fnc_execEveryLoop = A3EAI_avoidNoAggroArea;
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_infantry;
 		_fnc_checkUnits = A3EAI_checkGroupUnits;
 		_fnc_generateLoot = A3EAI_generateGroupLoot;
 		_fnc_vehicleAmmoFuelCheck = {};
@@ -61,7 +63,14 @@ call {
 		_fnc_antistuck = {};
 	};
 	if (_unitType isEqualTo "vehiclecrew") exitWith {
-		_fnc_execEveryLoop = A3EAI_avoidNoAggroArea;
+		_fnc_execEveryLoop = A3EAI_execEveryLoop_infantry;
+		_fnc_checkUnits = A3EAI_checkGroupUnits;
+		_fnc_generateLoot = A3EAI_generateGroupLoot;
+		_fnc_vehicleAmmoFuelCheck = {};
+		_fnc_antistuck = A3EAI_antistuck_generic;
+	};
+	if (_unitType isEqualTo "staticcustom") exitWith {
+		_fnc_execEveryLoop = {};
 		_fnc_checkUnits = A3EAI_checkGroupUnits;
 		_fnc_generateLoot = A3EAI_generateGroupLoot;
 		_fnc_vehicleAmmoFuelCheck = {};

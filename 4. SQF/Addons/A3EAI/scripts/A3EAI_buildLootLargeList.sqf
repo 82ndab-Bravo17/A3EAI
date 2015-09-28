@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_startTime", "_lootListLarge1", "_lootListLarge2", "_lootListLarge", "_items", "_itemClassInfo", "_itemClassBias", "_itemClassType", "_item", "_itemSubClass", "_itemList", "_itemInfo", "_itemBias", "_itemType"];
 
 _startTime = diag_tickTime;

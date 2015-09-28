@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private["_trigger","_mode"];
 
 _mode = _this select 0;
@@ -38,6 +40,28 @@ call {
 		_trigger setVariable ["spawnChance",1];
 		_trigger setVariable ["spawnType","staticcustom"];
 		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Initialized custom spawn at %1. GroupArray: %2, PatrolDist: %3. unitLevel: %4. %LocationArray %5 positions, MaxUnits %6.",triggerText _trigger,(_this select 2),(_this select 3),(_this select 4),count (_this select 5),(_this select 6)];};
+	};
+	if (_mode isEqualTo 4) exitWith {
+		//Vehicle group
+		_trigger setVariable ["patrolDist",(_this select 3)];
+		_trigger setVariable ["unitLevel",(_this select 4)];
+		_trigger setVariable ["maxUnits",(_this select 5)];
+		_trigger setVariable ["spawnChance",1];
+		_trigger setVariable ["spawnType","vehiclecrew"];
+		_trigger setVariable ["respawn",false]; 					
+		_trigger setVariable ["permadelete",true];
+		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Initialized vehicle group at %1. GroupArray: %2, PatrolDist: %3. unitLevel: %4, MaxUnits %5.",triggerText _trigger,(_this select 2),(_this select 3),(_this select 4),(_this select 5)];};
+	};
+	if (_mode isEqualTo 5) exitWith {
+		//Paradrop group
+		_trigger setVariable ["patrolDist",(_this select 3)];
+		_trigger setVariable ["unitLevel",(_this select 4)];
+		_trigger setVariable ["maxUnits",(_this select 5)];
+		_trigger setVariable ["spawnChance",1];
+		_trigger setVariable ["spawnType","vehiclecrew"];
+		_trigger setVariable ["respawn",false]; 					
+		_trigger setVariable ["permadelete",true];
+		if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Initialized paradrop group at %1. GroupArray: %2, PatrolDist: %3. unitLevel: %4, MaxUnits %5.",triggerText _trigger,(_this select 2),(_this select 3),(_this select 4),(_this select 5)];};
 	};
 };
 

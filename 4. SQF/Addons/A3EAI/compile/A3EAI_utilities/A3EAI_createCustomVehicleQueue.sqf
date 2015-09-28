@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 if !((typeName _this) isEqualTo "ARRAY") exitWith {diag_log format ["Error: Wrong arguments sent to %1.",__FILE__]};
 if (A3EAI_customVehicleSpawnQueue isEqualTo []) then {
 	A3EAI_customVehicleSpawnQueue pushBack _this;

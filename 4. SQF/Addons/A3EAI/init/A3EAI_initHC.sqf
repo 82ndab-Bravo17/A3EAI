@@ -1,8 +1,4 @@
-/*
-	A3EAI Server Initialization File
-	
-	Description: Handles startup process for A3EAI. Does not contain any values intended for modification.
-*/
+#include "\A3EAI\globaldefines.hpp"
 
 if (hasInterface || isDedicated || !isNil "A3EAI_HC_isActive") exitWith {};
 
@@ -13,16 +9,6 @@ A3EAI_directory = "A3EAI";
 A3EAI_HCPlayerLoggedIn = false;
 A3EAI_HCGroupsCount = 0;
 A3EAI_enableHC = true;
-
-if (isNil "A3EAI_devOptions") then {
-	A3EAI_overrideEnabled = nil;
-	A3EAI_debugMarkersEnabled = false;
-} else {
-	if !((typeName A3EAI_devOptions) isEqualTo "ARRAY") then {A3EAI_devOptions = []};
-	if ("readoverridefile" in A3EAI_devOptions) then {A3EAI_overrideEnabled = true} else {A3EAI_overrideEnabled = nil};
-	if ("enabledebugmarkers" in A3EAI_devOptions) then {A3EAI_debugMarkersEnabled = true} else {A3EAI_debugMarkersEnabled = false};
-	A3EAI_devOptions = nil;
-};
 
 if (isNil "A3EAI_EpochHiveDir") then {
 	A3EAI_EpochHiveDir = "@epochhive";
@@ -69,11 +55,14 @@ _nul = [] spawn {
 	_versionKey = [configFile >> "CfgPatches" >> "A3EAI_HC","A3EAI_HCVersion","0"] call BIS_fnc_returnConfigEntry;
 	diag_log format ["[A3EAI] Initializing A3EAI HC build %1 using base path %2.",_versionKey,A3EAI_directory];
 
+	A3EAI_enableDebugMarkers = (([missionConfigFile >> "CfgDeveloperOptions","enableDebugMarkers",0] call BIS_fnc_returnConfigEntry) isEqualTo 1);
+	_readOverrideFile = (([missionConfigFile >> "CfgDeveloperOptions","readOverrideFile",0] call BIS_fnc_returnConfigEntry) isEqualTo 1);
+
 	//Load A3EAI config file
 	diag_log "[A3EAI] Loading A3EAI configuration file...";
 	call compile preprocessFileLineNumbers format ["%1\A3EAI_config.sqf",A3EAI_EpochHiveDir];
 	call compile preprocessFileLineNumbers format ["%1\scripts\verifySettings.sqf",A3EAI_directory];
-	if ((!isNil "A3EAI_overrideEnabled") && {A3EAI_overrideEnabled}) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
+	if (_readOverrideFile) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
 	
 	//Load internal use variables
 	call compile preprocessFileLineNumbers format ["%1\init\variables.sqf",A3EAI_directory];

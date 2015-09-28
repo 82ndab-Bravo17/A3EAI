@@ -30,7 +30,7 @@ if (_dir % 90 != 0) then {
   _orgY = _pos select 1;
   _shiftedX = _orgX - _centerX;
   _shiftedY = _orgY - _centerY;
-  _pos = [[_shiftedX,_shiftedY],_dir] call SHK_pos_fnc_rotatePosition;
+  _pos = [[_shiftedX,_shiftedY],_dir] call A3EAI_SHK_pos_fnc_rotatePosition;
   _pos set [0,(_pos select 0) + _centerX];
   _pos set [1,(_pos select 1) + _centerY];
 };

@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 removeAllWeapons _this;
 removeAllItems _this;
 removeAllAssignedItems _this;

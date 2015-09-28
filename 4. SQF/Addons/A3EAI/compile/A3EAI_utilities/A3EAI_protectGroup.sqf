@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_dummy"]; //_this = group
 	
 _dummy = _this createUnit ["Logic",[0,0,0],[],0,"FORM"];

@@ -1,5 +1,4 @@
-#define NO_AGGRO_AREA_SIZE 650
-#define BLACKLIST_AREA_SIZE 600
+#include "\A3EAI\globaldefines.hpp"
 
 /*
 	Reads from CfgWorlds config and extracts information about city/town names, positions, and types.
@@ -35,12 +34,12 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 
 //Set up trader city blacklist areas
 {
-	if ((nearestLocations [_x select 3,["A3EAI_BlacklistedArea"],30]) isEqualTo []) then {
+	if ((nearestLocations [_x select 3,[BLACKLIST_OBJECT_GENERAL],30]) isEqualTo []) then {
 		_location = [_x select 3,BLACKLIST_AREA_SIZE] call A3EAI_createBlackListArea;
 		_telePositions pushBack (_x select 3);
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created %1m radius blacklist area at %2 teleport destination (%3).",BLACKLIST_AREA_SIZE,_x select 0,_x select 3];};
 	};
-	if ((nearestLocations [_x select 3,["A3EAI_NoAggroArea"],30]) isEqualTo []) then {
+	if ((nearestLocations [_x select 3,[BLACKLIST_OBJECT_NOAGGRO],30]) isEqualTo []) then {
 		_location = [_x select 3,NO_AGGRO_AREA_SIZE] call A3EAI_createNoAggroArea;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created %1m radius no-aggro area at %2 teleport destination (%3).",NO_AGGRO_AREA_SIZE,_x select 0,_x select 3];};
 	};
@@ -52,18 +51,14 @@ for "_i" from 0 to ((count _cfgWorldName) -1) do {
 	if (_placeType in ["namecitycapital","namecity","namevillage","namelocal"]) then {
 		_placeName = getText (_cfgWorldName >> _x >> "name");
 		_placePos = [] + getArray (_cfgWorldName >> _x >> "position");
-		_isAllowedPos = (((_placePos distance (getMarkerPos "respawn_west")) > BLACKLIST_AREA_SIZE) && {({(_x distance _placePos) < BLACKLIST_AREA_SIZE} count _telePositions) isEqualTo 0});
+		_isAllowedPos = (((_placePos distance2D (getMarkerPos "respawn_west")) > BLACKLIST_AREA_SIZE) && {({(_x distance2D _placePos) < BLACKLIST_AREA_SIZE} count _telePositions) isEqualTo 0});
 		if (_isAllowedPos) then {
 			A3EAI_locations pushBack [_placeName,_placePos,_placeType];
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Added location %1 (type: %2, pos: %3) to location list.",_placeName,_placeType,_placePos];};
 			if !(_placeName in A3EAI_waypointBlacklistAir) then {A3EAI_locationsAir pushBack [_placeName,_placePos,_placeType];};
 			if !((_placeName in A3EAI_waypointBlacklistLand) && {!(surfaceIsWater _placePos)}) then {A3EAI_locationsLand pushBack [_placeName,_placePos,_placeType];};
-			/*if ((_placeName in A3EAI_waypointBlacklistAir) or {_placeName in A3EAI_waypointBlacklistLand}) then {
-				_location = [_x,700] call A3EAI_createNoAggroArea;
-				if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Created 700m radius no-aggro area at %1.",_placeName];};
-			};*/
 		} else {
-			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 not in allowed position. Blacklist (Air): %2, Blacklist (Land): %3, respawn_west: %4, telepos: %5.",_placeName,!((toLower _placeName) in A3EAI_waypointBlacklistAir),!((toLower _placeName) in A3EAI_waypointBlacklistLand),(_placePos distance (getMarkerPos "respawn_west")) > 650,({(_x distance _placePos) < 650} count _telePositions) isEqualTo 0];};
+			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 not in allowed position. Blacklist (Air): %2, Blacklist (Land): %3, respawn_west: %4, telepos: %5.",_placeName,!((toLower _placeName) in A3EAI_waypointBlacklistAir),!((toLower _placeName) in A3EAI_waypointBlacklistLand),(_placePos distance2D (getMarkerPos "respawn_west")) > BLACKLIST_AREA_SIZE,({(_x distance2D _placePos) < BLACKLIST_AREA_SIZE} count _telePositions) isEqualTo 0];};
 		};
 		_allLocations pushBack [_placeName,_placePos,_placeType];
 	};

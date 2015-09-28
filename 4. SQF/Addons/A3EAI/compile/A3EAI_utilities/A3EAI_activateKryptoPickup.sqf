@@ -1,3 +1,5 @@
+#include "\A3EAI\globaldefines.hpp"
+
 private ["_playerList","_player", "_kryptoTrigger", "_cIndex", "_kryptoStored", "_kryptoObject", "_vars", "_kryptoToSend","_arrowObject"];
 
 _playerList = _this select 0;

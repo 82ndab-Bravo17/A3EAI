@@ -16,7 +16,6 @@ Note: The above requirements assume you are upgrading between each released vers
 [Changed] Re-standardized minimum spawn distances for all AI types.
 [Added] Added small damage threshold requirement to trigger defensive fire for UAVs/UGVs in "Detect Only" mode.
 [Added] All infantry AI spawns now have a "last second check" for players too close to AI spawn position.
-
 [Fixed] AI loot searching area now confined to patrol area.
 [Fixed] Fixed bug where AI took unusually high amounts of damage to kill.
 [Fixed] UAVs/UGVs under Detect Only status no longer become hostile within "no aggro" zones if hit by players.

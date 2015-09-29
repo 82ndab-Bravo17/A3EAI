@@ -1,0 +1,11 @@
+A3EAI 0.9.3.1
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.sqf update required: No, Last updated: 0.9.3
+Headless Client Files/Keys update required: Yes
+A3EAI Client Addon update required: No, Last updated: 0.9.3
+
+Note: The above requirements assume you are upgrading between each released version. If you have skipped any versions, it is highly recommended to update all installed parts.
+
+[Fixed] Fixed error with Dynamic AI if target player logged out during pursuit stage.

@@ -60,7 +60,6 @@ _startTime = diag_tickTime;
 		["B_UGV_01_rcws_F",5],
 		["O_UGV_01_rcws_F",5]
 	]],
-	
 	["A3EAI_levelChancesUGV",[0.35,0.50,0.15,0.00]],
 	["A3EAI_respawnUGVMinTime",600],
 	["A3EAI_respawnUGVMaxTime",900],

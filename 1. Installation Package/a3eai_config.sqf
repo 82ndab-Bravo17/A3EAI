@@ -248,7 +248,7 @@ A3EAI_minRandSpawnDist = 0;
 --------------------------------------------------------------------------------------------------------------------*/
 
 //Add name of location as displayed on map prevent AI vehicle patrols from travelling to these locations. Location names are case-sensitive. (Example: ["Aggelochori","Panochori","Zaros"])
-//Note: Vehicles may still pass through these areas, but will become non-hostile towards players until they travel 600m away from the area.
+//Note: Vehicles may still pass through these areas.
 A3EAI_waypointBlacklistAir = []; //Affects Air vehicles (including UAVs)
 A3EAI_waypointBlacklistLand = [];  //Affects Land vehicles (including UGVs)
 

@@ -63,6 +63,7 @@ _unitGroup setVariable ["GroupSize",_totalAI];
 _unitGroup setVariable ["unitLevel",_unitLevel];
 _unitGroup setFormDir (random 360);
 _unitGroup setSpeedMode "FULL";
+_unitGroup setCombatMode "YELLOW";
 _unitGroup allowFleeing 0;
 
 0 = [_unitGroup,_unitLevel] spawn A3EAI_addGroupManager;	//start group-level manager

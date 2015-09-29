@@ -1,12 +1,13 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_unitGroup", "_triggerPos", "_targetPlayer", "_nearbyUnits", "_waypoint", "_patrolDist"];
+private ["_unitGroup", "_triggerPos", "_targetPlayer", "_nearbyUnits", "_waypoint", "_patrolDist","_targetPos"];
 
 _unitGroup = _this select 0;
 _patrolDist = _this select 1;
 _targetPlayer = _this select 2;
 _triggerPos = _this select 3;
 
+_targetPos = getPosATL _targetPlayer;
 if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then {
 	if (A3EAI_radioMsgs) then {
 		//diag_log "DEBUG: Sending radio static";
@@ -29,7 +30,7 @@ if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then 
 	_waypoint setWaypointType "MOVE";
 	_waypoint setWaypointCompletionRadius 50;
 	_waypoint setWaypointTimeout [3, 3, 3];
-	_waypoint setWPPos (getPosATL _targetPlayer);
+	_waypoint setWPPos _targetPos;
 	_waypoint setWaypointStatements ["true","if !(local this) exitWith {}; (group this) spawn A3EAI_hunterLocate;"];
 	
 	_unitGroup setCurrentWaypoint _waypoint;

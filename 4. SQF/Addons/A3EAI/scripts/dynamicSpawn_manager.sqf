@@ -91,8 +91,8 @@ while {true} do {
 						if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Player %1 is looting. Probability modifier set to %2.",_player,_chanceModifier];};
 					};
 					if (_chanceModifier < 0) then {_chanceModifier = 0;};
-					_spawnChance = (_spawnChance * _chanceModifier * A3EAI_spawnChanceMultiplier);
 					if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Dynamic spawn probabilities for %1: Base: %2, Modifier: %3, A3EAI_spawnChanceMultiplier: %4",_player,_spawnChance,_chanceModifier,A3EAI_spawnChanceMultiplier];};
+					_spawnChance = (_spawnChance * _chanceModifier * A3EAI_spawnChanceMultiplier);
 				};
 				if (_spawnChance call A3EAI_chance) then {
 					_lastSpawned_DB set [_index,diag_tickTime];

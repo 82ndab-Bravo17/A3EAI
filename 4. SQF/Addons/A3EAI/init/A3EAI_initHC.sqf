@@ -9,10 +9,11 @@ A3EAI_directory = "A3EAI";
 A3EAI_HCPlayerLoggedIn = false;
 A3EAI_HCGroupsCount = 0;
 A3EAI_enableHC = true;
-
-if (isNil "A3EAI_EpochHiveDir") then {
-	A3EAI_EpochHiveDir = "@epochhive";
-};
+//A3EAI_EpochHiveDir = [missionConfigFile >> "A3EAI","serverDir","@epochhive"] call BIS_fnc_returnConfigEntry;
+_directoryAsArray = toArray __FILE__;
+_directoryAsArray resize ((count _directoryAsArray) - 26);
+A3EAI_directory = toString _directoryAsArray;
+A3EAI_EpochHiveDir = A3EAI_directory;
 
 //Create reference marker to act as boundary for spawning AI air/land vehicles.
 _worldName = (toLower worldName);

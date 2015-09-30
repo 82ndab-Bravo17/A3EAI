@@ -12,22 +12,20 @@ _startTime = diag_tickTime;
 
 A3EAI_isActive = true;
 
-private ["_startTime","_directoryAsArray","_worldname","_allUnits","_readOverrideFile","_reportDirectoryName"];
+private ["_startTime","_directoryAsArray","_worldname","_allUnits","_functionsCheck","_readOverrideFile","_reportDirectoryName"];
 
 _directoryAsArray = toArray __FILE__;
 _directoryAsArray resize ((count _directoryAsArray) - 26);
 A3EAI_directory = toString _directoryAsArray;
+A3EAI_EpochHiveDir = A3EAI_directory;
 
+//A3EAI_EpochHiveDir = [missionConfigFile >> "A3EAI","serverDir","@epochhive"] call BIS_fnc_returnConfigEntry;
 _readOverrideFile = (([missionConfigFile >> "CfgDeveloperOptions","readOverrideFile",0] call BIS_fnc_returnConfigEntry) isEqualTo 1);
 _reportDirectoryName = (([missionConfigFile >> "CfgDeveloperOptions","reportDirectoryName",0] call BIS_fnc_returnConfigEntry) isEqualTo 1);
 A3EAI_enableDebugMarkers = (([missionConfigFile >> "CfgDeveloperOptions","enableDebugMarkers",0] call BIS_fnc_returnConfigEntry) isEqualTo 1);
 
-if (isNil "A3EAI_EpochHiveDir") then {
-	A3EAI_EpochHiveDir = "@epochhive";
-};
-
 if (_reportDirectoryName) then {
-	diag_log format ["Debug: File is [%1]",__FILE__];
+	diag_log format ["Debug: File is [%1\%2]",A3EAI_EpochHiveDir,__FILE__];
 };
 
 //Report A3EAI version to RPT log
@@ -42,7 +40,8 @@ call compile preprocessFileLineNumbers format ["%1\scripts\verifySettings.sqf",A
 if (_readOverrideFile) then {call compile preprocessFileLineNumbers format ["%1\A3EAI_settings_override.sqf",A3EAI_EpochHiveDir]};
 
 //Load A3EAI functions
-call compile preprocessFileLineNumbers format ["%1\init\A3EAI_functions.sqf",A3EAI_directory];
+_functionsCheck = call compile preprocessFileLineNumbers format ["%1\init\A3EAI_functions.sqf",A3EAI_directory];
+if (isNil "_functionsCheck") exitWith {diag_log "A3EAI Critical Error: Functions not successfully loaded. Stopping startup procedure.";};
 
 //Create reference marker to act as boundary for spawning AI air/land vehicles.
 _worldname = (toLower worldName);

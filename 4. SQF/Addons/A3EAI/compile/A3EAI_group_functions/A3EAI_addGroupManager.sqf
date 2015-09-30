@@ -197,32 +197,37 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 	if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {uiSleep 15};
 };
 
-_unitGroup setVariable ["isManaged",false]; //allow group manager to run again on group respawn.
+if !(isNull _unitGroup) then {
+	_unitGroup setVariable ["isManaged",false]; //allow group manager to run again on group respawn.
 
-if !(isDedicated) exitWith {
-	A3EAI_transferGroup_PVS = _unitGroup;
-	publicVariableServer "A3EAI_transferGroup_PVS";	//Return ownership to server.
-	A3EAI_HCGroupsCount = A3EAI_HCGroupsCount - 1;
-	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Returned ownership of AI %1 group %2 to server.",_unitType,_unitGroup];};
+	if !(isDedicated) exitWith {
+		A3EAI_transferGroup_PVS = _unitGroup;
+		publicVariableServer "A3EAI_transferGroup_PVS";	//Return ownership to server.
+		A3EAI_HCGroupsCount = A3EAI_HCGroupsCount - 1;
+		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Returned ownership of AI %1 group %2 to server.",_unitType,_unitGroup];};
+	};
+
+	
+
+	while {(_unitGroup getVariable ["GroupSize",-1]) isEqualTo 0} do {	//Wait until group is either respawned or marked for deletion. A dummy unit should be created to preserve group.
+		uiSleep 5;
+	};
+
+	if ((_unitGroup getVariable ["GroupSize",-1]) isEqualTo -1) then {	//GroupSize value of -1 marks group for deletion
+		if (!isNull _unitGroup) then {
+			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting %2 group %1.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"])]};
+			_unitGroup call A3EAI_deleteGroup;
+		};
+	};
+} else {
+	diag_log "A3XAI Error: An A3EAI-managed group was deleted unexpectedly!";
 };
 
-if !(isNull _vehicle) then {
-	if (isEngineOn _vehicle) then {_vehicle engineOn false;};
-	if (isNil {_vehicle getVariable "A3EAI_deathTime"}) then {_vehicle setVariable ["A3EAI_deathTime",diag_tickTime];};
+if ((local _vehicle) && {isEngineOn _vehicle}) then {
+	_vehicle engineOn false;
 };
 
 if (A3EAI_enableDebugMarkers) then {
 	deleteMarker _groupLeadMarker;
 	deleteMarker _groupWPMarker;
-};
-
-while {(_unitGroup getVariable ["GroupSize",-1]) isEqualTo 0} do {	//Wait until group is either respawned or marked for deletion. A dummy unit should be created to preserve group.
-	uiSleep 5;
-};
-
-if ((_unitGroup getVariable ["GroupSize",-1]) isEqualTo -1) then {	//GroupSize value of -1 marks group for deletion
-	if (!isNull _unitGroup) then {
-		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Deleting %2 group %1.",_unitGroup,(_unitGroup getVariable ["unitType","unknown"])]};
-		_unitGroup call A3EAI_deleteGroup;
-	};
 };

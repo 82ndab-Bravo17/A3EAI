@@ -12,6 +12,7 @@ _hitPartIndex = _this select 5;				//Hit part index of the hit point, -1 otherwi
 _hitPoint = (_object getHitIndex _hitPartIndex);
 if (_damage > _hitPoint) then {
 	call {
+		if (isNull _source) exitWith {_damage = _hitPoint;}; 								//No physics damage
 		if ((group _object) call A3EAI_getNoAggroStatus) exitWith {_damage = _hitPoint;};
 		if !(isPlayer _source) exitWith {_damage = _hitPoint;};
 	};

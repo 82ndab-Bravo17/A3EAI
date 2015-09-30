@@ -1,4 +1,4 @@
-A3EAI - Current Version: 0.9.3.1
+A3EAI - Current Version: 0.9.3.2
 =====
 
 ---
@@ -16,6 +16,8 @@ Installing A3EAI
 4. Navigate to your server's Arma 3 folder and open the @EpochHive folder.
 5. Paste the contents copied from Step 3 into this directory. When prompted to merge the "Addons" folder, click Yes. Note: No Epoch files are being replaced or modified. This step merges the two Addon folders. 
 6. (Optional) Configure A3EAI settings by editing A3EAI_config.sqf. 
+
+IMPORTANT: After the Arma 3 1.52 update, the config files are located within the A3EAI.pbo.
 
 ---
 A3EAI Wiki

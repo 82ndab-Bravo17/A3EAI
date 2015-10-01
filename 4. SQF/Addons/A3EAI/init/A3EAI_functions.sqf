@@ -175,3 +175,5 @@ A3EAI_generateLoadout = compileFinal preprocessFileLineNumbers format ["%1\compi
 A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_addGroupManager.sqf",A3EAI_directory];
 
 diag_log "[A3EAI] A3EAI functions compiled.";
+
+true

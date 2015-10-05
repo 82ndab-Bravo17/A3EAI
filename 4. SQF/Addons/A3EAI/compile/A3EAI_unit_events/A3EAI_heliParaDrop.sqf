@@ -8,7 +8,7 @@ _targetPlayer = _this select 2;
 
 _vehiclePos = getPosATL _vehicle;
 if (surfaceIsWater _vehiclePos) exitWith {};
-_cargoAvailable = (_vehicle emptyPositions "cargo") min A3EAI_paraDropAmount;
+_cargoAvailable = (_vehicle emptyPositions "cargo") min A3EAI_paradropAmount;
 if (_cargoAvailable > 0) then {
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: %1 group %2 has enough cargo positions for successful paradrop. Spawning new group.",typeOf _vehicle,_unitGroup];};
 	

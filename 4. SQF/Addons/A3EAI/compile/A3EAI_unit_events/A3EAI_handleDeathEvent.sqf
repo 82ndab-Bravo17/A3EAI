@@ -84,7 +84,7 @@ if !(isNull _victim) then {
 		_victim setVelocity [0,0,0.25];
 	};
 	
-	if (A3EAI_deathMessages && {isPlayer _killer}) then {
+	if (A3EAI_enableDeathMessages && {isPlayer _killer}) then {
 		_nul = [_killer,_victim] spawn A3EAI_sendKillMessage;
 	};
 	

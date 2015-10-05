@@ -10,6 +10,7 @@
 if (A3EAI_debugLevel > 0) then {diag_log "A3EAI Debug: A3EAI Startup is running required script files..."};
 
 call compile preprocessFileLineNumbers format ["%1\init\variables.sqf",A3EAI_directory];
+call compile preprocessFileLineNumbers format ["%1\init\variables_precalculated.sqf",A3EAI_directory];
 
 if (A3EAI_enableHC) then {
 	[] call compile preprocessFileLineNumbers format ["%1\init\A3EAI_ServerHC_functions.sqf",A3EAI_directory];
@@ -54,43 +55,43 @@ if (A3EAI_verifyClassnames) then {
 };
 
 
-if (A3EAI_dynamicUniformList) then {
+if (A3EAI_generateDynamicUniforms) then {
 	_skinlist = [] execVM format ['%1\scripts\A3EAI_buildUniformList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _skinlist};
 };
 
 //Build weapon classname tables
-if (A3EAI_dynamicWeaponList) then {
+if (A3EAI_generateDynamicWeapons) then {
 	_weaponlist = [] execVM format ['%1\scripts\A3EAI_buildWeaponList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _weaponlist};
 };
 
 //Build backpack classname tables
-if (A3EAI_dynamicBackpackList) then {
+if (A3EAI_generateDynamicBackpacks) then {
 	_backpacklist = [] execVM format ['%1\scripts\A3EAI_buildBackpackList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _backpacklist};
 };
 
 //Build vest classname tables
-if (A3EAI_dynamicVestList) then {
+if (A3EAI_generateDynamicVests) then {
 	_vestlist = [] execVM format ['%1\scripts\A3EAI_buildVestList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _vestlist};
 };
 
 //Build headgear classname tables
-if (A3EAI_dynamicHeadgearList) then {
+if (A3EAI_generateDynamicHeadgear) then {
 	_headgearlist = [] execVM format ['%1\scripts\A3EAI_buildHeadgearList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _headgearlist};
 };
 
 //Build food classname tables (1)
-if (A3EAI_dynamicFoodList) then {
+if (A3EAI_generateDynamicFood) then {
 	_foodlist = [] execVM format ['%1\scripts\A3EAI_buildFoodList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _foodlist};
 };
 
 //Build generic loot classname tables (1)
-if (A3EAI_dynamicLootList) then {
+if (A3EAI_generateDynamicLoot) then {
 	_lootlist = [] execVM format ['%1\scripts\A3EAI_buildLootList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _lootlist};
 	
@@ -98,7 +99,7 @@ if (A3EAI_dynamicLootList) then {
 	waitUntil {uiSleep 0.05; scriptDone _lootlist2};
 };
 
-if (A3EAI_dynamicOpticsList) then {
+if (A3EAI_generateDynamicOptics) then {
 	_weaponScopes = [] execVM format ['%1\scripts\A3EAI_buildScopeList.sqf',A3EAI_directory];
 	waitUntil {uiSleep 0.05; scriptDone _weaponScopes};
 };
@@ -126,21 +127,22 @@ if (A3EAI_enableStaticSpawns) then {
 };
 
 //Start dynamic spawn manager
-if !(A3EAI_dynMaxSpawns isEqualTo 0) then {
+if !(A3EAI_maxDynamicSpawns isEqualTo 0) then {
 	_dynManagerV2 = [] execVM format ['%1\scripts\dynamicSpawn_manager.sqf',A3EAI_directory];
 };
 
-//Start allowDamage fix (disabled)
-//_ADP = [] execVM format ['%1\scripts\allowDamage_fix.sqf',A3EAI_directory];
-
 //Set up vehicle patrols
-if ((A3EAI_maxHeliPatrols > 0) or {(A3EAI_maxLandPatrols > 0)}) then {
+if ((A3EAI_maxAirPatrols > 0) or {(A3EAI_maxLandPatrols > 0)}) then {
 	_vehicles = [] execVM format ['%1\scripts\setup_veh_patrols.sqf',A3EAI_directory];
 };
 
 //Load custom definitions file
 if (A3EAI_loadCustomFile) then {
-	_customLoader = [] execVM format ["%1\init\A3EAI_custom_loader.sqf",A3EAI_directory]; //Load custom spawns
+	if (isClass (configFile >> "CfgA3EAISettings")) then {
+		_customLoader = [] execVM format ["%1\init\A3EAI_custom_loader.sqf",A3EAI_directory]; //0.1.8
+	} else {
+		diag_log "A3EAI Error: Could not load A3EAI_config.pbo. Unable to load custom definitions.";
+	};
 };
 
 //Load A3EAI server monitor

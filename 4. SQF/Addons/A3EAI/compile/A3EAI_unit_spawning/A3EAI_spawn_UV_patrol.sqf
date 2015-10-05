@@ -102,7 +102,7 @@ if (_isAirVehicle) then {
 	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UAVStartPatrol;";
 	_vehicle flyInHeight (FLYINHEIGHT_UAV_PATROLLING_BASE + random (FLYINHEIGHT_UAV_PATROLLING_VARIANCE));
 	
-	if (A3EAI_UAVDetectOnly) then {
+	if (A3EAI_detectOnlyUAVs) then {
 		_unitGroup setBehaviour "CARELESS";
 		_unitGroup setCombatMode "BLUE";
 	};
@@ -115,7 +115,7 @@ if (_isAirVehicle) then {
 	_detectionStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVDetection;";
 	_patrolStatement = "if !(local this) exitWith {}; [(group this)] spawn A3EAI_UGVStartPatrol;";
 
-	if (A3EAI_UGVDetectOnly) then {
+	if (A3EAI_detectOnlyUGVs) then {
 		_unitGroup setBehaviour "CARELESS";
 		_unitGroup setCombatMode "BLUE";
 	};

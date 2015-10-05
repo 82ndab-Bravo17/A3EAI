@@ -32,10 +32,13 @@ _items = [];
 } forEach _backpackList;
 
 if !(_items isEqualTo []) then {
-	if (0 in A3EAI_dynamicBackpackLevels) then {A3EAI_backpackTypes0 = _items;};
-	if (1 in A3EAI_dynamicBackpackLevels) then {A3EAI_backpackTypes1 = _items;};
-	if (2 in A3EAI_dynamicBackpackLevels) then {A3EAI_backpackTypes2 = _items;};
-	if (3 in A3EAI_dynamicBackpackLevels) then {A3EAI_backpackTypes3 = _items;};
+	if !(A3EAI_dynamicBackpackBlacklist isEqualTo []) then {
+		_items = _items - A3EAI_dynamicBackpackBlacklist;
+	};
+	A3EAI_backpackTypes0 = _items;
+	A3EAI_backpackTypes1 = +_items;
+	A3EAI_backpackTypes2 = +_items;
+	A3EAI_backpackTypes3 = +_items;
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 backpack classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
@@ -48,3 +51,5 @@ if !(_items isEqualTo []) then {
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate backpack classname list. Classnames from A3EAI_config.sqf used instead.";
 };
+
+A3EAI_dynamicBackpackBlacklist = nil;

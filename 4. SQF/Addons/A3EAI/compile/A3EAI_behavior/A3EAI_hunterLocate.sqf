@@ -37,7 +37,7 @@ try {
 		if ((_unitGroup knowsAbout _targetPlayer) < 4) then {_unitGroup reveal [_targetPlayer,4]};
 		_unitGroup setCurrentWaypoint _waypoint;
 		
-		if (A3EAI_radioMsgs) then {
+		if (A3EAI_enableRadioMessages) then {
 			_leader = (leader _unitGroup);
 			if ((_leader distance _targetPlayer) < RADIO_RECEPTION_RANGE) then {
 				_nearbyUnits = _targetPos nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE_RADIO_HUNTER];

@@ -55,7 +55,7 @@ _unitGroup = [_totalAI,grpNull,"dynamic",_spawnPos,_trigger,_unitLevel,true] cal
 _unitGroup setBehaviour "AWARE";
 
 //Begin hunting player or patrolling area
-_behavior = if (A3EAI_huntingChance call A3EAI_chance) then {
+_behavior = if (A3EAI_spawnHunterChance call A3EAI_chance) then {
 	_unitGroup reveal [_targetPlayer,4];
 	0 = [_unitGroup,_patrolDist,_targetPlayer,getPosATL _trigger] spawn A3EAI_startHunting;
 	"HUNT PLAYER"

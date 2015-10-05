@@ -78,7 +78,7 @@ if (_patrolDist > 1) then {
 	[_unitGroup, 0] setWaypointType "GUARD";
 };
 
-if (_unitType in A3EAI_airReinforcementAllowedTypes) then {
+if (_unitType in A3EAI_airReinforcementAllowedFor) then {
 	_unitGroup setVariable ["ReinforceAvailable",true];
 };
 

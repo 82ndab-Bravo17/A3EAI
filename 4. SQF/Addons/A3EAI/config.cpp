@@ -3,15 +3,16 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "0.9.3.2";
-		A3EAICompatibleHCVersions[] = {};
+		A3EAIVersion = "1.0.0";
+		compatibleConfigVersions[] = {"1.0.0"};
+		compatibleHCVersions[] = {}; //HC not currently supported since Epoch client code execution prevention does not currently work.
 		requiredAddons[] = {"a3_epoch_code"};
 	};
 	class A3EAI_HC {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAI_HCVersion = "0.9.3";
+		A3EAI_HCVersion = "Non-functional";
 		requiredAddons[] = {"a3_epoch_code"};
 	};
 };
@@ -23,20 +24,6 @@ class CfgFunctions {
 			
 			class A3EAI_init {
 				preInit = 1;
-			};
-		};
-	};
-	
-	class A3E {
-		class Client {
-			file = "\A3EAI\init";
-			
-			class init {
-				preInit = 1;
-			};
-			
-			class postinit {
-				postInit = 1;
 			};
 		};
 	};

@@ -280,7 +280,7 @@ while {true} do {
 	_activeGroupAmount = format ["%1/%2",{(_x getVariable ["GroupSize",0]) > 0} count A3EAI_activeGroups,count A3EAI_activeGroups];
 	
 	//Report statistics to RPT log
-	if ((A3EAI_monitorRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorRate)}) then {
+	if ((A3EAI_monitorReportRate > 0) && {((_currentTime - _monitorReport) > A3EAI_monitorReportRate)}) then {
 		_uptime = [] call _getUptime;
 		diag_log format ["[A3EAI Monitor] [Uptime:%1:%2:%3][FPS:%4][Groups:%5][Respawn:%6][HC:%7]",_uptime select 0, _uptime select 1, _uptime select 2,round diag_fps,_activeGroupAmount,(count A3EAI_respawnQueue),A3EAI_HCIsConnected];
 		diag_log format ["[A3EAI Monitor] [Static:%1][Dynamic:%2][Random:%3][Air:%4][Land:%5][UAV:%6][UGV:%7]",(count A3EAI_staticTriggerArray),(count A3EAI_dynTriggerArray),(count A3EAI_randTriggerArray),A3EAI_curHeliPatrols,A3EAI_curLandPatrols,A3EAI_curUAVPatrols,A3EAI_curUGVPatrols];

@@ -147,7 +147,7 @@ if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
 	_unitGroup setVariable ["HC_Ready",true];
 };
 
-if (_unitType in A3EAI_airReinforcementAllowedTypes) then {
+if (_unitType in A3EAI_airReinforcementAllowedFor) then {
 	_unitGroup setVariable ["ReinforceAvailable",true];
 };
 

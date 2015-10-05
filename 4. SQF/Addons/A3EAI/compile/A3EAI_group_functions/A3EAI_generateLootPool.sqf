@@ -11,7 +11,7 @@ _unitType = _unitGroup getVariable ["unitType",""];
 if (_unitType != "dynamic") then {
 	for "_j" from 1 to _groupSize do {
 		//Add first aid kit to loot list
-		if (A3EAI_chanceFirstAidKit call A3EAI_chance) then {
+		if (A3EAI_firstAidKitChance call A3EAI_chance) then {
 			_lootPool pushBack FIRST_AID_ITEM_PLAYER;
 		};
 
@@ -36,7 +36,7 @@ if (_unitType != "dynamic") then {
 	//Generate loot all at once for dynamic AI
 	for "_i" from 1 to _groupSize do {
 		//Add first aid kit to loot list
-		if (A3EAI_chanceFirstAidKit call A3EAI_chance) then {
+		if (A3EAI_firstAidKitChance call A3EAI_chance) then {
 			_lootUnit = (units _unitGroup) call A3EAI_selectRandom;
 			[_lootUnit,FIRST_AID_ITEM_PLAYER] call A3EAI_addItem;
 		};

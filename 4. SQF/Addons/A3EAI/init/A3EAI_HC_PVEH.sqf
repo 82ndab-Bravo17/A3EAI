@@ -8,3 +8,5 @@
 "A3EAI_setBehavior_PVC" addPublicVariableEventHandler {(_this select 1) call A3EAI_setBehaviorHC;diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] A3EAI HC PVEHs loaded.";
+
+true

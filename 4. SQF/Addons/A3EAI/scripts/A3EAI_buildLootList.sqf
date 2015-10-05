@@ -35,6 +35,9 @@ _items = [];
 } forEach _lootList1;
 
 if !(_items isEqualTo []) then {
+	if !(A3EAI_dynamicLootBlacklist isEqualTo []) then {
+		_items = _items - A3EAI_dynamicLootBlacklist;
+	};
 	A3EAI_MiscLoot1 = _items;
 	if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Generated %1 generic loot classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
@@ -44,3 +47,5 @@ if !(_items isEqualTo []) then {
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate loot classname list. Classnames from A3EAI_config.sqf used instead.";
 };
+
+//A3EAI_dynamicLootBlacklist is nil'ed in buildLootLargeList

@@ -81,13 +81,14 @@ if (isDedicated) then {
 							_unitPos = getPosATL _this;
 							if ((leader _unitGroup) isEqualTo _this) then {
 								(format ["%1_Lead",_unitGroup]) setMarkerPos _unitPos;
-								(format ["%1_Lead",_unitGroup]) setMarkerColor call {
+								_color = call {
 									_combatMode = (combatMode _unitGroup);
 									if (_combatMode isEqualTo "YELLOW") exitWith {"ColorBlack"};
 									if (_combatMode isEqualTo "RED") exitWith {"ColorRed"};
 									if (_combatMode isEqualTo "BLUE") exitWith {"ColorBlue"};
 									"ColorBlack"
 								};
+								(format ["%1_Lead",_unitGroup]) setMarkerColor _color; 
 								(format ["%1_WP",_unitGroup]) setMarkerPos (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
 							};
 							_markername setMarkerPos _unitPos;
@@ -115,13 +116,14 @@ if (isDedicated) then {
 						_unitPos = getPosATL _this;
 						if ((leader _unitGroup) isEqualTo _this) then {
 							(format ["%1_Lead",_unitGroup]) setMarkerPos _unitPos;
-							(format ["%1_Lead",_unitGroup]) setMarkerColor call {
+							_color = call {
 								_combatMode = (combatMode _unitGroup);
 								if (_combatMode isEqualTo "YELLOW") exitWith {"ColorBlack"};
 								if (_combatMode isEqualTo "RED") exitWith {"ColorRed"};
 								if (_combatMode isEqualTo "BLUE") exitWith {"ColorBlue"};
 								"ColorBlack"
 							};
+							(format ["%1_Lead",_unitGroup]) setMarkerColor _color; 
 							(format ["%1_WP",_unitGroup]) setMarkerPos (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
 						};
 						_unitMarker setMarkerPos _unitPos;
@@ -197,6 +199,11 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 	if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {uiSleep 15};
 };
 
+if (A3EAI_enableDebugMarkers) then {
+	deleteMarker _groupLeadMarker;
+	deleteMarker _groupWPMarker;
+};
+
 if !(isNull _unitGroup) then {
 	_unitGroup setVariable ["isManaged",false]; //allow group manager to run again on group respawn.
 
@@ -206,8 +213,6 @@ if !(isNull _unitGroup) then {
 		A3EAI_HCGroupsCount = A3EAI_HCGroupsCount - 1;
 		if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Returned ownership of AI %1 group %2 to server.",_unitType,_unitGroup];};
 	};
-
-	
 
 	while {(_unitGroup getVariable ["GroupSize",-1]) isEqualTo 0} do {	//Wait until group is either respawned or marked for deletion. A dummy unit should be created to preserve group.
 		uiSleep 5;
@@ -225,9 +230,4 @@ if !(isNull _unitGroup) then {
 
 if ((local _vehicle) && {isEngineOn _vehicle}) then {
 	_vehicle engineOn false;
-};
-
-if (A3EAI_enableDebugMarkers) then {
-	deleteMarker _groupLeadMarker;
-	deleteMarker _groupWPMarker;
 };

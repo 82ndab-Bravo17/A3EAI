@@ -170,7 +170,7 @@ A3EAI_antistuck_land = compileFinal preprocessFileLineNumbers format ["%1\compil
 A3EAI_antistuck_uav = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_antistuck_uav.sqf",A3EAI_directory];
 A3EAI_antistuck_ugv = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_antistuck_ugv.sqf",A3EAI_directory];
 A3EAI_generateLootPool = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLootPool.sqf",A3EAI_directory];
-A3EAI_generateLoot = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLoot.sqf",A3EAI_directory];
+A3EAI_generateLootOnDeath = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLootOnDeath.sqf",A3EAI_directory];
 A3EAI_generateLoadout = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLoadout.sqf",A3EAI_directory];
 A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_addGroupManager.sqf",A3EAI_directory];
 

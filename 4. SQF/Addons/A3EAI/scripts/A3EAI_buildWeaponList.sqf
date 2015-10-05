@@ -83,3 +83,5 @@ if (A3EAI_debugLevel > 0) then {
 	};
 	diag_log format ["A3EAI Debug: Weapon classname tables created in %1 seconds.",(diag_tickTime - _startTime)];
 };
+
+A3EAI_dynamicWeaponBlacklist = nil;

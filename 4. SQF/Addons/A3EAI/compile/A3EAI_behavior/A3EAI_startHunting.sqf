@@ -9,7 +9,7 @@ _triggerPos = _this select 3;
 
 _targetPos = getPosATL _targetPlayer;
 if ((isPlayer _targetPlayer) && {(vehicle _targetPlayer) isKindOf "Land"}) then {
-	if (A3EAI_radioMsgs) then {
+	if (A3EAI_enableRadioMessages) then {
 		//diag_log "DEBUG: Sending radio static";
 		if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {
 			_nearbyUnits = _targetPlayer nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE_RADIO_HUNTER];

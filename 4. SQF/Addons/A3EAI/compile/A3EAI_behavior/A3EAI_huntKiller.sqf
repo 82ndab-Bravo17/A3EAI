@@ -63,10 +63,10 @@ if ((_startPos distance _targetPlayerPos) < _chaseDistance) then {
 		
 		if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI group %1 in pursuit state. Pursuit time remaining: %2 seconds.",_unitGroup,(_unitGroup getVariable ["pursuitTime",0]) - diag_tickTime];};
 		
-		if ((A3EAI_radioMsgs) && {0.7 call A3EAI_chance}) then {
+		if ((A3EAI_enableRadioMessages) && {0.7 call A3EAI_chance}) then {
 			_leader = (leader _unitGroup);
-			if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST}) then {
-				_nearbyUnits = _targetPlayerPos nearEntities [[PLAYER_UNITS,"LandVehicle"],TRANSMIT_RANGE];
+			if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST_RADIO_HUNTKILLER}) then {
+				_nearbyUnits = _targetPlayerPos nearEntities [[PLAYER_UNITS,"LandVehicle"],TRANSMIT_RANGE_RADIO_HUNTKILLER];
 				if !(_nearbyUnits isEqualTo []) then {	//Have at least 1 player to send a message to
 					if ((_unitGroup getVariable ["GroupSize",0]) > 1) then {	//Have at least 1 AI unit to send a message from
 						_speechIndex = (floor (random 3));
@@ -113,15 +113,14 @@ if ((_startPos distance _targetPlayerPos) < _chaseDistance) then {
 		if ((_unitGroup getVariable ["GroupSize",0]) > 0) then {
 			_waypoints = (waypoints _unitGroup);
 			_unitGroup setCurrentWaypoint (_waypoints call A3EAI_selectRandom);
-			{_x enableFatigue true} count (units _unitGroup);
 			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Pursuit state ended for group %1. Returning to patrol state. (fn_findKiller)",_unitGroup];};
 			
-			if (A3EAI_radioMsgs) then {
+			if (A3EAI_enableRadioMessages) then {
 				_leader = (leader _unitGroup);
-				if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST} && {((_unitGroup getVariable ["GroupSize",0]) > 1)} && {isPlayer _targetPlayer}) then {
+				if ((alive _leader) && {(_targetPlayer distance _leader) <= RECEIVE_DIST_RADIO_HUNTKILLER} && {((_unitGroup getVariable ["GroupSize",0]) > 1)} && {isPlayer _targetPlayer}) then {
 					_radioText = if (alive _targetPlayer) then {4} else {5};
 					_radioSpeech = [_radioText,[name (leader _unitGroup)]];
-					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE];
+					_nearbyUnits = (getPosASL _targetPlayer) nearEntities [["LandVehicle",PLAYER_UNITS],TRANSMIT_RANGE_RADIO_HUNTKILLER];
 					{
 						if ((isPlayer _x) && {({if (RADIO_ITEM in (assignedItems _x)) exitWith {1}} count (units (group _x))) > 0}) then {
 							[_x,_radioSpeech] call A3EAI_radioSend;

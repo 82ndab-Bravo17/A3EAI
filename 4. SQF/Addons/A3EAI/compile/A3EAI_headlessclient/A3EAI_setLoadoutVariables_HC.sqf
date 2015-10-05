@@ -7,7 +7,7 @@ _unitType = _this select 1;
 _unitLevel = _this select 2;
 
 if !(_unitType in ["uav","ugv"]) then {
-	_useGL = if !(A3EAI_GLRequirement isEqualTo -1) then {_unitLevel >= A3EAI_GLRequirement} else {false};
+	_useGL = if !(A3EAI_levelRequiredGL isEqualTo -1) then {_unitLevel >= A3EAI_levelRequiredGL} else {false};
 	{
 		_x setVariable ["loadout",[[],[]]];
 		_loadout = _x getVariable "loadout";

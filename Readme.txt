@@ -1,4 +1,4 @@
-A3EAI - Current Version: 0.9.3.2
+A3EAI - Current Version: 1.0.0
 =====
 
 ---
@@ -10,14 +10,18 @@ A3EAI is an AI spawning manger addon designed for ArmA 3 Epoch Mod (http://epoch
 ---
 Installing A3EAI
 ---
-1. Download the latest A3EAI release from the A3EAI Releases page: https://github.com/dayzai/A3EAI/releases
-2. Locate the .zip file you downloaded and extract it to a folder.
-3. Open the extracted folder and open the Installation Package folder. Copy the contents of this folder (Addons, A3EAI_config.sqf, A3EAI_custom_defs.sqf)
-4. Navigate to your server's Arma 3 folder and open the @EpochHive folder.
-5. Paste the contents copied from Step 3 into this directory. When prompted to merge the "Addons" folder, click Yes. Note: No Epoch files are being replaced or modified. This step merges the two Addon folders. 
-6. (Optional) Configure A3EAI settings by editing A3EAI_config.sqf. 
+IMPORTANT: As of A3EAI 1.0.0, the installation steps have changed. If you already have A3EAI installed (before version 0.2.0), you must remove all A3EAI files from @EpochHive.
 
-IMPORTANT: After the Arma 3 1.52 update, the config files are located within the A3EAI.pbo.
+To install A3XAI:
+
+1. Copy @A3XAI into your server's Arma 3 directory.
+2. Modify your server's startup parameters to include @A3XAI. For example: -serverMod=@ExileServer;@A3XAI;
+
+To configure A3XAI:
+
+1. Unpack A3XAI_config.A3EAI (Recommended to use A3EAI Manager: http://www.armaholic.com/page.php?id=16369)
+2. Edit config.cpp with a text editor (Recommended to use Notepad++: https://notepad-plus-plus.org/). Make your configuration changes.
+3. Repack A3XAI_config.A3EAI
 
 ---
 A3EAI Wiki
@@ -37,6 +41,6 @@ A3EAI Features
 8. Classname verification: A3EAI filters out invalid or banned classnames and prevents them from being used by AI.
 9. Universal map support: A3EAI supports any and every map for Arma 3 without changing any settings.
 10. Plug-and-play installation: Installing and upgrading A3EAI is a simple copy and paste job and does not require modifying any Epoch files.
-11. Easy configuration: A single configuration file contains all settings for A3EAI. This config file is external to the A3EAI pbo, so configuration changes can be made without ever having to unpack or repack the pbo file. 
+11. Easy configuration: A single configuration file contains all settings for A3EAI. This config file is external to the A3EAI A3EAI, so configuration changes can be made without ever having to unpack or repack the A3EAI file. 
 
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.

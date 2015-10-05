@@ -18,7 +18,7 @@ if (({(_destPos distance _x) < AIR_REINFORCE_DIST_BETWEEN_LOCATIONS} count A3EAI
 A3EAI_reinforcedPositions pushBack _destPos;
 
 _error = false;
-_maxGunnerUnits = A3EAI_heliGunnerUnits;
+_maxGunnerUnits = A3EAI_airGunnerUnits;
 _vehiclePosition = [_destPos,AIR_REINFORCE_SPAWN_DIST_BASE + (random(AIR_REINFORCE_SPAWN_DIST_VARIANCE)),random(360),1] call A3EAI_SHK_pos;
 _vehiclePosition set [2,200];
 
@@ -100,7 +100,7 @@ if (A3EAI_enableHC && {_unitType in A3EAI_HCAllowedTypes}) then {
 	_unitGroup setVariable ["HC_Ready",true];
 };
 
-if (A3EAI_radioMsgs && {!((owner _targetPlayer) isEqualTo 0)}) then {
+if (A3EAI_enableRadioMessages && {!((owner _targetPlayer) isEqualTo 0)}) then {
 	private ["_targetPlayerVehicleCrew","_radioText"];
 	if ((_targetPlayer distance _destPos) < AIR_REINFORCE_RADIO_DIST) then {
 		_targetPlayerVehicleCrew = (crew (vehicle _targetPlayer));

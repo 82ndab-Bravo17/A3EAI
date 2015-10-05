@@ -1,6 +1,6 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_unit", "_unitLevel", "_weaponLoot", "_loot", "_toolLoot", "_pistol", "_magazine", "_kryptoAmountMax", "_kryptoAmount", "_kryptoPos", "_kryptoDevice", "_toolsArray", "_item"];
+private ["_unit", "_unitLevel", "_weaponLoot", "_toolLoot", "_pistol", "_magazine", "_kryptoAmountMax", "_kryptoAmount", "_kryptoPos", "_kryptoDevice", "_toolsArray", "_item" , "_loadout", "_primaryWeapon"];
 
 _unit = _this select 0;
 _unitLevel = _this select 1;
@@ -15,11 +15,13 @@ if !(local _unit) then {
 if (A3EAI_debugLevel > 1) then {diag_log format["A3EAI Debug: Generating loot for AI unit with unitLevel %2.",_unit,_unitLevel];};
 
 _weaponLoot = [];
-_loot = [];
 _toolLoot = [];
 
+_loadout = _unit getVariable ["loadout",[[],[]]];
+_primaryWeapon = [_loadout select 0,0,""] call A3XAI_param;
+
 //Generate a pistol if one wasn't assigned with loadout script.
-if !((primaryWeapon _unit) isEqualTo "") then {
+if ((getNumber (configFile >> "CfgWeapons" >> _primaryWeapon >> "type")) != 2) then {
 	_pistol = A3EAI_pistolList call A3EAI_selectRandom;
 	_magazine = getArray (configFile >> "CfgWeapons" >> _pistol >> "magazines") select 0;
 	_unit addMagazine _magazine;	
@@ -50,7 +52,7 @@ if(_kryptoAmount > 0) then {
 };
 
 //Add tool items
-_toolsArray = missionNamespace getVariable ["A3EAI_tools"+str(_unitLevel),[]];
+_toolsArray = missionNamespace getVariable ["A3EAI_toolsList"+str(_unitLevel),[]];
 {
 	_item = _x select 0;
 	if (((_x select 1) call A3EAI_chance) && {[_item,"weapon"] call A3EAI_checkClassname}) then {
@@ -61,4 +63,4 @@ _toolsArray = missionNamespace getVariable ["A3EAI_tools"+str(_unitLevel),[]];
 	}
 } forEach _toolsArray;
 
-if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Generated loot for AI death: %1,%2,%3. Krypto: %4.",_weaponLoot,_loot,_toolLoot,_kryptoAmount];};
+if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Generated loot for AI death: %1,%2,%3. Krypto: %4.",_weaponLoot,_toolLoot,_kryptoAmount];};

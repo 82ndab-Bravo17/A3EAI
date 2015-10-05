@@ -41,7 +41,7 @@ if (isDedicated) then {
 			if (_vehicleType isKindOf "Air") then {
 				_respawnSleep = (A3EAI_respawnAirMinTime + random A3EAI_respawnTimeVarAir);
 			} else {
-				_respawnSleep = (A3EAI_respawnLandMaxTime + random A3EAI_respawnTimeVarLand);
+				_respawnSleep = (A3EAI_respawnLandMinTime + random A3EAI_respawnTimeVarLand);
 				if (_fastMode) then {_respawnSleep = (_respawnSleep/4) max 180};
 			};
 			_nextRespawnTime = (diag_tickTime + _respawnSleep);	//Determine time of next respawn
@@ -54,9 +54,9 @@ if (isDedicated) then {
 			_fastMode = if ((count _this) > 2) then {_this select 2} else {false}; //shorter wait time if retrying a spawn
 			
 			if (_vehicleType isKindOf "Air") then {
-				_respawnSleep = (A3EAI_respawnUAVMinTime + random (A3EAI_respawnUAVMaxTime - A3EAI_respawnUAVMinTime));
+				_respawnSleep = (A3EAI_respawnUAVMinTime + random A3EAI_respawnTimeVarUAV);
 			} else {
-				_respawnSleep = (A3EAI_respawnUGVMinTime + random (A3EAI_respawnUGVMaxTime - A3EAI_respawnUGVMinTime));
+				_respawnSleep = (A3EAI_respawnUGVMinTime + random A3EAI_respawnTimeVarUGV);
 				if (_fastMode) then {_respawnSleep = (_respawnSleep/4) max 180};
 			};
 			_nextRespawnTime = (diag_tickTime + _respawnSleep);	//Determine time of next respawn

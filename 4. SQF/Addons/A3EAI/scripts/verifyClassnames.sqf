@@ -59,32 +59,32 @@ _verified = [];
 	};
 } forEach A3EAI_tableChecklist;
 
-if (A3EAI_maxHeliPatrols > 0) then {
+if (A3EAI_maxAirPatrols > 0) then {
 	{
 		call {
 			if (!((_x select 0) isKindOf "Air")) exitWith {
-				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_heliList array: %1.",(_x select 0)];
-				A3EAI_heliList set [_forEachIndex,""];
+				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airVehicleList array: %1.",(_x select 0)];
+				A3EAI_airVehicleList set [_forEachIndex,""];
 			};
 		};
-	} forEach A3EAI_heliList;
-	if ("" in A3EAI_heliList) then {A3EAI_heliList = A3EAI_heliList - [""];};
+	} forEach A3EAI_airVehicleList;
+	if ("" in A3EAI_airVehicleList) then {A3EAI_airVehicleList = A3EAI_airVehicleList - [""];};
 };
 
 if (A3EAI_maxLandPatrols > 0) then {
 	{
 		call {
 			if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
-				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
-				A3EAI_vehList set [_forEachIndex,""];
+				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
+				A3EAI_landVehicleList set [_forEachIndex,""];
 			};
 			if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
-				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_vehList array: %1.",(_x select 0)];
-				A3EAI_vehList set [_forEachIndex,""];
+				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
+				A3EAI_landVehicleList set [_forEachIndex,""];
 			};
 		};
-	} forEach A3EAI_vehList;
-	if ("" in A3EAI_vehList) then {A3EAI_vehList = A3EAI_vehList - [""];};
+	} forEach A3EAI_landVehicleList;
+	if ("" in A3EAI_landVehicleList) then {A3EAI_landVehicleList = A3EAI_landVehicleList - [""];};
 };
 
 if (A3EAI_maxAirReinforcements > 0) then {
@@ -201,11 +201,11 @@ if ("" in A3EAI_launcherTypes) then {A3EAI_launcherTypes = A3EAI_launcherTypes -
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","mountAction",""] call BIS_fnc_returnConfigEntry) isEqualTo "MountOptic") then {
-		diag_log format ["[A3EAI] Removing invalid optics classname from A3EAI_weaponOpticsList array: %1.",_x];
-		A3EAI_weaponOpticsList set [_forEachIndex,""];
+		diag_log format ["[A3EAI] Removing invalid optics classname from A3EAI_opticsList array: %1.",_x];
+		A3EAI_opticsList set [_forEachIndex,""];
 	};
-} forEach A3EAI_weaponOpticsList;
-if ("" in A3EAI_weaponOpticsList) then {A3EAI_weaponOpticsList = A3EAI_weaponOpticsList - [""];};
+} forEach A3EAI_opticsList;
+if ("" in A3EAI_opticsList) then {A3EAI_opticsList = A3EAI_opticsList - [""];};
 
 {
 	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {

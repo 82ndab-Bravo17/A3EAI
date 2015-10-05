@@ -29,7 +29,7 @@ for "_i" from 1 to _maxRandomSpawns do {
 			
 		_posCheckFail = (
 			(({if (_trigPos in _x) exitWith {1}} count (nearestLocations [_trigPos,[BLACKLIST_OBJECT_GENERAL,BLACKLIST_OBJECT_RANDOM],1500])) > 0) ||	//Position not in blacklisted area
-			{({if ((_trigPos distance2D _x) < (TRIGGER_SIZE_NORMAL_DOUBLED + A3EAI_minRandSpawnDist)) exitWith {1}} count A3EAI_randTriggerArray) > 0} ||				//Not too close to another random spawn.
+			{({if ((_trigPos distance2D _x) < (TRIGGER_SIZE_NORMAL_DOUBLED + A3EAI_distanceBetweenRandomSpawns)) exitWith {1}} count A3EAI_randTriggerArray) > 0} ||				//Not too close to another random spawn.
 			{!((_trigPos nearObjects [PLOTPOLE_OBJECT,PLOTPOLE_RADIUS]) isEqualTo [])}																	//Position not blocked by a jammer
 		);
 		if (_posCheckFail && {_attempts < MAX_RANDOMSPAWN_RETRY_ATTEMPTS}) then {uiSleep 0.25};

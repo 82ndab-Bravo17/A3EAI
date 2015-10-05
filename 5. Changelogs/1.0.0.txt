@@ -1,0 +1,34 @@
+A3EAI 1.0.0
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.pbo update required: Yes, last changed: 1.0.0
+Headless Client Files/Keys update required: N/A - HC is not functional until further notice.
+A3EAI Client Addon update required: No, last changed: 0.9.3
+
+NEW INSTALL PROCEDURE REQUIRED!
+
+IMPORTANT: If you already have A3EAI installed (before version 0.2.0), you must remove all A3EAI files from @EpochHive.
+
+To install A3XAI:
+
+1. Copy @A3EAI from "1. Installation Package" into your server's Arma 3 directory.
+2. Modify your server's startup parameters to include @A3XAI. For example: -serverMod=@EpochHive;@A3XAI;
+
+To configure A3XAI:
+
+1. Unpack A3XAI_config.A3EAI (Recommended to use A3EAI Manager: http://www.armaholic.com/page.php?id=16369)
+2. Edit config.cpp with a text editor (Recommended to use Notepad++: https://notepad-plus-plus.org/). Make your configuration changes.
+3. Repack A3XAI_config.A3EAI
+
+[Changed] Reworked configuration system (see above).
+[Changed] Main configuration file (config.cpp) is now located in @A3EAI/A3EAI_config.pbo
+[Changed] A3EAI_custom_defs.sqf is now located in @A3EAI/A3EAI_config.pbo
+[Info] A3EAI HC is currently not functional. A future Epoch code update will allow the HC to be functional again.
+[Info] A3EAI_config.pbo now contains all user-configurable settings. A3EAI.pbo will contain the code core and will not contain configurable settings.
+[Fixed] Fixed wrong variable name used in A3EAI_findKiller.sqf.
+[Fixed] AI vehicle patrol respawns were using the maximum respawn time for every respawn.
+[Fixed] Pistol weapons were not generated in AI inventory on death.
+[Removed] Removed per-level toggle for dynamic classname feature.
+[Added] Classname blacklisting option for each dynamic classname function.
+[Changed] Dynamic spawn manager startup delay changed from 120 seconds (from server start) to 60 seconds.

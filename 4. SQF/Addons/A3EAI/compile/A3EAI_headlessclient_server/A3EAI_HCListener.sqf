@@ -1,12 +1,13 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_HCObject","_versionHC","_compatibleVersions","_positionHC"];
+private ["_HCObject","_versionHC","_compatibleVersions","_positionHC","_useRemoteConfigs"];
 _HCObject = _this select 0;
 _versionHC = _this select 1;
+_useRemoteConfigs = _this select 2;
 
 A3EAI_HC_serverResponse = false;
 if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "HeadlessClient_F"}) then {
-	_compatibleVersions = [configFile >> "CfgPatches" >> "A3EAI","A3EAICompatibleHCVersions",[]] call BIS_fnc_returnConfigEntry;
+	_compatibleVersions = [configFile >> "CfgPatches" >> "A3EAI","compatibleHCVersions",[]] call BIS_fnc_returnConfigEntry;
 	if (_versionHC in _compatibleVersions) then {
 		A3EAI_HCObject = _HCObject;
 		A3EAI_HCObject allowDamage false;
@@ -27,7 +28,11 @@ if (((owner A3EAI_HCObject) isEqualTo 0) && {(typeOf _HCObject) isEqualTo "Headl
 		}];
 		A3EAI_HCObjectOwnerID = (owner A3EAI_HCObject);
 		A3EAI_HCIsConnected = true;
-		A3EAI_HC_serverResponse = true;
+		A3EAI_HC_serverResponse = if (_useRemoteConfigs) then {
+			A3EAI_pushedHCVariables
+		} else {
+			true
+		};
 		_positionHC = getPosATL A3EAI_HCObject;
 		if (({if (_positionHC in _x) exitWith {1}} count (nearestLocations [_positionHC,[BLACKLIST_OBJECT_GENERAL],BLACKLIST_AREA_HC_SIZE])) isEqualTo 0) then {
 			[_positionHC,TEMP_BLACKLIST_AREA_HC_SIZE] call A3EAI_createBlackListArea;

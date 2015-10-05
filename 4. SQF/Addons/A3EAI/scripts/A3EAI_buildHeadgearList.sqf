@@ -33,10 +33,13 @@ _items = [];
 } forEach _headgearList;
 
 if !(_items isEqualTo []) then {
-	if (0 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes0 = _items;};
-	if (1 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes1 = _items;};
-	if (2 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes2 = _items;};
-	if (3 in A3EAI_dynamicHeadgearLevels) then {A3EAI_headgearTypes3 = _items;};
+	if !(A3EAI_dynamicHeadgearBlacklist isEqualTo []) then {
+		_items = _items - A3EAI_dynamicHeadgearBlacklist;
+	};
+	A3EAI_headgearTypes0 = _items;
+	A3EAI_headgearTypes1 = +_items;
+	A3EAI_headgearTypes2 = +_items;
+	A3EAI_headgearTypes3 = +_items;
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 headgear classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
@@ -49,3 +52,5 @@ if !(_items isEqualTo []) then {
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate headgear classname list. Classnames from A3EAI_config.sqf used instead.";
 };
+
+A3EAI_dynamicHeadgearBlacklist = nil;

@@ -41,10 +41,13 @@ _items = [];
 } forEach _uniformTypes;
 
 if !(_items isEqualTo []) then {
-	if (0 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes0 = _items;};
-	if (1 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes1 = _items;};
-	if (2 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes2 = _items;};
-	if (3 in A3EAI_dynamicUniformLevels) then {A3EAI_uniformTypes3 = _items;};
+	if !(A3EAI_dynamicUniformBlacklist isEqualTo []) then {
+		_items = _items - A3EAI_dynamicUniformBlacklist;
+	};
+	A3EAI_uniformTypes0 = _items;
+	A3EAI_uniformTypes1 = +_items;
+	A3EAI_uniformTypes2 = +_items;
+	A3EAI_uniformTypes3 = +_items;
 	if (A3EAI_debugLevel > 0) then {
 		diag_log format ["A3EAI Debug: Generated %1 uniform classnames in %2 seconds.",(count _items),diag_tickTime - _startTime];
 		if (A3EAI_debugLevel > 1) then {
@@ -57,3 +60,5 @@ if !(_items isEqualTo []) then {
 } else {
 	diag_log "A3EAI Error: Could not dynamically generate uniform classname list. Classnames from A3EAI_config.sqf used instead.";
 };
+
+A3EAI_dynamicUniformBlacklist = nil;

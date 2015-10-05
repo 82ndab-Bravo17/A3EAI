@@ -5,7 +5,7 @@ private ["_hitArray", "_hitName", "_hitPoint", "_lastRepaired","_result"];
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
 
-if (A3EAI_UGVDetectOnly) then {
+if (A3EAI_detectOnlyUGVs) then {
 	_lastAggro = _vehicle getVariable "AggroTime";
 	if (isNil "AggroTime") then {
 		_lastAggro = 0;

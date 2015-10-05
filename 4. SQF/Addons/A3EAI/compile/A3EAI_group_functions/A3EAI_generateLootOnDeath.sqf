@@ -18,7 +18,7 @@ _weaponLoot = [];
 _toolLoot = [];
 
 _loadout = _unit getVariable ["loadout",[[],[]]];
-_primaryWeapon = [_loadout select 0,0,""] call A3XAI_param;
+_primaryWeapon = [_loadout select 0,0,""] call A3EAI_param;
 
 //Generate a pistol if one wasn't assigned with loadout script.
 if ((getNumber (configFile >> "CfgWeapons" >> _primaryWeapon >> "type")) != 2) then {

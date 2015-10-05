@@ -14,7 +14,7 @@
 
 7. Locate your ArmA 3 client mission folder.
 
-        Windows 7: C:\My Documents\Arma 3 - Other Profiles\[ArmA3 Profile Name]\missions
+        Windows 7/8/10: C:\My Documents\Arma 3 - Other Profiles\[ArmA3 Profile Name]\missions
 
 8. Find and open the folder that contains the name you assigned in Step 6.
 

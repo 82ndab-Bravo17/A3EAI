@@ -225,7 +225,7 @@ if !(isNull _unitGroup) then {
 		};
 	};
 } else {
-	diag_log "A3XAI Error: An A3EAI-managed group was deleted unexpectedly!";
+	diag_log "A3EAI Error: An A3EAI-managed group was deleted unexpectedly!";
 };
 
 if ((local _vehicle) && {isEngineOn _vehicle}) then {

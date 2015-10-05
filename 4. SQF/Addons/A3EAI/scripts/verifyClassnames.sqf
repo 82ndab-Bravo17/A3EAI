@@ -201,11 +201,11 @@ if ("" in A3EAI_launcherTypes) then {A3EAI_launcherTypes = A3EAI_launcherTypes -
 
 {
 	if !(([configFile >> "CfgWeapons" >> _x >> "ItemInfo","mountAction",""] call BIS_fnc_returnConfigEntry) isEqualTo "MountOptic") then {
-		diag_log format ["[A3EAI] Removing invalid optics classname from A3EAI_opticsList array: %1.",_x];
-		A3EAI_opticsList set [_forEachIndex,""];
+		diag_log format ["[A3EAI] Removing invalid optics classname from A3EAI_weaponOpticsList array: %1.",_x];
+		A3EAI_weaponOpticsList set [_forEachIndex,""];
 	};
-} forEach A3EAI_opticsList;
-if ("" in A3EAI_opticsList) then {A3EAI_opticsList = A3EAI_opticsList - [""];};
+} forEach A3EAI_weaponOpticsList;
+if ("" in A3EAI_weaponOpticsList) then {A3EAI_weaponOpticsList = A3EAI_weaponOpticsList - [""];};
 
 {
 	if !(([configFile >> "CfgVehicles" >> _x,"vehicleClass",""] call BIS_fnc_returnConfigEntry) isEqualTo "Backpacks") then {

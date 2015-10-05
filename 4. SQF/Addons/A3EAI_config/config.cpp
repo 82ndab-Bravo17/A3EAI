@@ -205,7 +205,8 @@ class CfgA3EAISettings {
 	respawnLimit_capitalCity = -1;
 	respawnLimit_remoteArea = -1;
 	
-	//Add name of location as displayed on map prevent static AI spawns from being created in these locations. Location names are case-sensitive (Example: ["Aggelochori","Panochori","Zaros"])
+	//Add name of location as displayed on map prevent static AI spawns from being created in these locations. Location names are case-sensitive 
+	//Example: staticBlacklistLocations[] = {"Aggelochori","Panochori","Zaros"};
 	staticBlacklistLocations[] = {};
 	
 	
@@ -250,8 +251,8 @@ class CfgA3EAISettings {
 		These settings affect the following AI vehicle patrol types: Air, Land, UAV, UGV
 	--------------------------------------------------------------------------------------------------------------------*/
 	
-	//Add name of location as displayed on map prevent AI vehicle patrols from travelling to these locations. Location names are case-sensitive. (Example: ["Aggelochori","Panochori","Zaros"])
-	//Note: Vehicles may still pass through these areas
+	//Add name of location as displayed on map prevent AI vehicle patrols from travelling to these locations. Location names are case-sensitive. Note: Vehicles may still pass through these areas
+	//Example: waypointBlacklistAir[] = {"Aggelochori","Panochori","Zaros"};
 	waypointBlacklistAir[] = {};	//Affects Air vehicles (including UAVs)
 	waypointBlacklistLand[] = {};  	//Affects Land vehicles (including UGVs)
 	
@@ -358,7 +359,7 @@ class CfgA3EAISettings {
 	//Maximum allowed number of simultaneous active reinforcements (Default: 5)
 	maxAirReinforcements = 5;
 	
-	//Air vehicles to use as reinforcement vehicles. Default: ["B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"]
+	//Air vehicles to use as reinforcement vehicles. Default: {"B_Heli_Transport_01_F","B_Heli_Light_01_armed_F"}
 	//Armed air vehicles will detect and engage players within reinforcement area. Unarmed air vehicles will deploy an AI paradrop group.
 	airReinforcementVehicles[] = {
 		"B_Heli_Transport_01_F",
@@ -371,9 +372,9 @@ class CfgA3EAISettings {
 	airReinforcementSpawnChance2 = 0.20;
 	airReinforcementSpawnChance3 = 0.30;
 	
-	//AI types permitted to summon reinforcements. Default: ["static","dynamic","random"]
+	//AI types permitted to summon reinforcements. Default: airReinforcementAllowedFor[] = {"static","dynamic","random"};
 	//Usable AI types: "static", "dynamic", "random", "air", "land", "staticcustom", "aircustom", "landcustom", "vehiclecrew"
-	airReinforcementAllowedFor[] = {"static","dynamic","random"}; //airReinforcementAllowedTypes
+	airReinforcementAllowedFor[] = {"static","dynamic","random"};
 	
 	//Maximum time for reinforcement for armed air vehicles in seconds. AI air vehicle will leave the area after this time if not destroyed.
 	airReinforcementDuration0 = 120;
@@ -550,7 +551,7 @@ class CfgA3EAISettings {
 	addHeadgearChance2 = 0.80;
 	addHeadgearChance3 = 0.90;
 	
-	//Probabilities to equip level 0-3 AI with each weapon type. Order: [pistols, rifles, machineguns, sniper rifles]. Probabilities must add up to 1.00.
+	//Probabilities to equip level 0-3 AI with each weapon type. Order: {pistols, rifles, machineguns, sniper rifles}. Probabilities must add up to 1.00.
 	useWeaponChance0[] = {0.20,0.80,0.00,0.00};
 	useWeaponChance1[] = {0.00,0.90,0.05,0.05};
 	useWeaponChance2[] = {0.00,0.80,0.10,0.10};
@@ -670,7 +671,7 @@ class CfgA3EAISettings {
 	miscLoot2[] = {"MortarBucket","MortarBucket","ItemCorrugated","CinderBlocks","jerrycan_epoch","jerrycan_epoch","VehicleRepair","VehicleRepair","CircuitParts"};
 	
 	
-	//AI toolbelt item types. Toolbelt items are added to AI inventory upon death. Format: [item classname, item probability]
+	//AI toolbelt item types. Toolbelt items are added to AI inventory upon death. Format: {item classname, item probability}
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	toolsList0[] = {
 		{"ItemWatch",0.90},{"ItemCompass",0.30},{"ItemMap",0.30},{"ItemGPS",0.00},{"EpochRadio0",0.00}

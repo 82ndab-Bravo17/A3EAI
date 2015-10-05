@@ -1,0 +1,11 @@
+A3EAI 1.0.0a
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.pbo update required: Yes
+Headless Client Files/Keys update required: N/A - HC is not functional until further notice.
+A3EAI Client Addon update required: No, last changed: 0.9.3
+
+IMPORTANT: If you already have A3EAI installed (before version 1.0.0), you must remove all A3EAI files from @EpochHive.
+
+[Fixed] Corrected wrong function call.

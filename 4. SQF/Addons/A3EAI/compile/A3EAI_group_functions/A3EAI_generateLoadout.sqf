@@ -115,7 +115,7 @@ _isRifle = ((getNumber (configFile >> "CfgWeapons" >> _weaponSelected >> "type")
 if ((missionNamespace getVariable [("A3EAI_opticsChance"+_unitLevelString),3]) call A3EAI_chance) then {
 	_opticsList = getArray (configFile >> "CfgWeapons" >> _weaponSelected >> "WeaponSlotsInfo" >> "CowsSlot" >> "compatibleItems");
 	if !(_opticsList isEqualTo []) then {
-		_opticsType = A3EAI_opticsList call A3EAI_selectRandom;
+		_opticsType = A3EAI_weaponOpticsList call A3EAI_selectRandom;
 		if (_opticsType in _opticsList) then {
 			if (_isRifle) then {_unit addPrimaryWeaponItem _opticsType} else {_unit addHandGunItem _opticsType};
 		};

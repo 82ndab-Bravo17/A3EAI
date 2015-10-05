@@ -3,8 +3,8 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "1.0.0a";
-		compatibleConfigVersions[] = {"1.0.0","1.0.0a"};
+		A3EAIVersion = "1.0.0b";
+		compatibleConfigVersions[] = {"1.0.0","1.0.0a","1.0.0b"};
 		compatibleHCVersions[] = {}; //HC not currently supported since Epoch client code execution prevention does not currently work.
 		requiredAddons[] = {"a3_epoch_code"};
 	};

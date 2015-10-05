@@ -3,7 +3,7 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "1.0.0a";
+		A3EAIVersion = "1.0.0b";
 		requiredAddons[] = {};
 	};
 };

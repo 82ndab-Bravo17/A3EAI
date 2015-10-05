@@ -8,7 +8,7 @@ A3EAI Client Addon update required: No, last changed: 0.9.3
 
 NEW INSTALL PROCEDURE REQUIRED!
 
-IMPORTANT: If you already have A3EAI installed (before version 0.2.0), you must remove all A3EAI files from @EpochHive.
+IMPORTANT: If you already have A3EAI installed (before version 1.0.0), you must remove all A3EAI files from @EpochHive.
 
 To install A3XAI:
 

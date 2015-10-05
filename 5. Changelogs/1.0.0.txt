@@ -17,9 +17,9 @@ To install A3XAI:
 
 To configure A3XAI:
 
-1. Unpack A3XAI_config.A3EAI (Recommended to use PBO Manager: http://www.armaholic.com/page.php?id=16369)
+1. Unpack A3XAI_config.pbo (Recommended to use PBO Manager: http://www.armaholic.com/page.php?id=16369)
 2. Edit config.cpp with a text editor (Recommended to use Notepad++: https://notepad-plus-plus.org/). Make your configuration changes.
-3. Repack A3XAI_config.A3EAI
+3. Repack A3XAI_config.pbo
 
 [Changed] Reworked configuration system (see above).
 [Changed] Main configuration file (config.cpp) is now located in @A3EAI/A3EAI_config.pbo

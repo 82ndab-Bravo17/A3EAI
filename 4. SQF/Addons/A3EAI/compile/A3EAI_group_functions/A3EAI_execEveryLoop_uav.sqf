@@ -20,6 +20,6 @@ if (A3EAI_detectOnlyUAVs) then {
 		};
 	};
 } else {
-	_inArea = _vehicle call A3EAI_checkInNoAggroArea;
+	_inArea = (leader _unitGroup) call A3EAI_checkInNoAggroArea;
 	_result = [_unitGroup,_inArea] call A3EAI_noAggroAreaToggle;
 };

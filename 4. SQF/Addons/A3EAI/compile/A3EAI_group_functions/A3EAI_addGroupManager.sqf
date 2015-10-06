@@ -185,6 +185,7 @@ while {(!isNull _unitGroup) && {(_unitGroup getVariable ["GroupSize",-1]) > 0}} 
 			waitUntil {sleep 15; ((local _unitGroup) or {isNull _unitGroup})};
 			if ((_unitGroup getVariable ["GroupSize",-1]) > 0) then {
 				_currentTime = diag_tickTime;
+				_unitGroup call A3EAI_initNoAggroStatus;
 				_unitGroup setVariable ["lastRearmTime",_currentTime];
 				_unitGroup setVariable ["antistuckTime",_currentTime];
 				_unitGroup setVariable ["lootGenTime",_currentTime];

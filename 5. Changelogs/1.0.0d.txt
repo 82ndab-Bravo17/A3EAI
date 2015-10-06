@@ -1,0 +1,14 @@
+A3EAI 1.0.0d
+
+Files changed:
+A3EAI.pbo update required: Yes
+A3EAI_config.pbo update required: No, last changed: 1.0.0
+Headless Client Files/Keys update required: N/A - HC is not functional until further notice.
+A3EAI Client Addon update required: No, last changed: 0.9.3
+
+IMPORTANT: If you already have A3EAI installed (before version 1.0.0), you must remove all A3EAI files from @EpochHive.
+
+[Changed] No-aggro area check for AI vehicle groups is now based on position of the AI group leader and not the group's vehicle.
+[Changed] AI group no-aggro status is now synced once upon ownership change between server and HC.
+[Changed] Changed case of A3EAI filenames to lower case for Linux compatibility.
+[Changed] Reduced AI no-aggro/no-damage status radius around player spawning areas from 750m to 200m.

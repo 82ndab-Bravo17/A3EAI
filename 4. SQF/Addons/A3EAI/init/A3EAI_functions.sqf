@@ -124,6 +124,7 @@ A3EAI_getUnitLevel = compileFinal preprocessFileLineNumbers format ["%1\compile\
 A3EAI_getWeapon = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getWeapon.sqf",A3EAI_directory];
 A3EAI_hasLOS = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_hasLOS.sqf",A3EAI_directory];
 A3EAI_initializeTrigger = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initializeTrigger.sqf",A3EAI_directory];
+A3EAI_initNoAggroStatus = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initNoAggroStatus.sqf",A3EAI_directory];
 A3EAI_initUVGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_initUVGroup.sqf",A3EAI_directory];
 A3EAI_moveToPosAndDeleteWP = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_moveToPosAndDeleteWP.sqf",A3EAI_directory];
 A3EAI_moveToPosAndPatrol = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_moveToPosAndPatrol.sqf",A3EAI_directory];
@@ -173,9 +174,6 @@ A3EAI_generateLootPool = compileFinal preprocessFileLineNumbers format ["%1\comp
 A3EAI_generateLootOnDeath = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLootOnDeath.sqf",A3EAI_directory];
 A3EAI_generateLoadout = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLoadout.sqf",A3EAI_directory];
 A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_addGroupManager.sqf",A3EAI_directory];
-
-//HC functions shared between Server and HC
-A3EAI_setAggroStatusRemoteGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_both\A3EAI_setAggroStatusRemoteGroup.sqf",A3EAI_directory];
 
 diag_log "[A3EAI] A3EAI functions compiled.";
 

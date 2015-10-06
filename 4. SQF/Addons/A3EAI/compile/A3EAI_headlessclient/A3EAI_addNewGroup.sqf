@@ -29,6 +29,8 @@ _unitGroup setVariable ["unitLevel",_unitLevel];
 _unitGroup setVariable ["unitType",_unitType];
 _unitGroup setVariable ["GroupSize",_groupSize];
 
+_unitGroup call A3EAI_initNoAggroStatus;
+
 if !(_lootPool isEqualTo []) then {_unitGroup setVariable ["LootPool",_lootPool];};
 
 if !(isNil "_miscData1") then {

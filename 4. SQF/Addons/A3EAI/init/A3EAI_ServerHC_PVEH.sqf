@@ -21,6 +21,5 @@
 "A3EAI_spawnReinforcements_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_spawn_reinforcement;diag_log format ["Debug: %1",_this];};
 "A3EAI_setBehavior_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_setBehavior;diag_log format ["Debug: %1",_this];};
 "A3EAI_generateLootOnDeath_PVS" addPublicVariableEventHandler {(_this select 1) spawn A3EAI_generateLootOnDeath;diag_log format ["Debug: %1",_this];};
-"A3EAI_setNoAggroStatus_PVS" addPublicVariableEventHandler {(_this select 1) call A3EAI_setAggroStatusRemoteGroup;diag_log format ["Debug: %1",_this];};
 
 diag_log "[A3EAI] Serverside PVEHs loaded.";

@@ -174,6 +174,9 @@ A3EAI_generateLootOnDeath = compileFinal preprocessFileLineNumbers format ["%1\c
 A3EAI_generateLoadout = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_generateLoadout.sqf",A3EAI_directory];
 A3EAI_addGroupManager = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_group_functions\A3EAI_addGroupManager.sqf",A3EAI_directory];
 
+//HC functions shared between Server and HC
+A3EAI_setAggroStatusRemoteGroup = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_headlessclient_both\A3EAI_setAggroStatusRemoteGroup.sqf",A3EAI_directory];
+
 diag_log "[A3EAI] A3EAI functions compiled.";
 
 true

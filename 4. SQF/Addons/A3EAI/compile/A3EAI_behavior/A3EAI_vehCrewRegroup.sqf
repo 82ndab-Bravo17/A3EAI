@@ -7,7 +7,7 @@ _vehicle = _this select 1;
 
 if ((count (waypoints _unitGroup)) > 1) exitWith {
 	if (isNull (driver _vehicle)) then {
-		[_unitGroup,1] setWaypointPosition (getPosATL _vehicle);
+		[_unitGroup,1] setWaypointPosition [(getPosATL _vehicle),0];
 		_unitGroup setCurrentWaypoint [_unitGroup,1];
 	};
 };

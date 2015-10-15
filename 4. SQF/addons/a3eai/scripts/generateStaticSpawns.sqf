@@ -44,7 +44,7 @@ _cfgWorldName = configFile >> "CfgWorlds" >> worldName >> "Names";
 		} forEach _nearbldgs;
 		
 		if (_spawnPoints < 6) then {
-			throw format ["A3XAI Debug: Static spawn not created at %1. Acceptable positions: %2, Total: %3",_placeName,_spawnPoints,(count _nearbldgs)];
+			throw format ["A3EAI Debug: Static spawn not created at %1. Acceptable positions: %2, Total: %3",_placeName,_spawnPoints,(count _nearbldgs)];
 		};
 		
 		_aiCount = [0,0];

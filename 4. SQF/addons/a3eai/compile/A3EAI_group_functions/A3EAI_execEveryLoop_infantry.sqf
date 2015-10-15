@@ -23,7 +23,7 @@ if !(_inArea) then {
 	if !(isNil "_trigger") then {
 		_maxDistance = _unitGroup getVariable ["patrolDist",250];
 		if ((_leader distance2D _trigger) > (_maxDistance + PATROL_DISTANCE_BUFFER)) then {
-			_randomWaypoint = _unitGroup call A3XAI_setRandomWaypoint;
+			_randomWaypoint = _unitGroup call A3EAI_setRandomWaypoint;
 			(units _unitGroup) doMove (waypointPosition _randomWaypoint);
 			if (A3EAI_debugLevel > 0) then {diag_log format ["A3EAI Debug: Group %1 moved beyond allowed patrol radius, ordering group towards spawn center.",_unitGroup];};
 		};

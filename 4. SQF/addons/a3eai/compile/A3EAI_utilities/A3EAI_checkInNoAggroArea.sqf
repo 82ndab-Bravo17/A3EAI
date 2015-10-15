@@ -1,13 +1,17 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_inNoAggroArea", "_objectPos"];
+private ["_inNoAggroArea", "_objectPos", "_noAggroDistance"];
+
+_objectPos = _this select 0;
+_noAggroRange = [_this,1,900] call A3EAI_param;
+
+if ((typeName _objectPos) isEqualTo "OBJECT") then {_objectPos = getPosATL _objectPos};
 
 _inNoAggroArea = false;
-_objectPos = if ((typeName _this) isEqualTo "OBJECT") then {getPosATL _this} else {_this};
 {
-	if (_objectPos in _x) exitWith {
+	if (((position _x) distance2D _objectPos) < _noAggroRange) exitWith {
 		_inNoAggroArea = true;
 	};
-} forEach A3EAI_noAggroAreas;
+} count A3EAI_noAggroAreas;
 
 _inNoAggroArea

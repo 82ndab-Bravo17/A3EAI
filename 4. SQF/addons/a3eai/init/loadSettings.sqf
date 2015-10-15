@@ -126,7 +126,6 @@ _fnc_getConfigValue = {
 	["respawnLimit_city",-1],
 	["respawnLimit_capitalCity",-1],
 	["respawnLimit_remoteArea",-1],
-	["staticBlacklistLocations",[]],
 	["maxDynamicSpawns",15],
 	["timePerDynamicSpawn",900],
 	["purgeLastDynamicSpawnTime",3600],

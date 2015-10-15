@@ -1,11 +1,20 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_unitGroup", "_vehicle", "_lastRegroupCheck","_inNoAggroArea","_inArea","_result"];
+private ["_unitGroup", "_vehicle", "_lastRegroupCheck","_inNoAggroArea","_inArea","_result","_leader", "_assignedTarget"];
 
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
 
-_inArea = (leader _unitGroup) call A3EAI_checkInNoAggroArea;
+_leader = (leader _unitGroup);
+_inArea = [_leader,NO_AGGRO_RANGE_LAND] call A3EAI_checkInNoAggroArea;
+
+if !(_inArea) then {
+	_assignedTarget = (assignedTarget (vehicle _leader));
+	if ((_assignedTarget distance _leader) < NO_AGGRO_RANGE_LAND) then {	//900: replace with engagement range
+		_inArea = [_assignedTarget,300] call A3EAI_checkInNoAggroArea;
+	};
+}; //To test!
+	
 _result = [_unitGroup,_inArea] call A3EAI_noAggroAreaToggle;
 
 _lastRegroupCheck = _vehicle getVariable "LastRegroupCheck";

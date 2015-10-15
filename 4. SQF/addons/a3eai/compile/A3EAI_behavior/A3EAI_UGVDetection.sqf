@@ -3,6 +3,7 @@
 private ["_unitGroup","_vehicle","_canCall"];
 _unitGroup = _this select 0;
 
+if (_unitGroup getVariable ["IsDetecting",false]) exitWith {};
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
@@ -12,6 +13,7 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detec
 
 if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinforceCooldown])) > A3EAI_UGVCallReinforceCooldown) then {
 	_detectStartPos = getPosATL _vehicle;
+	_unitGroup getVariable ["IsDetecting",true];
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
 		private ["_detected","_detectOrigin","_startPos","_vehPos","_nearBlacklistAreas","_playerPos","_canReveal"];
@@ -49,6 +51,8 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UGVCallReinfor
 		if (((_vehicle distance2D _detectStartPos) > DETECT_LENGTH_UGV_2D) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
 		uiSleep 15;
 	};
+	
+	_unitGroup getVariable ["IsDetecting",false];
 };
 
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

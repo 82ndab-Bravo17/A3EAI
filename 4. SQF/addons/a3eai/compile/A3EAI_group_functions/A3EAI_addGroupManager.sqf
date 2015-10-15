@@ -1,6 +1,8 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_unitGroup", "_unitLevel", "_unitType", "_unitTypeRef", "_vehicle", "_stuckCheckTime", "_groupLeadMarker", "_groupWPMarker", "_fncArray", "_fnc_execEveryLoop", "_fnc_checkUnits", "_fnc_generateLoot", "_fnc_vehicleAmmoFuelCheck", "_fnc_antistuck", "_currentTime", "_managerStartTime", "_updateServerLoot", "_pullRate", "_markname", "_mark", "_markername", "_unitPos", "_unitMarker", "_lootPool", "_result", "_debugStartTime"];
+private ["_unitGroup", "_unitLevel", "_unitType", "_unitTypeRef", "_vehicle", "_stuckCheckTime", "_groupLeadMarker", "_groupWPMarker", "_fncArray", "_fnc_execEveryLoop", "_fnc_checkUnits", 
+"_fnc_generateLoot", "_fnc_vehicleAmmoFuelCheck", "_fnc_antistuck", "_currentTime", "_managerStartTime", "_updateServerLoot", "_pullRate", "_markname", "_mark", "_markername", "_unitPos", 
+"_unitMarker", "_lootPool", "_result", "_debugStartTime"];
 
 _unitGroup = _this select 0;
 _unitLevel = _this select 1;

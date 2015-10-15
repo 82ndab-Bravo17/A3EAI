@@ -15,6 +15,7 @@ if (_damage > _hitPoint) then {
 		if (isNull _source) exitWith {_damage = _hitPoint;}; 								//No physics damage
 		if ((group _object) call A3EAI_getNoAggroStatus) exitWith {_damage = _hitPoint;};
 		if !(isPlayer _source) exitWith {_damage = _hitPoint;};
+		if ((_hit find "wheel") > -1) exitWith {_damage = _hitPoint;};
 	};
 };
 

@@ -10,7 +10,7 @@ _unitGroup = _vehicle getVariable ["unitGroup",grpNull];
 
 if (_unitGroup call A3EAI_getNoAggroStatus) exitWith {false};
 
-if ((isPlayer _hitSource) && {(combatMode _unitGroup isEqualTo "BLUE")} && {_damage > 0.1}) then {
+if ((isPlayer _hitSource) && {_damage > 0.1} && {(combatMode _unitGroup isEqualTo "BLUE")}) then {
 	_aggroExpiry = diag_tickTime + DEFENSIVE_AGGRESSION_TIME;
 	_vehicle setVariable ["AggroTime",_aggroExpiry];
 	[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior;

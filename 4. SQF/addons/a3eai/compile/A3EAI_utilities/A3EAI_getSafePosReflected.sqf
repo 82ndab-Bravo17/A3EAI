@@ -16,7 +16,7 @@ if !(isNull _noAggroArea) then {
 	_locationSize = ((size _noAggroArea) select 0) + 300;
 	_direction = [_locationPos,_originPos] call BIS_fnc_dirTo;
 	_posReflected = [_locationPos, _locationSize,_direction] call BIS_fnc_relPos;
-	if ((surfaceIsWater _posReflected) or {_posReflected call A3EAI_checkInNoAggroArea}) then {_posReflected = []};
+	if ((surfaceIsWater _posReflected) or {[_posReflected,NO_AGGRO_RANGE_LAND] call A3EAI_checkInNoAggroArea}) then {_posReflected = []};
 };
 
 _posReflected

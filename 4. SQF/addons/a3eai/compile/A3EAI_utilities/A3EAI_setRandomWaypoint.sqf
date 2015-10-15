@@ -8,4 +8,4 @@ _allWaypoints = (waypoints _unitGroup) - [_unitGroup,_currentWaypoint];
 _selectedWaypoint = _allWaypoints call A3EAI_selectRandom;
 _unitGroup setCurrentWaypoint _selectedWaypoint;
 
-true
+_selectedWaypoint

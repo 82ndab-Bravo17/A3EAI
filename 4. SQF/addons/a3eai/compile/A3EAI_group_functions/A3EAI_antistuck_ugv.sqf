@@ -10,7 +10,7 @@ if (isNull _vehicle) exitWith {};
 
 _checkPos = (getPosATL _vehicle);
 _leader = (leader _unitGroup);
-if ((((_leader distance (_leader findNearestEnemy _vehicle)) > NEAREST_ENEMY_LAND) or {_checkPos call A3EAI_checkInNoAggroArea}) && {((_unitGroup getVariable ["antistuckPos",[0,0,0]]) distance _checkPos) < ANTISTUCK_MIN_TRAVEL_DIST_LAND}) then {
+if ((((_leader distance (_leader findNearestEnemy _vehicle)) > NEAREST_ENEMY_LAND) or {[_checkPos,NO_AGGRO_RANGE_UGV] call A3EAI_checkInNoAggroArea}) && {((_unitGroup getVariable ["antistuckPos",[0,0,0]]) distance _checkPos) < ANTISTUCK_MIN_TRAVEL_DIST_LAND}) then {
 	if (canMove _vehicle) then {
 		[_unitGroup] call A3EAI_fixStuckGroup;
 		[_unitGroup,0] setWaypointPosition [_checkPos,0];

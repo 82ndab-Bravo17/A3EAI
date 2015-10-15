@@ -15,6 +15,13 @@ if !(isNil {_unitGroup getVariable "dummyUnit"}) exitWith {};
 _unitsAlive = {alive _x} count (units _unitGroup);
 
 if (_unitsAlive > 0) then {
+	{
+		if !((gunner _vehicle) isEqualTo _x) then {
+			unassignVehicle _x;
+		};
+	} forEach (units _unitGroup);
+	(units _unitGroup) allowGetIn false;
+	
 	if (isDedicated) then {
 		[_unitGroup,_vehicle] call A3EAI_addVehicleGroup;
 	} else {
@@ -25,13 +32,7 @@ if (_unitsAlive > 0) then {
 		publicVariableServer "A3EAI_addVehicleGroup_PVS";
 		_unitGroup setVariable ["unitType","vehiclecrew"];
 	};
-
-	{
-		if !((gunner _vehicle) isEqualTo _x) then {
-			unassignVehicle _x;
-		};
-	} forEach (units _unitGroup);
-	(units _unitGroup) allowGetIn false;
+	
 	if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: AI land vehicle patrol group %1 was converted to vehiclecrew type.",_unitGroup];};
 } else {
 	_unitGroup setVariable ["GroupSize",-1];

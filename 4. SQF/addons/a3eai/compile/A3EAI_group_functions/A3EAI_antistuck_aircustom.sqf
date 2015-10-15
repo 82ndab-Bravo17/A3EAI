@@ -10,7 +10,7 @@ if (isNull _vehicle) exitWith {};
 
 _checkPos = (getWPPos [_unitGroup,(currentWaypoint _unitGroup)]);
 _leader = (leader _unitGroup);
-if ((((_leader distance2D (_leader findNearestEnemy _vehicle)) > NEAREST_ENEMY_AIR) or {_checkPos call A3EAI_checkInNoAggroArea}) && {_checkPos isEqualTo (_unitGroup getVariable ["antistuckPos",[0,0,0]])} && {canMove _vehicle}) then {
+if ((((_leader distance2D (_leader findNearestEnemy _vehicle)) > NEAREST_ENEMY_AIR) or {[_checkPos,NO_AGGRO_RANGE_AIR] call A3EAI_checkInNoAggroArea}) && {_checkPos isEqualTo (_unitGroup getVariable ["antistuckPos",[0,0,0]])} && {canMove _vehicle}) then {
 	_currentWP = (currentWaypoint _unitGroup);
 	_allWP = (waypoints _unitGroup);
 	_nextWP = _currentWP + 1;

@@ -3,7 +3,7 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		A3EAIVersion = "1.0.0d";
+		A3EAIVersion = "1.0.1";
 		requiredAddons[] = {};
 	};
 };
@@ -160,7 +160,7 @@ class CfgA3EAISettings {
 	//Minimum AI unit level requirement to use underslung grenade launchers. Set to -1 to disable completely. (Default: 1)
 	levelRequiredGL = 1;
 	
-	//Minimum AI unit level requirement to use launcher weapons. Set to -1 to disable completely. (Default: -1)
+	//Minimum AI unit level requirement to use launcher weapons. Set to -1 to disable completely. Launchers are unlootable and will be removed at death (Default: -1)
 	levelRequiredLauncher = -1;
 	
 	//List of launcher-type weapons that AI can use.
@@ -204,11 +204,7 @@ class CfgA3EAISettings {
 	respawnLimit_city = -1;
 	respawnLimit_capitalCity = -1;
 	respawnLimit_remoteArea = -1;
-	
-	//Add name of location as displayed on map prevent static AI spawns from being created in these locations. Location names are case-sensitive 
-	//Example: staticBlacklistLocations[] = {"Aggelochori","Panochori","Zaros"};
-	staticBlacklistLocations[] = {};
-	
+
 	
 	/*	Dynamic Infantry AI Spawning Settings. Probabilities should add up to 1.00	
 

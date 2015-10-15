@@ -1,6 +1,6 @@
 #include "\A3EAI\globaldefines.hpp"
 
-private ["_unitGroup", "_vehicle", "_lastAggro","_result"];
+private ["_unitGroup", "_vehicle", "_lastAggro","_result","_leader", "_assignedTarget"];
 
 _unitGroup = _this select 0;
 _vehicle = _this select 1;
@@ -13,13 +13,24 @@ if (A3EAI_detectOnlyUAVs) then {
 		[_unitGroup,"IgnoreEnemies"] call A3EAI_forceBehavior;
 	};
 
-	if (_lastAggro > diag_tickTime) then {
-		if ((combatMode _unitGroup) isEqualTo "YELLOW") then {
+	if ((combatMode _unitGroup) isEqualTo "YELLOW") then {
+		if ((_lastAggro > diag_tickTime) or {[_vehicle,NO_AGGRO_RANGE_UAV] call A3EAI_checkInNoAggroArea}) then {
 			[_unitGroup,"IgnoreEnemies"] call A3EAI_forceBehavior;
 			if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Reset Group %1 %2 UAV to non-hostile mode.",_unitGroup,(typeOf _vehicle)]};
 		};
 	};
 } else {
-	_inArea = (leader _unitGroup) call A3EAI_checkInNoAggroArea;
+	_leader = (leader _unitGroup);
+	_inArea = [_vehicle,NO_AGGRO_RANGE_UAV] call A3EAI_checkInNoAggroArea;
+	
+	if !(_inArea) then {
+		_assignedTarget = (assignedTarget (vehicle _leader));
+		if ((_assignedTarget distance _leader) < NO_AGGRO_RANGE_UAV) then {	//900: replace with engagement range
+			_inArea = [_assignedTarget,300] call A3EAI_checkInNoAggroArea;
+		};
+	};
+	
 	_result = [_unitGroup,_inArea] call A3EAI_noAggroAreaToggle;
 };
+
+true

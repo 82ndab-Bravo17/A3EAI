@@ -60,9 +60,9 @@ _randomizeChance = linearConversion [125,350,_max_dist,0.25,0.45,true];
 //diag_log format ["DEBUG: PatrolDist %1 has RandomizeChance %2",_max_dist,_randomizeChance];
 
 _wpStatements = call {
-	if (_searchLoot && {_max_dist > 100}) exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [group this] spawn A3EAI_areaSearching;};",_randomizeChance]};
-	if (_unitType isEqualTo "aircustom") exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint;} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};",_randomizeChance]};
-	format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_selectRandomWaypoint};",_randomizeChance]
+	if (_searchLoot && {_max_dist > 100}) exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_setRandomWaypoint;} else {_nul = [group this] spawn A3EAI_areaSearching;};",_randomizeChance]};
+	if (_unitType isEqualTo "aircustom") exitWith {format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_setRandomWaypoint;} else {_nul = [(assignedVehicle this),(group this)] spawn A3EAI_customHeliDetect;};",_randomizeChance]};
+	format ["if !(local this) exitWith {}; if (%1 call A3EAI_chance) then {_nul = [group this] call A3EAI_setRandomWaypoint};",_randomizeChance]
 };
 
 _wpTimeouts = if (_max_dist >= 100) then {[0, 3, 5]} else {[3, 6, 9]};
@@ -72,7 +72,7 @@ _center_y = (_pos) select 1;
 _center_z = (_pos) select 2;
 if(isNil "_center_z")then{_center_z = 0;};
 
-_allowInNoAggroArea = (_pos call A3EAI_checkInNoAggroArea);
+_allowInNoAggroArea = ([_pos,NO_AGGRO_RANGE_MAN] call A3EAI_checkInNoAggroArea);
 _wp_count = 4 + (floor random 3) + (floor (_max_dist / 100 ));
 _angle = (360 / (_wp_count -1));
 
@@ -114,7 +114,7 @@ while {count _wp_array < _wp_count} do {
 	_wp_pos = [_prepos, 0, _slack, 6, 0, 50 * (pi / 180), 0, [],[_prepos]] call BIS_fnc_findSafePos;
 	
 	_retry = false;
-	if (((surfaceIsWater _wp_pos) && {!_allowWater}) or {(_wp_pos call A3EAI_checkInNoAggroArea) or {_allowInNoAggroArea}}) then {
+	if (((surfaceIsWater _wp_pos) && {!_allowWater}) or {([_wp_pos,NO_AGGRO_RANGE_MAN] call A3EAI_checkInNoAggroArea) or {_allowInNoAggroArea}}) then {
 		_retry = true;
 		_retryCount = 0;
 		_retryPos = [];
@@ -131,7 +131,7 @@ while {count _wp_array < _wp_count} do {
 
 			_retryPos = [_prepos, 0, _slack, 6, 0, 50 * (pi / 180), 0, [],[_prepos]] call BIS_fnc_findSafePos;
 			_retryCount = _retryCount + 1;
-			if ((!(surfaceIsWater _wp_pos) or {_allowWater}) && (!(_wp_pos call A3EAI_checkInNoAggroArea) or {_allowInNoAggroArea})) then {
+			if ((!(surfaceIsWater _wp_pos) or {_allowWater}) && (!([_wp_pos,NO_AGGRO_RANGE_MAN] call A3EAI_checkInNoAggroArea) or {_allowInNoAggroArea})) then {
 				_retry = false;
 				_wp_pos = _retryPos;
 			};

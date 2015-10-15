@@ -148,7 +148,7 @@ A3EAI_setVehicleRegrouped = compileFinal preprocessFileLineNumbers format ["%1\c
 A3EAI_updateSpawnCount = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_updateSpawnCount.sqf",A3EAI_directory];
 A3EAI_updGroupCount = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_updGroupCount.sqf",A3EAI_directory];
 A3EAI_selectRandom = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_selectRandom.sqf",A3EAI_directory];
-A3EAI_selectRandomWaypoint = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_selectRandomWaypoint.sqf",A3EAI_directory];
+A3EAI_setRandomWaypoint = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_setRandomWaypoint.sqf",A3EAI_directory];
 A3EAI_getPosBetween = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_getPosBetween.sqf",A3EAI_directory];
 A3EAI_debugMarkerLocation = compileFinal preprocessFileLineNumbers format ["%1\compile\A3EAI_utilities\A3EAI_debugMarkerLocation.sqf",A3EAI_directory];
 

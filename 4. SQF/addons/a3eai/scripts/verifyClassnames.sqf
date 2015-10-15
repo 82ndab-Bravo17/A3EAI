@@ -61,70 +61,97 @@ _verified = [];
 
 if (A3EAI_maxAirPatrols > 0) then {
 	{
-		call {
-			if (!((_x select 0) isKindOf "Air")) exitWith {
-				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airVehicleList array: %1.",(_x select 0)];
-				A3EAI_airVehicleList set [_forEachIndex,""];
+		try {
+			if ((typeName _x) != "ARRAY") then {
+				throw format ["[A3EAI] Removing non-array type element from A3EAI_airVehicleList array: %1.",_x];
 			};
+			if ((count _x) < 2) then {
+				throw format ["[A3EAI] Array in A3EAI_airVehicleList has only one element: %1. 2 expected: {Classname, Amount}.",_x];
+			};
+			if (!((_x select 0) isKindOf "Air")) then {
+				throw format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airVehicleList array: %1.",(_x select 0)];
+			};
+		} catch {
+			diag_log _exception;
+			A3EAI_airVehicleList deleteAt _forEachIndex;
 		};
 	} forEach A3EAI_airVehicleList;
-	if ("" in A3EAI_airVehicleList) then {A3EAI_airVehicleList = A3EAI_airVehicleList - [""];};
 };
 
 if (A3EAI_maxLandPatrols > 0) then {
 	{
-		call {
-			if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
-				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
-				A3EAI_landVehicleList set [_forEachIndex,""];
+		try {
+			if ((typeName _x) != "ARRAY") then {
+				throw format ["[A3EAI] Removing non-array type element from A3EAI_landVehicleList array: %1.",_x];
 			};
-			if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
-				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
-				A3EAI_landVehicleList set [_forEachIndex,""];
+			if ((count _x) < 2) then {
+				throw format ["[A3EAI] Array in A3EAI_landVehicleList has only one element: %1. 2 expected: {Classname, Amount}.",_x];
 			};
+			if (!((_x select 0) isKindOf "LandVehicle")) then {
+				throw format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
+			};
+			if (((_x select 0) isKindOf "StaticWeapon")) then {
+				throw format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_landVehicleList array: %1.",(_x select 0)];
+			};
+		} catch {
+			diag_log _exception;
+			A3EAI_landVehicleList deleteAt _forEachIndex;
 		};
 	} forEach A3EAI_landVehicleList;
-	if ("" in A3EAI_landVehicleList) then {A3EAI_landVehicleList = A3EAI_landVehicleList - [""];};
 };
 
 if (A3EAI_maxAirReinforcements > 0) then {
 	{
-		call {
-			if (!(_x isKindOf "Air")) exitWith {
-				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airReinforcementVehicles array: %1.",_x];
-				A3EAI_airReinforcementVehicles set [_forEachIndex,""];
+		try {
+			if (!(_x isKindOf "Air")) then {
+				throw format ["[A3EAI] Removing non-Air type vehicle from A3EAI_airReinforcementVehicles array: %1.",_x];
 			};
+		} catch {
+			diag_log _exception;
+			A3EAI_airReinforcementVehicles deleteAt _forEachIndex;
 		};
 	} forEach A3EAI_airReinforcementVehicles;
-	if ("" in A3EAI_airReinforcementVehicles) then {A3EAI_airReinforcementVehicles = A3EAI_airReinforcementVehicles - [""];};
 };
 
 if (A3EAI_maxUAVPatrols > 0) then {
 	{
-		call {
-			if (!((_x select 0) isKindOf "Air")) exitWith {
-				diag_log format ["[A3EAI] Removing non-Air type vehicle from A3EAI_UAVList array: %1.",(_x select 0)];
-				A3EAI_UAVList set [_forEachIndex,""];
+		try {
+			if ((typeName _x) != "ARRAY") then {
+				throw format ["[A3EAI] Removing non-array type element from A3EAI_UAVList array: %1.",_x];
 			};
+			if ((count _x) < 2) then {
+				throw format ["[A3EAI] Array in A3EAI_UAVList has only one element: %1. 2 expected: {Classname, Amount}.",_x];
+			};
+			if (!((_x select 0) isKindOf "Air")) then {
+				throw format ["[A3EAI] Removing non-Air type vehicle from A3EAI_UAVList array: %1.",(_x select 0)];
+			};
+		} catch {
+			diag_log _exception;
+			A3EAI_UAVList deleteAt _forEachIndex;
 		};
 	} forEach A3EAI_UAVList;
-	if ("" in A3EAI_UAVList) then {A3EAI_UAVList = A3EAI_UAVList - [""];};
 };
 
 if (A3EAI_maxUGVPatrols > 0) then {
 	{
-		call {
-			if (!((_x select 0) isKindOf "LandVehicle")) exitWith {
-				diag_log format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
-				A3EAI_UGVList set [_forEachIndex,""];
+		try {
+			if ((typeName _x) != "ARRAY") then {
+				throw format ["[A3EAI] Removing non-array type element from A3EAI_UGVList array: %1.",_x];
 			};
-			if (((_x select 0) isKindOf "StaticWeapon")) exitWith {
-				diag_log format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
-				A3EAI_UGVList set [_forEachIndex,""];
+			if ((count _x) < 2) then {
+				throw format ["[A3EAI] Array in A3EAI_UGVList has only one element: %1. 2 expected: {Classname, Amount}.",_x];
 			};
+			if (!((_x select 0) isKindOf "LandVehicle")) then {
+				throw format ["[A3EAI] Removing non-LandVehicle type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
+			};
+			if (((_x select 0) isKindOf "StaticWeapon")) then {
+				throw format ["[A3EAI] Removing StaticWeapon type vehicle from A3EAI_UGVList array: %1.",(_x select 0)];
+			};
+		} catch {
+			diag_log _exception;
+			A3EAI_UGVList deleteAt _forEachIndex;
 		};
 	} forEach A3EAI_UGVList;
-	if ("" in A3EAI_UGVList) then {A3EAI_UGVList = A3EAI_UGVList - [""];};
 };
 
 {

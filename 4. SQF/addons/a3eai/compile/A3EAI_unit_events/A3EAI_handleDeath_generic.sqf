@@ -10,6 +10,9 @@ _unitsAlive = _this select 4;
 
 try {
 	if (isPlayer _killer) then {
+		if (A3EAI_cleanupDelay isEqualTo 0) then {
+			throw format ["A3EAI Debug: Clearing gear for %1 (cleanupDelay = 0)",_victim];
+		};
 		if (_victim getVariable ["CollisionKilled",false]) then {
 			throw format ["A3EAI Debug: %1 AI unit %2 was killed by collision damage caused by %3. Unit gear cleared.",_unitType,_victim,_killer];
 		};
@@ -22,7 +25,7 @@ try {
 		};
 	} else {
 		if (_killer isEqualTo _victim) then {
-			throw format ["A3EAI Debug: %1 AI unit %2 was killed by self. Unit gear cleared.",_unitType,_victim];
+			throw format ["A3EAI Debug: %1 AI unit %2 was killed by non-player. Unit gear cleared.",_unitType,_victim];
 		};
 	};
 } catch {

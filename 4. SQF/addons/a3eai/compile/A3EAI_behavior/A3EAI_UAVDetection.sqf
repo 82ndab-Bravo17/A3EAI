@@ -3,6 +3,7 @@
 private ["_unitGroup","_canCall","_vehicle","_detectStartPos","_searchLength"];
 _unitGroup = _this select 0;
 
+if (_unitGroup getVariable ["IsDetecting",false]) exitWith {};
 if (_unitGroup getVariable ["EnemiesIgnored",false]) then {[_unitGroup,"Behavior_Reset"] call A3EAI_forceBehavior};
 
 _vehicle = _unitGroup getVariable ["assignedVehicle",objNull];
@@ -16,6 +17,7 @@ if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detec
 if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UAVCallReinforceCooldown])) > A3EAI_UAVCallReinforceCooldown) then {
 	_detectStartPos = getPosATL _vehicle;
 	_vehicle flyInHeight (FLYINHEIGHT_UAV_SEARCHING_BASE + (random FLYINHEIGHT_UAV_SEARCHING_VARIANCE));
+	_unitGroup getVariable ["IsDetecting",true];
 	
 	while {!(_vehicle getVariable ["vehicle_disabled",false]) && {(_unitGroup getVariable ["GroupSize",-1]) > 0} && {local _unitGroup}} do {
 		private ["_detected","_vehPos","_nearBlacklistAreas","_playerPos","_canReveal"];
@@ -50,8 +52,11 @@ if ((diag_tickTime - (_unitGroup getVariable ["UVLastCall",-A3EAI_UAVCallReinfor
 		} forEach _detected;
 		if (((_vehicle distance2D _detectStartPos) > _searchLength) or {_vehicle getVariable ["vehicle_disabled",false]}) exitWith {};
 		uiSleep 15;
+		
+		_unitGroup getVariable ["IsDetecting",false];
 	};
 	
 	_vehicle flyInHeight (FLYINHEIGHT_UAV_PATROLLING_BASE + (random FLYINHEIGHT_UAV_PATROLLING_VARIANCE));
 };
+
 if (A3EAI_debugLevel > 1) then {diag_log format ["A3EAI Debug: Group %1 %2 detection end.",_unitGroup,(typeOf (_vehicle))];};

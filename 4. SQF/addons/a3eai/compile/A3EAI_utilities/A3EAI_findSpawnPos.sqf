@@ -15,8 +15,7 @@ while {_continue && {(_attempts < _maxAttempts)}} do {
 		_spawnPosSelected = _spawnPosSelected isFlatEmpty [0,0,0.75,5,0,false,objNull];
 	}; 
 	if (
-		!(_spawnPosSelected isEqualTo []) && 
-		//{!(_spawnPosSelected call A3EAI_posInBuilding)} && 
+		!(_spawnPosSelected isEqualTo []) &&
 		{({if ((isPlayer _x) && {([eyePos _x,[(_spawnPosSelected select 0),(_spawnPosSelected select 1),(_spawnPosSelected select 2) + 1.7],_x] call A3EAI_hasLOS) or ((_x distance _spawnPosSelected) < PLAYER_DISTANCE_NO_LOS_STATIC)}) exitWith {1}} count (_spawnPosSelected nearEntities [[PLAYER_UNITS,"LandVehicle"],PLAYER_DISTANCE_WITH_LOS_STATIC])) isEqualTo 0}
 	) then {
 		_spawnPos = _spawnPosSelected;

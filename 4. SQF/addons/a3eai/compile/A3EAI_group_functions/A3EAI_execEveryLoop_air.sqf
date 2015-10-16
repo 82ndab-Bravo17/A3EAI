@@ -10,7 +10,7 @@ _inArea = [_vehicle,NO_AGGRO_RANGE_AIR] call A3EAI_checkInNoAggroArea;
 if !(_inArea) then {
 	_leader = (leader _unitGroup);
 	_assignedTarget = (assignedTarget (vehicle _leader));
-	if ((assignedTarget (vehicle _leader)) < NO_AGGRO_RANGE_AIR) then {	//900: replace with engagement range
+	if ((_assignedTarget distance _leader) < NO_AGGRO_RANGE_AIR) then {	//900: replace with engagement range
 		_inArea = [_assignedTarget,300] call A3EAI_checkInNoAggroArea;
 	};
 }; //To test!

@@ -32,7 +32,7 @@ _spawnChance = if (_isCustomGroup) then {_trigger getVariable ["spawnChance",1]}
 
 if (_spawnChance call A3EAI_chance) then {
 	_totalAI = ((_maxUnits select 0) + round(random (_maxUnits select 1)));
-	if ((count _spawnPositions) > 0) then {
+	if !(_spawnPositions isEqualTo []) then {
 		_spawnPos = _spawnPositions call A3EAI_findSpawnPos;
 	} else {
 		_checkPos = true;
